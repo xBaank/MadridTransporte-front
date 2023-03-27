@@ -12,25 +12,35 @@ export default function BusStopsTimes() {
     const [errorMessage, setErrorMessage] = useState("")
 
     async function loadTimes() {
-        let data = await getStopsTimesByCode(code)
+        let busesTimes = await getStopsTimesByCode(code)
 
-        if (data == null) {
+        if (busesTimes == null) {
             setError(true)
             setErrorMessage("Parada no encontrada")
             setLoading(false)
             return
         }
 
-        data.forEach(element => {
-            element.lineCode = element.lineCode.replace(/^.*?__|___$/g, "")
+        busesTimes.forEach(element => {
+
+            if (element.lineCode.startsWith("8")) {
+                element.lineCode = element.lineCode.replace(/_/g, "")
+            }
+            else if (element.lineCode.startsWith("9")) {
+                element.lineCode = element.lineCode.replace(/_/g, "")
+                element.lineCode = element.lineCode.replace("065", "")
+            }
+
+            element.lineCode = element.lineCode.substring(1);
+
             element.time = new Date(element.time).toLocaleTimeString()
         });
         //sort
-        data = _.sortBy(data, (item) => item.time)
-        data = _.groupBy(data, (item) => item.lineCode)
-        data = Object.entries(data)
+        busesTimes = _.sortBy(busesTimes, (item) => item.time)
+        busesTimes = _.groupBy(busesTimes, (item) => item.lineCode)
+        busesTimes = Object.entries(busesTimes)
 
-        setStops(data)
+        setStops(busesTimes)
         setLoading(false)
     }
 
