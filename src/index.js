@@ -3,9 +3,10 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import BusStopSearch from './components/BusStopSearch';
+import BusStopSearch from './components/stops/BusStopSearch';
 import AppNavBar from './components/AppNavBar';
-import BusStopsTimes from './components/BusStopTimes';
+import BusStopsTimes from './components/stops/BusStopTimes';
+import BusLineMap from './components/lines/BusLineMap';
 
 
 const router = createBrowserRouter([
@@ -24,14 +25,20 @@ const router = createBrowserRouter([
         <AppNavBar />
         <BusStopsTimes />
       </Fragment>,
+  },
+  {
+    path: "/lines/:code/locations",
+    element:
+      <Fragment>
+        <AppNavBar />
+        <BusLineMap />
+      </Fragment>,
   }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+  <RouterProvider router={router} />
 );
 
 

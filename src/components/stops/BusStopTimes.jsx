@@ -1,8 +1,8 @@
 import React from 'react'
 import _ from 'lodash'
 import { useEffect, useState } from 'react'
-import { getStopsTimesByCode } from '../api/api'
-import { useParams } from 'react-router-dom'
+import { getStopsTimesByCode } from '../../api/api'
+import { Link, useParams } from 'react-router-dom'
 
 export default function BusStopsTimes() {
     const { code } = useParams()
@@ -14,10 +14,14 @@ export default function BusStopsTimes() {
     async function loadTimes() {
         let busesTimes = await getStopsTimesByCode(code)
 
-        if (busesTimes == null) {
+        if (busesTimes === 404) {
             setError(true)
             setErrorMessage("Parada no encontrada")
             setLoading(false)
+            return
+        }
+
+        if (busesTimes instanceof Array === false) {
             return
         }
 
@@ -46,27 +50,36 @@ export default function BusStopsTimes() {
 
     useEffect(() => {
         loadTimes()
-    }, [])
+    })
+
+    const load = () => {
+        if (loading) return <div className=' text-black text-center font-bold text-2xl'>Loading...</div>
+        else return checkError()
+    }
+
+    const checkError = () => {
+        if (error) return <div className=' text-black text-center font-bold text-2xl'>{errorMessage}</div>
+        else return showStops()
+    }
+
+    const showStops = () => {
+        return (<div id='stops' className='grid grid-cols-1 mx-auto gap-4 max-w-4xl'>{
+            stops.map((stop) => {
+                return (
+                    <div className=' p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700'>
+                        <Link to={`/lines/${stop[0]}/locations`} className=' text-white font-bold text-2xl border-b border-white'>{stop[0]}</Link>
+                        {stop[1].map((value) => {
+                            return (
+                                <div className=' text-white'>- {value.time} {value.codVehicle} </div>
+                            )
+                        })}
+                    </div>
+                )
+            })
+        }</div>)
+    }
 
     return (
-        <div className='p-5'> {
-            loading ? <div className=' text-black text-center font-bold text-2xl'>Loading...</div> :
-                error ? <div className=' text-black text-center font-bold text-2xl'>{errorMessage}</div> :
-                    <div id='stops' className='grid grid-cols-1 mx-auto gap-4 max-w-4xl'>{
-                        stops.map((stop) => {
-                            return (
-                                <div className=' p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700'>
-                                    <div className=' text-white font-bold text-2xl border-b border-white'>{stop[0]}</div>
-                                    {stop[1].map((value) => {
-                                        return (
-                                            <div className=' text-white'>- {value.time}</div>
-                                        )
-                                    })}
-                                </div>
-                            )
-                        })
-                    }</div>
-        }
-        </div>
+        <div className='p-5'> {load()}</div>
     )
 }
