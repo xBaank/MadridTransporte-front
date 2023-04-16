@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import _ from 'lodash'
 import { useEffect, useState } from 'react'
 import { getStopsTimesByCode } from '../../api/api'
@@ -6,7 +6,7 @@ import { Link, useParams } from 'react-router-dom'
 
 export default function BusStopsTimes() {
     const timeout = 5000
-    let firstLoad = true
+    let firstLoad = useRef(true)
     const { code } = useParams()
     const [stops, setStops] = useState([])
     const [loading, setLoading] = useState(true)
@@ -51,11 +51,11 @@ export default function BusStopsTimes() {
     }
 
     useEffect(() => {
-        if (firstLoad) {
+        if (firstLoad.current) {
             loadTimes()
-            firstLoad = false
+            firstLoad.current = false
         }
-        if (!firstLoad) {
+        if (!firstLoad.current) {
             setTimeout(() => {
                 loadTimes()
             }, timeout);

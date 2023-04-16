@@ -1,12 +1,12 @@
-import React from "react";
-import { GoogleMap, KmlLayer, LoadScript, Marker, TrafficLayer } from '@react-google-maps/api';
+import React, { useRef } from "react";
+import { GoogleMap, KmlLayer, LoadScript, Marker } from '@react-google-maps/api';
 import { getLineLocations, getItinerariesByCode } from "../../api/api";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Fragment } from "react";
 
 export default function BusLineMap() {
-    let firstLoad = true;
+    let firstLoad = useRef(true);
     const timeout = 20000;
     const { code } = useParams();
     const [locations, setLocations] = useState([]);
@@ -30,11 +30,11 @@ export default function BusLineMap() {
     }
 
     useEffect(() => {
-        if (firstLoad) {
+        if (firstLoad.current) {
             getLocations();
-            firstLoad = false;
+            firstLoad.current = false;
         }
-        if (!firstLoad) {
+        if (!firstLoad.current) {
             setTimeout(async () => {
                 getLocations();
             }, timeout);
@@ -43,7 +43,7 @@ export default function BusLineMap() {
 
     useEffect(() => {
         getItineraries();
-    }, []);
+    });
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(function (position) {
