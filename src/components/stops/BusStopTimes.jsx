@@ -5,6 +5,8 @@ import { getStopsTimesByCode } from '../../api/api'
 import { Link, useParams } from 'react-router-dom'
 
 export default function BusStopsTimes() {
+    const timeout = 5000
+    let firstLoad = true
     const { code } = useParams()
     const [stops, setStops] = useState([])
     const [loading, setLoading] = useState(true)
@@ -49,7 +51,15 @@ export default function BusStopsTimes() {
     }
 
     useEffect(() => {
-        loadTimes()
+        if (firstLoad) {
+            loadTimes()
+            firstLoad = false
+        }
+        if (!firstLoad) {
+            setTimeout(() => {
+                loadTimes()
+            }, timeout);
+        }
     })
 
     const load = () => {
@@ -67,7 +77,7 @@ export default function BusStopsTimes() {
             stops.map((stop) => {
                 return (
                     <div className=' p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700'>
-                        <Link to={`/lines/${stop[0]}/locations`} className=' text-white font-bold text-2xl border-b border-white'>{stop[0]}</Link>
+                        <Link to={`/lines/${stop[0]}/mode//locations`} className=' text-white font-bold text-2xl border-b border-white'>{stop[0]}</Link>
                         {stop[1].map((value) => {
                             return (
                                 <div className=' text-white'>- {value.time} {value.codVehicle} </div>
