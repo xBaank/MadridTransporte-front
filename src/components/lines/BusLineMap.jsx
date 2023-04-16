@@ -1,15 +1,16 @@
 import React from "react";
-import { GoogleMap, LoadScript, Marker, TrafficLayer } from '@react-google-maps/api';
-import { getLineLocations } from "../../api/api";
+import { GoogleMap, KmlLayer, LoadScript, Marker, TrafficLayer } from '@react-google-maps/api';
+import { getLineLocations, getItinerariesByCode } from "../../api/api";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Fragment } from "react";
 
 export default function BusLineMap() {
     let firstLoad = true;
-    const timeout = 5000;
+    const timeout = 20000;
     const { code } = useParams();
     const [locations, setLocations] = useState([]);
+    const [itineraries, setItineraries] = useState([]);
     const [currentPosition, setCurrentPosition] = useState({});
     const [loading, setLoading] = useState(true);
 
@@ -23,6 +24,10 @@ export default function BusLineMap() {
         setLocations(locations);
         setLoading(false);
     }
+    async function getItineraries() {
+        let itineraries = await getItinerariesByCode(code);
+        setItineraries(itineraries);
+    }
 
     useEffect(() => {
         if (firstLoad) {
@@ -35,6 +40,10 @@ export default function BusLineMap() {
             }, timeout);
         }
     });
+
+    useEffect(() => {
+        getItineraries();
+    }, []);
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(function (position) {
@@ -67,7 +76,12 @@ export default function BusLineMap() {
                                     position={currentPosition}
                                     title="You are here"
                                 />
-                                <TrafficLayer />
+                                <KmlLayer
+                                    url={itineraries[0].kml}
+                                    options={{ preserveViewport: true }}
+
+                                />
+
                                 {
                                     locations.map((location) => {
                                         return (

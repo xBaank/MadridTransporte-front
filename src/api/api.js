@@ -8,7 +8,14 @@ export async function getStopsTimesByCode(code) {
 }
 
 export async function getLineLocations(code) {
-    const response = await fetch(`${apiUrl}/lines/${code}/locations`)
+    const response = await fetch(`${apiUrl}/lines/${code}/mode/8/locations`)
+    if (!response.ok) return response.status
+    const data = await response.json()
+    return data
+}
+
+export async function getItinerariesByCode(code) {
+    const response = await fetch(`${apiUrl}/lines/${code}/mode/8/itineraries`)
     if (!response.ok) return response.status
     const data = await response.json()
     return data
