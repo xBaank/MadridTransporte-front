@@ -14,7 +14,8 @@ export default function BusStopsTimes() {
   const [errorMessage, setErrorMessage] = useState("");
 
   async function loadTimes() {
-    let busesTimes = await getStopsTimesByCode(code);
+    let response = await getStopsTimesByCode(code);
+    let busesTimes = response.data;
 
     if (busesTimes === 404) {
       setError(true);
@@ -44,7 +45,9 @@ export default function BusStopsTimes() {
     busesTimes = _.groupBy(busesTimes, (item) => item.lineCode);
     busesTimes = Object.entries(busesTimes);
 
-    setStops(busesTimes);
+    response.data = busesTimes;
+
+    setStops(response);
     setLoading(false);
   }
 
@@ -82,29 +85,53 @@ export default function BusStopsTimes() {
 
   const showStops = () => {
     return (
-      <div id="stops" className="grid grid-cols-1 mx-auto gap-4 max-w-4xl">
-        {stops.map((stop) => {
-          return (
-            <div className=" p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-              <Link
-                to={`/lines/${stop[0]}/locations`}
-                className=" text-white font-bold text-2xl border-b border-white"
-              >
-                {stop[0]}
-              </Link>
-              {stop[1].map((value) => {
-                return (
-                  <div className=" text-white">
-                    - {value.time} {value.codVehicle}{" "}
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
-      </div>
+      <>
+        <div
+          class="bg-gray-100 border-t border-b border-gray-500 text-gray-700 p5 mb-3 text-center"
+          role="alert"
+        >
+          <p class="font-bold">Ultima actualizacion de CRTM</p>
+          <p class="text-sm">
+            {new Date(stops.lastTime).toLocaleTimeString()} hace {" "}
+            {timeFormatted(Date.now() - stops.lastTime)}
+          </p>
+        </div>
+        <div id="stops" className="grid grid-cols-1 mx-auto gap-4 max-w-4xl">
+          {stops.data.map((stop) => {
+            return (
+              <div className=" p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <Link
+                  to={`/lines/${stop[0]}/locations`}
+                  className=" text-white font-bold text-2xl border-b border-white"
+                >
+                  {stop[0]}
+                </Link>
+                {stop[1].map((value) => {
+                  return (
+                    <div className=" text-white">
+                      - {value.time} {value.codVehicle}{" "}
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })}
+        </div>
+      </>
     );
   };
 
   return <div className="p-5"> {load()}</div>;
+}
+
+function timeFormatted(timeEspoch) {
+  return (
+    Math.floor(timeEspoch / (1000 * 60 * 60))
+      .toString()
+      .padStart(2, "0") +
+    ":" +
+    (Math.floor(timeEspoch / (1000 * 60)) % 60).toString().padStart(2, "0") +
+    ":" +
+    (Math.floor(timeEspoch / 1000) % 60).toString().padStart(2, "0")
+  );
 }
