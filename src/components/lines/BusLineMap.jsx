@@ -46,7 +46,7 @@ export default function BusLineMap() {
     });
 
     useEffect(() => {
-        navigator.geolocation.getCurrentPosition(function (position) {
+        navigator.geolocation.getCurrentPosition((position) => {
             setCurrentPosition({
                 lat: position.coords.latitude,
                 lng: position.coords.longitude,
