@@ -1,9 +1,6 @@
 const apiUrl = process.env.REACT_APP_BACK_URL;
 
 export async function getStopsTimesByCode(code) {
-  console.log(process.env.NODE_ENV);
-  console.log(process.env);
-  console.log(apiUrl);
   const response = await fetch(`${apiUrl}/stops/${code}/times`);
   if (!response.ok) return response.status;
   const data = await response.json();
