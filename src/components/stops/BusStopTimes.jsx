@@ -57,11 +57,12 @@ export default function BusStopsTimes() {
       firstLoad.current = false;
     }
     if (!firstLoad.current) {
-      setTimeout(() => {
-        loadTimes();
-      }, timeout);
+      const interval = setInterval(() => loadTimes(), timeout)
+      return () => {
+        clearInterval(interval);
+      }
     }
-  });
+  }, []);
 
   const load = () => {
     if (loading)
@@ -92,8 +93,7 @@ export default function BusStopsTimes() {
         >
           <p class="font-bold">Ultima actualizacion de CRTM</p>
           <p class="text-sm">
-            {new Date(stops.lastTime).toLocaleTimeString()} hace {" "}
-            {timeFormatted(Date.now() - stops.lastTime)}
+            {new Date(stops.lastTime).toLocaleTimeString()}
           </p>
         </div>
         <div id="stops" className="grid grid-cols-1 mx-auto gap-4 max-w-4xl">
@@ -122,16 +122,4 @@ export default function BusStopsTimes() {
   };
 
   return <div className="p-5"> {load()}</div>;
-}
-
-function timeFormatted(timeEspoch) {
-  return (
-    Math.floor(timeEspoch / (1000 * 60 * 60))
-      .toString()
-      .padStart(2, "0") +
-    ":" +
-    (Math.floor(timeEspoch / (1000 * 60)) % 60).toString().padStart(2, "0") +
-    ":" +
-    (Math.floor(timeEspoch / 1000) % 60).toString().padStart(2, "0")
-  );
 }
