@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import _ from "lodash";
 import { useEffect, useState } from "react";
-import { getStopsTimesByCode } from "../../api/api";
+import { getStopsTimesByCode, getStopsTimesByCodeCached } from "../../api/api";
 import { Link, useParams } from "react-router-dom";
 
 export default function BusStopsTimes() {
@@ -13,14 +13,18 @@ export default function BusStopsTimes() {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  async function loadTimes() {
-    let response = await getStopsTimesByCode(code);
+  async function loadTimes(apiFunc) {
+    let response = await apiFunc(code);
     let busesTimes = response.data;
 
-    if (busesTimes === 404) {
+    if (busesTimes === 400) {
       setError(true);
       setErrorMessage("Parada no encontrada");
       setLoading(false);
+      return;
+    }
+
+    if (busesTimes === 404) {
       return;
     }
 
@@ -53,11 +57,12 @@ export default function BusStopsTimes() {
 
   useEffect(() => {
     if (firstLoad.current) {
-      loadTimes();
+      loadTimes(getStopsTimesByCodeCached);
       firstLoad.current = false;
+      loadTimes(getStopsTimesByCode);
     }
     if (!firstLoad.current) {
-      const interval = setInterval(() => loadTimes(), timeout)
+      const interval = setInterval(() => loadTimes(getStopsTimesByCode), timeout)
       return () => {
         clearInterval(interval);
       }
