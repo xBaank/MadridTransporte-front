@@ -9,9 +9,9 @@ export default function BusLineMap() {
     let firstLoad = useRef(true);
     const timeout = 20000;
     const { code } = useParams();
-    const [locations, setLocations] = useState([]);
-    const [itineraries, setItineraries] = useState([]);
-    const [currentPosition, setCurrentPosition] = useState({});
+    const [locations, setLocations] = useState<any>([]);
+    const [itineraries, setItineraries] = useState<any>([]);
+    const [currentPosition, setCurrentPosition] = useState<any>({});
     const [loading, setLoading] = useState(true);
 
     const containerStyle = {
@@ -20,12 +20,12 @@ export default function BusLineMap() {
     };
 
     async function getLocations() {
-        let locations = await getLineLocations(code);
+        let locations = await getLineLocations(code ?? "");
         setLocations(locations);
         setLoading(false);
     }
     async function getItineraries() {
-        let itineraries = await getItinerariesByCode(code);
+        let itineraries = await getItinerariesByCode(code ?? "");
         setItineraries(itineraries);
     }
 
@@ -83,12 +83,12 @@ export default function BusLineMap() {
                                 />
 
                                 {
-                                    locations.map((location) => {
+                                    locations.map((location: { coordinates: { latitude: any; longitude: any; }; codVehicle: string | undefined; }) => {
                                         return (
                                             <Marker
                                                 position={{ lat: location.coordinates.latitude, lng: location.coordinates.longitude }}
                                                 title={location.codVehicle}
-                                                icon={{ url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Canberra_Bus_icon.svg/2048px-Canberra_Bus_icon.svg.png", scaledSize: { width: 30, height: 30 } }}
+                                                icon={{ url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Canberra_Bus_icon.svg/2048px-Canberra_Bus_icon.svg.png", scaledSize: { width: 30, height: 30, equals: () => true } }}
                                             />
                                         )
                                     })
