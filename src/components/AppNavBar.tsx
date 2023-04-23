@@ -13,7 +13,12 @@ export default function NavBar() {
                 <ul className='flex flex-row ml-5 mr-2 my-auto border-b-1'>
                     <li className='mr-5'>
                         <Link to={"/"}>
-                            <h3 className='text-white  hover:text-purple-500'>Paradas</h3>
+                            <h3 className='text-white  hover:text-purple-500'>Bus</h3>
+                        </Link>
+                    </li>
+                    <li className='mr-5'>
+                        <Link to={"/metro"}>
+                            <h3 className='text-white  hover:text-purple-500'>Metro</h3>
                         </Link>
                     </li>
                 </ul>
