@@ -8,13 +8,13 @@ export default function BusStopsTimes() {
   const timeout = 5000;
   let firstLoad = useRef(true);
   const { code } = useParams();
-  const [stops, setStops] = useState([]);
+  const [stops, setStops] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  async function loadTimes(apiFunc) {
-    let response = await apiFunc(code);
+  async function loadTimes(apiFunc: (code: string) => Promise<any>) {
+    let response = await apiFunc(code ?? "");
     let busesTimes = response.data;
 
     if (busesTimes === 400) {
@@ -32,7 +32,7 @@ export default function BusStopsTimes() {
       return;
     }
 
-    busesTimes.forEach((element) => {
+    busesTimes.forEach((element: any) => {
       if (element.lineCode.startsWith("8")) {
         element.lineCode = element.lineCode.replace(/_/g, "");
       } else if (element.lineCode.startsWith("9")) {
@@ -93,16 +93,16 @@ export default function BusStopsTimes() {
     return (
       <>
         <div
-          class="bg-gray-100 border-t border-b border-gray-500 text-gray-700 p5 mb-3 text-center"
+          className="bg-gray-100 border-t border-b border-gray-500 text-gray-700 p5 mb-3 text-center"
           role="alert"
         >
-          <p class="font-bold">Ultima actualizacion de CRTM</p>
-          <p class="text-sm">
+          <p className="font-bold">Ultima actualizacion de CRTM</p>
+          <p className="text-sm">
             {new Date(stops.lastTime).toLocaleTimeString()}
           </p>
         </div>
         <div id="stops" className="grid grid-cols-1 mx-auto gap-4 max-w-4xl">
-          {stops.data.map((stop) => {
+          {stops.data.map((stop: any[][]) => {
             return (
               <div className=" p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                 <Link
