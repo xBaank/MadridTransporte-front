@@ -67,4 +67,4 @@ jobs:
           docker stop bus_tracker_front
           docker rm bus_tracker_front
           docker rmi xbank/bus_tracker_front
-          docker run -p 7777:8080 --link bus_tracker_api:bus_tracker_api -d --name bus_tracker_front xbank/bus_tracker_front:latest          
+          docker run -p 80:3000 --link bus_tracker_api:bus_tracker_api -d --name bus_tracker_front xbank/bus_tracker_front:latest          
