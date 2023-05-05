@@ -8,4 +8,4 @@ RUN npm install --production --legacy-peer-deps
 RUN npm install -g serve
 # Copy app files
 COPY . .
-CMD ["serve", "-s" "build"]
+ENTRYPOINT ["serve", "-s" "build"]
