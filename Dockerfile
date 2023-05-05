@@ -5,7 +5,7 @@ RUN npm install -g serve
 WORKDIR /app
 # Cache and Install dependencies
 COPY package.json .
-RUN npm install --production --legacy-peer-deps
+RUN sudo npm install --production --legacy-peer-deps
 # Copy app files
 COPY . .
-ENTRYPOINT ["npx", "serve", "-s" "build"]
+ENTRYPOINT ["serve", "-s", "build"]
