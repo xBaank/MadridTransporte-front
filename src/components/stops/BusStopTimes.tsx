@@ -16,7 +16,7 @@ export default function BusStopsTimes() {
 
 
   useEffect(() => {
-    async function loadTimes(apiFunc: (code: string) => Promise<any>) {
+    async function loadTimes(apiFunc: (stopCode: string) => Promise<any>) {
       let response = await apiFunc(code ?? "");
       let busesTimes = response.data;
 
@@ -69,7 +69,7 @@ export default function BusStopsTimes() {
         clearInterval(interval);
       }
     }
-  }, []);
+  }, [code]);
 
   const load = () => {
     if (loading)
