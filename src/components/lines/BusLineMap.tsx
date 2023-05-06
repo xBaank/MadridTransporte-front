@@ -4,7 +4,8 @@ import { getLineLocations, getItinerariesByCode } from "../../api/api";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Fragment } from "react";
-type LatLng = google.maps.LatLng
+import LatLng = google.maps.LatLng
+
 type location = {
     coordinates: {
         latitude: number,
@@ -51,7 +52,7 @@ export default function BusLineMap() {
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition((position) => {
-            setCurrentPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+            setCurrentPosition(new LatLng(position.coords.latitude, position.coords.longitude));
         });
     }, []);
 
@@ -78,7 +79,7 @@ export default function BusLineMap() {
                 >
                     <GoogleMap
                         mapContainerStyle={containerStyle}
-                        center={currentPosition ?? new google.maps.LatLng(locations[0].coordinates.latitude, locations[0].coordinates.longitude)}
+                        center={currentPosition ?? new LatLng(locations[0].coordinates.latitude, locations[0].coordinates.longitude)}
                         zoom={10}
                     >
                         {
