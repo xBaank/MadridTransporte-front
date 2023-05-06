@@ -6,7 +6,7 @@ WORKDIR /app
 # Cache and Install dependencies
 COPY package.json .
 RUN npm install --production --legacy-peer-deps
-RUN npm run build
+RUN npm build
 # Copy app files
 COPY . .
 ENTRYPOINT ["serve", "-s", "build"]
