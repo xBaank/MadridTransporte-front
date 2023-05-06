@@ -4,6 +4,7 @@ import { getLineLocations, getItinerariesByCode } from "../../api/api";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Fragment } from "react";
+const google = window.google;
 
 type location = {
     coordinates: {
