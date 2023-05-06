@@ -3,10 +3,8 @@ ENV NODE_ENV production
 # Add a work directory
 RUN npm install -g serve
 WORKDIR /app
-# Cache and Install dependencies
-COPY package.json .
-RUN npm install --production --legacy-peer-deps
-RUN npm build
 # Copy app files
 COPY . .
+RUN npm install --production --legacy-peer-deps
+RUN npm run build
 ENTRYPOINT ["serve", "-s", "build"]
