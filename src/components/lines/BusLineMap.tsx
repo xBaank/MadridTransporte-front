@@ -31,18 +31,14 @@ export default function BusLineMap() {
 
     useEffect(() => {
         if (firstLoad.current) {
+            getItineraries();
             getLocations();
             firstLoad.current = false;
         }
         if (!firstLoad.current) {
-            setTimeout(async () => {
-                getLocations();
-            }, timeout);
+            const interval = setInterval(() => { getLocations() }, timeout);
+            return () => clearInterval(interval);
         }
-    });
-
-    useEffect(() => {
-        getItineraries();
     });
 
     useEffect(() => {
