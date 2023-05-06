@@ -4,14 +4,23 @@ import { getLineLocations, getItinerariesByCode } from "../../api/api";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Fragment } from "react";
+type LatLng = google.maps.LatLng
+type location = {
+    coordinates: {
+        latitude: number,
+        longitude: number
+    }
+    codVehicle: string
+}
 
 export default function BusLineMap() {
+
     let firstLoad = useRef(true);
     const timeout = 20000;
     const { code } = useParams();
-    const [locations, setLocations] = useState<any>([]);
+    const [locations, setLocations] = useState<location[]>([]);
     const [itineraries, setItineraries] = useState<any>([]);
-    const [currentPosition, setCurrentPosition] = useState<any>({});
+    const [currentPosition, setCurrentPosition] = useState<LatLng | null>(null);
     const [loading, setLoading] = useState(true);
 
     const containerStyle = {
@@ -31,8 +40,7 @@ export default function BusLineMap() {
 
     useEffect(() => {
         if (firstLoad.current) {
-            getItineraries();
-            getLocations();
+            getItineraries().then(() => getLocations());
             firstLoad.current = false;
         }
         if (!firstLoad.current) {
@@ -43,16 +51,23 @@ export default function BusLineMap() {
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition((position) => {
-            setCurrentPosition({
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-            });
+            setCurrentPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
         });
     }, []);
 
     const ifLoading = () => {
         if (loading) return <div className=' text-black text-center font-bold text-2xl'>Loading...</div>
         else return map()
+    }
+
+    const currentPostitionMarker = () => {
+        if (currentPosition == null) return (<></>)
+        else return (<>
+            <Marker
+                position={currentPosition}
+                title="You are here"
+            />
+        </>)
     }
 
     const map = () => {
@@ -63,15 +78,12 @@ export default function BusLineMap() {
                 >
                     <GoogleMap
                         mapContainerStyle={containerStyle}
-                        center={currentPosition}
+                        center={currentPosition ?? new google.maps.LatLng(locations[0].coordinates.latitude, locations[0].coordinates.longitude)}
                         zoom={10}
                     >
                         {
                             <Fragment>
-                                <Marker
-                                    position={currentPosition}
-                                    title="You are here"
-                                />
+                                {currentPostitionMarker()}
                                 <KmlLayer
                                     url={itineraries[0].kml}
                                     options={{ preserveViewport: true }}
