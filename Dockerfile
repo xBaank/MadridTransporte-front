@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm install --omit=dev
+RUN npm install --omit=dev --legacy-peer-deps
 RUN npm run build --omit=dev
 
 
