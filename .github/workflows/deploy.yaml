@@ -20,4 +20,6 @@ jobs:
           docker compose -f ./bus-tracker-front/docker-compose.yml stop
           rm -r ./bus-tracker-front
           git clone https://github.com/xBaank/bus-tracker-front.git
+          cp ./certs/bus-tracker-api/cert.pem ./bus-tracker-front/cert.pem
+          cp ./certs/bus-tracker-api/key.pem ./bus-tracker-front/key.pem
           docker compose -f ./bus-tracker-front/docker-compose.yml up
