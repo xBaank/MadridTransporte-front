@@ -16,6 +16,7 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
+        command_timeout : 30m
         script: |
           docker compose -f ./bus-tracker-front/docker-compose.yml stop
           rm -r ./bus-tracker-front
