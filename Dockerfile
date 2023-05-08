@@ -4,6 +4,7 @@ ENV NODE_ENV production
 WORKDIR /app
 
 COPY . .
+ENV NODE_OPTIONS=--max-old-space-size=200
 RUN npm install --omit=dev --legacy-peer-deps
 RUN npm run build --omit=dev
 
