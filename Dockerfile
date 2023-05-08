@@ -7,13 +7,11 @@ COPY . .
 
 RUN npm install --omit=dev --legacy-peer-deps
 RUN npm run build --omit=dev
-RUN npm install -g serve
 
 
-FROM builder AS release
+FROM nginx:1.23.2-alpine AS release
 
-WORKDIR /build
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/build  /usr/share/nginx/html
 
-COPY --from=builder /app/build .
-
-ENTRYPOINT ["serve", "-s", "."]
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
