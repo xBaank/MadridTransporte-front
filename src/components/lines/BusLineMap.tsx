@@ -50,7 +50,7 @@ export default function BusLineMap() {
     });
 
     useEffect(() => {
-        navigator.geolocation.getCurrentPosition((position) => {
+        navigator?.geolocation?.getCurrentPosition((position) => {
             setCurrentPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
         });
     }, []);
