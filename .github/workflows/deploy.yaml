@@ -48,6 +48,7 @@ jobs:
         script: |
           docker compose -f ./bus-tracker-front/docker-compose.yml stop
           docker compose -f ./bus-tracker-front/docker-compose.yml rm -f
+          docker compose -f ./bus-tracker-front/docker-compose.yml pull
           rm -r ./bus-tracker-front
           git clone https://github.com/xBaank/bus-tracker-front.git
           cp ./certs/bus-tracker-api/cert.pem ./bus-tracker-front/cert.pem
