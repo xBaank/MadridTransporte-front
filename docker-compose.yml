@@ -3,7 +3,7 @@ services:
   web:
     image: xbank/bus_tracker_front:latest
     ports:
-      - "80:8080"
+      - "443:443"
     volumes:
       - ./key.pem:/root/ssl/key.pem
       - ./cert.pem:/root/ssl/cert.pem
