@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { GoogleMap, KmlLayer, LoadScript, Marker, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, KmlLayer, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { getLineLocations, getItinerariesByCode } from "../../api/api";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
