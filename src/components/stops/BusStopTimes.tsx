@@ -13,49 +13,51 @@ export default function BusStopsTimes() {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  async function loadTimes(apiFunc: (code: string) => Promise<any>) {
-    let response = await apiFunc(code ?? "");
-    let busesTimes = response.data;
 
-    if (busesTimes === 400) {
-      setError(true);
-      setErrorMessage("Parada no encontrada");
-      setLoading(false);
-      return;
-    }
-
-    if (busesTimes === 404) {
-      return;
-    }
-
-    if (busesTimes instanceof Array === false) {
-      return;
-    }
-
-    busesTimes.forEach((element: any) => {
-      if (element.lineCode.startsWith("8")) {
-        element.lineCode = element.lineCode.replace(/_/g, "");
-      } else if (element.lineCode.startsWith("9")) {
-        element.lineCode = element.lineCode.replace(/_/g, "");
-        element.lineCode = element.lineCode.replace("065", "");
-      }
-
-      element.lineCode = element.lineCode.substring(1);
-
-      element.time = new Date(element.time).toLocaleTimeString();
-    });
-    //sort
-    busesTimes = _.sortBy(busesTimes, (item) => item.time);
-    busesTimes = _.groupBy(busesTimes, (item) => item.lineCode);
-    busesTimes = Object.entries(busesTimes);
-
-    response.data = busesTimes;
-
-    setStops(response);
-    setLoading(false);
-  }
 
   useEffect(() => {
+    async function loadTimes(apiFunc: (stopCode: string) => Promise<any>) {
+      let response = await apiFunc(code ?? "");
+      let busesTimes = response.data;
+
+      if (busesTimes === 400) {
+        setError(true);
+        setErrorMessage("Parada no encontrada");
+        setLoading(false);
+        return;
+      }
+
+      if (busesTimes === 404) {
+        return;
+      }
+
+      if (busesTimes instanceof Array === false) {
+        return;
+      }
+
+      busesTimes.forEach((element: any) => {
+        if (element.lineCode.startsWith("8")) {
+          element.lineCode = element.lineCode.replace(/_/g, "");
+        } else if (element.lineCode.startsWith("9")) {
+          element.lineCode = element.lineCode.replace(/_/g, "");
+          element.lineCode = element.lineCode.replace("065", "");
+        }
+
+        element.lineCode = element.lineCode.substring(1);
+
+        element.time = new Date(element.time).toLocaleTimeString();
+      });
+      //sort
+      busesTimes = _.sortBy(busesTimes, (item) => item.time);
+      busesTimes = _.groupBy(busesTimes, (item) => item.lineCode);
+      busesTimes = Object.entries(busesTimes);
+
+      response.data = busesTimes;
+
+      setStops(response);
+      setLoading(false);
+    }
+
     if (firstLoad.current) {
       loadTimes(getStopsTimesByCodeCached);
       firstLoad.current = false;
@@ -67,7 +69,7 @@ export default function BusStopsTimes() {
         clearInterval(interval);
       }
     }
-  }, []);
+  }, [code]);
 
   const load = () => {
     if (loading)

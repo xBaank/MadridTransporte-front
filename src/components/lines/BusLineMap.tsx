@@ -1,17 +1,32 @@
 import React, { useRef } from "react";
-import { GoogleMap, KmlLayer, LoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap, KmlLayer, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { getLineLocations, getItinerariesByCode } from "../../api/api";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Fragment } from "react";
 
+type location = {
+    coordinates: {
+        latitude: number,
+        longitude: number
+    }
+    codVehicle: string
+}
+
 export default function BusLineMap() {
+
+    const { isLoaded, loadError } = useJsApiLoader({
+        googleMapsApiKey: "" // ,
+        // ...otherOptions
+    })
+
+
     let firstLoad = useRef(true);
     const timeout = 20000;
     const { code } = useParams();
-    const [locations, setLocations] = useState<any>([]);
+    const [locations, setLocations] = useState<location[]>([]);
     const [itineraries, setItineraries] = useState<any>([]);
-    const [currentPosition, setCurrentPosition] = useState<any>({});
+    const [currentPosition, setCurrentPosition] = useState<google.maps.LatLng | null>(null);
     const [loading, setLoading] = useState(true);
 
     const containerStyle = {
@@ -31,74 +46,72 @@ export default function BusLineMap() {
 
     useEffect(() => {
         if (firstLoad.current) {
-            getLocations();
+            getItineraries().then(() => getLocations());
             firstLoad.current = false;
         }
         if (!firstLoad.current) {
-            setTimeout(async () => {
-                getLocations();
-            }, timeout);
+            const interval = setInterval(() => { getLocations() }, timeout);
+            return () => clearInterval(interval);
         }
     });
 
     useEffect(() => {
-        getItineraries();
-    });
-
-    useEffect(() => {
-        navigator.geolocation.getCurrentPosition((position) => {
-            setCurrentPosition({
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-            });
+        navigator?.geolocation?.getCurrentPosition((position) => {
+            setCurrentPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
         });
     }, []);
 
     const ifLoading = () => {
-        if (loading) return <div className=' text-black text-center font-bold text-2xl'>Loading...</div>
+        if (loading || !isLoaded) return <div className=' text-black text-center font-bold text-2xl'>Loading...</div>
+        if (loadError) {
+            return <div>Map cannot be loaded right now, sorry.</div>
+        }
         else return map()
+    }
+
+    const currentPostitionMarker = () => {
+        if (currentPosition == null) return (<></>)
+        else return (<>
+            <Marker
+                position={currentPosition}
+                title="You are here"
+            />
+        </>)
     }
 
     const map = () => {
         return (
             <div style={{ height: '100vh', width: '100%' }}>
-                <LoadScript
-                    googleMapsApiKey=""
+                <GoogleMap
+                    mapContainerStyle={containerStyle}
+                    center={currentPosition ?? new google.maps.LatLng(locations[0].coordinates.latitude, locations[0].coordinates.longitude)}
+                    zoom={10}
                 >
-                    <GoogleMap
-                        mapContainerStyle={containerStyle}
-                        center={currentPosition}
-                        zoom={10}
-                    >
-                        {
-                            <Fragment>
-                                <Marker
-                                    position={currentPosition}
-                                    title="You are here"
-                                />
-                                <KmlLayer
-                                    url={itineraries[0].kml}
-                                    options={{ preserveViewport: true }}
+                    {
+                        <Fragment>
+                            {currentPostitionMarker()}
+                            <KmlLayer
+                                url={itineraries[0].kml}
+                                options={{ preserveViewport: true }}
 
-                                />
+                            />
 
-                                {
-                                    locations.map((location: { coordinates: { latitude: any; longitude: any; }; codVehicle: string | undefined; }) => {
-                                        return (
-                                            <Marker
-                                                position={{ lat: location.coordinates.latitude, lng: location.coordinates.longitude }}
-                                                title={location.codVehicle}
-                                                icon={{ url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Canberra_Bus_icon.svg/2048px-Canberra_Bus_icon.svg.png", scaledSize: { width: 30, height: 30, equals: () => true } }}
-                                            />
-                                        )
-                                    })
-                                }
+                            {
+                                locations.map((location: { coordinates: { latitude: any; longitude: any; }; codVehicle: string | undefined; }) => {
+                                    return (
+                                        <Marker
+                                            position={{ lat: location.coordinates.latitude, lng: location.coordinates.longitude }}
+                                            title={location.codVehicle}
+                                            icon={{ url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Canberra_Bus_icon.svg/2048px-Canberra_Bus_icon.svg.png", scaledSize: { width: 30, height: 30, equals: () => true } }}
+                                        />
+                                    )
+                                })
+                            }
 
-                            </Fragment>
-                        }
-                        <></>
-                    </GoogleMap>
-                </LoadScript>
+                        </Fragment>
+                    }
+                    <></>
+                </GoogleMap>
             </div>
         )
     }
