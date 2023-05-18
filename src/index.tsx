@@ -7,6 +7,7 @@ import BusStopSearch from './components/stops/BusStopSearch';
 import AppNavBar from './components/AppNavBar';
 import BusStopsTimes from './components/stops/BusStopTimes';
 import BusLineMap from './components/lines/BusLineMap';
+import MetroStopSearch from './components/metro/MetroStopSearch';
 
 
 const router = createBrowserRouter([
@@ -33,6 +34,14 @@ const router = createBrowserRouter([
         <AppNavBar />
         <BusLineMap />
       </Fragment>,
+  },
+  {
+    path: "/metro",
+    element:
+     <Fragment>
+      <AppNavBar />
+      <MetroStopSearch />
+    </Fragment>
   }
 ]);
 

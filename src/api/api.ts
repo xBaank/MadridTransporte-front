@@ -28,3 +28,11 @@ export async function getItinerariesByCode(code: string): Promise<any | number> 
   const data = await response.json();
   return data;
 }
+
+export async function getMetroTimes(): Promise<any | number> {
+  const response = await fetch(`${apiUrl}/metro/times`);
+  if (!response.ok) return response.status;
+  const data = await response.json();
+  return data;
+}
+

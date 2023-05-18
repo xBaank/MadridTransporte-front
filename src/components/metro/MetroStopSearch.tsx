@@ -2,7 +2,7 @@ import { TextField } from '@mui/material'
 import React, { Fragment, useRef } from 'react'
 import { useNavigate } from "react-router-dom";
 
-export default function BusStopSearch() {
+export default function MetroStopSearch() {
     const navigate = useNavigate();
     const stopCode = useRef<HTMLInputElement>()
     return (
