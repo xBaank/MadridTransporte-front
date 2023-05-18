@@ -9,7 +9,7 @@ export default function MetroStopSearch() {
         <Fragment>
             <form onSubmit={(e) => {
                 e.preventDefault()
-                navigate(`metro/${stopCode.current?.value}`)
+                navigate(`/metro/${stopCode.current?.value}`)
             }}>
                 <div className='grid grid-cols-1 p-5 max-w-md mx-auto justify-center'>
                     <div className=' text-purple-600 font-bold text-2xl pb-4'>Buscar por parada de metro</div>

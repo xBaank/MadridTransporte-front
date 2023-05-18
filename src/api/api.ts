@@ -36,3 +36,11 @@ export async function getMetroTimes(): Promise<any | number> {
   return data;
 }
 
+
+export async function getMetroTimesById(code : number): Promise<any | number> {
+  const response = await fetch(`${apiUrl}/metro/times/${code}`);
+  if (!response.ok) return response.status;
+  const data = await response.json();
+  return data;
+}
+

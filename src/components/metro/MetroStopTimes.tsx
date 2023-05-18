@@ -1,10 +1,10 @@
 import React, { useRef } from "react";
 import _ from "lodash";
 import { useEffect, useState } from "react";
-import { getStopsTimesByCode, getStopsTimesByCodeCached } from "../../api/api";
-import { Link, useParams } from "react-router-dom";
+import { getMetroTimes, getStopsTimesByCode, getStopsTimesByCodeCached } from "../../api/api";
+import { useParams } from "react-router-dom";
 
-export default function BusStopsTimes() {
+export default function MetroStopsTimes() {
     const timeout = 5000;
     let firstLoad = useRef(true);
     const { code } = useParams();
@@ -15,40 +15,14 @@ export default function BusStopsTimes() {
 
     async function loadTimes(apiFunc: (code: string) => Promise<any>) {
         let response = await apiFunc(code ?? "");
-        let metroTimes = response.data;
-
-        if (metroTimes instanceof Array === false) {
-            return;
-        }
-
-        metroTimes.forEach((element: any) => {
-            if (element.lineCode.startsWith("8")) {
-                element.lineCode = element.lineCode.replace(/_/g, "");
-            } else if (element.lineCode.startsWith("9")) {
-                element.lineCode = element.lineCode.replace(/_/g, "");
-                element.lineCode = element.lineCode.replace("065", "");
-            }
-
-            element.lineCode = element.lineCode.substring(1);
-
-            element.time = new Date(element.time).toLocaleTimeString();
-        });
-        //sort
-        metroTimes = _.sortBy(metroTimes, (item) => item.time);
-        metroTimes = _.groupBy(metroTimes, (item) => item.lineCode);
-        metroTimes = Object.entries(metroTimes);
-
-        response.data = metroTimes;
-
         setStops(response);
         setLoading(false);
     }
 
     useEffect(() => {
         if (firstLoad.current) {
-            loadTimes(getStopsTimesByCodeCached);
+            loadTimes(getMetroTimes);
             firstLoad.current = false;
-            loadTimes(getStopsTimesByCode);
         }
         if (!firstLoad.current) {
             const interval = setInterval(() => loadTimes(getStopsTimesByCode), timeout)
@@ -86,13 +60,10 @@ export default function BusStopsTimes() {
                         return (
                             <div className=" p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                                 <div className="flex items-center justify-between">
-                                    value.nombreli
+                                   { value.nombreli }
                                 </div>
                                 <div className="flex items-center justify-between">
-                                    value.proximo
-                                </div>
-                                <div className=" text-white">
-                                    - {value.time} minutos
+                                    Proximo en <span> { value.proximo } </span> minutos
                                 </div>
                             </div>
                         );
