@@ -37,7 +37,7 @@ export default function MetroStopsTimes() {
                 clearInterval(interval);
             }
         }
-    }, []);
+    }, [stops]);
 
     const load = () => {
         if (loading)
