@@ -63,11 +63,11 @@ export default function MetroStopsTimes() {
                     {stops.times.map((value: any) => {
                         return (
                             <div className=" p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                                <div className="flex items-center justify-between text-white">
-                                    Linea: {value.linea}
+                                <div className="flex items-center justify-between font-bold text-2xl border-b text-white">
+                                    Linea {value.linea}
                                 </div>
-                                <div className="flex items-center justify-between text-white">
-                                    Anden: {value.anden}
+                                <div className="flex items-center justify-between font-bold  text-white">
+                                    Anden {value.anden}
                                 </div>
                                 {value.proximos.map((value: any) => {
                                     return (
