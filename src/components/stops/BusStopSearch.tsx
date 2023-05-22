@@ -13,7 +13,7 @@ export default function BusStopSearch() {
                 navigate(`/stops/${stopCode.current?.value}`)
             }}>
                 <div className='grid grid-cols-1 p-5 max-w-md mx-auto justify-center'>
-                    <div className=' text-purple-600 font-bold text-2xl pb-4'>Buscar por parada</div>
+                    <div className=' text-purple-600 font-bold text-2xl pb-4'>Buscar por codigo de parada</div>
                     <TextField
                         id="StopCode"
                         label="Codigo de la parada"

@@ -15,10 +15,10 @@ export default function MetroStopSearch() {
                 })
             }}>
                 <div className='grid grid-cols-1 p-5 max-w-md mx-auto justify-center'>
-                    <div className=' text-purple-600 font-bold text-2xl pb-4'>Buscar por parada de metro</div>
+                    <div className=' text-purple-600 font-bold text-2xl pb-4'>Buscar por estacion</div>
                     <TextField
                         id="StopCode"
-                        label="Codigo de la parada"
+                        label="Nombre de la estacion"
                         inputRef={stopCode}
                     />
                 </div>
