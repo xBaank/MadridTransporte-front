@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import _ from "lodash";
 import { useEffect, useState } from "react";
-import { getMetroTimes, getMetroTimesById, getStopsTimesByCode, getStopsTimesByCodeCached } from "../../api/api";
+import { getMetroTimesById } from "../../api/api";
 import { useParams } from "react-router-dom";
 
 export default function MetroStopsTimes() {
