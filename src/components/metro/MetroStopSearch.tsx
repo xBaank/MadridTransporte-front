@@ -1,6 +1,6 @@
 import { TextField } from '@mui/material'
 import React, { Fragment, useRef } from 'react'
-import { useNavigate } from "react-router-dom";
+import { createSearchParams, useNavigate } from "react-router-dom";
 
 export default function MetroStopSearch() {
     const navigate = useNavigate();
@@ -9,7 +9,10 @@ export default function MetroStopSearch() {
         <Fragment>
             <form onSubmit={(e) => {
                 e.preventDefault()
-                navigate(`/metro/${stopCode.current?.value}`)
+                navigate({
+                    pathname: `/metro/search`,
+                    search: createSearchParams({ estacion : stopCode.current?.value ?? "" }).toString(),
+                })
             }}>
                 <div className='grid grid-cols-1 p-5 max-w-md mx-auto justify-center'>
                     <div className=' text-purple-600 font-bold text-2xl pb-4'>Buscar por parada de metro</div>

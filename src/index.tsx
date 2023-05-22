@@ -45,7 +45,7 @@ const router = createBrowserRouter([
     </Fragment>
   },
   {
-    path: "/metro/:code",
+    path: "/metro/search",
     element:
       <Fragment>
         <AppNavBar />
