@@ -13,19 +13,21 @@ export default function MetroStopsTimes() {
     const [error,setError] = useState(false);
     const [errorMessage,setErrorMessage] = useState("");
 
-    async function loadTimes(apiFunc: (code: string) => Promise<any>) {
-        let response = await apiFunc(searchParams.get("estacion") ?? "");
-        if(response.error) {
-            setError(true);
-            setErrorMessage(response.error);
-            setLoading(false);
-            return;
-        }
-        setStops(response);
-        setLoading(false);
-    }
+    
 
     useEffect(() => {
+        async function loadTimes(apiFunc: (code: string) => Promise<any>) {
+            let response = await apiFunc(searchParams.get("estacion") ?? "");
+            if (response.error) {
+                setError(true);
+                setErrorMessage(response.error);
+                setLoading(false);
+                return;
+            }
+            setStops(response);
+            setLoading(false);
+        }
+
         const load = (estacion: string) => getMetroTimesByName(estacion);
         if (firstLoad.current) {
             loadTimes(load);
@@ -37,7 +39,7 @@ export default function MetroStopsTimes() {
                 clearInterval(interval);
             }
         }
-    }, [stops]);
+    }, [searchParams]);
 
     const load = () => {
         if (loading)
