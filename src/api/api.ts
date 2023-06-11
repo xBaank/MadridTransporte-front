@@ -41,17 +41,30 @@ export async function getMetroTimes(): Promise<any | number> {
 }
 
 
-export async function getMetroTimesByName(estacion : string) {
+export async function getMetroTimesByName(estacion: string) {
   const response = await fetch(`${apiUrl}/metro/times`);
   if (!response.ok) return response.status;
 
   let data = await response.json();
-  data = data.map((item: any) => { return { ...item, normalized_nombre: removeAccents(item.nombre_estacion.toLowerCase())} });
+  data = data.map((item: any) => { return { ...item, normalized_nombre: removeAccents(item.nombre_estacion.toLowerCase()) } });
   const hasTitle = data.find((item: any) => item.normalized_nombre.includes(estacion.toLowerCase()))?.nombre_estacion;
   console.log(estacion)
-  if (!hasTitle) return { error : "No se encontró ninguna estación" }
+  if (!hasTitle) return { error: "No se encontró ninguna estación" }
 
   data = data.filter((item: any) => item.normalized_nombre.includes(estacion.toLowerCase()));
   return _.groupBy(data, (item) => item.nombre_estacion)
 }
 
+export type RegisterData = {
+  email: string;
+  username: string;
+  password: string;
+}
+
+export async function register(data: RegisterData): Promise<string | void> {
+  const response = await fetch(`${apiUrl}/users/register?redirectUrl=https://159.223.249.18:7777/v1`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) return (await response.json())?.message ?? "An error ocurred";
+}

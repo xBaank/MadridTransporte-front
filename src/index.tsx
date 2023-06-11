@@ -9,6 +9,7 @@ import BusStopsTimes from './components/stops/BusStopTimes';
 import BusLineMap from './components/lines/BusLineMap';
 import MetroStopSearch from './components/metro/MetroStopSearch';
 import MetroStopsTimes from './components/metro/MetroStopTimes';
+import Register from './components/users/Register';
 
 
 const router = createBrowserRouter([
@@ -39,10 +40,10 @@ const router = createBrowserRouter([
   {
     path: "/metro",
     element:
-     <Fragment>
-      <AppNavBar />
-      <MetroStopSearch />
-    </Fragment>
+      <Fragment>
+        <AppNavBar />
+        <MetroStopSearch />
+      </Fragment>
   },
   {
     path: "/metro/search",
@@ -50,6 +51,14 @@ const router = createBrowserRouter([
       <Fragment>
         <AppNavBar />
         <MetroStopsTimes />
+      </Fragment>,
+  },
+  {
+    path: "/register",
+    element:
+      <Fragment>
+        <AppNavBar />
+        <Register />
       </Fragment>,
   }
 ]);
