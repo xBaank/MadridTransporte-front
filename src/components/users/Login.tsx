@@ -52,7 +52,7 @@ export default function Login() {
 
         console.log(result)
 
-        if (typeof result === 'string') {
+        if (typeof result == 'string') {
             setError(result)
             setSuccess(false)
         }
@@ -96,7 +96,7 @@ export default function Login() {
                         />
                     </FormControl>
 
-                    {success != undefined && success === true ? successComponent() : errorComponent()}
+                    {success !== undefined && success === true ? successComponent() : errorComponent()}
 
                     <div className='flex flex-row justify-center mt-1'>
                         <Link className='text-blue-600 ' to={'/register'}>
