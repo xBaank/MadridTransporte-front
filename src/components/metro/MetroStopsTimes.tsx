@@ -1,24 +1,32 @@
-import React, { useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import _ from "lodash";
 import { useEffect, useState } from "react";
-import { addFavourite, getFavouriteById, getMetroTimesByName, isLogged } from "../../api/api";
-import { Link, useSearchParams } from "react-router-dom";
+import { Favorite, addFavourite, getFavourites, isLogged } from "../../api/api";
+import { Link } from "react-router-dom";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
-export default function MetroStopsTimes() {
+export default function MetroStopsTimes(id: string, loadFunc: (code: string) => Promise<any>) {
     const timeout = 5000;
     let firstLoad = useRef(true);
-    const [searchParams] = useSearchParams();
     const [stops, setStops] = useState<any>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-    const [isFavorite, setIsFavorite] = useState(false);
+    const [favorites, setFavorites] = useState<Favorite[]>();
 
+    const loadFavorites = useCallback(async () => {
+        if (isLogged()) {
+            let response = await getFavourites(localStorage.getItem("token")!);
+            if (typeof response !== "number") {
+                setFavorites(response.filter((i) => i.stopType === "metro"));
+            }
+        }
+    }, [])
 
     useEffect(() => {
+
         async function loadTimes(apiFunc: (code: string) => Promise<any>) {
-            let response = await apiFunc(searchParams.get("estacion") ?? "");
+            let response = await apiFunc(id ?? "");
             if (response.error) {
                 setError(true);
                 setErrorMessage(response.error);
@@ -29,7 +37,9 @@ export default function MetroStopsTimes() {
             setLoading(false);
         }
 
-        const load = (estacion: string) => getMetroTimesByName(estacion);
+        loadFavorites();
+
+        const load = (estacion: string) => loadFunc(estacion);
         if (firstLoad.current) {
             loadTimes(load);
             firstLoad.current = false;
@@ -40,7 +50,7 @@ export default function MetroStopsTimes() {
                 clearInterval(interval);
             }
         }
-    }, [searchParams]);
+    }, [id, loadFunc, loadFavorites]);
 
     const load = () => {
         if (loading)
@@ -62,6 +72,15 @@ export default function MetroStopsTimes() {
         else return showStops();
     };
 
+    const isAlreadyInFavorites = (id: string) => {
+        //const ids = _.uniq(_.map(stops, (value) => value).flat().map((i: any) => i.id.toString()));
+        if (favorites) {
+            return favorites.map((i) => i.stopId).includes(id);
+        }
+        return false;
+    };
+
+
     const showStops = () => {
         return (
             <>
@@ -76,15 +95,16 @@ export default function MetroStopsTimes() {
                         >
                             <div className="flex flex-col justify-center">
                                 {
-                                    isLogged() ?
+                                    isLogged() && !isAlreadyInFavorites(value[0].id.toString()) ?
                                         <>
                                             <p>Añadir a favoritos</p>
                                             <Link
                                                 to="#"
-                                                onClick={() => {
+                                                onClick={async () => {
                                                     const token = localStorage.getItem("token")!;
-                                                    addFavourite(token, { stopId: key!, stopType: "metro" })
-                                                    setIsFavorite(true);
+                                                    await addFavourite(token, { stopId: value[0].id.toString()!, stopType: "metro" })
+                                                    //add to favorites
+                                                    loadFavorites();
                                                 }}
                                                 className="hover:text-purple-500">
                                                 <FavoriteIcon />
@@ -124,3 +144,4 @@ export default function MetroStopsTimes() {
 
     return <div className="p-5"> {load()}</div>;
 }
+

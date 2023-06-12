@@ -3,13 +3,13 @@ import React, { Fragment } from 'react'
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { setNewPassword } from '../../api/api';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 export default function NewPassword() {
     const [showPassword, setShowPassword] = React.useState(false);
     const [success, setSuccess] = React.useState<boolean>();
     const [error, setError] = React.useState<string>();
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -89,7 +89,7 @@ export default function NewPassword() {
                         />
                     </FormControl>
 
-                    {success != undefined && success === true ? successComponent() : errorComponent()}
+                    {success !== undefined && success === true ? successComponent() : errorComponent()}
 
 
                     <div className='flex flex-row justify-center mt-3'>

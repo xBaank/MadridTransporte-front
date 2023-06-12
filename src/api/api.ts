@@ -51,10 +51,19 @@ export async function getMetroTimesByName(estacion: string) {
   let data = await response.json();
   data = data.map((item: any) => { return { ...item, normalized_nombre: removeAccents(item.nombre_estacion.toLowerCase()) } });
   const hasTitle = data.find((item: any) => item.normalized_nombre.includes(estacion.toLowerCase()))?.nombre_estacion;
-  console.log(estacion)
   if (!hasTitle) return { error: "No se encontró ninguna estación" }
 
   data = data.filter((item: any) => item.normalized_nombre.includes(estacion.toLowerCase()));
+  return _.groupBy(data, (item) => item.nombre_estacion)
+}
+
+export async function getMetroTimesById(id: string) {
+  const response = await fetch(`${apiUrl}/metro/times/${id}`);
+  if (!response.ok) return response.status;
+
+  let data: any[] = await response.json();
+  if (data.length === 0) return { error: "No se encontró ninguna estación" }
+
   return _.groupBy(data, (item) => item.nombre_estacion)
 }
 

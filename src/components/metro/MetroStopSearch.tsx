@@ -1,7 +1,8 @@
 import { TextField } from '@mui/material'
 import React, { Fragment, useEffect, useRef, useState } from 'react'
-import { Link, createSearchParams, useNavigate } from "react-router-dom";
+import { createSearchParams, useNavigate } from "react-router-dom";
 import { Favorite, getFavourites, isLogged } from '../../api/api';
+import { DeleteFavorite } from '../DeleteFavorite';
 
 export default function MetroStopSearch() {
     const navigate = useNavigate();
@@ -20,24 +21,7 @@ export default function MetroStopSearch() {
 
     const favoritesComponent = () => {
         if (favorites.length === 0) return <></>
-        return (<>
-            <div
-                className="bg-gray-100 border-t border-b border-gray-500 text-gray-700 p5 mb-3 text-center"
-                role="alert"
-            >
-                <p className="font-bold">Paradas favoritas</p>
-                {favorites.map((favorite) => (
-                    favorite.stopType === 'metro' ?
-                        <div className='p-2'>
-                            <Link className="text-xl font-medium hover:text-purple-500" to={`/metro/search/${favorite.stopId}`} >
-                                {favorite.stopId}
-                            </Link>
-                        </div>
-                        :
-                        <></>
-                ))}
-            </div>
-        </>)
+        return DeleteFavorite(favorites, "metro", "/metro")
     }
 
     return (

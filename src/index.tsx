@@ -8,14 +8,15 @@ import AppNavBar from './components/AppNavBar';
 import BusStopsTimes from './components/stops/BusStopTimes';
 import BusLineMap from './components/lines/BusLineMap';
 import MetroStopSearch from './components/metro/MetroStopSearch';
-import MetroStopsTimes from './components/metro/MetroStopTimes';
+import MetroStopsTimesSearch from './components/metro/MetroStopTimesSearch';
 import Register from './components/users/Register';
 import Login from './components/users/Login';
 import { Footer } from './components/Footer';
 import ResetPassword from './components/users/ResetPassword';
 import NewPassword from './components/users/NewPassword';
+import MetroStopsTimesId from './components/metro/MetroStopTimesId';
 
-const defaultElement = (element: JSX.Element) => {
+const DefaultElement = (element: JSX.Element) => {
   return (
     <Fragment>
       <div className='flex flex-col h-screen justify-between'>
@@ -30,39 +31,43 @@ const defaultElement = (element: JSX.Element) => {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: defaultElement(<BusStopSearch />),
+    element: DefaultElement(<BusStopSearch />),
   },
   {
     path: "/stops/:code",
-    element: defaultElement(<BusStopsTimes />),
+    element: DefaultElement(<BusStopsTimes />),
   },
   {
     path: "/lines/:code/locations",
-    element: defaultElement(<BusLineMap />),
+    element: DefaultElement(<BusLineMap />),
   },
   {
     path: "/metro",
-    element: defaultElement(<MetroStopSearch />),
+    element: DefaultElement(<MetroStopSearch />),
   },
   {
     path: "/metro/search",
-    element: defaultElement(<MetroStopsTimes />),
+    element: DefaultElement(<MetroStopsTimesSearch />),
+  },
+  {
+    path: "/metro/:id",
+    element: DefaultElement(<MetroStopsTimesId />),
   },
   {
     path: "/register",
-    element: defaultElement(<Register />),
+    element: DefaultElement(<Register />),
   },
   {
     path: "/login",
-    element: defaultElement(<Login />),
+    element: DefaultElement(<Login />),
   },
   {
     path: "/reset-password",
-    element: defaultElement(<ResetPassword />),
+    element: DefaultElement(<ResetPassword />),
   },
   {
     path: "/new-password",
-    element: defaultElement(<NewPassword />),
+    element: DefaultElement(<NewPassword />),
   }
 ]);
 
@@ -79,3 +84,7 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals(console.log);
+
+function useEffect(arg0: () => void, arg1: never[]) {
+  throw new Error('Function not implemented.');
+}
