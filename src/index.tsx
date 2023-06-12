@@ -10,56 +10,59 @@ import BusLineMap from './components/lines/BusLineMap';
 import MetroStopSearch from './components/metro/MetroStopSearch';
 import MetroStopsTimes from './components/metro/MetroStopTimes';
 import Register from './components/users/Register';
+import Login from './components/users/Login';
+import { Footer } from './components/Footer';
+import ResetPassword from './components/users/ResetPassword';
+import NewPassword from './components/users/NewPassword';
 
+const defaultElement = (element: JSX.Element) => {
+  return (
+    <Fragment>
+      <div className='flex flex-col h-screen justify-between'>
+        <AppNavBar />
+        {element}
+        <Footer />
+      </div>
+    </Fragment>
+  )
+}
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element:
-      <Fragment>
-        <AppNavBar />
-        <BusStopSearch />
-      </Fragment>
+    element: defaultElement(<BusStopSearch />),
   },
   {
     path: "/stops/:code",
-    element:
-      <Fragment>
-        <AppNavBar />
-        <BusStopsTimes />
-      </Fragment>,
+    element: defaultElement(<BusStopsTimes />),
   },
   {
     path: "/lines/:code/locations",
-    element:
-      <Fragment>
-        <AppNavBar />
-        <BusLineMap />
-      </Fragment>,
+    element: defaultElement(<BusLineMap />),
   },
   {
     path: "/metro",
-    element:
-      <Fragment>
-        <AppNavBar />
-        <MetroStopSearch />
-      </Fragment>
+    element: defaultElement(<MetroStopSearch />),
   },
   {
     path: "/metro/search",
-    element:
-      <Fragment>
-        <AppNavBar />
-        <MetroStopsTimes />
-      </Fragment>,
+    element: defaultElement(<MetroStopSearch />),
   },
   {
     path: "/register",
-    element:
-      <Fragment>
-        <AppNavBar />
-        <Register />
-      </Fragment>,
+    element: defaultElement(<Register />),
+  },
+  {
+    path: "/login",
+    element: defaultElement(<Login />),
+  },
+  {
+    path: "/reset-password",
+    element: defaultElement(<ResetPassword />),
+  },
+  {
+    path: "/new-password",
+    element: defaultElement(<NewPassword />),
   }
 ]);
 

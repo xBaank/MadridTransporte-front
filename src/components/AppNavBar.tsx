@@ -26,6 +26,11 @@ export default function NavBar() {
                             <h3 className='text-white  hover:text-purple-500'>Register</h3>
                         </Link>
                     </li>
+                    <li className='mr-5'>
+                        <Link to={"/login"}>
+                            <h3 className='text-white  hover:text-purple-500'>Login</h3>
+                        </Link>
+                    </li>
                 </ul>
             </div>
         </div>

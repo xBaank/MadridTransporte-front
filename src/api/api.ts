@@ -1,7 +1,10 @@
 import _ from 'lodash';
 
-const apiUrl = process.env.REACT_APP_BACK_URL;
 
+const baseApiUrl = process.env.REACT_APP_BACK_URL as string;
+
+const apiUrl = baseApiUrl + "/v1" as string;
+const frontUrl = process.env.REACT_APP_FRONT_URL as string;
 const removeAccents = (str: string) =>
   str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
@@ -62,9 +65,76 @@ export type RegisterData = {
 }
 
 export async function register(data: RegisterData): Promise<string | void> {
-  const response = await fetch(`${apiUrl}/users/register?redirectUrl=https://159.223.249.18:7777/v1`, {
+  const queryData = {
+    redirectUrl: `${frontUrl}/login`,
+    backUrl: baseApiUrl
+  }
+
+  const query = new URLSearchParams();
+  query.append("redirectUrl", queryData.redirectUrl);
+  query.append("backUrl", queryData.backUrl);
+
+  const response = await fetch(`${apiUrl}/users/register?${query.toString()}`, {
     method: 'POST',
     body: JSON.stringify(data),
   });
+  if (!response.ok) return (await response.json())?.message ?? "An error ocurred";
+}
+
+export type LoginData = {
+  email: string;
+  password: string;
+}
+
+export type TokenData = {
+  token: string;
+}
+
+export async function login(data: LoginData): Promise<string | TokenData> {
+  const response = await fetch(`${apiUrl}/users/login`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  })
+  if (!response.ok) return (await response.json())?.message ?? "An error ocurred";
+  return await response.json();
+}
+
+export type ResetPasswordData = {
+  email: string;
+}
+
+
+export async function sendResetPassword(data: ResetPasswordData): Promise<string | void> {
+  const queryData = {
+    redirectUrl: `${frontUrl}/new-password`,
+  }
+
+  const query = new URLSearchParams();
+  query.append("redirectUrl", queryData.redirectUrl);
+
+  const response = await fetch(`${apiUrl}/users/send-reset-password?${query.toString()}`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  })
+  if (!response.ok) return (await response.json())?.message ?? "An error ocurred";
+}
+
+export type NewPasswordData = {
+  token: string;
+  password: string;
+}
+
+export async function setNewPassword(data: NewPasswordData): Promise<string | void> {
+  const queryData = {
+    redirectUrl: `${frontUrl}/new-password`,
+  }
+
+  const query = new URLSearchParams();
+  query.append("redirectUrl", queryData.redirectUrl);
+
+  const response = await fetch(`${apiUrl}/users/reset-password?token=${data.token}`, {
+    method: 'PUT',
+    body: JSON.stringify({ password: data.password }),
+  })
   if (!response.ok) return (await response.json())?.message ?? "An error ocurred";
 }
