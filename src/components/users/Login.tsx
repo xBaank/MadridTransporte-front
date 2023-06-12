@@ -99,6 +99,13 @@ export default function Login() {
                     {success != undefined && success === true ? successComponent() : errorComponent()}
 
                     <div className='flex flex-row justify-center mt-1'>
+                        <Link className='text-blue-600 ' to={'/register'}>
+                            Create account
+                        </Link>
+                    </div>
+
+
+                    <div className='flex flex-row justify-center mt-1'>
                         <Link className='text-blue-600 ' to={'/reset-password'}>
                             Forgot password
                         </Link>

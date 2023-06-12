@@ -46,7 +46,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/metro/search",
-    element: defaultElement(<MetroStopSearch />),
+    element: defaultElement(<MetroStopsTimes />),
   },
   {
     path: "/register",

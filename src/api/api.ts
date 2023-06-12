@@ -115,6 +115,9 @@ export async function sendResetPassword(data: ResetPasswordData): Promise<string
   const response = await fetch(`${apiUrl}/users/send-reset-password?${query.toString()}`, {
     method: 'POST',
     body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json'
+    }
   })
   if (!response.ok) return (await response.json())?.message ?? "An error ocurred";
 }
@@ -135,6 +138,71 @@ export async function setNewPassword(data: NewPasswordData): Promise<string | vo
   const response = await fetch(`${apiUrl}/users/reset-password?token=${data.token}`, {
     method: 'PUT',
     body: JSON.stringify({ password: data.password }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
   })
   if (!response.ok) return (await response.json())?.message ?? "An error ocurred";
+}
+
+export type FavouriteData = {
+  stopType: string;
+  stopId: string;
+}
+
+export async function addFavourite(token: string, data: FavouriteData): Promise<string | void> {
+  const response = await fetch(`${apiUrl}/favorites`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  })
+  if (!response.ok) return (await response.json())?.message ?? "An error ocurred";
+}
+
+export type Favorite = {
+  stopType: string;
+  stopId: string;
+  email: string;
+}
+
+export async function getFavourites(token: string): Promise<Favorite[] | number> {
+  const response = await fetch(`${apiUrl}/favorites`, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  if (!response.ok) return response.status;
+  const data = await response.json();
+  return data;
+}
+
+export async function deleteFavouriteById(token: string, stopId: string): Promise<any | number> {
+  const response = await fetch(`${apiUrl}/favorites/${stopId}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  if (!response.ok) return response.status;
+}
+
+export async function getFavouriteById(token: string, stopId: string): Promise<Favorite | number> {
+  const response = await fetch(`${apiUrl}/favorites/${stopId}`, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  if (!response.ok) return response.status;
+  const data = await response.json();
+  return data;
+}
+
+
+
+
+export const isLogged = () => {
+  return localStorage.getItem("token") !== null;
 }
