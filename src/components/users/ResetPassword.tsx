@@ -56,7 +56,7 @@ export default function ResetPassword() {
                         type="text"
                     />
 
-                    {success != undefined && success === true ? successComponent() : errorComponent()}
+                    {success !== undefined && success === true ? successComponent() : errorComponent()}
 
                     <div className='flex flex-row justify-center mt-3'>
                         <button className='bg-purple-600  text-white font-bold py-2 px-4 '>
