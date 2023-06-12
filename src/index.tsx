@@ -8,49 +8,66 @@ import AppNavBar from './components/AppNavBar';
 import BusStopsTimes from './components/stops/BusStopTimes';
 import BusLineMap from './components/lines/BusLineMap';
 import MetroStopSearch from './components/metro/MetroStopSearch';
-import MetroStopsTimes from './components/metro/MetroStopTimes';
+import MetroStopsTimesSearch from './components/metro/MetroStopTimesSearch';
+import Register from './components/users/Register';
+import Login from './components/users/Login';
+import { Footer } from './components/Footer';
+import ResetPassword from './components/users/ResetPassword';
+import NewPassword from './components/users/NewPassword';
+import MetroStopsTimesId from './components/metro/MetroStopTimesId';
 
+const DefaultElement = (element: JSX.Element) => {
+  return (
+    <Fragment>
+      <div className='flex flex-col h-screen justify-between'>
+        <AppNavBar />
+        {element}
+        <Footer />
+      </div>
+    </Fragment>
+  )
+}
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element:
-      <Fragment>
-        <AppNavBar />
-        <BusStopSearch />
-      </Fragment>
+    element: DefaultElement(<BusStopSearch />),
   },
   {
     path: "/stops/:code",
-    element:
-      <Fragment>
-        <AppNavBar />
-        <BusStopsTimes />
-      </Fragment>,
+    element: DefaultElement(<BusStopsTimes />),
   },
   {
     path: "/lines/:code/locations",
-    element:
-      <Fragment>
-        <AppNavBar />
-        <BusLineMap />
-      </Fragment>,
+    element: DefaultElement(<BusLineMap />),
   },
   {
     path: "/metro",
-    element:
-     <Fragment>
-      <AppNavBar />
-      <MetroStopSearch />
-    </Fragment>
+    element: DefaultElement(<MetroStopSearch />),
   },
   {
     path: "/metro/search",
-    element:
-      <Fragment>
-        <AppNavBar />
-        <MetroStopsTimes />
-      </Fragment>,
+    element: DefaultElement(<MetroStopsTimesSearch />),
+  },
+  {
+    path: "/metro/:id",
+    element: DefaultElement(<MetroStopsTimesId />),
+  },
+  {
+    path: "/register",
+    element: DefaultElement(<Register />),
+  },
+  {
+    path: "/login",
+    element: DefaultElement(<Login />),
+  },
+  {
+    path: "/reset-password",
+    element: DefaultElement(<ResetPassword />),
+  },
+  {
+    path: "/new-password",
+    element: DefaultElement(<NewPassword />),
   }
 ]);
 
