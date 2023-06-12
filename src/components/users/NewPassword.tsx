@@ -3,13 +3,13 @@ import React, { Fragment } from 'react'
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { setNewPassword } from '../../api/api';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 export default function NewPassword() {
     const [showPassword, setShowPassword] = React.useState(false);
     const [success, setSuccess] = React.useState<boolean>();
     const [error, setError] = React.useState<string>();
-    const params = useParams<{ token: string }>()
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -36,14 +36,16 @@ export default function NewPassword() {
     const handleSubmmit = async (e: any) => {
         e.preventDefault()
 
-        if (!params.token) {
+        const token = searchParams.get('token')
+
+        if (!token) {
             setError('Token is required')
             setSuccess(false)
             return
         }
 
         const data = {
-            token: params.token,
+            token: token,
             password: e.target.elements.password.value
         }
 

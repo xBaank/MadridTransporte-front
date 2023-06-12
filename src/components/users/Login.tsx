@@ -7,10 +7,16 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
+
     const [showPassword, setShowPassword] = React.useState(false);
     const [success, setSuccess] = React.useState<boolean>();
     const [error, setError] = React.useState<string>();
     const navigate = useNavigate();
+
+    if (localStorage.getItem('token')) {
+        navigate('/')
+        return <></>
+    }
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
