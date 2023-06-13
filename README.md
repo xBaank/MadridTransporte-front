@@ -27,3 +27,5 @@ Screenshots:
 
 [Backend](https://github.com/xBaank/bus-tracker-back)
 
+The docker image built with github action is for personal use and won't work for you as react compiles the ENV files.
+
