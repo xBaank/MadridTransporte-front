@@ -22,6 +22,7 @@ Screenshots:
 
 ![imagen](https://github.com/xBaank/bus-tracker-front/assets/21276786/cfc70e9c-91dc-45f6-997e-926f933a1e03)
 
+![imagen](https://github.com/xBaank/bus-tracker-front/assets/21276786/ff32c102-6dda-4e64-b8d0-f1fde667ad5b)
 
 
 [Backend](https://github.com/xBaank/bus-tracker-back)
