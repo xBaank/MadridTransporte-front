@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, createHashRouter, RouterProvider } from 'react-router-dom';
 import BusStopSearch from './components/stops/BusStopSearch';
 import AppNavBar from './components/AppNavBar';
 import BusStopsTimes from './components/stops/BusStopTimes';
@@ -28,7 +28,7 @@ const DefaultElement = (element: JSX.Element) => {
   )
 }
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: DefaultElement(<BusStopSearch />),
