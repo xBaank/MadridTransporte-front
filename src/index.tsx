@@ -15,6 +15,44 @@ import { Footer } from './components/Footer';
 import ResetPassword from './components/users/ResetPassword';
 import NewPassword from './components/users/NewPassword';
 import MetroStopsTimesId from './components/metro/MetroStopTimesId';
+import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
+
+export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
+
+
+export default function App() {
+  const [mode, setMode] = React.useState<'light' | 'dark'>('light');
+  const colorMode = React.useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+      },
+    }),
+    [],
+  );
+
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode,
+        },
+      }),
+    [mode],
+  );
+
+  return (
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </ColorModeContext.Provider>
+  );
+}
+
+
+
 
 const DefaultElement = (element: JSX.Element) => {
   return (
@@ -72,11 +110,8 @@ const router = createHashRouter([
 ]);
 
 const throwEx = () => { throw new Error("No root element found") }
-
 const root = ReactDOM.createRoot(document.getElementById('root') ?? throwEx());
-root.render(
-  <RouterProvider router={router} />
-);
+root.render(<App />);
 
 
 
