@@ -15,9 +15,43 @@ import { Footer } from './components/Footer';
 import ResetPassword from './components/users/ResetPassword';
 import NewPassword from './components/users/NewPassword';
 import MetroStopsTimesId from './components/metro/MetroStopTimesId';
-import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
+import { createTheme, CssBaseline, PaletteMode, ThemeProvider } from '@mui/material';
+import { blue, grey } from '@mui/material/colors';
 
 export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
+export const getDesignTokens = (mode: PaletteMode) => ({
+  palette: {
+    mode,
+    ...(mode === 'light'
+      ? {
+        // palette values for light mode
+        border: blue,
+        primary: blue,
+        divider: blue[200],
+        background: {
+          default: '#f4f6f8',
+          paper: '#fff',
+        },
+        text: {
+          primary: grey[900],
+          secondary: grey[800],
+        },
+      }
+      : {
+        // palette values for dark mode
+        primary: blue,
+        divider: blue[700],
+        background: {
+          default: '#1f1f1f',
+          paper: grey[900],
+        },
+        text: {
+          primary: '#fff',
+          secondary: grey[500],
+        },
+      }),
+  },
+});
 
 
 export default function App() {
@@ -31,15 +65,8 @@ export default function App() {
     [],
   );
 
-  const theme = React.useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode,
-        },
-      }),
-    [mode],
-  );
+
+  const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
