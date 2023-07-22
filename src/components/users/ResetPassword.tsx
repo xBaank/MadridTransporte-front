@@ -48,7 +48,7 @@ export default function ResetPassword() {
         <Fragment>
             <form onSubmit={handleSubmmit}>
                 <div className='grid grid-cols-1 p-5 max-w-md mx-auto justify-center'>
-                    <div className=' text-purple-600 font-bold text-2xl pb-4'>Reset password</div>
+                    <div className=' font-bold text-2xl pb-4'>Reset password</div>
                     <InputLabel htmlFor="outlined-adornment-email">Email</InputLabel>
                     <TextField
                         name='email'
@@ -59,11 +59,11 @@ export default function ResetPassword() {
                     {success !== undefined && success === true ? successComponent() : errorComponent()}
 
                     <div className='flex flex-row justify-center mt-3'>
-                        <button className='bg-purple-600  text-white font-bold py-2 px-4 '>
+                        <button className='border-2 py-2 px-4 '>
                             Send email
                         </button>
                     </div>
-                    <div className=' text-blue-400 flex flex-row text-center mt-3'>
+                    <div className='flex flex-row text-center mt-3'>
                         <div>
                             We will send you an email with a link to reset your password
                         </div>

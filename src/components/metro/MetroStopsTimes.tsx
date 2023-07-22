@@ -106,7 +106,7 @@ export default function MetroStopsTimes(id: string, loadFunc: (code: string) => 
                                                     //add to favorites
                                                     loadFavorites();
                                                 }}
-                                                className="hover:text-purple-500">
+                                                className="hover:text-blue-500">
                                                 <FavoriteIcon />
                                             </Link>
                                         </>

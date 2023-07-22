@@ -123,7 +123,7 @@ export default function BusStopsTimes() {
                     addFavourite(token, { stopId: code!, stopType: "bus" })
                     setIsFavorite(true);
                   }}
-                  className="hover:text-purple-500">
+                  className="hover:text-blue-500">
                   <FavoriteIcon />
                 </Link>
               </>

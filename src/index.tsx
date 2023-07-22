@@ -33,21 +33,21 @@ export const getDesignTokens = (mode: PaletteMode) => ({
           paper: '#fff',
         },
         text: {
-          primary: grey[900],
-          secondary: grey[800],
+          primary: blue[900],
+          secondary: blue[400],
         },
       }
       : {
         // palette values for dark mode
         primary: blue,
-        divider: blue[700],
+        divider: blue[200],
         background: {
           default: '#1f1f1f',
           paper: grey[900],
         },
         text: {
-          primary: '#fff',
-          secondary: grey[500],
+          primary: blue[700],
+          secondary: blue[400],
         },
       }),
   },
@@ -55,7 +55,9 @@ export const getDesignTokens = (mode: PaletteMode) => ({
 
 
 export default function App() {
-  const [mode, setMode] = React.useState<'light' | 'dark'>('light');
+  //get saved theme
+  const savedTheme = localStorage.getItem('theme') as PaletteMode | null;
+  const [mode, setMode] = React.useState<PaletteMode>(savedTheme ?? 'light');
   const colorMode = React.useMemo(
     () => ({
       toggleColorMode: () => {

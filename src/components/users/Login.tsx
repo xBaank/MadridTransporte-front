@@ -68,7 +68,7 @@ export default function Login() {
         <Fragment>
             <form onSubmit={handleSubmmit}>
                 <div className='grid grid-cols-1 p-5 max-w-md mx-auto justify-center'>
-                    <div className=' text-purple-600 font-bold text-2xl pb-4'>Login</div>
+                    <div className='font-bold text-2xl pb-4'>Login</div>
                     <InputLabel htmlFor="outlined-adornment-email">Email</InputLabel>
                     <TextField
                         name='email'
@@ -99,20 +99,20 @@ export default function Login() {
                     {success !== undefined && success === true ? successComponent() : errorComponent()}
 
                     <div className='flex flex-row justify-center mt-1'>
-                        <Link className='text-blue-600 ' to={'/register'}>
+                        <Link to={'/register'}>
                             Create account
                         </Link>
                     </div>
 
 
                     <div className='flex flex-row justify-center mt-1'>
-                        <Link className='text-blue-600 ' to={'/reset-password'}>
+                        <Link to={'/reset-password'}>
                             Forgot password
                         </Link>
                     </div>
 
                     <div className='flex flex-row justify-center mt-3'>
-                        <button className='bg-purple-600  text-white font-bold py-2 px-4 '>
+                        <button className='border-2 font-bold py-2 px-4 '>
                             Login
                         </button>
                     </div>
