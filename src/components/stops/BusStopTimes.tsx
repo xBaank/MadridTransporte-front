@@ -84,7 +84,7 @@ export default function BusStopsTimes() {
   const load = () => {
     if (loading)
       return (
-        <div className=" text-black text-center font-bold text-2xl">
+        <div className="  text-center font-bold text-2xl">
           Loading...
         </div>
       );
@@ -94,7 +94,7 @@ export default function BusStopsTimes() {
   const checkError = () => {
     if (error)
       return (
-        <div className=" text-black text-center font-bold text-2xl">
+        <div className=" text-center font-bold text-2xl">
           {errorMessage}
         </div>
       );
@@ -105,7 +105,7 @@ export default function BusStopsTimes() {
     return (
       <>
         <div
-          className="bg-gray-100 border-t border-b border-gray-500 text-gray-700 p5 mb-3 text-center"
+          className="bg-gray-100 border-t border-b border-gray-500 p5 mb-3 text-center"
           role="alert"
         >
           <p className="font-bold">Ultima actualizacion de CRTM</p>
