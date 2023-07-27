@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 const baseApiUrl = process.env.REACT_APP_BACK_URL as string;
 
-const apiUrl = baseApiUrl + "/v1" as string;
+export const apiUrl = baseApiUrl + "/v1" as string;
 const frontUrl = process.env.REACT_APP_FRONT_URL as string;
 const removeAccents = (str: string) =>
   str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
