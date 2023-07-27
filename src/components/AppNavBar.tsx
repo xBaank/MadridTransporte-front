@@ -44,39 +44,6 @@ export default function NavBar() {
                             </div>
                         </Link>
                     </li>
-                    <li className='mr-5 mt-2'>
-                        <Link to={"/metro"}>
-                            <div className='flex flex-row hover:text-blue-500'>
-                                <DirectionsTransitIcon />
-                                <h3 className='ml-1' >Metro </h3>
-                            </div>
-                        </Link>
-                    </li>
-
-                    <li className='mr-5 mt-2'>
-                        {
-                            !isLogged() ?
-                                <Link to={"/login"}>
-                                    <div className='flex flex-row hover:text-blue-500'>
-                                        <LoginIcon />
-                                        <h3 className='ml-1' >Login </h3>
-                                    </div>
-                                </Link>
-                                :
-                                <Link to={"/"} onClick={
-                                    () => {
-                                        localStorage.removeItem('token')
-                                        window.location.reload();
-                                    }
-                                }>
-                                    <div className='flex flex-row hover:text-blue-500'>
-                                        <LogoutIcon />
-                                        <h3 className='ml-1' >Logout </h3>
-                                    </div>
-                                </Link>
-                        }
-                    </li>
-
                     <li className='ml-auto'>
                         <ThemeComponent />
                     </li>
