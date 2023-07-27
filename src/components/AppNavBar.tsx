@@ -29,9 +29,9 @@ function ThemeComponent() {
 export default function NavBar() {
     return (
         <div className='flex flex-row p-4 border-b-4 border-blue-900'>
-            <div className='mx-2 my-auto min-w-[8%]'>
-                <Link to={"/"}>
-                    <h2 className='text-2xl  font-bold align-middle'>Bus Tracker</h2>
+            <div className='mx-2 my-auto'>
+                <Link className='text-2xl whitespace-nowrap font-bold align-middle' to={"/"}>
+                    Bus Tracker
                 </Link>
             </div>
             <div className='my-auto ml-2 border-l-2 border-blue-900 w-full'>
