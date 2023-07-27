@@ -39,6 +39,7 @@ export const getDesignTokens = (mode: PaletteMode) => ({
       }
       : {
         // palette values for dark mode
+        border: blue,
         primary: blue,
         divider: blue[200],
         background: {

@@ -4,11 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { Favorite, getFavourites, isLogged } from '../../api/api';
 import { DeleteFavorite } from '../DeleteFavorite';
 import { Search } from '@mui/icons-material';
+import AllStopsComponent from './StopsComponent';
 
 export default function BusStopSearch() {
     const navigate = useNavigate();
     const stopCode = useRef<HTMLInputElement>()
     const [favorites, setFavorites] = useState<Favorite[]>([]);
+    const [query, setQuery] = useState<string>("")
 
     useEffect(() => {
         const loadFavorites = async () => {
@@ -25,42 +27,37 @@ export default function BusStopSearch() {
         return DeleteFavorite(favorites, "bus", "/stops")
     }
 
-    const submitF = (e: { preventDefault: () => void; }) => {
-        const value = stopCode.current?.value
-        if (value === undefined || value.trim() === "") return
-
+    const search = (e: { target: { value: any; }; preventDefault: () => void; }) => {
+        const value = e.target.value
+        if (value === undefined) return
+        setQuery(value)
         e.preventDefault()
-        navigate(`/stops/${stopCode.current?.value}`)
     }
 
 
     return (
         <Fragment>
-            <form onSubmit={submitF}>
+            <div>
                 <div className='grid grid-cols-1 p-5 max-w-md mx-auto justify-center'>
                     <div className=' font-bold text-2xl pb-4'>Buscar parada</div>
-                    <TextField
-                        id="StopCode"
-                        label="Codigo o nombre de la parada"
-                        inputRef={stopCode}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position='end'>
-                                    <IconButton>
-                                        <Search onClick={submitF} />
-                                    </IconButton>
-                                </InputAdornment>
-                            )
-                        }}
-                    />
+                    <div className='mb-4 grid'>
+                        <TextField
+                            id="StopCode"
+                            label="Codigo o nombre de la parada"
+                            onChange={search}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position='end'>
+                                        <Search />
+                                    </InputAdornment>
+                                )
+                            }}
+                        />
+                    </div>
+                    {AllStopsComponent(query)}
                 </div>
-                {
-                    isLogged() ?
-                        favoritesComponent()
-                        :
-                        <></>
-                }
-            </form>
+
+            </div>
         </Fragment >
     )
 }
