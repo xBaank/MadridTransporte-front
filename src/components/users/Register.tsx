@@ -65,7 +65,7 @@ export default function Register() {
         <Fragment>
             <form onSubmit={handleSubmmit}>
                 <div className='grid grid-cols-1 p-5 max-w-md mx-auto justify-center'>
-                    <div className=' text-purple-600 font-bold text-2xl pb-4'>Register</div>
+                    <div className='font-bold text-2xl pb-4'>Register</div>
                     <InputLabel htmlFor="outlined-adornment-email">Email</InputLabel>
                     <TextField
                         name='email'
@@ -102,7 +102,7 @@ export default function Register() {
                     {success !== undefined && success === true ? successComponent() : errorComponent()}
 
                     <div className='flex flex-row justify-center mt-3'>
-                        <button className='bg-purple-600  text-white font-bold py-2 px-4 '>
+                        <button className=' border-2 font-bold py-2 px-4 '>
                             Register
                         </button>
                     </div>

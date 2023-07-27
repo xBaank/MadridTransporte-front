@@ -55,7 +55,7 @@ export default function MetroStopsTimes(id: string, loadFunc: (code: string) => 
     const load = () => {
         if (loading)
             return (
-                <div className=" text-black text-center font-bold text-2xl">
+                <div className=" text-center font-bold text-2xl">
                     Loading...
                 </div>
             );
@@ -65,7 +65,7 @@ export default function MetroStopsTimes(id: string, loadFunc: (code: string) => 
     const checkError = () => {
         if (error)
             return (
-                <div className=" text-black text-center font-bold text-2xl">
+                <div className="  text-center font-bold text-2xl">
                     {errorMessage}
                 </div>
             );
@@ -86,7 +86,7 @@ export default function MetroStopsTimes(id: string, loadFunc: (code: string) => 
             <>
                 {_.map(stops, (value, key) => {
                     return <div id="metroStops" className="grid grid-cols-1 mx-auto gap-4 max-w-4xl">
-                        <div className=" text-black text-center font-bold text-2xl">
+                        <div className="text-center font-bold text-2xl">
                             {key}
                         </div>
                         <div
@@ -106,7 +106,7 @@ export default function MetroStopsTimes(id: string, loadFunc: (code: string) => 
                                                     //add to favorites
                                                     loadFavorites();
                                                 }}
-                                                className="hover:text-purple-500">
+                                                className="hover:text-blue-500">
                                                 <FavoriteIcon />
                                             </Link>
                                         </>
