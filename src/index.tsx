@@ -9,11 +9,7 @@ import BusStopsTimes from './components/stops/BusStopTimes';
 import BusLineMap from './components/lines/BusLineMap';
 import MetroStopSearch from './components/metro/MetroStopSearch';
 import MetroStopsTimesSearch from './components/metro/MetroStopTimesSearch';
-import Register from './components/users/Register';
-import Login from './components/users/Login';
 import { Footer } from './components/Footer';
-import ResetPassword from './components/users/ResetPassword';
-import NewPassword from './components/users/NewPassword';
 import MetroStopsTimesId from './components/metro/MetroStopTimesId';
 import { createTheme, CssBaseline, PaletteMode, ThemeProvider } from '@mui/material';
 import { blue, grey } from '@mui/material/colors';
@@ -102,7 +98,7 @@ const router = createHashRouter([
     element: DefaultElement(<BusStopSearch />),
   },
   {
-    path: "/stops/:code",
+    path: "/stops/:type/:code/times",
     element: DefaultElement(<BusStopsTimes />),
   },
   {
@@ -121,22 +117,6 @@ const router = createHashRouter([
     path: "/metro/:id",
     element: DefaultElement(<MetroStopsTimesId />),
   },
-  {
-    path: "/register",
-    element: DefaultElement(<Register />),
-  },
-  {
-    path: "/login",
-    element: DefaultElement(<Login />),
-  },
-  {
-    path: "/reset-password",
-    element: DefaultElement(<ResetPassword />),
-  },
-  {
-    path: "/new-password",
-    element: DefaultElement(<NewPassword />),
-  }
 ]);
 
 const throwEx = () => { throw new Error("No root element found") }

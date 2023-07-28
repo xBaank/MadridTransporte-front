@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Stop, getAllStops, getIconByCodMode } from "./api/Stops";
+import { getAllStops } from "./api/Stops";
 import { Either, fold } from "fp-ts/lib/Either";
 import { Link } from "react-router-dom";
-import { Favorite } from "@mui/icons-material";
+import { Stop } from "./api/Types";
+import { getIconByCodMode, getStopTimesLinkByMode } from "./api/Utils";
 
 let allStops: Either<string, Stop[]> | undefined
 getAllStops().then((stops) => allStops = stops)
@@ -40,22 +41,21 @@ function StopsElement(stops: Stop[]) {
                 <li className="p-2 border-b-blue-900 border-blue-900">
                     <div className="flex items-center space-x-4">
                         <div className="flex-shrink-0">
-                            <img loading="lazy" className="w-8 h-8 rounded-full" src={getIconByCodMode(stop.codMode)} alt="Logo" />
+                            <img className="w-8 h-8 rounded-full" src={getIconByCodMode(stop.codMode)} alt="Logo" />
                         </div>
                         <div className="flex-1 items-center min-w-0 overflow-clip">
-                            <Link className="text-sm truncate " to={"/"}>
+                            <Link className="text-sm truncate " to={getStopTimesLinkByMode(stop.codMode, stop.simpleCodStop)}>
                                 {stop.name}
                             </Link>
                         </div>
                         <div className="flex font-bold min-w-0">
-                            <Link className="text-sm truncate " to={"/"}>
+                            <Link className="text-sm truncate " to={getStopTimesLinkByMode(stop.codMode, stop.simpleCodStop)}>
                                 {stop.simpleCodStop}
                             </Link>
                         </div>
                     </div>
                 </li>
             )}
-
         </ul>
     );
 }

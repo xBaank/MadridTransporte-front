@@ -1,10 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { isLogged } from '../api/api';
-import DirectionsTransitIcon from '@mui/icons-material/DirectionsTransit';
 import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
-import LoginIcon from '@mui/icons-material/Login';
-import LogoutIcon from '@mui/icons-material/Logout';
 import { IconButton, useTheme } from '@mui/material';
 import { Brightness4, Brightness7 } from '@mui/icons-material';
 import { ColorModeContext } from '..';

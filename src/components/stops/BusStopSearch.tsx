@@ -1,31 +1,10 @@
-import { IconButton, InputAdornment, TextField } from '@mui/material'
-import React, { Fragment, useEffect, useRef, useState } from 'react'
-import { useNavigate } from "react-router-dom";
-import { Favorite, getFavourites, isLogged } from '../../api/api';
-import { DeleteFavorite } from '../DeleteFavorite';
+import { InputAdornment, TextField } from '@mui/material'
+import React, { Fragment, useState } from 'react'
 import { Search } from '@mui/icons-material';
 import AllStopsComponent from './StopsComponent';
 
 export default function BusStopSearch() {
-    const navigate = useNavigate();
-    const stopCode = useRef<HTMLInputElement>()
-    const [favorites, setFavorites] = useState<Favorite[]>([]);
     const [query, setQuery] = useState<string>("")
-
-    useEffect(() => {
-        const loadFavorites = async () => {
-            const favorites = await getFavourites(localStorage.getItem('token')!)
-            if (typeof favorites === 'number') return <></>
-            if (favorites.length === 0) return <></>
-            setFavorites(favorites)
-        }
-        loadFavorites()
-    }, [])
-
-    const favoritesComponent = () => {
-        if (favorites.length === 0) return <></>
-        return DeleteFavorite(favorites, "bus", "/stops")
-    }
 
     const search = (e: { target: { value: any; }; preventDefault: () => void; }) => {
         const value = e.target.value
