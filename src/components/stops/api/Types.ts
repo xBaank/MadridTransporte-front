@@ -1,48 +1,31 @@
 export type Stop = {
-    codStop: string;
-    simpleCodStop: string;
-    codMode: string;
-    name: string;
-    codMunicipality: string;
-    latitude: number;
-    longitude: number;
-    lines: {
-        codMode: string;
-        shortDescription: string;
-    };
+    stop_code: number;
+    cod_mode: number;
+    stop_name: string;
+    stop_lat: number;
+    stop_lon: number;
 }
 
-export type CrtmStopTimes = {
+export type StopTimes = {
     "data": {
-        "name": string,
         "codMode": string,
-        "times": {
-            "lineCode": string,
-            "lineName": string,
-            "codMode": string,
+        "stopName": string,
+        "arrives": {
+            "line": string,
+            "stop": string,
             "destination": string,
-            "codVehicle": string,
-            "time": string,
+            "estimatedArrive": number,
         }[],
+        "incidents": {
+            "title": string,
+            "description": string,
+            "cause": string,
+            "effect": string,
+            "url": string,
+        }[],
+        "lastTime": string
     },
-    "lastTime": string
+    "lastTime": number
 }
 
-export type MetroStopTimes = {
-    "data": {
-        "name": string,
-        "codMode": string,
-        "times": {
-            "id": string,
-            "nombreEstacion": string,
-            "linea": number,
-            "anden": number,
-            "sentido": string,
-            "proximos": number[]
-        }[],
-    },
-    "lastTime": string
-}
-
-export type StopTimes = MetroStopTimes | CrtmStopTimes;
 export type TransportType = 'metro' | 'train' | 'emt' | 'bus';

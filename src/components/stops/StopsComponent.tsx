@@ -18,7 +18,7 @@ export default function FilteredStopsComponent(query: string) {
         const filteredStops = fold(
             () => [],
             (stops: Stop[]) => stops.filter((stop) =>
-                stop.name.toLowerCase().includes(query.toLowerCase()) || stop.simpleCodStop.toLowerCase().includes(query.toLowerCase())
+                stop.stop_name.toLowerCase().includes(query.toLowerCase()) || stop.stop_code.toString().toLowerCase().includes(query.toLowerCase())
             )
         )(allStops);
 
@@ -41,16 +41,16 @@ function StopsElement(stops: Stop[]) {
                 <li className="p-2 border-b-blue-900 border-blue-900">
                     <div className="flex items-center space-x-4">
                         <div className="flex-shrink-0">
-                            <img className="w-8 h-8 rounded-full" src={getIconByCodMode(stop.codMode)} alt="Logo" />
+                            <img className="w-8 h-8 rounded-full" src={getIconByCodMode(stop.cod_mode)} alt="Logo" />
                         </div>
                         <div className="flex-1 items-center min-w-0 overflow-clip">
-                            <Link className="text-sm truncate " to={getStopTimesLinkByMode(stop.codMode, stop.simpleCodStop)}>
-                                {stop.name}
+                            <Link className="text-sm truncate " to={getStopTimesLinkByMode(stop.cod_mode, stop.stop_code.toString())}>
+                                {stop.stop_name}
                             </Link>
                         </div>
                         <div className="flex font-bold min-w-0">
-                            <Link className="text-sm truncate " to={getStopTimesLinkByMode(stop.codMode, stop.simpleCodStop)}>
-                                {stop.simpleCodStop}
+                            <Link className="text-sm truncate " to={getStopTimesLinkByMode(stop.cod_mode, stop.stop_code.toString())}>
+                                {stop.stop_code}
                             </Link>
                         </div>
                     </div>

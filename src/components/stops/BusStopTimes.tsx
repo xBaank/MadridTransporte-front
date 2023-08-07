@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { CrtmStopTimes, MetroStopTimes, StopTimes, TransportType } from "./api/Types";
+import { StopTimes, TransportType } from "./api/Types";
 import { getStopsTimes } from "./api/Times";
 import { fold } from "fp-ts/lib/Either";
 import { useInterval } from "usehooks-ts";
 import React from "react";
-import { isMetroStopTimesType } from "./api/Utils";
 
 export default function BusStopsTimes() {
   const interval = 1000 * 20;
@@ -30,51 +29,33 @@ export default function BusStopsTimes() {
 
   if (error !== undefined) return <div className="text-center">{error}</div>
   if (stops === undefined) return <div className="text-center">Loading...</div>
-  if (isMetroStopTimesType(stops)) return renderMetroTimes(stops);
-  else return renderCrtmTimes(stops);
+  return renderTimes(stops);
 }
 
 
-function renderMetroTimes(times: MetroStopTimes) {
+function renderTimes(times: StopTimes) {
   return (
     <div className="grid grid-cols-1 p-5 max-w-md mx-auto justify-center">
-      <h2>{times.data.name}</h2>
+      <h2>{times.data.stopName}</h2>
       <ul className="grid max-w-md divide-y rounded border border-blue-900">
-        {times.data.times.map((time) =>
-          <li className="p-2 border-b-blue-900 border-blue-900">
-            <div className="flex items-center space-x-4">
-              <div className="flex-1 items-center min-w-0 overflow-clip">
-                {time.anden}
-              </div>
-              <div className="flex font-bold min-w-0">
-                {time.proximos}
-              </div>
-            </div>
-          </li>
-        )}
+        {renderOrEmpty(times)}
       </ul>
     </div>
   );
 }
 
-function renderCrtmTimes(times: CrtmStopTimes) {
-  return (
-    <div className="grid grid-cols-1 p-5 max-w-md mx-auto justify-center">
-      <h2>{times.data.name}</h2>
-      <ul className="grid max-w-md divide-y rounded border border-blue-900">
-        {times.data.times.map((time) =>
-          <li className="p-2 border-b-blue-900 border-blue-900">
-            <div className="flex items-center space-x-4">
-              <div className="flex-1 items-center min-w-0 overflow-clip">
-                {time.lineName}
-              </div>
-              <div className="flex font-bold min-w-0">
-                {time.time}
-              </div>
-            </div>
-          </li>
-        )}
-      </ul>
-    </div>
-  );
+function renderOrEmpty(times: StopTimes) {
+  if (times.data.arrives.length === 0) return <div className="text-center">No hay tiempos de espera</div>
+  return times.data.arrives.map((time) =>
+    <li className="p-2 border-b-blue-900 border-blue-900">
+      <div className="flex items-center space-x-4">
+        <div className="flex-1 items-center min-w-0 overflow-clip">
+          {time.line} - {time.destination}
+        </div>
+        <div className="flex font-bold min-w-0">
+          {new Date(time.estimatedArrive).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+        </div>
+      </div>
+    </li>
+  )
 }
