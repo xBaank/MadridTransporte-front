@@ -24,3 +24,12 @@ export function getStopTimesLinkByMode(codMode: number, stopCode: string): strin
     if (codMode === busCodMode) return `/stops/bus/${stopCode}/times`;
     return "#"
 }
+
+export function getLineColorByCodMode(codMode: number): string {
+    if (codMode === metroCodMode) return "bg-yellow-500";
+    if (codMode === metroLigeroCodMode) return "bg-yellow-500";
+    if (codMode === trainCodMode) return "bg-red-500";
+    if (codMode === emtCodMode) return "bg-blue-500";
+    if (codMode === busCodMode) return "bg-green-600";
+    return "bg-red-800"
+}

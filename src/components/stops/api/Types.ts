@@ -8,13 +8,14 @@ export type Stop = {
 
 export type StopTimes = {
     data: {
-        codMode: string,
+        codMode: number,
         stopName: string,
         arrives: {
             line: string,
             stop: string,
+            codMode: number,
             destination: string,
-            estimatedArrive: number,
+            estimatedArrives: number[],
         }[],
         incidents: {
             title: string,
