@@ -13,6 +13,7 @@ export default function BusStopsTimes() {
   const { type, code } = useParams<{ type: TransportType, code: string }>();
   const [stops, setStops] = useState<StopTimes>();
   const [error, setError] = useState<string>();
+  const [errorOnInterval, setErrorOnInterval] = useState<boolean>(false);
   const theme = useTheme();
   const textColor = theme.palette.mode === 'dark' ? "text-white" : "text-black";
   const borderColor = theme.palette.mode === 'dark' ? "border-white" : "border-black";
@@ -29,10 +30,10 @@ export default function BusStopsTimes() {
   }, [type, code])
 
   useEffect(() => getTimes(), [type, code, getTimes]);
-  useInterval(() => getTimes(), error ? null : interval);
+  useInterval(() => { getTimes(); if (error !== undefined) setErrorOnInterval(true) }, error ? null : interval);
 
 
-  if (error !== undefined) return <div className="text-center">{error}</div>
+  if (error !== undefined && !errorOnInterval) return <div className="text-center">{error}</div>
   if (stops === undefined) return <div className="text-center">Cargando...</div>
   return RenderTimes(stops);
 
@@ -58,8 +59,8 @@ export default function BusStopsTimes() {
       const arrivesFormatted = time.estimatedArrives.map(i => new Date(i).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
       return (
         <li className="p-2 border-b-blue-900 border-blue-900">
-          <div className="flex items-center space-x-4">
-            <div className=" flex-col">
+          <div className="flex items-center flex-wrap">
+            <div className="flex-col min-w-0 ">
               <div className="flex">
                 <div className={`text-sm font-bold text-center ${getLineColorByCodMode(time.codMode)} text-white w-16 rounded-lg p-1 mr-3`}>
                   {time.line}
@@ -68,8 +69,8 @@ export default function BusStopsTimes() {
                   <pre>{arrivesFormatted.join("   ")}</pre>
                 </div>
               </div>
-              <div className="flex text-xs font-bold pt-1 items-center mx-auto">
-                {time.destination}
+              <div className="flex text-xs font-bold min-w-0 overflow-hidden pt-1 w-full items-center mx-auto">
+                <pre> {time.destination} </pre>
               </div>
             </div>
           </div>
