@@ -7,25 +7,24 @@ export type Stop = {
 }
 
 export type StopTimes = {
-    "data": {
-        "codMode": string,
-        "stopName": string,
-        "arrives": {
-            "line": string,
-            "stop": string,
-            "destination": string,
-            "estimatedArrive": number,
+    data: {
+        codMode: string,
+        stopName: string,
+        arrives: {
+            line: string,
+            stop: string,
+            destination: string,
+            estimatedArrive: number,
         }[],
-        "incidents": {
-            "title": string,
-            "description": string,
-            "cause": string,
-            "effect": string,
-            "url": string,
+        incidents: {
+            title: string,
+            description: string,
+            cause: string,
+            effect: string,
+            url: string,
         }[],
-        "lastTime": string
     },
-    "lastTime": number
+    lastTime: number
 }
 
 export type TransportType = 'metro' | 'train' | 'emt' | 'bus';
