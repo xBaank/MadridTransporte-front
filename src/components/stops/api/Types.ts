@@ -13,6 +13,7 @@ export type StopTimes = {
         arrives: {
             line: string,
             stop: string,
+            anden: number | null,
             codMode: number,
             destination: string,
             estimatedArrives: number[],
@@ -20,6 +21,8 @@ export type StopTimes = {
         incidents: {
             title: string,
             description: string,
+            from: string,
+            to: string,
             cause: string,
             effect: string,
             url: string,
