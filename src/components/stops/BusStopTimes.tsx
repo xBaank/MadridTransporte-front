@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Alert, StopTimes, TransportType } from "./api/Types";
 import { getStopsTimes } from "./api/Times";
 import { useTheme } from '@mui/material';
@@ -8,11 +8,13 @@ import { useInterval } from "usehooks-ts";
 import React from "react";
 import { getIconByCodMode, getLineColorByCodMode } from "./api/Utils";
 import { getAlertsByTransportType } from "./api/Stops";
+import CachedIcon from '@mui/icons-material/Cached';
 
 export default function BusStopsTimes() {
-  const interval = 1000 * 20;
+  const interval = 1000 * 30;
   const { type, code } = useParams<{ type: TransportType, code: string }>();
   const [stops, setStops] = useState<StopTimes>();
+  const [isRotating, setIsRotating] = useState<boolean>(false);
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [error, setError] = useState<string>();
   const [errorOnInterval, setErrorOnInterval] = useState<boolean>(false);
@@ -50,6 +52,13 @@ export default function BusStopsTimes() {
   return RenderTimes(stops);
 
 
+  function getRotate() {
+    setTimeout(() => setIsRotating(false), 100);
+    return "transition-all transform rotate-180"
+  }
+
+
+
   function RenderTimes(times: StopTimes) {
 
     return (
@@ -63,6 +72,14 @@ export default function BusStopsTimes() {
           <div className={`flex items-end justify-start mb-3 ${textColor} border-b ${borderColor} pb-2`}>
             <img className="w-8 h-8 mr-2 rounded-full" src={getIconByCodMode(times.data.codMode)} alt="Logo" />
             <div className={`flex items-center whitespace-nowrap bold`}>{times.data.stopName}</div>
+            <Link to="#" className="ml-auto" onClick={() => {
+              setIsRotating(true);
+              getTimes()
+            }}>
+              <div className={`${isRotating ? getRotate() : ""}`}>
+                <CachedIcon></CachedIcon>
+              </div>
+            </Link>
           </div>
           <ul className="rounded w-full border border-blue-900">
             {RenderOrEmpty(times)}
