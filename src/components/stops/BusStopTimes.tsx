@@ -1,17 +1,19 @@
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { StopTimes, TransportType } from "./api/Types";
+import { Alert, StopTimes, TransportType } from "./api/Types";
 import { getStopsTimes } from "./api/Times";
 import { useTheme } from '@mui/material';
 import { fold } from "fp-ts/lib/Either";
 import { useInterval } from "usehooks-ts";
 import React from "react";
 import { getIconByCodMode, getLineColorByCodMode } from "./api/Utils";
+import { getAlertsByTransportType } from "./api/Stops";
 
 export default function BusStopsTimes() {
   const interval = 1000 * 20;
   const { type, code } = useParams<{ type: TransportType, code: string }>();
   const [stops, setStops] = useState<StopTimes>();
+  const [alerts, setAlerts] = useState<Alert[]>([]);
   const [error, setError] = useState<string>();
   const [errorOnInterval, setErrorOnInterval] = useState<boolean>(false);
   const theme = useTheme();
@@ -29,7 +31,17 @@ export default function BusStopsTimes() {
     );
   }, [type, code])
 
-  useEffect(() => getTimes(), [type, code, getTimes]);
+  const getAlerts = useCallback(() => {
+    if (type === undefined || code === undefined) return;
+    getAlertsByTransportType(type).then((alerts) =>
+      fold(
+        (error: string) => setError(error),
+        (alerts: Alert[]) => setAlerts(alerts)
+      )(alerts)
+    );
+  }, [type, code])
+
+  useEffect(() => { getTimes(); getAlerts() }, [type, code, getTimes, getAlerts]);
   useInterval(() => { getTimes(); if (error !== undefined) setErrorOnInterval(true) }, error ? null : interval);
 
 
@@ -41,15 +53,22 @@ export default function BusStopsTimes() {
   function RenderTimes(times: StopTimes) {
 
     return (
-      <div className={`grid grid-cols-1 p-5 max-w-md mx-auto justify-center`}>
-        <div className={`flex items-end justify-start mb-3 ${textColor} border-b ${borderColor} pb-2`}>
-          <img className="w-8 h-8 mr-2 rounded-full" src={getIconByCodMode(times.data.codMode)} alt="Logo" />
-          <div className={`flex items-center whitespace-nowrap bold`}>{times.data.stopName}</div>
+      <>
+        <div>
+          {alerts.map((alert) =>
+            <div>{alert.description}</div>
+          )}
         </div>
-        <ul className="rounded w-full border border-blue-900">
-          {RenderOrEmpty(times)}
-        </ul>
-      </div >
+        <div className={`grid grid-cols-1 p-5 max-w-md mx-auto justify-center`}>
+          <div className={`flex items-end justify-start mb-3 ${textColor} border-b ${borderColor} pb-2`}>
+            <img className="w-8 h-8 mr-2 rounded-full" src={getIconByCodMode(times.data.codMode)} alt="Logo" />
+            <div className={`flex items-center whitespace-nowrap bold`}>{times.data.stopName}</div>
+          </div>
+          <ul className="rounded w-full border border-blue-900">
+            {RenderOrEmpty(times)}
+          </ul>
+        </div >
+      </>
     );
   }
 

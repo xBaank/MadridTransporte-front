@@ -28,4 +28,11 @@ export type StopTimes = {
     lastTime: number
 }
 
+export type Alert = {
+    codMode: number,
+    codLine: string,
+    description: string,
+    stops: string[]
+}
+
 export type TransportType = 'metro' | 'train' | 'emt' | 'bus';
