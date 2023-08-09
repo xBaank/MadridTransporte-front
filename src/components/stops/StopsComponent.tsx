@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { getAllStops } from "./api/Stops";
-import { Either, fold } from "fp-ts/lib/Either";
+import { allStops } from "./api/Stops";
+import { fold } from "fp-ts/lib/Either";
 import { Link } from "react-router-dom";
 import { Stop } from "./api/Types";
 import { getIconByCodMode, getStopTimesLinkByMode } from "./api/Utils";
 
-let allStops: Either<string, Stop[]> | undefined
-getAllStops().then((stops) => allStops = stops)
 
 export default function FilteredStopsComponent(query: string) {
     const [stops, setStops] = useState<Stop[]>([]);

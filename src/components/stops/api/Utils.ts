@@ -16,6 +16,15 @@ export function getIconByCodMode(codMode: number): string {
     return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons/interurban.png"
 }
 
+export function getIconSvgByCodMode(codMode: number): string {
+    if (codMode === metroCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons-svg/metro.svg";
+    if (codMode === trainCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons-svg/train.svg";
+    if (codMode === emtCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons-svg/emt.svg";
+    if (codMode === busCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons-svg/interurban.svg";
+    if (codMode === metroLigeroCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons-svg/metro_ligero.svg";
+    return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons-svg/interurban.svg"
+}
+
 export function getStopTimesLinkByMode(codMode: number, stopCode: string): string {
     if (codMode === metroCodMode) return `/stops/metro/${stopCode}/times`;
     if (codMode === metroLigeroCodMode) return `/stops/tram/${stopCode}/times`;

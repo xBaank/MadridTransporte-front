@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
+import MapIcon from '@mui/icons-material/Map';
 import { IconButton, useTheme } from '@mui/material';
 import { Brightness4, Brightness7 } from '@mui/icons-material';
 import { ColorModeContext } from '..';
@@ -37,6 +38,14 @@ export default function NavBar() {
                             <div className='flex flex-row  hover:text-blue-500'>
                                 <DirectionsBusIcon />
                                 <h3 className='ml-1' >Buscar Paradas </h3>
+                            </div>
+                        </Link>
+                    </li>
+                    <li className='mr-5 mt-2'>
+                        <Link to={"/stops/map"}>
+                            <div className='flex flex-row  hover:text-blue-500'>
+                                <MapIcon />
+                                <h3 className='ml-1' >Mapa paradas </h3>
                             </div>
                         </Link>
                     </li>

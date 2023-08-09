@@ -94,7 +94,7 @@ export default function BusStopsTimes() {
               </div>
             </Link>
           </div>
-          <ul className="rounded w-full border border-blue-900">
+          <ul className="rounded w-full">
             {RenderTimesOrEmpty(times)}
           </ul>
           {RenderAlerts()}
@@ -146,7 +146,7 @@ export default function BusStopsTimes() {
         >
           <Box sx={style}>
             <Typography id="modal-modal-title" variant="h6" component="h2" className="border-b">
-              Alertas
+              Avisos
             </Typography>
             <ul className={`list-disc ${textColor}`}>
               {alerts.map((alert) => {
