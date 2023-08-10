@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet"
 import { Stop } from "./api/Types";
 import * as E from 'fp-ts/Either'
