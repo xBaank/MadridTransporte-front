@@ -25,6 +25,8 @@ export default function AbonoInfo() {
     if (error !== null) return <div className=" text-center">{error}</div>
     if (abono === undefined) return <div className=" text-center">Cargando...</div>
 
+    var options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+
     return (
         <div className={`grid grid-cols-1 p-5 max-w-md mx-auto w-full justify-center`}>
             <div className={`flex flex-col ${textColor}`}>
@@ -45,7 +47,7 @@ export default function AbonoInfo() {
                                                     <div>
                                                         <div className=" font-bold">{contract.contractName}</div>
                                                         <div className=" text-sm">
-                                                            <div>Fecha recarga: {contract.chargeDate}</div>
+                                                            <div>Fecha recarga: {new Date(contract.chargeDate).toLocaleDateString("es-ES", options)}</div>
                                                             <div>Cargas: {contract.charges}</div>
                                                             <div>Cargas restantes: {contract.remainingCharges}</div>
                                                         </div>
@@ -58,12 +60,12 @@ export default function AbonoInfo() {
                                                 <div>
                                                     <div className=" font-bold">{contract.contractName}</div>
                                                     <div className=" text-sm">
-                                                        <div>Fecha recarga: {contract.chargeDate}</div>
-                                                        <div>Fecha expiración: {contract.lastUseDate}</div>
+                                                        <div>Fecha recarga: {new Date(contract.chargeDate).toLocaleDateString("es-ES", options)}</div>
+                                                        <div>Fecha expiración: {new Date(contract.lastUseDate!).toLocaleDateString("es-ES", options)}</div>
                                                         {
                                                             contract.firstUseDate === null ?
-                                                                <div>Fecha limite primer uso: {contract.lastUseDate}</div> :
-                                                                <div>Fecha primer uso: {contract.firstUseDate}</div>
+                                                                <div>Fecha limite primer uso: {new Date(contract.firstUseDateLimit).toLocaleDateString("es-ES", options)}</div> :
+                                                                <div>Fecha primer uso: {new Date(contract.firstUseDate).toLocaleDateString("es-ES", options)}</div>
                                                         }
                                                         <div>Dias restantes: {contract.leftDays}</div>
                                                     </div>
