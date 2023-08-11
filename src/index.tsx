@@ -9,6 +9,9 @@ import { createTheme, CssBaseline, PaletteMode, ThemeProvider } from '@mui/mater
 import { blue, grey } from '@mui/material/colors';
 import DefaultElement from './components/DefaultElement';
 import BusStopMap from './components/stops/BusStopMap';
+import Info from './components/info/Info';
+import AbonoSearch from './components/abono/AbonoSearch';
+import AbonoInfo from './components/abono/AbonoInfo';
 
 export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 export const getDesignTokens = (mode: PaletteMode) => ({
@@ -85,6 +88,18 @@ const router = createHashRouter([
   {
     path: "/stops/map",
     element: <DefaultElement element={<BusStopMap />} />,
+  },
+  {
+    path: "/info",
+    element: <DefaultElement element={<Info />} />,
+  },
+  {
+    path: "abono",
+    element: <DefaultElement element={<AbonoSearch />} />,
+  },
+  {
+    path: "abono/:code",
+    element: <DefaultElement element={<AbonoInfo />} />,
   }
 ]);
 

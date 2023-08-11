@@ -6,6 +6,7 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { Brightness4, Brightness7 } from '@mui/icons-material';
 import { ColorModeContext } from '..';
 import { Link } from 'react-router-dom';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
 
 export default function MobileNavBar() {
     const theme = useTheme();
@@ -41,7 +42,13 @@ export default function MobileNavBar() {
                         icon={<MapIcon />} />
                     <BottomNavigationAction
                         component={Link}
-                        to={"/"}
+                        to={"/abono"}
+                        label="Abono"
+                        value="Abono"
+                        icon={<CreditCardIcon />} />
+                    <BottomNavigationAction
+                        component={Link}
+                        to={"/info"}
                         label="Info"
                         value="Sobre"
                         icon={<HelpOutlineIcon />} />

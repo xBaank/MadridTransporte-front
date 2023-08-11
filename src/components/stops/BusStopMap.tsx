@@ -62,7 +62,7 @@ function BusStopMapBase() {
         }
         const markers = allStops.filter(m => {
             const pos = { lat: m.stop_lat, lng: m.stop_lon }
-            return mapRef.current?.getBounds().contains(pos)
+            return map?.getBounds().contains(pos)
         });
         setStops(markers);
         return null
@@ -73,11 +73,10 @@ function BusStopMapBase() {
         useEffect(() => {
             if (mounted) return
             if (!mounted && mapRef.current?.getBounds().contains(defaultPosition)) setMounted(true)
-            setTimeout(() => {
-                map.flyTo(defaultPosition);
-            }, 1000);
         }, [map])
         useMapEvents({
+            locationfound: DisplayMarkers,
+            locationerror: DisplayMarkers,
             moveend: DisplayMarkers
         })
         return null

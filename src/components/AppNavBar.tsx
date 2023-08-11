@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom'
 import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
 import MapIcon from '@mui/icons-material/Map';
 import { IconButton, useTheme } from '@mui/material';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { Brightness4, Brightness7 } from '@mui/icons-material';
 import { ColorModeContext } from '..';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
 
 
 function ThemeComponent() {
@@ -46,6 +48,22 @@ export default function NavBar() {
                             <div className='flex flex-row  hover:text-blue-500'>
                                 <MapIcon />
                                 <h3 className='ml-1' >Mapa paradas </h3>
+                            </div>
+                        </Link>
+                    </li>
+                    <li className='mr-5 mt-2'>
+                        <Link to={"/abono"}>
+                            <div className='flex flex-row  hover:text-blue-500'>
+                                <CreditCardIcon />
+                                <h3 className='ml-1' >Abono </h3>
+                            </div>
+                        </Link>
+                    </li>
+                    <li className='mr-5 mt-2'>
+                        <Link to={"/info"}>
+                            <div className='flex flex-row  hover:text-blue-500'>
+                                <HelpOutlineIcon />
+                                <h3 className='ml-1' >Info </h3>
                             </div>
                         </Link>
                     </li>
