@@ -28,40 +28,53 @@ export default function AbonoInfo() {
     return (
         <div className={`grid grid-cols-1 p-5 max-w-md mx-auto w-full justify-center`}>
             <div className={`flex flex-col ${textColor}`}>
-                <div className={`flex items-baseline border-b ${borderColor} font-bold text-xl`}>
-                    <div>Tarjeta: </div>
-                    <pre > {abono.ttpNumber}</pre>
+                <div className="max-w-sm rounded overflow-hidden shadow-2xl">
+                    <div className="px-6 py-4">
+                        <div className="flex items-baseline">
+                            <img className="w-8 h-5 mr-3" src="https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons/TTP.jpeg" alt="Tarjeta transporte" />
+                            <div className="font-bold text-xl mb-2">{abono.ttpNumber}</div>
+                        </div>
+                        <ul>
+                            {
+                                abono.contracts.length === 0 ?
+                                    <div>Tarjeta sin recargas</div> :
+                                    abono.contracts.map((contract) => {
+                                        if (contract.charges !== 0 || contract.remainingCharges !== 0) {
+                                            return (
+                                                <li className={`p-3 border-b ${borderColor}`}>
+                                                    <div>
+                                                        <div className=" font-bold">{contract.contractName}</div>
+                                                        <div className=" text-sm">
+                                                            <div>Fecha recarga: {contract.chargeDate}</div>
+                                                            <div>Cargas: {contract.charges}</div>
+                                                            <div>Cargas restantes: {contract.remainingCharges}</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            )
+                                        }
+                                        return (
+                                            <li className={`p-3 border-b ${borderColor}`}>
+                                                <div>
+                                                    <div className=" font-bold">{contract.contractName}</div>
+                                                    <div className=" text-sm">
+                                                        <div>Fecha recarga: {contract.chargeDate}</div>
+                                                        <div>Fecha expiración: {contract.lastUseDate}</div>
+                                                        {
+                                                            contract.firstUseDate === null ?
+                                                                <div>Fecha limite primer uso: {contract.lastUseDate}</div> :
+                                                                <div>Fecha primer uso: {contract.firstUseDate}</div>
+                                                        }
+                                                        <div>Dias restantes: {contract.leftDays}</div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        )
+                                    })
+                            }
+                        </ul>
+                    </div>
                 </div>
-                <ul>
-                    {
-                        abono.contracts.length === 0 ?
-                            <div>Tarjeta sin recargas</div> :
-                            abono.contracts.map((contract) => {
-                                if (contract.charges !== 0 || contract.remainingCharges !== 0) {
-                                    return (
-                                        <li className={`p-3 border-b ${borderColor}`}>
-                                            <div>
-                                                <div>{contract.contractName}</div>
-                                                <div>Fecha recarga: {contract.chargeDate}</div>
-                                                <div>Cargas: {contract.charges}</div>
-                                                <div>Cargas restantes: {contract.remainingCharges}</div>
-                                            </div>
-                                        </li>
-                                    )
-                                }
-                                return (
-                                    <li className={`p-3 border-b ${borderColor}`}>
-                                        <div>
-                                            <div>{contract.contractName}</div>
-                                            <div>Fecha recarga: {contract.chargeDate}</div>
-                                            <div>Fecha expiración: {contract.lastUseDate}</div>
-                                            <div>Dias restantes: {contract.leftDays}</div>
-                                        </div>
-                                    </li>
-                                )
-                            })
-                    }
-                </ul>
             </div>
         </div>
     )
