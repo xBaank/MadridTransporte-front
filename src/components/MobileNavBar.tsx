@@ -21,37 +21,39 @@ export default function MobileNavBar() {
     }, [theme.palette.mode])
 
     return (
-        <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} className='z-50' elevation={3}>
-            <BottomNavigation
-                value={value}
-                onChange={handleChange}
-            >
-                <BottomNavigationAction
-                    component={Link}
-                    to={"/"}
-                    label="Buscar"
-                    value="Buscar"
-                    icon={<DirectionsBusIcon />} />
-                <BottomNavigationAction
-                    component={Link}
-                    to={"/stops/map"}
-                    label="Mapa"
-                    value="Mapa"
-                    icon={<MapIcon />} />
-                <BottomNavigationAction
-                    component={Link}
-                    to={"/"}
-                    label="Info"
-                    value="Sobre"
-                    icon={<HelpOutlineIcon />} />
-                <BottomNavigationAction
-                    label="Tema"
-                    value="Tema"
-                    onClick={colorMode.toggleColorMode}
-                    icon={
-                        theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />
-                    } />
-            </BottomNavigation>
-        </Paper>
+        <div style={{ position: 'sticky', bottom: 0 }} className='z-50 w-full mt-auto self-end justify-between' >
+            <Paper >
+                <BottomNavigation
+                    value={value}
+                    onChange={handleChange}
+                >
+                    <BottomNavigationAction
+                        component={Link}
+                        to={"/"}
+                        label="Buscar"
+                        value="Buscar"
+                        icon={<DirectionsBusIcon />} />
+                    <BottomNavigationAction
+                        component={Link}
+                        to={"/stops/map"}
+                        label="Mapa"
+                        value="Mapa"
+                        icon={<MapIcon />} />
+                    <BottomNavigationAction
+                        component={Link}
+                        to={"/"}
+                        label="Info"
+                        value="Sobre"
+                        icon={<HelpOutlineIcon />} />
+                    <BottomNavigationAction
+                        label="Tema"
+                        value="Tema"
+                        onClick={colorMode.toggleColorMode}
+                        icon={
+                            theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />
+                        } />
+                </BottomNavigation>
+            </Paper>
+        </div>
     )
 }

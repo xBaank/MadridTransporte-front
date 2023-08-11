@@ -55,6 +55,11 @@ function BusStopMapBase() {
     }, [stops])
 
     function DisplayMarkers() {
+        const map = mapRef.current
+        if (!map || map.getZoom() < 14) {
+            setStops([])
+            return null
+        }
         const markers = allStops.filter(m => {
             const pos = { lat: m.stop_lat, lng: m.stop_lon }
             return mapRef.current?.getBounds().contains(pos)
@@ -80,16 +85,7 @@ function BusStopMapBase() {
 
     return (
         <div className="h-full w-full z-0">
-            <MapContainer ref={mapRef} className="h-full" center={defaultPosition} preferCanvas={false} zoom={16} minZoom={14} maxZoom={18} scrollWheelZoom={true}>
-                <div onClick={() => console.log("asd")} className="leaflet-control-container">
-                    <div className="leaflet-bottom leaflet-right">
-                        <div className="bg-white  mb-7 mr-7 rounded-full">
-                            <IconButton onClick={() => console.log("asd")} size="large" >
-                                <MyLocationIcon color="primary" fontSize="large" ></MyLocationIcon>
-                            </IconButton>
-                        </div>
-                    </div>
-                </div>
+            <MapContainer ref={mapRef} className="h-full" center={defaultPosition} preferCanvas={false} zoom={16} maxZoom={18} scrollWheelZoom={true}>
                 <DisplayOnMove />
                 <LocationMarker />
                 <MarkerClusterGroup
@@ -103,6 +99,11 @@ function BusStopMapBase() {
                     {markers}
                 </MarkerClusterGroup>
             </MapContainer>
+            <div style={{ zIndex: 500 }} className="bg-white absolute bottom-24 right-5 rounded-full">
+                <IconButton onClick={() => mapRef.current?.locate()} size="large" >
+                    <MyLocationIcon color="primary" fontSize="large" ></MyLocationIcon>
+                </IconButton>
+            </div>
         </div>
     )
 }
