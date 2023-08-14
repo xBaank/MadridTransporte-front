@@ -1,3 +1,5 @@
+import { FavoriteStop, TransportType } from "./Types";
+
 const baseApiUrl = process.env.REACT_APP_BACK_URL as string;
 export const apiUrl = baseApiUrl + "/v1" as string;
 
@@ -41,4 +43,39 @@ export function getLineColorByCodMode(codMode: number): string {
     if (codMode === emtCodMode) return "bg-blue-500";
     if (codMode === busCodMode) return "bg-green-600";
     return "bg-red-800"
+}
+
+export function getCodModeByType(type: TransportType): number {
+    if (type === "metro") return metroCodMode;
+    if (type === "tram") return metroLigeroCodMode;
+    if (type === "train") return trainCodMode;
+    if (type === "emt") return emtCodMode;
+    if (type === "bus") return busCodMode;
+    return 0;
+}
+
+export function getTransportTypeByCodMode(codMode: number): TransportType {
+    if (codMode === metroCodMode) return "metro";
+    if (codMode === metroLigeroCodMode) return "tram";
+    if (codMode === trainCodMode) return "train";
+    if (codMode === emtCodMode) return "emt";
+    if (codMode === busCodMode) return "bus";
+    return "bus"
+}
+
+export function getFavorites(): FavoriteStop[] {
+    const favorites = localStorage.getItem("favorites");
+    if (favorites === null) return [];
+    return JSON.parse(favorites);
+}
+
+
+export function addToFavorites(stop: FavoriteStop) {
+    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]")
+    localStorage.setItem("favorites", JSON.stringify([...favorites, stop]))
+}
+
+export function removeFromFavorites(stop: FavoriteStop) {
+    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]")
+    localStorage.setItem("favorites", JSON.stringify(favorites.filter((favorite: FavoriteStop) => favorite.code !== stop.code)))
 }
