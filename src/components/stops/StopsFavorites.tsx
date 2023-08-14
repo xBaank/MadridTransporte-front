@@ -7,7 +7,7 @@ import { getAllStops } from "./api/Stops";
 import GradeIcon from '@mui/icons-material/Grade';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-export default function FavoritesStopsComponent() {
+export default function StopsFavorites() {
     const [stops, setStops] = useState<Stop[]>([]);
     const [allStops, setAllStops] = useState<Stop[]>([]);
     const [favorites, setFavorites] = useState<FavoriteStop[]>([]);
