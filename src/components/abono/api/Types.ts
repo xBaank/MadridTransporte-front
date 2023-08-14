@@ -16,3 +16,8 @@ export type AbonoType = {
         remainingCharges: number;
     }[]
 }
+
+export type FavoriteAbono = {
+    ttpNumber: string;
+    name: string;
+}

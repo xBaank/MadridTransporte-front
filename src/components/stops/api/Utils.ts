@@ -64,18 +64,18 @@ export function getTransportTypeByCodMode(codMode: number): TransportType {
 }
 
 export function getFavorites(): FavoriteStop[] {
-    const favorites = localStorage.getItem("favorites");
+    const favorites = localStorage.getItem("stopsFavorites");
     if (favorites === null) return [];
     return JSON.parse(favorites);
 }
 
 
 export function addToFavorites(stop: FavoriteStop) {
-    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]")
-    localStorage.setItem("favorites", JSON.stringify([...favorites, stop]))
+    const favorites = JSON.parse(localStorage.getItem("stopsFavorites") || "[]")
+    localStorage.setItem("stopsFavorites", JSON.stringify([...favorites, stop]))
 }
 
 export function removeFromFavorites(stop: FavoriteStop) {
-    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]")
-    localStorage.setItem("favorites", JSON.stringify(favorites.filter((favorite: FavoriteStop) => favorite.code !== stop.code)))
+    const favorites = JSON.parse(localStorage.getItem("stopsFavorites") || "[]")
+    localStorage.setItem("stopsFavorites", JSON.stringify(favorites.filter((favorite: FavoriteStop) => favorite.code !== stop.code)))
 }

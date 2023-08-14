@@ -1,0 +1,64 @@
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import GradeIcon from '@mui/icons-material/Grade';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { FavoriteAbono } from "./api/Types";
+import { AbonoIcon, getFavorites, removeFromFavorites } from "./api/Utils";
+
+export default function AbonoFavorites() {
+    const [favorites, setFavorites] = useState<FavoriteAbono[]>([]);
+
+    useEffect(() => {
+        reloadFavorites();
+    }, []);
+
+
+    return AbonosElement(favorites);
+
+    function reloadFavorites() {
+        const favorites = getFavorites();
+        setFavorites(favorites);
+    }
+
+    function handleDeleteFavorite(favorite: FavoriteAbono) {
+        removeFromFavorites(favorite);
+        reloadFavorites();
+    }
+
+    function AbonosElement(abonos: FavoriteAbono[]) {
+        if (abonos.length === 0) return <></>;
+        return (
+            <>
+                <div className="p-3 pl-0 justify-start align-baseline font-bold flex">
+                    <div>Paradas Favoritas</div>
+                    <GradeIcon className="p-1 text-yellow-500" />
+                </div>
+                <ul className="max-w-md divide-y rounded border border-blue-900">
+                    {abonos.map((abono) =>
+                        <li className="p-2 border-b-blue-900 border-blue-900">
+                            <div className="flex items-center space-x-4">
+                                <div className="flex-shrink-0">
+                                    <img className="w-8 h-8 rounded-full" src={AbonoIcon} alt="Logo" />
+                                </div>
+                                <div className="flex-1 items-center min-w-0 overflow-clip">
+                                    <Link className="text-sm truncate " to={""}>
+                                        {abono.name}
+                                    </Link>
+                                </div>
+                                <div className="flex font-bold min-w-0">
+                                    <Link className="text-sm truncate " to={""}>
+                                        {abono.ttpNumber}
+                                    </Link>
+                                </div>
+                                <button onClick={() => handleDeleteFavorite(abono)}>
+                                    <DeleteIcon className=" text-red-500" />
+                                </button>
+                            </div>
+                        </li>
+                    )}
+                </ul>
+            </>
+        );
+    }
+
+}
