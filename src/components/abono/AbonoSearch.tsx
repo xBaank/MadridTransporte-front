@@ -3,6 +3,7 @@ import { InputAdornment, TextField } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import AbonoFavorites from "./AbonosFavorites";
+import { getAbonoRoute } from "./api/Utils";
 
 export default function AbonoSearch() {
     const navigate = useNavigate()
@@ -22,33 +23,34 @@ export default function AbonoSearch() {
             setError("El codigo solo puede contener numeros")
             return
         }
-        navigate(`/abono/${abonoCode}`)
+        navigate(getAbonoRoute(abonoCode))
     }
     return (
-        <form onSubmit={handleSubmit}>
+        <div>
             <div className='grid grid-cols-1 p-5 max-w-md mx-auto justify-center'>
                 <div className=' font-bold text-2xl pb-4'>Buscar Abono</div>
-                <div className='mb-4 grid'>
-                    <TextField
-                        id="StopCode"
-                        name="AbonoCode"
-                        label="Introduzca el numero completo"
-                        onSubmit={() => { console.log("asd") }}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position='end'>
-                                    <Search />
-                                </InputAdornment>
-                            )
-                        }}
-                    />
-                    {
-                        error !== null ? <div className="text-red-500">{error}</div> : null
-                    }
-                </div>
+                <form onSubmit={handleSubmit}>
+                    <div className='mb-4 grid'>
+                        <TextField
+                            id="StopCode"
+                            name="AbonoCode"
+                            label="Introduzca el numero completo"
+                            onSubmit={() => { console.log("asd") }}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position='end'>
+                                        <Search />
+                                    </InputAdornment>
+                                )
+                            }}
+                        />
+                        {
+                            error !== null ? <div className="text-red-500">{error}</div> : null
+                        }
+                    </div>
+                </form>
                 {AbonoFavorites()}
             </div>
-
-        </form>
+        </div>
     )
 }
