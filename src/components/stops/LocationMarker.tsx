@@ -10,8 +10,8 @@ export default function LocationMarker() {
     useMapEvents(
         {
             locationfound: (e) => {
-                map.flyTo(e.latlng, 10);
-                const newCircle = circle ?? L.circle(e.latlng, 10);
+                map.flyTo(e.latlng, 16);
+                const newCircle = circle ?? L.circle(e.latlng, 16);
                 newCircle.setLatLng(e.latlng);
                 setCircle(newCircle);
                 newCircle.addTo(map);

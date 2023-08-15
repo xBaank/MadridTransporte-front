@@ -2,6 +2,7 @@ import { InputAdornment, TextField } from '@mui/material'
 import React, { Fragment, useState } from 'react'
 import { Search } from '@mui/icons-material';
 import AllStopsComponent from './StopsComponent';
+import StopsFavorites from './StopsFavorites';
 
 export default function BusStopSearch() {
     const [query, setQuery] = useState<string>("")
@@ -34,6 +35,7 @@ export default function BusStopSearch() {
                         />
                     </div>
                     {AllStopsComponent(query)}
+                    {StopsFavorites()}
                 </div>
 
             </div>
