@@ -2,6 +2,7 @@ import { Search } from "@mui/icons-material";
 import { InputAdornment, TextField } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import AbonoFavorites from "./AbonosFavorites";
 
 export default function AbonoSearch() {
     const navigate = useNavigate()
@@ -45,6 +46,7 @@ export default function AbonoSearch() {
                         error !== null ? <div className="text-red-500">{error}</div> : null
                     }
                 </div>
+                {AbonoFavorites()}
             </div>
 
         </form>
