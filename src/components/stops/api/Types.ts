@@ -41,6 +41,8 @@ export type Alert = {
 export type FavoriteStop = {
     code: string,
     type: TransportType,
+    name: string,
+    cod_mode: number,
 }
 
 export type TransportType = 'metro' | 'train' | 'emt' | 'bus' | 'tram';

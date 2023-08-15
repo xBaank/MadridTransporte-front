@@ -6,21 +6,22 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { addToFavorites, getFavorites } from './api/Utils';
 import { useEffect, useRef, useState } from 'react';
 import { useTheme } from '@mui/material';
 
-export default function AbonoFavoriteSave({ ttpNumber }: { ttpNumber: string }) {
+export default function FavoriteSave(
+    { comparator, saveF, defaultName }: { comparator: () => boolean, saveF: (name: string) => void, defaultName: string | null }
+) {
     const [open, setOpen] = useState<boolean>(false);
-    const [isFavorite, setIsFavorite] = useState<boolean>(false)
+    const [isFavorite, setIsFavorite] = useState<boolean>(true)
     const name = useRef<TextFieldProps>()
     const theme = useTheme()
     const textColor = theme.palette.mode === 'dark' ? "text-white" : "text-black"
 
     useEffect(() => {
-        getFavorites().some((favorite) => favorite.ttpNumber === ttpNumber) ?
+        comparator() ?
             setIsFavorite(true) : setIsFavorite(false)
-    }, [ttpNumber])
+    }, [comparator])
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -34,7 +35,7 @@ export default function AbonoFavoriteSave({ ttpNumber }: { ttpNumber: string }) 
         const value = name.current?.value as string
         if (value.trim() === "") return
         setOpen(false);
-        addToFavorites({ ttpNumber: ttpNumber, name: value })
+        saveF(value)
         setIsFavorite(true)
     };
 
@@ -48,15 +49,16 @@ export default function AbonoFavoriteSave({ ttpNumber }: { ttpNumber: string }) 
                     <DialogTitle>Añadir a favoritos</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            Pon un nombre para guardar el abono.
+                            Pon un nombre para guardarlo.
                         </DialogContentText>
                         <TextField
                             autoFocus
                             margin="dense"
                             id="name"
-                            label="Nombre abono"
+                            label="Nombre"
                             type="text"
-                            inputProps={{ maxLength: 15 }}
+                            defaultValue={defaultName}
+                            inputProps={{ maxLength: 35 }}
                             fullWidth
                             variant="standard"
                             inputRef={name}

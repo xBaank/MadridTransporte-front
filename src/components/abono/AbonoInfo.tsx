@@ -4,8 +4,8 @@ import { GetAbono } from "./api/Abono"
 import { fold } from "fp-ts/lib/Either"
 import { AbonoType } from "./api/Types"
 import { useTheme } from "@mui/material"
-import { AbonoIcon } from "./api/Utils"
-import AbonoFavoriteSave from "./AbonoFavoriteSave"
+import { AbonoIcon, addToFavorites, getFavorites } from "./api/Utils"
+import FavoriteSave from "../FavoriteSave"
 
 export default function AbonoInfo() {
     const { code } = useParams<{ code: string }>()
@@ -80,7 +80,11 @@ export default function AbonoInfo() {
                         </ul>
                     </div>
                 </div>
-                <AbonoFavoriteSave ttpNumber={abono.ttpNumber} />
+                <FavoriteSave
+                    comparator={() => getFavorites().some((favorite) => favorite.ttpNumber === abono.ttpNumber)}
+                    saveF={(name: string) => addToFavorites({ name: name, ttpNumber: abono.ttpNumber })}
+                    defaultName={null}
+                />
             </div>
         </div>
     )

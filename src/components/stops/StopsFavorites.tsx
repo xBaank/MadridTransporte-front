@@ -53,23 +53,23 @@ export default function StopsFavorites() {
                     <GradeIcon className="p-1 text-yellow-500" />
                 </div>
                 <ul className="max-w-md divide-y rounded border border-blue-900">
-                    {stops.map((stop) =>
+                    {favorites.map((stop) =>
                         <li className="p-2 border-b-blue-900 border-blue-900">
                             <div className="flex items-center space-x-4">
                                 <div className="flex-shrink-0">
                                     <img className="w-8 h-8 rounded-full" src={getIconByCodMode(stop.cod_mode)} alt="Logo" />
                                 </div>
                                 <div className="flex-1 items-center min-w-0 overflow-clip">
-                                    <Link className="text-sm truncate " to={getStopTimesLinkByMode(stop.cod_mode, stop.stop_code.toString())}>
-                                        {stop.stop_name}
+                                    <Link className="text-sm truncate " to={getStopTimesLinkByMode(stop.cod_mode, stop.code.toString())}>
+                                        {stop.name}
                                     </Link>
                                 </div>
                                 <div className="flex font-bold min-w-0">
-                                    <Link className="text-sm truncate " to={getStopTimesLinkByMode(stop.cod_mode, stop.stop_code.toString())}>
-                                        {stop.stop_code}
+                                    <Link className="text-sm truncate " to={getStopTimesLinkByMode(stop.cod_mode, stop.code.toString())}>
+                                        {stop.code}
                                     </Link>
                                 </div>
-                                <button onClick={() => handleDeleteFavorite({ type: getTransportTypeByCodMode(stop.cod_mode), code: stop.stop_code.toString() })}>
+                                <button onClick={() => handleDeleteFavorite({ type: getTransportTypeByCodMode(stop.cod_mode), code: stop.code.toString(), name: "", cod_mode: stop.cod_mode })}>
                                     <DeleteIcon className=" text-red-500" />
                                 </button>
                             </div>
