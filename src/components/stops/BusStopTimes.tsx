@@ -9,7 +9,7 @@ import React from "react";
 import { addToFavorites, getCodModeByType, getFavorites, getIconByCodMode, getLineColorByCodMode } from "./api/Utils";
 import { getAlertsByTransportType } from "./api/Stops";
 import CachedIcon from '@mui/icons-material/Cached';
-import FavoriteSave from "../FavoriteSave";
+import FavoriteSave from "../favorites/FavoriteSave";
 
 export default function BusStopsTimes() {
   const interval = 1000 * 30;

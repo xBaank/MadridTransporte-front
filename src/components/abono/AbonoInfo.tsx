@@ -5,7 +5,7 @@ import { fold } from "fp-ts/lib/Either"
 import { AbonoType } from "./api/Types"
 import { useTheme } from "@mui/material"
 import { AbonoIcon, addToFavorites, getFavorites } from "./api/Utils"
-import FavoriteSave from "../FavoriteSave"
+import FavoriteSave from "../favorites/FavoriteSave"
 
 export default function AbonoInfo() {
     const { code } = useParams<{ code: string }>()
