@@ -4,6 +4,8 @@ import { GetAbono } from "./api/Abono"
 import { fold } from "fp-ts/lib/Either"
 import { AbonoType } from "./api/Types"
 import { useTheme } from "@mui/material"
+import { AbonoIcon, addToFavorites, getFavorites } from "./api/Utils"
+import FavoriteSave from "../favorites/FavoriteSave"
 
 export default function AbonoInfo() {
     const { code } = useParams<{ code: string }>()
@@ -12,6 +14,7 @@ export default function AbonoInfo() {
     const theme = useTheme()
     const textColor = theme.palette.mode === 'dark' ? "text-white" : "text-black"
     const borderColor = theme.palette.mode === 'dark' ? "border-white" : "border-black";
+
 
     useEffect(() => {
         GetAbono(code!).then((abono) => {
@@ -33,7 +36,7 @@ export default function AbonoInfo() {
                 <div className="max-w-sm rounded overflow-hidden shadow-2xl">
                     <div className="px-6 py-4">
                         <div className="flex items-baseline">
-                            <img className="w-8 h-5 mr-3" src="https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons/TTP.jpeg" alt="Tarjeta transporte" />
+                            <img className="w-8 h-5 mr-3" src={AbonoIcon} alt="Tarjeta transporte" />
                             <div className="font-bold text-xl mb-2">{abono.ttpNumber}</div>
                         </div>
                         <ul>
@@ -77,6 +80,11 @@ export default function AbonoInfo() {
                         </ul>
                     </div>
                 </div>
+                <FavoriteSave
+                    comparator={() => getFavorites().some((favorite) => favorite.ttpNumber === abono.ttpNumber)}
+                    saveF={(name: string) => addToFavorites({ name: name, ttpNumber: abono.ttpNumber })}
+                    defaultName={null}
+                />
             </div>
         </div>
     )

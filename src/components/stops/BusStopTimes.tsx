@@ -6,9 +6,10 @@ import { Box, Modal, Typography, useTheme } from '@mui/material';
 import { fold } from "fp-ts/lib/Either";
 import { useInterval } from "usehooks-ts";
 import React from "react";
-import { addToFavorites, getIconByCodMode, getLineColorByCodMode } from "./api/Utils";
+import { addToFavorites, getCodModeByType, getFavorites, getIconByCodMode, getLineColorByCodMode } from "./api/Utils";
 import { getAlertsByTransportType } from "./api/Stops";
 import CachedIcon from '@mui/icons-material/Cached';
+import FavoriteSave from "../favorites/FavoriteSave";
 
 export default function BusStopsTimes() {
   const interval = 1000 * 30;
@@ -19,7 +20,6 @@ export default function BusStopsTimes() {
   const [error, setError] = useState<string>();
   const [errorOnInterval, setErrorOnInterval] = useState<boolean>(false);
   const [open, setOpen] = React.useState(false);
-  const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const theme = useTheme();
@@ -63,14 +63,6 @@ export default function BusStopsTimes() {
     );
   }, [type, code])
 
-  useEffect(() => {
-    const favorites = localStorage.getItem("favorites");
-    if (favorites === null) return;
-    const favoritesArray = JSON.parse(favorites);
-    const isFavorite = favoritesArray.some((favorite: { type: TransportType, code: string }) => favorite.type === type && favorite.code === code);
-    setIsFavorite(isFavorite);
-  }, [code, type])
-
   useEffect(() => { getTimes(); getAlerts() }, [type, code, getTimes, getAlerts]);
   useInterval(() => { getTimes(); if (error !== undefined) setErrorOnInterval(true) }, error ? null : interval);
 
@@ -106,7 +98,11 @@ export default function BusStopsTimes() {
           <ul className="rounded w-full">
             {RenderTimesOrEmpty(times)}
           </ul>
-          {RenderFavorite()}
+          <FavoriteSave
+            comparator={() => getFavorites().some((favorite: { type: TransportType, code: string }) => favorite.type === type && favorite.code === code)}
+            saveF={(name: string) => addToFavorites({ type: type!, code: code!, name: name, cod_mode: getCodModeByType(type!) })}
+            defaultName={stops?.data?.stopName ?? null}
+          />
           {RenderAlerts()}
         </div >
       </>
@@ -138,17 +134,6 @@ export default function BusStopsTimes() {
         </li>
       )
     }
-    )
-  }
-
-  function RenderFavorite() {
-    return (
-      !isFavorite ?
-        <button onClick={() => { addToFavorites({ type: type!, code: code! }); setIsFavorite(true) }} className={`flex justify-around m-auto bg-transparent w-44 border-2 border-yellow-500 hover:bg-yellow-500 ${textColor} font-bold py-2 px-4 rounded mt-5`}>
-          Añadir a favoritos
-        </button>
-        :
-        <></>
     )
   }
 
