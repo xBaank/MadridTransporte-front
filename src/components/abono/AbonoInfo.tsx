@@ -4,21 +4,17 @@ import { GetAbono } from "./api/Abono"
 import { fold } from "fp-ts/lib/Either"
 import { AbonoType } from "./api/Types"
 import { useTheme } from "@mui/material"
-import { AbonoIcon, addToFavorites, getFavorites } from "./api/Utils"
+import { AbonoIcon } from "./api/Utils"
+import AbonoFavoriteSave from "./AbonoFavoriteSave"
 
 export default function AbonoInfo() {
     const { code } = useParams<{ code: string }>()
     const [abono, setAbono] = React.useState<AbonoType>()
     const [error, setError] = React.useState<string | null>(null)
-    const [isFavorite, setIsFavorite] = React.useState<boolean>(false)
     const theme = useTheme()
     const textColor = theme.palette.mode === 'dark' ? "text-white" : "text-black"
     const borderColor = theme.palette.mode === 'dark' ? "border-white" : "border-black";
 
-    useEffect(() => {
-        getFavorites().some((favorite) => favorite.ttpNumber === abono?.ttpNumber) ?
-            setIsFavorite(true) : setIsFavorite(false)
-    }, [abono])
 
     useEffect(() => {
         GetAbono(code!).then((abono) => {
@@ -33,17 +29,6 @@ export default function AbonoInfo() {
     if (abono === undefined) return <div className=" text-center">Cargando...</div>
 
     var options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-
-    function RenderFavorite() {
-        return (
-            !isFavorite && !error ?
-                <button onClick={() => { addToFavorites({ name: "", ttpNumber: abono!.ttpNumber }); setIsFavorite(true) }} className={`flex justify-around m-auto bg-transparent w-44 border-2 border-yellow-500 hover:bg-yellow-500 ${textColor} font-bold py-2 px-4 rounded mt-5`}>
-                    Añadir a favoritos
-                </button>
-                :
-                <></>
-        )
-    }
 
     return (
         <div className={`grid grid-cols-1 p-5 max-w-md mx-auto w-full justify-center`}>
@@ -95,7 +80,7 @@ export default function AbonoInfo() {
                         </ul>
                     </div>
                 </div>
-                {RenderFavorite()}
+                <AbonoFavoriteSave ttpNumber={abono.ttpNumber} />
             </div>
         </div>
     )

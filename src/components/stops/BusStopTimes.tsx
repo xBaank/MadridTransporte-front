@@ -6,7 +6,7 @@ import { Box, Modal, Typography, useTheme } from '@mui/material';
 import { fold } from "fp-ts/lib/Either";
 import { useInterval } from "usehooks-ts";
 import React from "react";
-import { addToFavorites, getIconByCodMode, getLineColorByCodMode } from "./api/Utils";
+import { addToFavorites, getFavorites, getIconByCodMode, getLineColorByCodMode } from "./api/Utils";
 import { getAlertsByTransportType } from "./api/Stops";
 import CachedIcon from '@mui/icons-material/Cached';
 
@@ -64,10 +64,9 @@ export default function BusStopsTimes() {
   }, [type, code])
 
   useEffect(() => {
-    const favorites = localStorage.getItem("favorites");
+    const favorites = getFavorites();
     if (favorites === null) return;
-    const favoritesArray = JSON.parse(favorites);
-    const isFavorite = favoritesArray.some((favorite: { type: TransportType, code: string }) => favorite.type === type && favorite.code === code);
+    const isFavorite = favorites.some((favorite: { type: TransportType, code: string }) => favorite.type === type && favorite.code === code);
     setIsFavorite(isFavorite);
   }, [code, type])
 
