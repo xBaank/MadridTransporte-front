@@ -1,8 +1,5 @@
 import { FavoriteStop, TransportType } from "./Types";
 
-const baseApiUrl = process.env.REACT_APP_BACK_URL as string;
-export const apiUrl = baseApiUrl + "/v1" as string;
-
 const metroCodMode = 4;
 const trainCodMode = 5;
 const emtCodMode = 6;

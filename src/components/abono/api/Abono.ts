@@ -1,6 +1,6 @@
 import { left, right } from "fp-ts/lib/Either";
-import { apiUrl } from "../../../api/api";
 import { AbonoType } from "./Types";
+import { apiUrl } from "../../Urls";
 
 export async function GetAbono(id: string) {
     const response = await fetch(`${apiUrl}/abono/${id}`);

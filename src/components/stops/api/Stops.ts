@@ -1,6 +1,6 @@
 import { Either, left, right } from "fp-ts/lib/Either";
-import { apiUrl } from "../../../api/api";
 import { Alert, Stop, TransportType } from "./Types";
+import { apiUrl } from "../../Urls";
 
 export let allStops: Either<string, Stop[]> | undefined
 getAllStops().then((stops) => allStops = stops)
