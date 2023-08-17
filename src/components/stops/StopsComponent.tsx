@@ -31,25 +31,29 @@ function StopsElement(stopsLinks: StopLink[]) {
     if (stopsLinks.length === 0) return <></>;
     return (
         <ul className="max-w-md divide-y rounded border border-blue-900">
-            {stopsLinks.map((stop) =>
-                <li className="p-2 border-b-blue-900 border-blue-900">
-                    <div className="flex items-center space-x-4">
-                        <div className="flex-shrink-0">
-                            <img className="w-8 h-8 rounded-full" src={stop.iconUrl} alt="Logo" />
-                        </div>
-                        <div className="flex-1 items-center min-w-0 overflow-clip">
-                            <Link className="text-sm truncate " to={stop.url}>
-                                {stop.stop.stop_name}
-                            </Link>
-                        </div>
-                        <div className="flex font-bold min-w-0">
-                            <Link className="text-sm truncate " to={stop.url}>
-                                {stop.stop.stop_code}
-                            </Link>
-                        </div>
-                    </div>
-                </li>
-            )}
+            {stopsLinks.map(StopComponent)}
         </ul>
     );
+}
+
+export function StopComponent(stop: StopLink) {
+    return (
+        <li className="p-2 border-b-blue-900 border-blue-900">
+            <div className="flex items-center space-x-4">
+                <div className="flex-shrink-0">
+                    <img className="w-8 h-8 rounded-full" src={stop.iconUrl} alt="Logo" />
+                </div>
+                <div className="flex-1 items-center min-w-0 overflow-clip">
+                    <Link className="text-sm truncate " to={stop.url}>
+                        {stop.stop.stop_name}
+                    </Link>
+                </div>
+                <div className="flex font-bold min-w-0">
+                    <Link className="text-sm truncate " to={stop.url}>
+                        {stop.stop.stop_code}
+                    </Link>
+                </div>
+            </div>
+        </li>
+    )
 }
