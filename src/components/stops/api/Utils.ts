@@ -1,7 +1,7 @@
 import { FavoriteStop, TransportType } from "./Types";
 
 const metroCodMode = 4;
-const trainCodMode = 5;
+export const trainCodMode = 5;
 const emtCodMode = 6;
 const busCodMode = 8;
 const metroLigeroCodMode = 10;
@@ -24,10 +24,10 @@ export function getIconSvgByCodMode(codMode: number): string {
     return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons-svg/interurban.svg"
 }
 
-export function getStopTimesLinkByMode(codMode: number, stopCode: string): string {
+export function getStopTimesLinkByMode(codMode: number, stopCode: string, originCode: string | null = null): string {
     if (codMode === metroCodMode) return `/stops/metro/${stopCode}/times`;
     if (codMode === metroLigeroCodMode) return `/stops/tram/${stopCode}/times`;
-    if (codMode === trainCodMode) return `/stops/train/${stopCode}/times`;
+    if (codMode === trainCodMode) return originCode === null ? `/stops/train/${stopCode}/destination` : `/stops/train/times/?originStopCode=${originCode}&destinationStopCode=${stopCode}`;
     if (codMode === emtCodMode) return `/stops/emt/${stopCode}/times`;
     if (codMode === busCodMode) return `/stops/bus/${stopCode}/times`;
     return "#"

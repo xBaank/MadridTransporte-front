@@ -6,6 +6,12 @@ export type Stop = {
     stop_lon: number;
 }
 
+export type StopLink = {
+    stop: Stop;
+    url: string;
+    iconUrl: string;
+}
+
 export type StopTimes = {
     data: {
         codMode: number,
@@ -29,6 +35,40 @@ export type StopTimes = {
         }[],
     },
     lastTime: number
+}
+
+export type TrainStopTimes = {
+    data: {
+        actTiempoReal: boolean,
+        peticion: {
+            cdgoEstOrigen: string,
+            cdgoEstDestino: string,
+            fchaViaje: string,
+            horaDesde: string,
+            horaHasta: string,
+            descEstOrigen: string,
+            descEstDestino: string,
+        },
+        horario: {
+            linea: string,
+            lineaEstOrigen: string,
+            lineaEstDestino: string,
+            cdgoTren: string,
+            horaSalida: string,
+            trans: {
+                cdgoEstacion: string,
+                descEstacion: string,
+                horaLlegada: string,
+                horaSalida: string,
+                linea: string,
+                cdgoTren: string,
+            }
+            horaLlegada: string,
+            duracion: string,
+            accesible: boolean,
+        }[],
+    },
+    lastTime: number;
 }
 
 export type Alert = {

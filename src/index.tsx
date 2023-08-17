@@ -12,6 +12,7 @@ import BusStopMap from './components/stops/BusStopMap';
 import Info from './components/info/Info';
 import AbonoSearch from './components/abono/AbonoSearch';
 import AbonoInfo from './components/abono/AbonoInfo';
+import { trainCodMode } from './components/stops/api/Utils';
 
 export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 export const getDesignTokens = (mode: PaletteMode) => ({
@@ -79,11 +80,15 @@ export default function App() {
 const router = createHashRouter([
   {
     path: "/",
-    element: <DefaultElement element={<BusStopSearch />} />,
+    element: <DefaultElement element={<BusStopSearch title={'Buscar parada'} codMode={null} />} />,
   },
   {
     path: "/stops/:type/:code/times",
     element: <DefaultElement element={<BusStopsTimes />} />,
+  },
+  {
+    path: "/stops/train/:code/destination",
+    element: <DefaultElement element={<BusStopSearch title={'Parada destino'} codMode={trainCodMode} />} />,
   },
   {
     path: "/stops/map",
@@ -100,6 +105,10 @@ const router = createHashRouter([
   {
     path: "abono/:code",
     element: <DefaultElement element={<AbonoInfo />} />,
+  },
+  {
+    path: "*",
+    element: <DefaultElement element={<div className='text-center'>Pagina no encontrada</div>} />
   }
 ]);
 
