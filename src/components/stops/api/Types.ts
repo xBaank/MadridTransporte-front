@@ -24,17 +24,19 @@ export type StopTimes = {
             destination: string,
             estimatedArrives: number[],
         }[],
-        incidents: {
-            title: string,
-            description: string,
-            from: string,
-            to: string,
-            cause: string,
-            effect: string,
-            url: string,
-        }[],
+        incidents: Incident[],
     },
     lastTime: number
+}
+
+export type Incident = {
+    title: string,
+    description: string,
+    from: string,
+    to: string,
+    cause: string,
+    effect: string,
+    url: string,
 }
 
 export type TrainStopTimes = {
@@ -55,7 +57,8 @@ export type TrainStopTimes = {
             lineaEstDestino: string,
             cdgoTren: string,
             horaSalida: string,
-            trans: {
+            horaSalidaReal?: string,
+            trans?: {
                 cdgoEstacion: string,
                 descEstacion: string,
                 horaLlegada: string,
@@ -64,6 +67,7 @@ export type TrainStopTimes = {
                 cdgoTren: string,
             }
             horaLlegada: string,
+            horaLlegadaReal?: string,
             duracion: string,
             accesible: boolean,
         }[],

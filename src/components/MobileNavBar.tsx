@@ -12,6 +12,7 @@ export default function MobileNavBar() {
     const theme = useTheme();
     const colorMode = React.useContext(ColorModeContext);
     const [value, setValue] = React.useState('Buscar');
+
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         if (newValue === "Tema") return
         setValue(newValue);

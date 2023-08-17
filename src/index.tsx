@@ -3,17 +3,18 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { createHashRouter, RouterProvider } from 'react-router-dom';
-import BusStopSearch from './components/stops/BusStopSearch';
-import BusStopsTimes from './components/stops/BusStopTimes';
+import BusStopSearch from './components/stops/StopSearch';
+import BusStopsTimes from './components/stops/StopTimes';
 import { createTheme, CssBaseline, PaletteMode, ThemeProvider } from '@mui/material';
 import { blue, grey } from '@mui/material/colors';
 import DefaultElement from './components/DefaultElement';
-import BusStopMap from './components/stops/BusStopMap';
+import BusStopMap from './components/stops/StopMap';
 import Info from './components/info/Info';
 import AbonoSearch from './components/abono/AbonoSearch';
 import AbonoInfo from './components/abono/AbonoInfo';
 import { trainCodMode } from './components/stops/api/Utils';
 import { uniqueId } from 'lodash';
+import TrainStopTimesComponent from './components/stops/train/TrainStopsTimes';
 
 export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 export const getDesignTokens = (mode: PaletteMode) => ({
@@ -90,6 +91,10 @@ const router = createHashRouter([
   {
     path: "/stops/train/:code/destination",
     element: <DefaultElement key={uniqueId()} element={<BusStopSearch title={'Parada destino'} codMode={trainCodMode} />} />,
+  },
+  {
+    path: "/stops/train/times",
+    element: <DefaultElement element={<TrainStopTimesComponent />} />,
   },
   {
     path: "/stops/map",

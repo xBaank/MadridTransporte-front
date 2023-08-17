@@ -1,5 +1,5 @@
 import { Either, left, right } from "fp-ts/lib/Either";
-import { StopTimes, TransportType } from "./Types";
+import { StopTimes, TrainStopTimes, TransportType } from "./Types";
 import { apiUrl } from "../../Urls";
 
 export async function getStopsTimes(type: TransportType, code: string): Promise<Either<string, StopTimes>> {
@@ -9,9 +9,9 @@ export async function getStopsTimes(type: TransportType, code: string): Promise<
     return right(data);
 }
 
-export async function getTrainStopsTimes(originCode: string, destinationCode: string): Promise<Either<string, StopTimes>> {
+export async function getTrainStopsTimes(originCode: string, destinationCode: string): Promise<Either<string, TrainStopTimes>> {
     const response = await fetch(`${apiUrl}/stops/train/times?originStopCode=${originCode}&destinationStopCode=${destinationCode}`);
     if (!response.ok) return left("Error al obtener la parada seleccionada");
-    const data = await response.json() as StopTimes;
+    const data = await response.json() as TrainStopTimes;
     return right(data);
 }

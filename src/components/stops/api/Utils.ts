@@ -27,7 +27,7 @@ export function getIconSvgByCodMode(codMode: number): string {
 export function getStopTimesLinkByMode(codMode: number, stopCode: string, originCode: string | null = null): string {
     if (codMode === metroCodMode) return `/stops/metro/${stopCode}/times`;
     if (codMode === metroLigeroCodMode) return `/stops/tram/${stopCode}/times`;
-    if (codMode === trainCodMode) return originCode === null ? `/stops/train/${stopCode}/destination` : `/stops/train/times/?originStopCode=${originCode}&destinationStopCode=${stopCode}`;
+    if (codMode === trainCodMode) return originCode === null ? `/stops/train/${stopCode}/destination` : `/stops/train/times/?origin=${originCode}&destination=${stopCode}`;
     if (codMode === emtCodMode) return `/stops/emt/${stopCode}/times`;
     if (codMode === busCodMode) return `/stops/bus/${stopCode}/times`;
     return "#"
@@ -65,7 +65,6 @@ export function getFavorites(): FavoriteStop[] {
     if (favorites === null) return [];
     return JSON.parse(favorites);
 }
-
 
 export function addToFavorites(stop: FavoriteStop) {
     const favorites = JSON.parse(localStorage.getItem("stopsFavorites") || "[]")
