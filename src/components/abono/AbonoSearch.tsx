@@ -35,7 +35,6 @@ export default function AbonoSearch() {
                             id="StopCode"
                             name="AbonoCode"
                             label="Introduzca el numero completo"
-                            onSubmit={() => { console.log("asd") }}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position='end'>
