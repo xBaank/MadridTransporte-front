@@ -1,24 +1,33 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
 import { BottomNavigation, BottomNavigationAction, Paper, useTheme } from '@mui/material';
 import MapIcon from '@mui/icons-material/Map';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { Brightness4, Brightness7 } from '@mui/icons-material';
 import { ColorModeContext } from '..';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 
 export default function MobileNavBar() {
     const theme = useTheme();
-    const colorMode = React.useContext(ColorModeContext);
-    const [value, setValue] = React.useState('Buscar');
+    const colorMode = useContext(ColorModeContext);
+    const [value, setValue] = useState('Buscar');
+    const location = useLocation();
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         if (newValue === "Tema") return
         setValue(newValue);
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
+        const path = location.pathname
+        if (path.startsWith("/stops/map")) setValue("Mapa")
+        else if (path.startsWith("/abono")) setValue("Abono")
+        else if (path.startsWith("/info")) setValue("Sobre")
+        else setValue("Buscar")
+    }, [location])
+
+    useEffect(() => {
         localStorage.setItem('theme', theme.palette.mode)
     }, [theme.palette.mode])
 

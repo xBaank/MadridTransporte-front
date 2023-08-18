@@ -10,7 +10,6 @@ export default function FilteredStopsComponent(
     const [stops, setStops] = useState<StopLink[]>([]);
 
     useEffect(() => {
-        console.log(stopLinks.length)
         if (query === "" || query.length < 3) return setStops([]);
 
         const filteredStops = stopLinks.filter((stopLink) =>
