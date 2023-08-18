@@ -6,6 +6,12 @@ export type Stop = {
     stop_lon: number;
 }
 
+export type StopLink = {
+    stop: Stop;
+    url: string;
+    iconUrl: string;
+}
+
 export type StopTimes = {
     data: {
         codMode: number,
@@ -18,17 +24,57 @@ export type StopTimes = {
             destination: string,
             estimatedArrives: number[],
         }[],
-        incidents: {
-            title: string,
-            description: string,
-            from: string,
-            to: string,
-            cause: string,
-            effect: string,
-            url: string,
-        }[],
+        incidents: Incident[],
     },
     lastTime: number
+}
+
+export type Incident = {
+    title: string,
+    description: string,
+    from: string,
+    to: string,
+    cause: string,
+    effect: string,
+    url: string,
+}
+
+export type TrainStopTimes = {
+    data: {
+        actTiempoReal: boolean,
+        peticion: {
+            cdgoEstOrigen: string,
+            cdgoEstDestino: string,
+            fchaViaje: string,
+            horaDesde: string,
+            horaHasta: string,
+            descEstOrigen: string,
+            descEstDestino: string,
+        },
+        horario: {
+            linea: string,
+            lineaEstOrigen: string,
+            lineaEstDestino: string,
+            cdgoTren: string,
+            horaSalida: string,
+            horaSalidaReal?: string,
+            trans?: {
+                cdgoEstacion: string,
+                descEstacion: string,
+                horaLlegada: string,
+                horaLlegadaReal?: string,
+                horaSalida: string,
+                horaSalidaReal?: string,
+                linea: string,
+                cdgoTren: string,
+            }[]
+            horaLlegada: string,
+            horaLlegadaReal?: string,
+            duracion: string,
+            accesible: boolean,
+        }[],
+    },
+    lastTime: number;
 }
 
 export type Alert = {
@@ -43,6 +89,12 @@ export type FavoriteStop = {
     type: TransportType,
     name: string,
     cod_mode: number,
+}
+
+export type TrainFavoriteStop = {
+    originCode: string,
+    destinationCode: string,
+    name: string,
 }
 
 export type TransportType = 'metro' | 'train' | 'emt' | 'bus' | 'tram';

@@ -18,7 +18,7 @@ export default function Info() {
                 <br />
                 <div className="font-bold text-xl mb-2">- Problemas</div>
                 <p>
-                    Si encuentras algun problema, puedes reportarlo <Link className="border-b" to={"https://github.com/xBaank/bus-tracker/issues/new"}>Aqui</Link>
+                    Si encuentras algun problema, puedes reportarlo <Link className="border-b" to={"https://github.com/xBaank/bus-tracker/issues/new/choose"}>Aqui</Link>
                 </p>
 
             </div>
