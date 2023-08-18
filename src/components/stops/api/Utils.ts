@@ -15,6 +15,12 @@ export function getIconByCodMode(codMode: number): string {
     return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons/interurban.png"
 }
 
+export function getUrlByCodMode(codMode: number): string {
+    if (codMode === metroCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/maps/metro.pdf";
+    if (codMode === trainCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/maps/cercanias.pdf";
+    return "#"
+}
+
 export function getIconSvgByCodMode(codMode: number): string {
     if (codMode === metroCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons-svg/metro.svg";
     if (codMode === trainCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons-svg/train.svg";

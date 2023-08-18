@@ -6,11 +6,13 @@ export default function StaticMaps() {
     return (
         <div>
             <div className='grid grid-cols-2 p-5 max-w-md mx-auto content-around place-items-center'>
-                <Map iconLink={getIconByCodMode(metroCodMode)} url={"https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/maps/metro.pdf"} />
-                <Map iconLink={getIconByCodMode(trainCodMode)} url={"https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/maps/cercanias.pdf"} />
+                <Map iconLink={getIconByCodMode(metroCodMode)} url={`/maps/metro`} />
+                <Map iconLink={getIconByCodMode(trainCodMode)} url={`/maps/train`} />
             </div>
+
         </div >
     )
+
 
     function Map({ iconLink, url }: { iconLink: string, url: string }) {
         return (
@@ -21,6 +23,6 @@ export default function StaticMaps() {
                     </div>
                 </div>
             </Link>
-        ) 
+        )
     }
 }

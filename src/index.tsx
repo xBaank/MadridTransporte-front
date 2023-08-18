@@ -16,6 +16,7 @@ import { trainCodMode } from './components/stops/api/Utils';
 import { uniqueId } from 'lodash';
 import TrainStopTimesComponent from './components/stops/train/TrainStopsTimes';
 import StaticMaps from './components/maps/StaticMaps';
+import RenderMap from './components/maps/PdfViewer';
 
 export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 export const getDesignTokens = (mode: PaletteMode) => ({
@@ -104,6 +105,10 @@ const router = createHashRouter([
   {
     path: "/maps",
     element: <DefaultElement element={<StaticMaps />} />,
+  },
+  {
+    path: "/maps/:type",
+    element: <RenderMap />,
   },
   {
     path: "/info",
