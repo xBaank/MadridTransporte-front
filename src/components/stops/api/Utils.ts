@@ -1,6 +1,6 @@
 import { FavoriteStop, TrainFavoriteStop, TransportType } from "./Types";
 
-const metroCodMode = 4;
+export const metroCodMode = 4;
 export const trainCodMode = 5;
 const emtCodMode = 6;
 const busCodMode = 8;

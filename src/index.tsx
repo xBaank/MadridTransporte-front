@@ -15,6 +15,7 @@ import AbonoInfo from './components/abono/AbonoInfo';
 import { trainCodMode } from './components/stops/api/Utils';
 import { uniqueId } from 'lodash';
 import TrainStopTimesComponent from './components/stops/train/TrainStopsTimes';
+import StaticMaps from './components/maps/StaticMaps';
 
 export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 export const getDesignTokens = (mode: PaletteMode) => ({
@@ -99,6 +100,10 @@ const router = createHashRouter([
   {
     path: "/stops/map",
     element: <DefaultElement element={<BusStopMap />} />,
+  },
+  {
+    path: "/maps",
+    element: <DefaultElement element={<StaticMaps />} />,
   },
   {
     path: "/info",
