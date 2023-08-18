@@ -1,4 +1,4 @@
-import { FavoriteStop, TransportType } from "./Types";
+import { FavoriteStop, TrainFavoriteStop, TransportType } from "./Types";
 
 const metroCodMode = 4;
 export const trainCodMode = 5;
@@ -74,4 +74,24 @@ export function addToFavorites(stop: FavoriteStop) {
 export function removeFromFavorites(stop: FavoriteStop) {
     const favorites = JSON.parse(localStorage.getItem("stopsFavorites") || "[]")
     localStorage.setItem("stopsFavorites", JSON.stringify(favorites.filter((favorite: FavoriteStop) => favorite.code !== stop.code)))
+}
+
+export function getTrainFavorites(): TrainFavoriteStop[] {
+    const favorites = localStorage.getItem("trainStopsFavorites");
+    if (favorites === null) return [];
+    return JSON.parse(favorites);
+}
+
+export function addToTrainFavorites(stop: TrainFavoriteStop) {
+    const favorites = JSON.parse(localStorage.getItem("trainStopsFavorites") || "[]")
+    localStorage.setItem("trainStopsFavorites", JSON.stringify([...favorites, stop]))
+}
+
+export function removeFromTrainFavorites(stop: TrainFavoriteStop) {
+    const favorites = JSON.parse(localStorage.getItem("trainStopsFavorites") || "[]")
+    localStorage.setItem("trainStopsFavorites", JSON.stringify(favorites.filter((favorite: TrainFavoriteStop) => favorite.originCode !== stop.originCode && favorite.destinationCode !== stop.destinationCode)))
+}
+
+export function isFavoriteStop(favorite: FavoriteStop | TrainFavoriteStop): favorite is FavoriteStop {
+    return (favorite as FavoriteStop).code !== undefined
 }

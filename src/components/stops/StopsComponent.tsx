@@ -16,7 +16,7 @@ export default function FilteredStopsComponent(
         const filteredStops = stopLinks.filter((stopLink) =>
             (codMode === null || stopLink.stop.cod_mode === codMode)
             &&
-            stopLink.stop.stop_name.toLowerCase().includes(query.toLowerCase())
+            stopLink.stop.stop_name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(query.toLowerCase())
             ||
             stopLink.stop.stop_code.toString().toLowerCase().includes(query.toLowerCase())
         );

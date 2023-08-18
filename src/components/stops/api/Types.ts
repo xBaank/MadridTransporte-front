@@ -62,10 +62,12 @@ export type TrainStopTimes = {
                 cdgoEstacion: string,
                 descEstacion: string,
                 horaLlegada: string,
+                horaLlegadaReal?: string,
                 horaSalida: string,
+                horaSalidaReal?: string,
                 linea: string,
                 cdgoTren: string,
-            }
+            }[]
             horaLlegada: string,
             horaLlegadaReal?: string,
             duracion: string,
@@ -87,6 +89,12 @@ export type FavoriteStop = {
     type: TransportType,
     name: string,
     cod_mode: number,
+}
+
+export type TrainFavoriteStop = {
+    originCode: string,
+    destinationCode: string,
+    name: string,
 }
 
 export type TransportType = 'metro' | 'train' | 'emt' | 'bus' | 'tram';
