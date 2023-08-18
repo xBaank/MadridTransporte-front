@@ -24,7 +24,6 @@ export default function RenderMap() {
                 new Array(numPages),
                 (el, index) => (
                     <Page
-                        width={1920}
                         className={`w-full`}
                         key={`page_${index + 1}`}
                         pageNumber={index + 1}
