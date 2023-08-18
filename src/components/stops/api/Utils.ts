@@ -1,6 +1,6 @@
 import { FavoriteStop, TrainFavoriteStop, TransportType } from "./Types";
 
-const metroCodMode = 4;
+export const metroCodMode = 4;
 export const trainCodMode = 5;
 const emtCodMode = 6;
 const busCodMode = 8;
@@ -13,6 +13,12 @@ export function getIconByCodMode(codMode: number): string {
     if (codMode === busCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons/interurban.png";
     if (codMode === metroLigeroCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons/metro_ligero.png";
     return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons/interurban.png"
+}
+
+export function getUrlByCodMode(codMode: number): string {
+    if (codMode === metroCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/maps/metro.pdf";
+    if (codMode === trainCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/maps/cercanias.pdf";
+    return "#"
 }
 
 export function getIconSvgByCodMode(codMode: number): string {

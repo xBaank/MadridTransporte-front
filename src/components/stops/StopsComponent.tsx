@@ -1,13 +1,16 @@
 /* eslint-disable no-mixed-operators */
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { StopLink } from "./api/Types";
+import { useTheme } from "@mui/material";
 
 
 export default function FilteredStopsComponent(
     { query, stopLinks, codMode }: { query: string, stopLinks: StopLink[], codMode: number | null }
 ) {
     const [stops, setStops] = useState<StopLink[]>([]);
+    const navigate = useNavigate();
+    const theme = useTheme();
 
     useEffect(() => {
         if (query === "" || query.length < 3) return setStops([]);
@@ -24,15 +27,25 @@ export default function FilteredStopsComponent(
     }, [codMode, query, stopLinks]);
 
     return StopsElement(stops);
-}
 
-function StopsElement(stopsLinks: StopLink[]) {
-    if (stopsLinks.length === 0) return <></>;
-    return (
-        <ul className="max-w-md divide-y rounded border border-blue-900">
-            {stopsLinks.map(StopComponent)}
-        </ul>
-    );
+
+    function StopsElement(stopsLinks: StopLink[]) {
+        if (stopsLinks.length === 0) return (
+            <div className="flex justify-between">
+                <button style={{ backgroundColor: theme.palette.text.primary }} className=" p-2 mr-0.5 w-full text-center text-sm font-bold text-white rounded-lg" onClick={() => navigate("/maps")}>
+                    Planos
+                </button>
+                <button style={{ backgroundColor: theme.palette.text.primary }} className=" p-2 ml-0.5 w-full text-center text-sm font-bold text-white rounded-lg" onClick={() => navigate("/stops/map")}>
+                    Mapa
+                </button>
+            </div>
+        )
+        return (
+            <ul className="max-w-md divide-y rounded border border-blue-900">
+                {stopsLinks.map(StopComponent)}
+            </ul>
+        );
+    }
 }
 
 export function StopComponent(stop: StopLink) {
