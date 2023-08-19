@@ -1,9 +1,0 @@
-version: "3.9"
-services:
-  web:
-    image: xbank/bus_tracker_front:latest
-    ports:
-      - "443:443"
-    volumes:
-      - /root/ssl/key.pem:/root/ssl/key.pem
-      - /root/ssl/cert.pem:/root/ssl/cert.pem
