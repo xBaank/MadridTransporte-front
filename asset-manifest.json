@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/bus-tracker-front/static/css/main.18b5ef66.css",
-    "main.js": "/bus-tracker-front/static/js/main.3f7dc55f.js",
-    "static/js/787.136bdeb1.chunk.js": "/bus-tracker-front/static/js/787.136bdeb1.chunk.js",
-    "index.html": "/bus-tracker-front/index.html",
-    "main.18b5ef66.css.map": "/bus-tracker-front/static/css/main.18b5ef66.css.map",
-    "main.3f7dc55f.js.map": "/bus-tracker-front/static/js/main.3f7dc55f.js.map",
-    "787.136bdeb1.chunk.js.map": "/bus-tracker-front/static/js/787.136bdeb1.chunk.js.map"
+    "main.css": "/static/css/main.85434338.css",
+    "main.js": "/static/js/main.f3d87957.js",
+    "static/js/787.88325c93.chunk.js": "/static/js/787.88325c93.chunk.js",
+    "index.html": "/index.html",
+    "main.85434338.css.map": "/static/css/main.85434338.css.map",
+    "main.f3d87957.js.map": "/static/js/main.f3d87957.js.map",
+    "787.88325c93.chunk.js.map": "/static/js/787.88325c93.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.18b5ef66.css",
-    "static/js/main.3f7dc55f.js"
+    "static/css/main.85434338.css",
+    "static/js/main.f3d87957.js"
   ]
 }
