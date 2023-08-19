@@ -16,8 +16,8 @@ export function getIconByCodMode(codMode: number): string {
 }
 
 export function getUrlByCodMode(codMode: number): string {
-    if (codMode === metroCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/maps/metro.pdf";
-    if (codMode === trainCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/maps/cercanias.pdf";
+    if (codMode === metroCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/maps/metro.webp";
+    if (codMode === trainCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/maps/cercanias.webp";
     return "#"
 }
 

@@ -1,13 +1,13 @@
 import React from "react"
-import { getIconByCodMode, metroCodMode, trainCodMode } from "../stops/api/Utils";
+import { getIconByCodMode, getUrlByCodMode, metroCodMode, trainCodMode } from "../stops/api/Utils";
 import { Link } from "react-router-dom";
 
 export default function StaticMaps() {
     return (
         <div>
             <div className='grid grid-cols-2 p-5 max-w-md mx-auto content-around place-items-center'>
-                <Map iconLink={getIconByCodMode(metroCodMode)} url={`/maps/metro`} />
-                <Map iconLink={getIconByCodMode(trainCodMode)} url={`/maps/train`} />
+                <Map iconLink={getIconByCodMode(metroCodMode)} url={getUrlByCodMode(metroCodMode)} />
+                <Map iconLink={getIconByCodMode(trainCodMode)} url={getUrlByCodMode(trainCodMode)} />
             </div>
 
         </div >
