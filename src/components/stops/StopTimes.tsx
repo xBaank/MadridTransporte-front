@@ -11,6 +11,7 @@ import { getAlertsByTransportType } from "./api/Stops";
 import CachedIcon from '@mui/icons-material/Cached';
 import FavoriteSave from "../favorites/FavoriteSave";
 import RenderAlerts from "./Alerts";
+import LoadingSpinner from "../LoadingSpinner";
 
 export default function BusStopsTimes() {
   const interval = 1000 * 30;
@@ -49,7 +50,7 @@ export default function BusStopsTimes() {
 
 
   if (error !== undefined && !errorOnInterval) return <div className="text-center">{error}</div>
-  if (stops === undefined) return <div className="text-center">Cargando...</div>
+  if (stops === undefined) return <LoadingSpinner />
   return RenderTimes(stops);
 
 
