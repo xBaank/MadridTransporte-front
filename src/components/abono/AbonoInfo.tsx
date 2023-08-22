@@ -6,6 +6,7 @@ import { AbonoType } from "./api/Types"
 import { useTheme } from "@mui/material"
 import { AbonoIcon, addToFavorites, getFavorites } from "./api/Utils"
 import FavoriteSave from "../favorites/FavoriteSave"
+import LoadingSpinner from "../LoadingSpinner"
 
 export default function AbonoInfo() {
     const { code } = useParams<{ code: string }>()
@@ -26,7 +27,7 @@ export default function AbonoInfo() {
     }, [code])
 
     if (error !== null) return <div className=" text-center">{error}</div>
-    if (abono === undefined) return <div className=" text-center">Cargando...</div>
+    if (abono === undefined) return <LoadingSpinner />
 
     var options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
 

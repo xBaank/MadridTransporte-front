@@ -11,6 +11,7 @@ import RenderAlerts from "../Alerts";
 import { type } from "@testing-library/user-event/dist/type";
 import { getAlertsByTransportType } from "../api/Stops";
 import FavoriteSave from "../../favorites/FavoriteSave";
+import LoadingSpinner from "../../LoadingSpinner";
 
 export default function TrainStopTimesComponent() {
     const [searchParams] = useSearchParams();
@@ -50,7 +51,7 @@ export default function TrainStopTimesComponent() {
     useEffect(() => { getAlerts() }, [getAlerts]);
 
     if (error !== undefined) return <div className="text-center">{error}</div>
-    if (times === undefined) return <div className="text-center">Cargando...</div>
+    if (times === undefined) return <LoadingSpinner />
     if (times.data === null) return <div className="text-center">No hay tiempos para esta ruta</div>
     return (
         <>
