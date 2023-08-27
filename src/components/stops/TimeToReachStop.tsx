@@ -35,7 +35,7 @@ export default function TimeToReachStop({ stopLocation }: { stopLocation: Coordi
     return <div className="flex justify-center">
         <DirectionsWalkIcon />
         <pre className={`font-bold text-center ${textColor}`}>
-            Llegada a la parada andando: {arrivesFormatted}
+            Llegada a la parada andando: {arrivesFormatted} ({(timeToReachStop.routes[0].distance / 1000).toFixed(2)} km)
         </pre>
     </div>
 }
