@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Alert, StopTimes, TransportType } from "./api/Types";
 import { getStopsTimes } from "./api/Times";
-import { useTheme } from '@mui/material';
 import { fold } from "fp-ts/lib/Either";
 import { useInterval } from "usehooks-ts";
 import React from "react";
@@ -12,6 +11,8 @@ import CachedIcon from '@mui/icons-material/Cached';
 import FavoriteSave from "../favorites/FavoriteSave";
 import RenderAlerts from "./Alerts";
 import LoadingSpinner from "../LoadingSpinner";
+import TimeToReachStop from "./TimeToReachStop";
+import useColor, { useBorderColor } from "./Utils";
 
 export default function BusStopsTimes() {
   const interval = 1000 * 30;
@@ -21,9 +22,8 @@ export default function BusStopsTimes() {
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [error, setError] = useState<string>();
   const [errorOnInterval, setErrorOnInterval] = useState<boolean>(false);
-  const theme = useTheme();
-  const textColor = theme.palette.mode === 'dark' ? "text-white" : "text-black";
-  const borderColor = theme.palette.mode === 'dark' ? "border-white" : "border-black";
+  const textColor = useColor()
+  const borderColor = useBorderColor()
 
   const getTimes = useCallback(() => {
     if (type === undefined || code === undefined) return;
@@ -77,9 +77,10 @@ export default function BusStopsTimes() {
               </div>
             </Link>
           </div>
-          <ul className="rounded w-full">
+          <ul className="rounded w-full border-b mb-1">
             {RenderTimesOrEmpty(times)}
           </ul>
+          <TimeToReachStop stopLocation={times.data.coordinates} />
           <FavoriteSave
             comparator={() => getFavorites().some((favorite: { type: TransportType, code: string }) => favorite.type === type && favorite.code === code)}
             saveF={(name: string) => addToFavorites({ type: type!, code: code!, name: name, cod_mode: getCodModeByType(type!) })}

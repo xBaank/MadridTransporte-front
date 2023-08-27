@@ -1,3 +1,5 @@
+import { Coordinates } from "./RouteTypes";
+
 export type Stop = {
     stop_code: number;
     cod_mode: number;
@@ -16,6 +18,7 @@ export type StopTimes = {
     data: {
         codMode: number,
         stopName: string,
+        coordinates: Coordinates,
         arrives: {
             line: string,
             stop: string,
