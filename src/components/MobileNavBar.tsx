@@ -32,7 +32,7 @@ export default function MobileNavBar() {
     }, [theme.palette.mode])
 
     return (
-        <div style={{ position: 'sticky', bottom: 0 }} className='z-50 w-full mt-auto self-end justify-between overflow-clip' >
+        <div className='z-50 w-full mt-auto self-end justify-between overflow-clip sticky bottom-0' >
             <Paper >
                 <BottomNavigation
                     value={value}
