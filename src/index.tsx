@@ -16,7 +16,7 @@ import { trainCodMode } from './components/stops/api/Utils';
 import { uniqueId } from 'lodash';
 import TrainStopTimesComponent from './components/stops/train/TrainStopsTimes';
 import StaticMaps from './components/maps/StaticMaps';
-import { register, unregister } from './serviceWorkerRegistration';
+import { register } from './serviceWorkerRegistration';
 
 export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 export const getDesignTokens = (mode: PaletteMode) => ({
