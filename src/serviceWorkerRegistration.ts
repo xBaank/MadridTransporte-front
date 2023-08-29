@@ -1,4 +1,3 @@
-/*eslint-disable*/
 // This optional code is used to register a service worker.
 // register() is not called by default.
 
@@ -131,6 +130,7 @@ function checkValidServiceWorker(swUrl: string, config?: Config) {
     });
 }
 
+// eslint-disable-next-line no-unused-vars 
 export function unregister() {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.ready
