@@ -128,7 +128,7 @@ export default function BusStopsTimes() {
                 {time.anden !== null ? <pre className={` text-gray-500`}> Anden {time.anden} </pre> : <></>}
               </div>
             </div>
-            <StopTimesSubscribe stopId={code!} type={type!} line={time.line} subscriptions={subscriptions} />
+            <StopTimesSubscribe stopId={code!} type={type!} subscriptions={subscriptions} />
           </div>
         </li>
       )

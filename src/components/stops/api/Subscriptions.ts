@@ -1,5 +1,5 @@
 import { left, right } from "fp-ts/lib/Either";
-import { TransportType } from "./Types";
+import { Subscription, TransportType } from "./Types";
 import { apiUrl } from "../../Urls";
 
 
@@ -10,7 +10,7 @@ export async function getSubscriptions(type: TransportType, stopCode: string, de
     });
     if (result.status === 404) return right(null)
     if (!result.ok) return left("Error al suscribirse");
-    const data = await result.json() as string[];
+    const data = await result.json() as Subscription;
     return right(data);
 }
 

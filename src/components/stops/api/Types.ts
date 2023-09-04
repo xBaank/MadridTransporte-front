@@ -100,4 +100,9 @@ export type TrainFavoriteStop = {
     name: string,
 }
 
+export type Subscription = {
+    stopCodes: string[],
+    codMode: number,
+}
+
 export type TransportType = 'metro' | 'train' | 'emt' | 'bus' | 'tram';

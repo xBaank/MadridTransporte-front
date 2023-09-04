@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { TransportType } from "./api/Types";
+import { Subscription, TransportType } from "./api/Types";
 import { fold } from "fp-ts/lib/Either";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
 import useToken from "./UseToken";
 import { subscribe, unsubscribe } from "./api/Subscriptions";
 
-export default function StopTimesSubscribe({ stopId, type, subscriptions }: { stopId: string, type: TransportType, subscriptions: string[] | null }) {
+export default function StopTimesSubscribe({ stopId, type, subscriptions }: { stopId: string, type: TransportType, subscriptions: Subscription | null }) {
     const token = useToken();
     const [isSubscribed, setIsSubscribed] = useState(false);
 
     useEffect(() => {
         if (subscriptions === null) return;
-        if (subscriptions.map(i => i.split("_")[1]).includes(stopId)) setIsSubscribed(true);
+        if (subscriptions.stopCodes.map(i => i.split("_")[1]).includes(stopId)) setIsSubscribed(true);
     }, [subscriptions, stopId])
 
     const handleSubscription = () => {
