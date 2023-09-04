@@ -1,9 +1,25 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-undef */
+
+const metroCodMode = 4;
+const trainCodMode = 5;
+const emtCodMode = 6;
+const busCodMode = 8;
+const metroLigeroCodMode = 10;
+
+function getStopTimesLinkByMode(codMode, stopCode, originCode) {
+    if (codMode === metroCodMode) return `#/stops/metro/${stopCode}/times`;
+    if (codMode === metroLigeroCodMode) return `#/stops/tram/${stopCode}/times`;
+    if (codMode === trainCodMode) return originCode === null ? `#/stops/train/${stopCode}/destination` : `/stops/train/times/?origin=${originCode}&destination=${stopCode}`;
+    if (codMode === emtCodMode) return `#/stops/emt/${stopCode}/times`;
+    if (codMode === busCodMode) return `#/stops/bus/${stopCode}/times`;
+    return "#"
+}
+
 addEventListener("notificationclick", (event) => {
     const data = event.notification.data;
     event.notification.close();
-    const urlToOpen = new URL(`/stop/${data.stopId}`, self.location.origin).href;
+    const urlToOpen = new URL(getStopTimesLinkByMode(data.codMode, data.simpleStopCode.toString()), self.location.origin).href;
     event.waitUntil(
         clients
             .matchAll({
@@ -51,5 +67,4 @@ messaging.onBackgroundMessage((payload) => {
     };
 
     self.registration.showNotification(notificationTitle, notificationOptions);
-
 });
