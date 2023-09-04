@@ -17,8 +17,6 @@ import { uniqueId } from 'lodash';
 import TrainStopTimesComponent from './components/stops/train/TrainStopsTimes';
 import StaticMaps from './components/maps/StaticMaps';
 import { registerSW } from './serviceWorkerRegistration';
-import { initializeApp } from "firebase/app";
-import { getMessaging, getToken } from "firebase/messaging";
 
 export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 export const getDesignTokens = (mode: PaletteMode) => ({
@@ -128,7 +126,6 @@ const router = createHashRouter([
 
 registerSW();
 requestPermission();
-setupFirebase();
 
 const throwEx = () => { throw new Error("No root element found") }
 const root = ReactDOM.createRoot(document.getElementById('root') ?? throwEx());
@@ -152,35 +149,4 @@ function requestPermission() {
     }
   });
 }
-//Hardcoded config here and in service worker
-function setupFirebase() {
-  const firebaseConfig = {
-    apiKey: "AIzaSyCGbQIXvZnm7yJWCD0nTC0_sJYMv698hkg",
-    authDomain: "bustracker-dev.firebaseapp.com",
-    projectId: "bustracker-dev",
-    storageBucket: "bustracker-dev.appspot.com",
-    messagingSenderId: "79652901486",
-    appId: "1:79652901486:web:c5785d18e787d1fb614c7f",
-    measurementId: "G-E9RR9MY2TL"
-  };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-
-  const messaging = getMessaging(app);
-
-  getToken(messaging, { vapidKey: 'BHtdH_tlhVJDv_RSqffDMAB74rzSd4Cam7Uxq59HDk4_hzdiqc8nQ2CWTCgTw2WWk7B5uwX3FDUPx2gjhusYB-A' }).then((currentToken) => {
-    if (currentToken) {
-      console.log(currentToken);
-      // Send the token to your server and update the UI if necessary
-      // ...
-    } else {
-      // Show permission request UI
-      console.log('No registration token available. Request permission to generate one.');
-      // ...
-    }
-  }).catch((err) => {
-    console.log('An error occurred while retrieving token. ', err);
-    // ...
-  });
-}

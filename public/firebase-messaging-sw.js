@@ -1,5 +1,21 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-undef */
+addEventListener("notificationclick", (event) => {
+    const data = event.notification.data;
+    event.notification.close();
+    const urlToOpen = new URL(`/stop/${data.stopId}`, self.location.origin).href;
+    event.waitUntil(
+        clients
+            .matchAll({
+                type: "window",
+            })
+            .then((clientList) => {
+                if (clients.openWindow) return clients.openWindow(urlToOpen);
+            }),
+    );
+
+});
+
 importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js');
 
@@ -21,14 +37,19 @@ firebase.initializeApp({
 // messages.
 const messaging = firebase.messaging();
 messaging.onBackgroundMessage((payload) => {
-    console.log('[firebase-messaging-sw.js] Received background message ', payload);
+    const stopTime = JSON.parse(payload.data.stopTimes);
+    console.log(
+        '[firebase-messaging-sw.js] Received background message ',
+        stopTime
+    );
     // Customize notification here
-    const notificationTitle = 'Background Message Title';
+    const notificationTitle = `Parada ${stopTime.stopName}`;
     const notificationOptions = {
         body: 'Background Message body.',
-        icon: '/firebase-logo.png'
+        icon: '/firebase-logo.png',
+        data: stopTime
     };
 
-    self.registration.showNotification(notificationTitle,
-        notificationOptions);
+    self.registration.showNotification(notificationTitle, notificationOptions);
+
 });

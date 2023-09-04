@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Alert, StopTimes, TransportType } from "./api/Types";
+import { Alert, StopTimes, Subscription, TransportType } from "./api/Types";
 import { getStopsTimes } from "./api/Times";
 import { fold } from "fp-ts/lib/Either";
 import { useInterval } from "usehooks-ts";
@@ -13,6 +13,9 @@ import RenderAlerts from "./Alerts";
 import LoadingSpinner from "../LoadingSpinner";
 import TimeToReachStop from "./TimeToReachStop";
 import useColor, { useBorderColor } from "./Utils";
+import StopTimesSubscribe from "./StopTimesSubscribe";
+import { getSubscriptions } from "./api/Subscriptions";
+import useToken from "./UseToken";
 
 export default function BusStopsTimes() {
   const interval = 1000 * 30;
@@ -20,6 +23,8 @@ export default function BusStopsTimes() {
   const [stops, setStops] = useState<StopTimes>();
   const [isRotating, setIsRotating] = useState<boolean>(false);
   const [alerts, setAlerts] = useState<Alert[]>([]);
+  const [subscriptions, setSubscriptions] = useState<Subscription | null>(null);
+  const token = useToken();
   const [error, setError] = useState<string>();
   const [errorOnInterval, setErrorOnInterval] = useState<boolean>(false);
   const textColor = useColor()
@@ -44,6 +49,16 @@ export default function BusStopsTimes() {
       )(alerts)
     );
   }, [type, code])
+
+  useEffect(() => {
+    if (type === undefined || code === undefined || token === undefined) return;
+    getSubscriptions(type, code, token).then((subscriptions) =>
+      fold(
+        (error: string) => setError(error),
+        (subscriptions: Subscription | null) => setSubscriptions(subscriptions)
+      )(subscriptions)
+    );
+  }, [type, code, token])
 
   useEffect(() => { getTimes(); getAlerts() }, [type, code, getTimes, getAlerts]);
   useInterval(() => { getTimes(); if (error !== undefined) setErrorOnInterval(true) }, error ? null : interval);
@@ -98,8 +113,8 @@ export default function BusStopsTimes() {
       const arrivesFormatted = time.estimatedArrives.map(i => new Date(i).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
       return (
         <li className="p-2 border-b-blue-900 border-blue-900">
-          <div className="flex items-center flex-wrap">
-            <div className="flex-col min-w-0 ">
+          <div className="flex items-center flex-wrap justify-between">
+            <div className="flex-col min-w-0 max-w-[90%]">
               <div className="flex">
                 <div className={`text-sm font-bold text-center ${getLineColorByCodMode(time.codMode)} text-white w-16 rounded-lg p-1 mr-3`}>
                   {time.line}
@@ -113,6 +128,7 @@ export default function BusStopsTimes() {
                 {time.anden !== null ? <pre className={` text-gray-500`}> Anden {time.anden} </pre> : <></>}
               </div>
             </div>
+            <StopTimesSubscribe stopId={code!} type={type!} line={time.line} subscriptions={subscriptions} />
           </div>
         </li>
       )
