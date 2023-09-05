@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Alert, StopTimes, Subscription, TransportType } from "./api/Types";
+import { Alert, StopTimes, Subscriptions, TransportType } from "./api/Types";
 import { getStopsTimes } from "./api/Times";
 import { fold } from "fp-ts/lib/Either";
 import { useInterval } from "usehooks-ts";
@@ -14,7 +14,7 @@ import LoadingSpinner from "../LoadingSpinner";
 import TimeToReachStop from "./TimeToReachStop";
 import useColor, { useBorderColor } from "./Utils";
 import StopTimesSubscribe from "./StopTimesSubscribe";
-import { getSubscriptions } from "./api/Subscriptions";
+import { getSubscription } from "./api/Subscriptions";
 import useToken from "./UseToken";
 
 export default function BusStopsTimes() {
@@ -23,7 +23,7 @@ export default function BusStopsTimes() {
   const [stops, setStops] = useState<StopTimes>();
   const [isRotating, setIsRotating] = useState<boolean>(false);
   const [alerts, setAlerts] = useState<Alert[]>([]);
-  const [subscriptions, setSubscriptions] = useState<Subscription | null>(null);
+  const [subscription, setSubscription] = useState<Subscriptions | null>(null);
   const token = useToken();
   const [error, setError] = useState<string>();
   const [errorOnInterval, setErrorOnInterval] = useState<boolean>(false);
@@ -52,10 +52,10 @@ export default function BusStopsTimes() {
 
   useEffect(() => {
     if (type === undefined || code === undefined || token === undefined) return;
-    getSubscriptions(type, code, token).then((subscriptions) =>
+    getSubscription(type, token, code).then((subscriptions) =>
       fold(
         (error: string) => setError(error),
-        (subscriptions: Subscription | null) => setSubscriptions(subscriptions)
+        (subscriptions: Subscriptions | null) => setSubscription(subscriptions)
       )(subscriptions)
     );
   }, [type, code, token])
@@ -128,7 +128,15 @@ export default function BusStopsTimes() {
                 {time.anden !== null ? <pre className={` text-gray-500`}> Anden {time.anden} </pre> : <></>}
               </div>
             </div>
-            <StopTimesSubscribe stopId={code!} type={type!} subscriptions={subscriptions} />
+            <StopTimesSubscribe
+              stopId={code!}
+              type={type!}
+              subscription={subscription ?? { stopCode: code!, codMode: getCodModeByType(type!), linesDestinations: [] }}
+              line={{
+                line: time.line,
+                destination: time.destination,
+                codMode: time.codMode
+              }} />
           </div>
         </li>
       )
