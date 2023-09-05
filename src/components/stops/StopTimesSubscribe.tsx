@@ -1,23 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { Subscription, TransportType } from "./api/Types";
+import { LineDestination, Subscriptions, TransportType } from "./api/Types";
 import { fold } from "fp-ts/lib/Either";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
 import useToken from "./UseToken";
 import { subscribe, unsubscribe } from "./api/Subscriptions";
+import { getCodModeByType } from "./api/Utils";
 
-export default function StopTimesSubscribe({ stopId, type, subscriptions }: { stopId: string, type: TransportType, subscriptions: Subscription | null }) {
+export default function StopTimesSubscribe({ stopId, type, subscription, line }: { stopId: string, type: TransportType, subscription: Subscriptions | null, line: LineDestination }) {
     const token = useToken();
     const [isSubscribed, setIsSubscribed] = useState(false);
 
     useEffect(() => {
-        if (subscriptions === null) return;
-        if (subscriptions.stopCodes.map(i => i.split("_")[1]).includes(stopId)) setIsSubscribed(true);
-    }, [subscriptions, stopId])
+        if (subscription === null) return;
+        console.log("Its subscribed");
+        if (subscription.stopCode.split("_")[1] !== stopId) return;
+        console.log("Its subscribed to this stop");
+        console.log(subscription.linesDestinations);
+        console.log(line);
+        if (!subscription.linesDestinations.some(i => i.line === line.line && i.destination === line.destination && i.codMode === line.codMode)) return;
+        console.log("Its subscribed to this line");
+        setIsSubscribed(true);
+    }, [subscription, stopId, line])
 
     const handleSubscription = () => {
         if (token === undefined) return;
-        subscribe(type, stopId, token).then((result) => {
+        if (subscription === null) return;
+        subscribe(type, token, { stopCode: stopId, codMode: getCodModeByType(type), lineDestination: line }).then((result) => {
             fold(
                 (error) => console.log(error),
                 (result) => setIsSubscribed(true)
@@ -27,7 +36,8 @@ export default function StopTimesSubscribe({ stopId, type, subscriptions }: { st
 
     const handleUnsubscription = () => {
         if (token === undefined) return;
-        unsubscribe(type, stopId, token).then((result) => {
+        if (subscription === null) return;
+        unsubscribe(type, token, { stopCode: stopId, codMode: getCodModeByType(type), lineDestination: line }).then((result) => {
             fold(
                 (error) => console.log(error),
                 (result) => setIsSubscribed(false)

@@ -8,7 +8,7 @@ import { fold } from 'fp-ts/lib/Either'
 import { getAllStops } from './api/Stops';
 import { getIconByCodMode, getStopTimesLinkByMode } from './api/Utils';
 import { useParams } from 'react-router-dom';
-
+import AllSubscriptions from './StopsSubscriptions';
 export default function BusStopSearch(
     { title, codMode }: { title: string, codMode: number | null }
 ) {
@@ -81,6 +81,7 @@ export default function BusStopSearch(
                         :
                         <StopsFavorites />
                 }
+                <AllSubscriptions />
             </div>
 
         </div>

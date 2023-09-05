@@ -100,8 +100,23 @@ export type TrainFavoriteStop = {
     name: string,
 }
 
+export type Subscriptions = {
+    stopCode: string,
+    codMode: number,
+    stopName?: string,
+    linesDestinations: LineDestination[]
+}
+
 export type Subscription = {
-    stopCodes: string[],
+    stopCode: string,
+    codMode: number,
+    stopName?: string,
+    lineDestination: LineDestination
+}
+
+export type LineDestination = {
+    line: string,
+    destination: string,
     codMode: number,
 }
 
