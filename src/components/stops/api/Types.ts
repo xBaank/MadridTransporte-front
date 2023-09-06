@@ -104,6 +104,7 @@ export type Subscriptions = {
     stopCode: string,
     codMode: number,
     stopName?: string,
+    simpleStopCode?: string,
     linesDestinations: LineDestination[]
 }
 
@@ -111,6 +112,7 @@ export type Subscription = {
     stopCode: string,
     codMode: number,
     stopName?: string,
+    simpleStopCode?: string,
     lineDestination: LineDestination
 }
 
