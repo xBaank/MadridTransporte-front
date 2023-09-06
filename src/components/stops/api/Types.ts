@@ -15,21 +15,18 @@ export type StopLink = {
 }
 
 export type StopTimes = {
-    data: {
+    codMode: number,
+    stopName: string,
+    coordinates: Coordinates,
+    arrives: {
+        line: string,
+        stop: string,
+        anden: number | null,
         codMode: number,
-        stopName: string,
-        coordinates: Coordinates,
-        arrives: {
-            line: string,
-            stop: string,
-            anden: number | null,
-            codMode: number,
-            destination: string,
-            estimatedArrives: number[],
-        }[],
-        incidents: Incident[],
-    },
-    lastTime: number
+        destination: string,
+        estimatedArrives: number[],
+    }[],
+    incidents: Incident[]
 }
 
 export type Incident = {
@@ -43,41 +40,38 @@ export type Incident = {
 }
 
 export type TrainStopTimes = {
-    data: {
-        actTiempoReal: boolean,
-        peticion: {
-            cdgoEstOrigen: string,
-            cdgoEstDestino: string,
-            fchaViaje: string,
-            horaDesde: string,
-            horaHasta: string,
-            descEstOrigen: string,
-            descEstDestino: string,
-        },
-        horario: {
-            linea: string,
-            lineaEstOrigen: string,
-            lineaEstDestino: string,
-            cdgoTren: string,
-            horaSalida: string,
-            horaSalidaReal?: string,
-            trans?: {
-                cdgoEstacion: string,
-                descEstacion: string,
-                horaLlegada: string,
-                horaLlegadaReal?: string,
-                horaSalida: string,
-                horaSalidaReal?: string,
-                linea: string,
-                cdgoTren: string,
-            }[]
+    actTiempoReal: boolean,
+    peticion: {
+        cdgoEstOrigen: string,
+        cdgoEstDestino: string,
+        fchaViaje: string,
+        horaDesde: string,
+        horaHasta: string,
+        descEstOrigen: string,
+        descEstDestino: string,
+    },
+    horario: {
+        linea: string,
+        lineaEstOrigen: string,
+        lineaEstDestino: string,
+        cdgoTren: string,
+        horaSalida: string,
+        horaSalidaReal?: string,
+        trans?: {
+            cdgoEstacion: string,
+            descEstacion: string,
             horaLlegada: string,
             horaLlegadaReal?: string,
-            duracion: string,
-            accesible: boolean,
-        }[],
-    },
-    lastTime: number;
+            horaSalida: string,
+            horaSalidaReal?: string,
+            linea: string,
+            cdgoTren: string,
+        }[]
+        horaLlegada: string,
+        horaLlegadaReal?: string,
+        duracion: string,
+        accesible: boolean,
+    }[]
 }
 
 export type Alert = {

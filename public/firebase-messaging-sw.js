@@ -69,14 +69,18 @@ messaging.onBackgroundMessage((payload) => {
         stopTime
     );
     // Customize notification here
-    const notificationTitle = `Parada ${stopTime.stopName} - ${stopTime.arrives[0].line}`;
-    const notificationOptions = {
-        body: `${new Date(stopTime.arrives[0].estimatedArrives[0]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ${stopTime.arrives[0].destination}`,
-        icon: getIconByCodMode(stopTime.codMode),
-        data: stopTime,
-        tag: stopTime.stopCode + stopTime.arrives[0].line + stopTime.arrives[0].destination,
-        renotify: true
-    };
+    const notifications = stopTime.arrives.map((arrive) => {
 
-    self.registration.showNotification(notificationTitle, notificationOptions);
+        const notificationTitle = `Parada ${stopTime.stopName} - ${arrive.line}`;
+        const notificationOptions = {
+            body: `${new Date(arrive.estimatedArrives[0]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ${arrive.destination}`,
+            icon: getIconByCodMode(arrive.codMode),
+            data: stopTime,
+            tag: stopTime.stopCode + arrive.line + arrive.destination,
+            renotify: true
+        };
+        return { notificationTitle, notificationOptions }
+    });
+
+    notifications.forEach((notification) => self.registration.showNotification(notification.notificationTitle, notification.notificationOptions));
 });

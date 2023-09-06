@@ -81,8 +81,8 @@ export default function BusStopsTimes() {
       <>
         <div className={`grid grid-cols-1 p-5 max-w-md mx-auto w-full justify-center`}>
           <div className={`flex items-end justify-start mb-3 ${textColor} border-b ${borderColor} pb-2`}>
-            <img className="w-8 h-8 max-md:w-7 max-md:h-7 mr-2 rounded-full" src={getIconByCodMode(times.data.codMode)} alt="Logo" />
-            <div className={`flex items-center whitespace-nowrap max-md:bold max-md:text-sm`}>{times.data.stopName}</div>
+            <img className="w-8 h-8 max-md:w-7 max-md:h-7 mr-2 rounded-full" src={getIconByCodMode(times.codMode)} alt="Logo" />
+            <div className={`flex items-center whitespace-nowrap max-md:bold max-md:text-sm`}>{times.stopName}</div>
             <Link to="#" className="ml-auto pl-2" onClick={() => {
               setIsRotating(true);
               getTimes()
@@ -95,21 +95,21 @@ export default function BusStopsTimes() {
           <ul className="rounded w-full border-b mb-1">
             {RenderTimesOrEmpty(times)}
           </ul>
-          <TimeToReachStop stopLocation={times.data.coordinates} />
+          <TimeToReachStop stopLocation={times.coordinates} />
           <FavoriteSave
             comparator={() => getFavorites().some((favorite: { type: TransportType, code: string }) => favorite.type === type && favorite.code === code)}
             saveF={(name: string) => addToFavorites({ type: type!, code: code!, name: name, cod_mode: getCodModeByType(type!) })}
-            defaultName={stops?.data?.stopName ?? null}
+            defaultName={stops?.stopName ?? null}
           />
-          <RenderAlerts alerts={alerts} incidents={stops?.data?.incidents ?? []} />
+          <RenderAlerts alerts={alerts} incidents={stops?.incidents ?? []} />
         </div >
       </>
     );
   }
 
   function RenderTimesOrEmpty(times: StopTimes) {
-    if (times.data.arrives.length === 0) return <div className="text-center">No hay tiempos de espera</div>
-    return times.data.arrives.map((time) => {
+    if (times.arrives.length === 0) return <div className="text-center">No hay tiempos de espera</div>
+    return times.arrives.map((time) => {
       const arrivesFormatted = time.estimatedArrives.map(i => new Date(i).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
       return (
         <li className="p-2 border-b-blue-900 border-blue-900">
