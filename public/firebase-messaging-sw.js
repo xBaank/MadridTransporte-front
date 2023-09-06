@@ -1,6 +1,8 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-undef */
 
+//Sadly, react have poor support for service workers when working with create-react-app, I couldn't find a way to make it work in localhost whit ts.
+
 const metroCodMode = 4;
 const trainCodMode = 5;
 const emtCodMode = 6;
