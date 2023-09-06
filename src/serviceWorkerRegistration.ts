@@ -23,7 +23,11 @@ type Config = {
   onUpdate?: (registration: ServiceWorkerRegistration) => void;
 };
 
-export function register(config?: Config) {
+export function registerSW(config?: Config) {
+  return register('service-worker.js', config)
+}
+
+function register(file: string, config?: Config) {
   if ('serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
     console.log(process.env.REACT_APP_PUBLIC_URL)
@@ -36,7 +40,7 @@ export function register(config?: Config) {
     }
 
     window.addEventListener('load', () => {
-      const swUrl = `${process.env.REACT_APP_PUBLIC_URL}/service-worker.js`;
+      const swUrl = `${process.env.REACT_APP_PUBLIC_URL}/${file}`;
 
       if (isLocalhost) {
         // This is running on localhost. Let's check if a service worker still exists or not.

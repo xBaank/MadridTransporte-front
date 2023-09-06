@@ -16,7 +16,7 @@ import { trainCodMode } from './components/stops/api/Utils';
 import { uniqueId } from 'lodash';
 import TrainStopTimesComponent from './components/stops/train/TrainStopsTimes';
 import StaticMaps from './components/maps/StaticMaps';
-import { register } from './serviceWorkerRegistration';
+import { registerSW } from './serviceWorkerRegistration';
 
 export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 export const getDesignTokens = (mode: PaletteMode) => ({
@@ -124,7 +124,9 @@ const router = createHashRouter([
   }
 ]);
 
-register();
+registerSW();
+requestPermission();
+
 const throwEx = () => { throw new Error("No root element found") }
 const root = ReactDOM.createRoot(document.getElementById('root') ?? throwEx());
 root.render(<App />);
@@ -135,3 +137,16 @@ root.render(<App />);
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals(console.log);
+
+
+function requestPermission() {
+  console.log('Requesting permission...');
+  Notification.requestPermission().then((permission) => {
+    if (permission === 'granted') {
+      console.log('Notification permission granted.');
+    } else {
+      console.log('Unable to get permission to notify.');
+    }
+  });
+}
+

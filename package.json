@@ -22,6 +22,7 @@
     "@types/react-leaflet": "^3.0.0",
     "@types/react-router-dom": "^5.3.3",
     "dateformat": "^5.0.3",
+    "firebase": "^10.3.0",
     "fp-ts": "^2.16.1",
     "leaflet-easybutton": "^2.4.0",
     "lodash": "^4.17.21",

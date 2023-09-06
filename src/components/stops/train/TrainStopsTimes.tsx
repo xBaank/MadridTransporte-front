@@ -52,14 +52,14 @@ export default function TrainStopTimesComponent() {
 
     if (error !== undefined) return <div className="text-center">{error}</div>
     if (times === undefined) return <LoadingSpinner />
-    if (times.data === null) return <div className="text-center">No hay tiempos para esta ruta</div>
+    if (times === null) return <div className="text-center">No hay tiempos para esta ruta</div>
     return (
         <>
             <div className={`grid grid-cols-1 p-5 max-w-md mx-auto w-full justify-center ${textColor}`}>
                 <div className={`flex items-end justify-start mb-3 border-b ${borderColor} pb-2`}>
                     <img className="w-8 h-8 max-md:w-7 max-md:h-7 mr-2 rounded-full" src={getIconByCodMode(trainCodMode)} alt="Logo" />
                     <div className={`flex items-center whitespace-nowrap max-md:bold max-md:text-sm`}>
-                        {times?.data?.peticion?.descEstOrigen} - {times?.data?.peticion?.descEstDestino}
+                        {times?.peticion?.descEstOrigen} - {times?.peticion?.descEstDestino}
                     </div>
                 </div>
                 <ul>
@@ -69,7 +69,7 @@ export default function TrainStopTimesComponent() {
                         <div className="w-[33%]">Hora llegada</div>
                     </li>
                     {
-                        times?.data?.horario?.map((time, index) =>
+                        times?.horario?.map((time, index) =>
                             !showAll && index >= 5 ?
                                 <></>
                                 :
@@ -133,7 +133,7 @@ export default function TrainStopTimesComponent() {
 
                     comparator={() => getTrainFavorites().some((favorite) => favorite.originCode === origin && favorite.destinationCode === destination)}
                     saveF={(name: string) => addToTrainFavorites({ name: name, originCode: origin!!, destinationCode: destination!! })}
-                    defaultName={`${times.data.peticion.descEstOrigen} - ${times.data.peticion.descEstDestino}`}
+                    defaultName={`${times.peticion.descEstOrigen} - ${times.peticion.descEstDestino}`}
                 />
                 <RenderAlerts alerts={alerts} incidents={[]} />
             </div>
