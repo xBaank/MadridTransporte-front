@@ -13,13 +13,8 @@ export default function StopTimesSubscribe({ stopId, type, subscription, line }:
 
     useEffect(() => {
         if (subscription === null) return;
-        console.log("Its subscribed");
         if (subscription.stopCode.split("_")[1] !== stopId) return;
-        console.log("Its subscribed to this stop");
-        console.log(subscription.linesDestinations);
-        console.log(line);
-        if (!subscription.linesDestinations.some(i => i.line === line.line && i.destination === line.destination && i.codMode === line.codMode)) return;
-        console.log("Its subscribed to this line");
+        if (!subscription.linesDestinations.some(i => i.line === line.line && i.destination === line.destination && i.codMode === line.codMode)) return;;
         setIsSubscribed(true);
     }, [subscription, stopId, line])
 

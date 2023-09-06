@@ -16,6 +16,16 @@ function getStopTimesLinkByMode(codMode, stopCode, originCode) {
     return "#"
 }
 
+function getIconByCodMode(codMode) {
+    if (codMode === metroCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons/metro.png";
+    if (codMode === trainCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons/train.png";
+    if (codMode === emtCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons/emt.png";
+    if (codMode === busCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons/interurban.png";
+    if (codMode === metroLigeroCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons/metro_ligero.png";
+    return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons/interurban.png"
+}
+
+
 addEventListener("notificationclick", (event) => {
     const data = event.notification.data;
     event.notification.close();
@@ -59,11 +69,13 @@ messaging.onBackgroundMessage((payload) => {
         stopTime
     );
     // Customize notification here
-    const notificationTitle = `Parada ${stopTime.stopName}`;
+    const notificationTitle = `Parada ${stopTime.stopName} - ${stopTime.arrives[0].line}`;
     const notificationOptions = {
-        body: 'Background Message body.',
-        icon: '/firebase-logo.png',
-        data: stopTime
+        body: `${new Date(stopTime.arrives[0].estimatedArrives[0]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ${stopTime.arrives[0].destination}`,
+        icon: getIconByCodMode(stopTime.codMode),
+        data: stopTime,
+        tag: stopTime.stopCode + stopTime.arrives[0].line + stopTime.arrives[0].destination,
+        renotify: true
     };
 
     self.registration.showNotification(notificationTitle, notificationOptions);
