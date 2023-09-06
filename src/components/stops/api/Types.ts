@@ -1,7 +1,7 @@
 import { Coordinates } from "./RouteTypes";
 
 export type Stop = {
-    stop_code: number;
+    stop_code: string;
     cod_mode: number;
     stop_name: string;
     stop_lat: number;
