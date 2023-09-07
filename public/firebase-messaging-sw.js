@@ -74,8 +74,10 @@ messaging.onBackgroundMessage((payload) => {
     const notifications = stopTime.arrives.map((arrive) => {
 
         const notificationTitle = `Parada ${stopTime.stopName} - ${arrive.line}`;
+        const minutes = Math.floor((new Date(arrive.estimatedArrives[0]).getTime() - new Date().getTime()) / 60000);
+        //check if minutes is less than 100 
         const notificationOptions = {
-            body: `${new Date(arrive.estimatedArrives[0]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ${arrive.destination}`,
+            body: `${new Date(arrive.estimatedArrives[0]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} ${minutes < 100 ? `(${minutes} min)` : ""} - ${arrive.destination}`,
             icon: getIconByCodMode(arrive.codMode),
             data: stopTime,
             tag: stopTime.stopCode + arrive.line + arrive.destination,

@@ -61,10 +61,10 @@ export default function AllSubscriptions() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="p-1 rounded border border-blue-900 mb-1">
+                            <ul className="max-w-md divide-y rounded mb-1 border border-blue-900">
                                 {
                                     subscription.linesDestinations.map((lineDestination) =>
-                                        <div className="flex items-center space-x-4 my-2">
+                                        <li className="flex items-center space-x-4 p-2  border-blue-900">
                                             <div className={`text-sm font-bold text-center ${getLineColorByCodMode(lineDestination.codMode)} text-white w-16 rounded-lg p-1 `}>
                                                 {lineDestination.line}
                                             </div>
@@ -82,10 +82,10 @@ export default function AllSubscriptions() {
                                             }}>
                                                 <NotificationsOffIcon className=" text-red-600" />
                                             </button>
-                                        </div>
+                                        </li>
                                     )
                                 }
-                            </div>
+                            </ul>
                         </div>
                     )
                 }
