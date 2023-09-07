@@ -6,17 +6,20 @@ import useToken from "./UseToken";
 import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
 import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
 import { Link } from "react-router-dom";
-import { getIconByCodMode, getLineColorByCodMode, getStopTimesLinkByMode, getTransportTypeByCodMode } from "./api/Utils";
+import { getIconByCodMode, getStopTimesLinkByMode, getTransportTypeByCodMode } from "./api/Utils";
+import ErrorMessage from "../Error";
+import Line from "../Line";
 
 export default function AllSubscriptions() {
     const [subscriptions, setSubscriptions] = useState<Subscriptions[] | null>([]);
+    const [error, setError] = useState<string>();
     const token = useToken();
 
     const reloadSubscriptions = useCallback(() => {
         if (token === undefined) return;
         getAllSubscriptions(token).then((subscriptions) =>
             fold(
-                (error: string) => { },
+                (error: string) => setError(error),
                 (subscriptions: Subscriptions[] | null) => setSubscriptions(subscriptions)
             )(subscriptions)
         );
@@ -35,6 +38,8 @@ export default function AllSubscriptions() {
             )(result)
         })
     }
+
+    if (error !== undefined) return <ErrorMessage message={error} />
 
     return RenderSubscriptions()
 
@@ -65,9 +70,7 @@ export default function AllSubscriptions() {
                                 {
                                     subscription.linesDestinations.map((lineDestination) =>
                                         <li className="flex items-center space-x-4 p-2  border-blue-900">
-                                            <div className={`text-sm font-bold text-center ${getLineColorByCodMode(lineDestination.codMode)} text-white w-16 rounded-lg p-1 `}>
-                                                {lineDestination.line}
-                                            </div>
+                                            <Line info={lineDestination} />
                                             <div className="flex-1 items-center min-w-0 overflow-clip">
                                                 <Link className="text-sm truncate " to={getStopTimesLinkByMode(subscription.codMode, subscription.simpleStopCode ?? "")}>
                                                     {lineDestination.destination}

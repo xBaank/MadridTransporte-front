@@ -5,7 +5,7 @@ import { getStopsTimes } from "./api/Times";
 import { fold } from "fp-ts/lib/Either";
 import { useInterval } from "usehooks-ts";
 import React from "react";
-import { addToFavorites, getCodModeByType, getFavorites, getIconByCodMode, getLineColorByCodMode } from "./api/Utils";
+import { addToFavorites, getCodModeByType, getFavorites, getIconByCodMode } from "./api/Utils";
 import { getAlertsByTransportType } from "./api/Stops";
 import CachedIcon from '@mui/icons-material/Cached';
 import FavoriteSave from "../favorites/FavoriteSave";
@@ -16,6 +16,8 @@ import useColor, { useBorderColor } from "./Utils";
 import StopTimesSubscribe from "./StopTimesSubscribe";
 import { getSubscription } from "./api/Subscriptions";
 import useToken from "./UseToken";
+import ErrorMessage from "../Error";
+import Line from "../Line";
 
 export default function BusStopsTimes() {
   const interval = 1000 * 30;
@@ -61,10 +63,9 @@ export default function BusStopsTimes() {
   }, [type, code, token])
 
   useEffect(() => { getTimes(); getAlerts() }, [type, code, getTimes, getAlerts]);
-  useInterval(() => { getTimes(); if (error !== undefined) setErrorOnInterval(true) }, error ? null : interval);
+  useInterval(() => { getTimes(); if (error) setErrorOnInterval(true) }, error ? null : interval);
 
-
-  if (error !== undefined && !errorOnInterval) return <div className="text-center">{error}</div>
+  if (error !== undefined && !errorOnInterval) return <ErrorMessage message={error} />
   if (stops === undefined) return <LoadingSpinner />
   return RenderTimes(stops);
 
@@ -116,9 +117,7 @@ export default function BusStopsTimes() {
           <div className="flex items-center flex-wrap justify-between">
             <div className="flex-col min-w-0 max-w-[90%]">
               <div className="flex">
-                <div className={`text-sm font-bold text-center ${getLineColorByCodMode(time.codMode)} text-white w-16 rounded-lg p-1 mr-3`}>
-                  {time.line}
-                </div>
+                <Line info={time} />
                 <div className={`${textColor}`}>
                   <pre>{arrivesFormatted.join("   ")}</pre>
                 </div>

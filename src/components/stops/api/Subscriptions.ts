@@ -2,6 +2,9 @@ import { left, right } from "fp-ts/lib/Either";
 import { Subscription, Subscriptions, TransportType } from "./Types";
 import { apiUrl } from "../../Urls";
 
+const ErrorSubscription = "Error al obtener las suscripciones";
+const ErrorUnsubscription = "Error al desuscribirse";
+const ErrorLimit = "No puede suscribirse a más paradas";
 
 export async function getSubscription(type: TransportType, deviceToken: string, stopCode: string) {
     const result = await fetch(`${apiUrl}/stops/${type}/times/subscription`, {
@@ -9,7 +12,7 @@ export async function getSubscription(type: TransportType, deviceToken: string, 
         body: JSON.stringify({ deviceToken, stopCode }),
     });
     if (result.status === 404) return right(null)
-    if (!result.ok) return left("Error al suscribirse");
+    if (!result.ok) return left(ErrorSubscription);
     const data = await result.json() as Subscriptions;
     return right(data);
 }
@@ -20,7 +23,7 @@ export async function getAllSubscriptions(deviceToken: string) {
         body: JSON.stringify({ deviceToken }),
     });
     if (result.status === 404) return right(null)
-    if (!result.ok) return left("Error al suscribirse");
+    if (!result.ok) return left(ErrorSubscription);
     const data = await result.json() as Subscriptions[];
     return right(data);
 }
@@ -30,8 +33,8 @@ export async function subscribe(type: TransportType, deviceToken: string, subscr
         method: "POST",
         body: JSON.stringify({ deviceToken, subscription }),
     });
-    if (result.status === 403) return left("No puede suscribirse a más paradas");
-    if (!result.ok) return left("Error al suscribirse");
+    if (result.status === 403) return left(ErrorLimit);
+    if (!result.ok) return left(ErrorUnsubscription);
     return right(undefined);
 }
 
@@ -40,6 +43,6 @@ export async function unsubscribe(type: TransportType, deviceToken: string, subs
         method: "POST",
         body: JSON.stringify({ deviceToken, subscription }),
     });
-    if (!result.ok) return left("Error al desuscribirse");
+    if (!result.ok) return left(ErrorUnsubscription);
     return right(undefined);
 }
