@@ -14,7 +14,7 @@ export default function DefaultElement({ element }: { element: JSX.Element }) {
 
 function RenderElement(element: JSX.Element) {
   const { width } = useWindowDimensions()
-  const isMobile = width < 418
+  const isMobile = width < 693
 
   return (
     <div className={`flex flex-col h-screen`}>
