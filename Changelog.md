@@ -1,6 +1,9 @@
 # Changelog
 
-## 1.0.0-RC
+## 1.0.0-RC2
+- Improve UI
+
+## 1.0.0-RC1
 - Improve UI
 
 ## 1.0.0-RC
