@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.0-RC3
+- Improve UI
+
 ## 1.0.0-RC2
 - Improve UI
 
