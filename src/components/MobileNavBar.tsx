@@ -38,6 +38,7 @@ export default function MobileNavBar() {
                     value={value}
                     onChange={handleChange}
                     style={{ height: 70 }}
+                    className='pb-1'
                 >
                     <BottomNavigationAction
                         component={Link}
