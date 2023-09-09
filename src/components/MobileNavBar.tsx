@@ -33,10 +33,11 @@ export default function MobileNavBar() {
 
     return (
         <div className='z-50 w-full mt-auto self-end justify-between overflow-clip sticky bottom-0' >
-            <Paper >
+            <Paper>
                 <BottomNavigation
                     value={value}
                     onChange={handleChange}
+                    style={{ height: 70 }}
                 >
                     <BottomNavigationAction
                         component={Link}
