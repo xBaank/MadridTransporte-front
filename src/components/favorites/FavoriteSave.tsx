@@ -8,6 +8,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useEffect, useRef, useState } from 'react';
 import { useTheme } from '@mui/material';
+import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
 
 export default function FavoriteSave(
     { comparator, saveF, defaultName }: { comparator: () => boolean, saveF: (name: string) => void, defaultName: string | null }

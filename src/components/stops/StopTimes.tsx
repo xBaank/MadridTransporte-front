@@ -18,6 +18,7 @@ import { getSubscription } from "./api/Subscriptions";
 import useToken from "./UseToken";
 import ErrorMessage from "../Error";
 import Line from "../Line";
+import RenderAffected from "./Affected";
 
 export default function BusStopsTimes() {
   const interval = 1000 * 30;
@@ -103,6 +104,7 @@ export default function BusStopsTimes() {
             defaultName={stops?.stopName ?? null}
           />
           <RenderAlerts alerts={alerts} incidents={stops?.incidents ?? []} />
+          <RenderAffected alerts={alerts} stopId={code!} />
         </div >
       </>
     );
