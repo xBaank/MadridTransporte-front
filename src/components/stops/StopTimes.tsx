@@ -1,13 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Alert, StopTimes, Subscriptions, TransportType } from "./api/Types";
 import { getStopsTimes } from "./api/Times";
 import { fold } from "fp-ts/lib/Either";
 import { useInterval } from "usehooks-ts";
 import React from "react";
-import { addToFavorites, getCodModeByType, getFavorites, getIconByCodMode } from "./api/Utils";
+import { addToFavorites, getCodModeByType, getFavorites, getIconByCodMode, removeFromFavorites } from "./api/Utils";
 import { getAlertsByTransportType } from "./api/Stops";
-import CachedIcon from '@mui/icons-material/Cached';
 import FavoriteSave from "../favorites/FavoriteSave";
 import RenderAlerts from "./Alerts";
 import LoadingSpinner from "../LoadingSpinner";
@@ -24,7 +23,6 @@ export default function BusStopsTimes() {
   const interval = 1000 * 30;
   const { type, code } = useParams<{ type: TransportType, code: string }>();
   const [stops, setStops] = useState<StopTimes>();
-  const [isRotating, setIsRotating] = useState<boolean>(false);
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [subscription, setSubscription] = useState<Subscriptions | null>(null);
   const token = useToken();
@@ -71,40 +69,28 @@ export default function BusStopsTimes() {
   return RenderTimes(stops);
 
 
-  function getRotate() {
-    setTimeout(() => setIsRotating(false), 100);
-    return "transition-all transform rotate-180"
-  }
-
-
-
   function RenderTimes(times: StopTimes) {
     return (
       <>
         <div className={`grid grid-cols-1 p-5 max-w-md mx-auto w-full justify-center`}>
           <div className={`flex items-end justify-start mb-3 ${textColor} border-b ${borderColor} pb-2`}>
             <img className="w-8 h-8 max-md:w-7 max-md:h-7 mr-2 rounded-full" src={getIconByCodMode(times.codMode)} alt="Logo" />
-            <div className={`flex items-center whitespace-nowrap max-md:bold max-md:text-sm`}>{times.stopName}</div>
-            <Link to="#" className="ml-auto pl-2" onClick={() => {
-              setIsRotating(true);
-              getTimes()
-            }}>
-              <div className={`${isRotating ? getRotate() : ""} max-md:hidden`}>
-                <CachedIcon />
-              </div>
-            </Link>
+            <div className={`flex items-center whitespace-nowrap overflow-scroll`}>{times.stopName}</div>
+            <div className="ml-auto flex pl-3 items-baseline">
+              <RenderAffected alerts={alerts} stopId={code!} />
+              <FavoriteSave
+                comparator={() => getFavorites().some((favorite: { type: TransportType, code: string }) => favorite.type === type && favorite.code === code)}
+                saveF={(name: string) => addToFavorites({ type: type!, code: code!, name: name, cod_mode: getCodModeByType(type!) })}
+                deleteF={() => removeFromFavorites({ type: type!, code: code! })}
+                defaultName={stops?.stopName ?? null}
+              />
+            </div>
           </div>
           <ul className="rounded w-full border-b mb-1">
             {RenderTimesOrEmpty(times)}
           </ul>
           <TimeToReachStop stopLocation={times.coordinates} />
-          <FavoriteSave
-            comparator={() => getFavorites().some((favorite: { type: TransportType, code: string }) => favorite.type === type && favorite.code === code)}
-            saveF={(name: string) => addToFavorites({ type: type!, code: code!, name: name, cod_mode: getCodModeByType(type!) })}
-            defaultName={stops?.stopName ?? null}
-          />
           <RenderAlerts alerts={alerts} incidents={stops?.incidents ?? []} />
-          <RenderAffected alerts={alerts} stopId={code!} />
         </div >
       </>
     );
@@ -120,7 +106,7 @@ export default function BusStopsTimes() {
             <div className="flex-col min-w-0 max-w-[90%]">
               <div className="flex">
                 <Line info={time} />
-                <div className={`${textColor}`}>
+                <div className={`${textColor} overflow-scroll`}>
                   <pre>{arrivesFormatted.join("   ")}</pre>
                 </div>
               </div>

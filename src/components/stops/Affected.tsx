@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Alert } from "./api/Types";
 import ErrorIcon from '@mui/icons-material/Error';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { Tooltip } from "@mui/material";
 
 export default function RenderAffected({ alerts, stopId }: { alerts: Alert[], stopId: string }) {
     const [isAffected, setIsAffected] = React.useState<boolean | null>(null);
@@ -14,14 +14,12 @@ export default function RenderAffected({ alerts, stopId }: { alerts: Alert[], st
     if (isAffected === null) return <></>
 
     if (isAffected)
-        return <div className="flex mt-1 font-bold  justify-center text-center items-center m-auto">
-            <ErrorIcon className="text-red-500" />
-            <div className="text-red-500"> Esta parada podria verse afectada</div>
-        </div>
+        return <Tooltip title={`Esta parada podria verse afectada. \n Mire los avisos para saber mas`} enterTouchDelay={0} leaveTouchDelay={4000}>
+            <button>
+                <ErrorIcon className=" text-red-500 mr-2" />
+            </button>
+        </Tooltip>
 
-    return <div className="flex font-bold mt-1  justify-center text-center items-center m-auto">
-        <CheckCircleIcon className="text-green-500" />
-        <div className="text-green-500"> Esta parada no deberia verse afectada</div>
-    </div>
+    return <></>
 
 }

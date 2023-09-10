@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.0-RC6
+- Reworked Favorites buttons and added an icon to know if the stop if affected by an incident.
+
 ## 1.0.0-RC5
 - Improve UI
 

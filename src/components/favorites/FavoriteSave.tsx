@@ -7,18 +7,15 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useEffect, useRef, useState } from 'react';
-import { useTheme } from '@mui/material';
-import StarIcon from '@mui/icons-material/Star';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 export default function FavoriteSave(
-    { comparator, saveF, defaultName }: { comparator: () => boolean, saveF: (name: string) => void, defaultName: string | null }
+    { comparator, saveF, deleteF, defaultName }: { comparator: () => boolean, saveF: (name: string) => void, deleteF: () => void, defaultName: string | null }
 ) {
     const [open, setOpen] = useState<boolean>(false);
     const [isFavorite, setIsFavorite] = useState<boolean>(true)
     const name = useRef<TextFieldProps>()
-    const theme = useTheme()
-    const textColor = theme.palette.mode === 'dark' ? "text-white" : "text-black"
 
     useEffect(() => {
         comparator() ?
@@ -38,41 +35,65 @@ export default function FavoriteSave(
         if (value.trim() === "") return
         setOpen(false);
         saveF(value)
-        setIsFavorite(true)
+        setTimeout(() => {
+            setIsFavorite(true)
+        }, 500);
+    };
+
+    const handleDelete = () => {
+        setOpen(false);
+        deleteF()
+        setTimeout(() => {
+            setIsFavorite(false)
+        }, 500);
     };
 
     return (
-        !isFavorite ?
-            <div>
-                <button onClick={handleClickOpen} className={`flex justify-around m-auto bg-transparent w-44 border-2 border-yellow-500 hover:bg-yellow-500 ${textColor} font-bold py-2 px-4 rounded mt-5`}>
-                    Añadir a favoritos
-                </button>
-                <Dialog open={open} onClose={handleClose}>
-                    <DialogTitle>Añadir a favoritos</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
-                            Pon un nombre para guardarlo.
-                        </DialogContentText>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="name"
-                            label="Nombre"
-                            type="text"
-                            defaultValue={defaultName}
-                            inputProps={{ maxLength: 35 }}
-                            fullWidth
-                            variant="standard"
-                            inputRef={name}
-                        />
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose}>Cancelar</Button>
-                        <Button onClick={handleSave}>Guardar</Button>
-                    </DialogActions>
-                </Dialog>
-            </div>
-            :
-            <></>
+        <div>
+            <button onClick={handleClickOpen} className={`text-red-500 hover:text-red-700`}>
+                {
+                    isFavorite ?
+                        <FavoriteBorderIcon />
+                        :
+                        <FavoriteIcon />
+                }
+            </button>
+
+            {
+                isFavorite ?
+                    <Dialog open={open} onClose={handleClose}>
+                        <DialogTitle>Borrar de favoritos</DialogTitle>
+                        <DialogActions>
+                            <Button onClick={handleClose}>Cancelar</Button>
+                            <Button onClick={handleDelete}>Confirmar</Button>
+                        </DialogActions>
+                    </Dialog>
+                    :
+                    <Dialog open={open} onClose={handleClose}>
+                        <DialogTitle>Añadir a favoritos</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                Pon un nombre para guardarlo.
+                            </DialogContentText>
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="name"
+                                label="Nombre"
+                                type="text"
+                                defaultValue={defaultName}
+                                inputProps={{ maxLength: 35 }}
+                                fullWidth
+                                variant="standard"
+                                inputRef={name}
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleClose}>Cancelar</Button>
+                            <Button onClick={handleSave}>Guardar</Button>
+                        </DialogActions>
+                    </Dialog>
+            }
+        </div>
     );
 }

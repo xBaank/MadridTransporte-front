@@ -5,13 +5,14 @@ import { getTrainStopsTimes } from "../api/Times";
 import { Alert, TrainStopTimes } from "../api/Types";
 import React from "react";
 import { useTheme } from "@mui/material";
-import { addToTrainFavorites, getIconByCodMode, getLineColorByCodMode, getTrainFavorites, trainCodMode } from "../api/Utils";
+import { addToTrainFavorites, getIconByCodMode, getLineColorByCodMode, getTrainFavorites, removeFromTrainFavorites, trainCodMode } from "../api/Utils";
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import RenderAlerts from "../Alerts";
 import { type } from "@testing-library/user-event/dist/type";
 import { getAlertsByTransportType } from "../api/Stops";
 import FavoriteSave from "../../favorites/FavoriteSave";
 import LoadingSpinner from "../../LoadingSpinner";
+import RenderAffected from "../Affected";
 
 export default function TrainStopTimesComponent() {
     const [searchParams] = useSearchParams();
@@ -58,8 +59,17 @@ export default function TrainStopTimesComponent() {
             <div className={`grid grid-cols-1 p-5 max-w-md mx-auto w-full justify-center ${textColor}`}>
                 <div className={`flex items-end justify-start mb-3 border-b ${borderColor} pb-2`}>
                     <img className="w-8 h-8 max-md:w-7 max-md:h-7 mr-2 rounded-full" src={getIconByCodMode(trainCodMode)} alt="Logo" />
-                    <div className={`flex items-center whitespace-nowrap max-md:bold max-md:text-sm`}>
+                    <div className={`flex items-center whitespace-nowrap overflow-scroll`}>
                         {times?.peticion?.descEstOrigen} - {times?.peticion?.descEstDestino}
+                    </div>
+                    <div className="ml-auto flex pl-3 items-baseline">
+                        <RenderAffected alerts={alerts} stopId={origin!} />
+                        <FavoriteSave
+                            comparator={() => getTrainFavorites().some((favorite) => favorite.originCode === origin && favorite.destinationCode === destination)}
+                            saveF={(name: string) => addToTrainFavorites({ name: name, originCode: origin!!, destinationCode: destination!! })}
+                            deleteF={() => { removeFromTrainFavorites({ originCode: origin!!, destinationCode: destination!! }) }}
+                            defaultName={`${times.peticion.descEstOrigen} - ${times.peticion.descEstDestino}`}
+                        />
                     </div>
                 </div>
                 <ul>
@@ -129,12 +139,6 @@ export default function TrainStopTimesComponent() {
                         :
                         <></>
                 }
-                <FavoriteSave
-
-                    comparator={() => getTrainFavorites().some((favorite) => favorite.originCode === origin && favorite.destinationCode === destination)}
-                    saveF={(name: string) => addToTrainFavorites({ name: name, originCode: origin!!, destinationCode: destination!! })}
-                    defaultName={`${times.peticion.descEstOrigen} - ${times.peticion.descEstDestino}`}
-                />
                 <RenderAlerts alerts={alerts} incidents={[]} />
             </div>
         </>

@@ -4,6 +4,7 @@ import { FavoriteStop, TrainFavoriteStop } from "./api/Types";
 import { getFavorites, getIconByCodMode, getStopTimesLinkByMode, getTrainFavorites, isFavoriteStop, removeFromFavorites, removeFromTrainFavorites, trainCodMode } from "./api/Utils";
 import GradeIcon from '@mui/icons-material/Grade';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Dialog, DialogTitle, DialogActions, Button } from "@mui/material";
 
 export default function StopsFavorites() {
     const [favorites, setFavorites] = useState<(FavoriteStop | TrainFavoriteStop)[]>([]);
@@ -11,6 +12,8 @@ export default function StopsFavorites() {
     useEffect(() => {
         reloadFavorites();
     }, []);
+
+
 
     return StopsElement();
 
@@ -34,15 +37,24 @@ export default function StopsFavorites() {
                 </div>
                 <ul className="max-w-md divide-y rounded border border-blue-900">
                     {favorites.map((stop) =>
-                        isFavoriteStop(stop) ? FavoriteStop(stop) : TrainFavoriteStop(stop)
+                        isFavoriteStop(stop) ? <FavoriteStop stop={stop} /> : <TrainFavoriteStop stop={stop} />
                     )}
                 </ul>
             </>
         );
     }
 
-    function FavoriteStop(stop: FavoriteStop) {
-        return (
+    function FavoriteStop({ stop }: { stop: FavoriteStop }) {
+        const [open, setOpen] = useState<boolean>(false);
+        const handleClickOpen = () => {
+            setOpen(true);
+        };
+
+        const handleClose = () => {
+            setOpen(false);
+        };
+
+        return <>
             <li className="p-2 border-b-blue-900 border-blue-900">
                 <div className="flex items-center space-x-4">
                     <div className="flex-shrink-0">
@@ -58,15 +70,22 @@ export default function StopsFavorites() {
                             {stop.code}
                         </Link>
                     </div>
-                    <button onClick={() => handleDeleteFavorite(stop)}>
+                    <button onClick={handleClickOpen}>
                         <DeleteIcon className=" text-red-500" />
                     </button>
                 </div>
             </li>
-        )
+            <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>Borrar {stop.name} de favoritos</DialogTitle>
+                <DialogActions>
+                    <Button onClick={handleClose}>Cancelar</Button>
+                    <Button onClick={() => { handleDeleteFavorite(stop) }}>Confirmar</Button>
+                </DialogActions>
+            </Dialog>
+        </>
     }
 
-    function TrainFavoriteStop(stop: TrainFavoriteStop) {
+    function TrainFavoriteStop({ stop }: { stop: TrainFavoriteStop }) {
         return (
             <li className="p-2 border-b-blue-900 border-blue-900">
                 <div className="flex items-center space-x-4">

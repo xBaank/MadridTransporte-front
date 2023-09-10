@@ -28,7 +28,7 @@ function RenderElement(element: JSX.Element) {
           <>
             <div className="flex flex-row p-4 bg-blue-900">
               <div className='m-auto'>
-                <Link className='text-2xl whitespace-nowrap text-white font-bold align-middle' to={"#"}>
+                <Link className='text-2xl whitespace-nowrap text-white font-bold align-middle' to={"/"}>
                   Madrid Transporte
                 </Link>
               </div>
