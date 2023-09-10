@@ -16,7 +16,7 @@ import { trainCodMode } from './components/stops/api/Utils';
 import { uniqueId } from 'lodash';
 import TrainStopTimesComponent from './components/stops/train/TrainStopsTimes';
 import StaticMaps from './components/maps/StaticMaps';
-import { registerSW } from './serviceWorkerRegistration';
+import { unregister } from './serviceWorkerRegistration';
 
 export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 export const getDesignTokens = (mode: PaletteMode) => ({
@@ -124,7 +124,7 @@ const router = createHashRouter([
   }
 ]);
 
-registerSW();
+unregister();
 requestPermission();
 
 const throwEx = () => { throw new Error("No root element found") }

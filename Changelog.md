@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.0-RC7
+- Disable service worker
+
 ## 1.0.0-RC6
 - Reworked Favorites buttons.
 - Added an icon to know if the stop if affected by an incident.
