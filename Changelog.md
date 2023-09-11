@@ -1,7 +1,7 @@
 # Changelog
 
 ## 1.0.0-RC11
-- Fix an issue that caused the times will not be loaded when alerts were not retreived.
+- Fix an issue that caused times to not be loaded when alerts were not retreived.
 
 ## 1.0.0-RC10
 - Fix abono save favorite button for mobile.
