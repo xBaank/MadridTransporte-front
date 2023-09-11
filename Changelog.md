@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.0-RC9
+- Reworked Favorites buttons in abono.
+
 ## 1.0.0-RC8
 - Fixed a bug that caused the app to delete more than one favorite at a time.
 
