@@ -3,7 +3,7 @@ import { StopTimes, TrainStopTimes, TransportType } from "./Types";
 import { apiUrl } from "../../Urls";
 
 const NotFound = "No se ha encontrado la parada seleccionada";
-const Error = "Error al obtener los tiempo de la parada seleccionada";
+const Error = "Error al obtener los tiempos de la parada seleccionada";
 
 export async function getStopsTimes(type: TransportType, code: string): Promise<Either<string, StopTimes>> {
     const response = await fetch(`${apiUrl}/stops/${type}/${code}/times`);

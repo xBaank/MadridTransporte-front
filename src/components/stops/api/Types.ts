@@ -25,7 +25,7 @@ export type StopTimes = {
         codMode: number,
         destination: string,
         estimatedArrives: number[],
-    }[],
+    }[] | null,
     incidents: Incident[]
 }
 

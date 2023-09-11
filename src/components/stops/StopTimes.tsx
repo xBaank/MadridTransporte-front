@@ -97,6 +97,7 @@ export default function BusStopsTimes() {
   }
 
   function RenderTimesOrEmpty(times: StopTimes) {
+    if (times.arrives === null) return <ErrorMessage message="No se pueden recuperar los tiempos" />
     if (times.arrives.length === 0) return <div className="text-center">No hay tiempos de espera</div>
     return times.arrives.map((time) => {
       const arrivesFormatted = time.estimatedArrives.map(i => new Date(i).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
