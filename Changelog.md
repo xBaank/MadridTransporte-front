@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.0-RC12
+- Show stop name and add possibility to add to favorites even if the times are not available.
+
 ## 1.0.0-RC11
 - Fix an issue that caused times to not be loaded when alerts were not retreived.
 
