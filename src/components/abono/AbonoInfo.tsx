@@ -39,8 +39,8 @@ export default function AbonoInfo() {
                     <div className="px-6 py-4">
                         <div className="flex items-baseline">
                             <img className="w-8 h-5 mr-3" src={AbonoIcon} alt="Tarjeta transporte" />
-                            <div className="font-bold text-xl mb-2">{abono.ttpNumber}</div>
-                            <div className="ml-auto">
+                            <div className="font-bold text-xl mb-2 max-md:text-base overflow-scroll">{abono.ttpNumber}</div>
+                            <div className="ml-auto -mr-4">
                                 <FavoriteSave
                                     comparator={() => getFavorites().some((favorite) => favorite.ttpNumber === abono.ttpNumber)}
                                     saveF={(name: string) => addToFavorites({ name: name, ttpNumber: abono.ttpNumber })}
@@ -71,7 +71,7 @@ export default function AbonoInfo() {
                                         return (
                                             <li className={`p-3 border-b ${borderColor}`}>
                                                 <div>
-                                                    <div className=" font-bold">{contract.contractName}</div>
+                                                    <div className="max-md:text-sm font-bold">{contract.contractName}</div>
                                                     <div className=" text-sm">
                                                         <div>Fecha recarga: {new Date(contract.chargeDate).toLocaleDateString("es-ES", options)}</div>
                                                         <div>Fecha expiración: {new Date(contract.lastUseDate!).toLocaleDateString("es-ES", options)}</div>
