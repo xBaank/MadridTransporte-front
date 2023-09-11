@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.0-RC10
+- Fix abono save favorite button for mobile.
+
 ## 1.0.0-RC9
 - Reworked Favorites buttons in abono.
 
