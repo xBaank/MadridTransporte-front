@@ -79,7 +79,7 @@ export function addToFavorites(stop: FavoriteStop) {
 
 export function removeFromFavorites({ type, code }: { type: TransportType, code: string }) {
     const favorites = JSON.parse(localStorage.getItem("stopsFavorites") || "[]")
-    localStorage.setItem("stopsFavorites", JSON.stringify(favorites.filter((favorite: FavoriteStop) => favorite.code !== code && favorite.type !== type)))
+    localStorage.setItem("stopsFavorites", JSON.stringify(favorites.filter((favorite: FavoriteStop) => favorite.code !== code || favorite.type !== type)))
 }
 
 export function getTrainFavorites(): TrainFavoriteStop[] {
@@ -95,7 +95,7 @@ export function addToTrainFavorites(stop: TrainFavoriteStop) {
 
 export function removeFromTrainFavorites(stop: { originCode: string; destinationCode: string }) {
     const favorites = JSON.parse(localStorage.getItem("trainStopsFavorites") || "[]")
-    localStorage.setItem("trainStopsFavorites", JSON.stringify(favorites.filter((favorite: TrainFavoriteStop) => favorite.originCode !== stop.originCode && favorite.destinationCode !== stop.destinationCode)))
+    localStorage.setItem("trainStopsFavorites", JSON.stringify(favorites.filter((favorite: TrainFavoriteStop) => favorite.originCode !== stop.originCode || favorite.destinationCode !== stop.destinationCode)))
 }
 
 export function isFavoriteStop(favorite: FavoriteStop | TrainFavoriteStop): favorite is FavoriteStop {
