@@ -45,7 +45,7 @@ export default function BusStopsTimes() {
     if (type === undefined || code === undefined) return;
     getAlertsByTransportType(type).then((alerts) =>
       fold(
-        (error: string) => setError(error),
+        (error: string) => setAlerts([]),
         (alerts: Alert[]) => setAlerts(alerts)
       )(alerts)
     );

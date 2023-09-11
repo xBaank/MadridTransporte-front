@@ -13,6 +13,7 @@ import { getAlertsByTransportType } from "../api/Stops";
 import FavoriteSave from "../../favorites/FavoriteSave";
 import LoadingSpinner from "../../LoadingSpinner";
 import RenderAffected from "../Affected";
+import ErrorMessage from "../../Error";
 
 export default function TrainStopTimesComponent() {
     const [searchParams] = useSearchParams();
@@ -43,7 +44,7 @@ export default function TrainStopTimesComponent() {
         if (type === undefined) return;
         getAlertsByTransportType("train").then((alerts) =>
             fold(
-                (error: string) => setError(error),
+                (error: string) => setAlerts([]),
                 (alerts: Alert[]) => setAlerts(alerts)
             )(alerts)
         );
@@ -51,7 +52,7 @@ export default function TrainStopTimesComponent() {
 
     useEffect(() => { getAlerts() }, [getAlerts]);
 
-    if (error !== undefined) return <div className="text-center">{error}</div>
+    if (error !== undefined) return <ErrorMessage message={error} />
     if (times === undefined) return <LoadingSpinner />
     if (times === null) return <div className="text-center">No hay tiempos para esta ruta</div>
     return (
