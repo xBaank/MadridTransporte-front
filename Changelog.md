@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.0-RC8
+- Fixed a bug that caused the app to delete more than one favorite at a time.
+
 ## 1.0.0-RC7
 - Disable service worker
 
