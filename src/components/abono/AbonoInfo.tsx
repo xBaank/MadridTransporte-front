@@ -4,7 +4,7 @@ import { GetAbono } from "./api/Abono"
 import { fold } from "fp-ts/lib/Either"
 import { AbonoType } from "./api/Types"
 import { useTheme } from "@mui/material"
-import { AbonoIcon, addToFavorites, getFavorites } from "./api/Utils"
+import { AbonoIcon, addToFavorites, getFavorites, removeFromFavorites } from "./api/Utils"
 import FavoriteSave from "../favorites/FavoriteSave"
 import LoadingSpinner from "../LoadingSpinner"
 import ErrorMessage from "../Error"
@@ -40,6 +40,14 @@ export default function AbonoInfo() {
                         <div className="flex items-baseline">
                             <img className="w-8 h-5 mr-3" src={AbonoIcon} alt="Tarjeta transporte" />
                             <div className="font-bold text-xl mb-2">{abono.ttpNumber}</div>
+                            <div className="ml-auto">
+                                <FavoriteSave
+                                    comparator={() => getFavorites().some((favorite) => favorite.ttpNumber === abono.ttpNumber)}
+                                    saveF={(name: string) => addToFavorites({ name: name, ttpNumber: abono.ttpNumber })}
+                                    deleteF={() => { removeFromFavorites(abono) }}
+                                    defaultName={null}
+                                />
+                            </div>
                         </div>
                         <ul>
                             {
@@ -82,11 +90,6 @@ export default function AbonoInfo() {
                         </ul>
                     </div>
                 </div>
-                <FavoriteSave
-                    comparator={() => getFavorites().some((favorite) => favorite.ttpNumber === abono.ttpNumber)}
-                    saveF={(name: string) => addToFavorites({ name: name, ttpNumber: abono.ttpNumber })}
-                    defaultName={null}
-                />
             </div>
         </div>
     )
