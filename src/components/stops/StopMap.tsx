@@ -37,7 +37,9 @@ function BusStopMapBase() {
             });
 
 
-            return <Marker key={`${stop.cod_mode}_${stop.stop_code}`} icon={icon} title={stop.stop_name
+            return <Marker eventHandlers={{
+                click: () => { mapRef.current?.flyTo({ lat: stop.stop_lat, lng: stop.stop_lon }, 18) }
+            }} key={`${stop.cod_mode}_${stop.stop_code}`} icon={icon} title={stop.stop_name
             } position={{ lat: stop.stop_lat, lng: stop.stop_lon }} >
                 <Popup keepInView={false} className="pb-8 pl-14 mr-5">
                     <div>
