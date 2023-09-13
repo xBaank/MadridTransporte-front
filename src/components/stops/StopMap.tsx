@@ -4,7 +4,6 @@ import { Stop } from "./api/Types";
 import * as E from 'fp-ts/Either'
 import L, { Map } from "leaflet";
 import { getIconByCodMode, getStopTimesLinkByMode } from "./api/Utils";
-import MarkerClusterGroup from "react-leaflet-cluster";
 import { getAllStops } from "./api/Stops";
 import { Link } from "react-router-dom";
 import LocationMarker from "./LocationMarker";
@@ -38,9 +37,9 @@ function BusStopMapBase() {
             });
 
 
-            return <Marker key={index} icon={icon} title={stop.stop_name
+            return <Marker key={`${stop.cod_mode}_${stop.stop_code}`} icon={icon} title={stop.stop_name
             } position={{ lat: stop.stop_lat, lng: stop.stop_lon }} >
-                <Popup className="pb-8 pl-14 mr-5">
+                <Popup keepInView={false} className="pb-8 pl-14 mr-5">
                     <div>
                         {stop.stop_name}
                     </div>
@@ -56,7 +55,7 @@ function BusStopMapBase() {
 
     function DisplayMarkers() {
         const map = mapRef.current
-        if (!map || map.getZoom() < 14) {
+        if (!map || map.getZoom() < 16) {
             setStops([])
             return null
         }
@@ -87,16 +86,11 @@ function BusStopMapBase() {
             <MapContainer ref={mapRef} className="h-full" center={defaultPosition} preferCanvas={false} zoom={16} maxZoom={18} scrollWheelZoom={true}>
                 <DisplayOnMove />
                 <LocationMarker />
-                <MarkerClusterGroup
-                    chunkedLoading
-                    removeOutsideVisibleBounds
-                >
-                    <TileLayer
-                        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-                    {markers}
-                </MarkerClusterGroup>
+                <TileLayer
+                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                {markers}
             </MapContainer>
             <div style={{ zIndex: 500 }} className="bg-white absolute bottom-24 right-5 rounded-full">
                 <IconButton onClick={() => mapRef.current?.locate()} size="large" >
