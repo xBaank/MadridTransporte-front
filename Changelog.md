@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.0
+- Release version 1.0.0
+
 ## 1.0.0-RC14
 - Center marker when clicked.
 
