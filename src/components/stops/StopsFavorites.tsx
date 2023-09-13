@@ -86,7 +86,15 @@ export default function StopsFavorites() {
     }
 
     function TrainFavoriteStop({ stop }: { stop: TrainFavoriteStop }) {
-        return (
+        const [open, setOpen] = useState<boolean>(false);
+        const handleClickOpen = () => {
+            setOpen(true);
+        };
+
+        const handleClose = () => {
+            setOpen(false);
+        };
+        return <>
             <li className="p-2 border-b-blue-900 border-blue-900">
                 <div className="flex items-center space-x-4">
                     <div className="flex-shrink-0">
@@ -102,12 +110,19 @@ export default function StopsFavorites() {
                             {stop.originCode} - {stop.destinationCode}
                         </Link>
                     </div>
-                    <button onClick={() => handleDeleteFavorite(stop)}>
+                    <button onClick={handleClickOpen}>
                         <DeleteIcon className=" text-red-500" />
                     </button>
                 </div>
             </li>
-        )
+            <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>Borrar {stop.name} de favoritos</DialogTitle>
+                <DialogActions>
+                    <Button onClick={handleClose}>Cancelar</Button>
+                    <Button onClick={() => { handleDeleteFavorite(stop) }}>Confirmar</Button>
+                </DialogActions>
+            </Dialog>
+        </>
     }
 
 }

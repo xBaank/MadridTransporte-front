@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.2
+- Ask to delete on train favorites
+
 ## 1.0.1
 - Disable zoom on mobile
 
