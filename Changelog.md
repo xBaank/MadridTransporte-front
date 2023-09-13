@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.0-RC13
+- Fix map problems.
+
 ## 1.0.0-RC12
 - Show stop name and add possibility to add to favorites even if the times are not available.
 
