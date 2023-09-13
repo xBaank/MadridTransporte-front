@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.1
+- Disable zoom on mobile
+
 ## 1.0.0
 - Release version 1.0.0
 
