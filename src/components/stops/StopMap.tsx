@@ -53,7 +53,7 @@ function BusStopMapBase() {
                 </Popup>
             </Marker >
         })
-    }, [stops])
+    }, [mapRef, stops])
 
     function DisplayMarkers() {
         const map = mapRef.current

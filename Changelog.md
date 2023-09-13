@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.0-RC14
+- Center marker when clicked.
+
 ## 1.0.0-RC13
 - Fix map problems.
 
