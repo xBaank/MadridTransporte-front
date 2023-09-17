@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3
+- Fix an issue that caused the app to be unusable if Firebase messaging was not supported.
+- Use system theme by default.
+
 ## 1.0.2
 - Ask to delete on train favorites
 
