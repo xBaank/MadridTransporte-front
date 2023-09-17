@@ -102,7 +102,7 @@ export default function BusStopsTimes() {
     return times.arrives.map((time) => {
       const arrivesFormatted = time.estimatedArrives.map(i => new Date(i).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
       return (
-        <li className="p-2 border-b-blue-900 border-blue-900">
+        <li key={`${time.line} ${time.destination}`} className="p-2 border-b-blue-900 border-blue-900">
           <div className="flex items-center flex-wrap justify-between">
             <div className="flex-col min-w-0 max-w-[90%]">
               <div className="flex">

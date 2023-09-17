@@ -50,7 +50,7 @@ export default function FilteredStopsComponent(
 
 export function StopComponent(stop: StopLink) {
     return (
-        <li className="p-2 border-b-blue-900 border-blue-900">
+        <li key={stop.url} className="p-2 border-b-blue-900 border-blue-900">
             <div className="flex items-center space-x-4">
                 <div className="flex-shrink-0">
                     <img className="w-8 h-8 rounded-full" src={stop.iconUrl} alt="Logo" />

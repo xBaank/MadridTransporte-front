@@ -39,6 +39,8 @@ export default function AllSubscriptions() {
         })
     }
 
+    if (token === undefined) return <></>
+
     if (error !== undefined) return <ErrorMessage message={error} />
 
     return RenderSubscriptions()

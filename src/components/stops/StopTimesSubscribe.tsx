@@ -40,6 +40,8 @@ export default function StopTimesSubscribe({ stopId, type, subscription, line }:
         })
     }
 
+    if (token === undefined) return <></>
+
     if (isSubscribed) return <button onClick={handleUnsubscription}>
         <NotificationsOffIcon className="text-red-500" />
     </button>

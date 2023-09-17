@@ -49,7 +49,7 @@ export default function RenderAlerts({ alerts, incidents }: { alerts: Alert[], i
                     <ul className={`list-disc ${textColor}`}>
                         {alerts.map((alert) => {
                             return (
-                                <li className="p-2 border-b-blue-900 border-blue-900">
+                                <li key={`${alert.codLine} ${alert.codMode}`} className="p-2 border-b-blue-900 border-blue-900">
                                     {alert.description}
                                 </li>
                             )
@@ -57,7 +57,7 @@ export default function RenderAlerts({ alerts, incidents }: { alerts: Alert[], i
 
                         {incidents.map((incident) => {
                             return (
-                                <li className="p-2 border-b-blue-900 border-blue-900">
+                                <li key={incident.title} className="p-2 border-b-blue-900 border-blue-900">
                                     <div dangerouslySetInnerHTML={{ __html: incident.description.replace(/(<([^>]+)>)/ig, '') }} >
                                     </div>
                                     <Link className="text-sm text-blue-400 border-b mt-3" to={incident.url}>Mas Informacion</Link>
