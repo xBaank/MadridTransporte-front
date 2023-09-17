@@ -18,7 +18,12 @@ export default function Info() {
                 <br />
                 <div className="font-bold text-xl mb-2">- Problemas</div>
                 <p>
-                    Si encuentras algun problema, puedes reportarlo <Link className="border-b" to={"https://github.com/xBaank/bus-tracker/issues/new/choose"}>Aqui</Link>
+                    Si encuentras algun problema, puedes reportarlo <Link className="border-b" to={"https://github.com/xBaank/MadridTransporte/issues/new/choose"}>Aqui</Link>
+                </p>
+                <br />
+                <div className="font-bold text-xl mb-2">- Codigo Fuente</div>
+                <p>
+                    El codigo fuente puedes encontrarlo <Link className="border-b" to={"https://github.com/xBaank/MadridTransporte"}>Aqui</Link>
                 </p>
 
             </div>
