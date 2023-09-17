@@ -17,6 +17,7 @@ import { uniqueId } from 'lodash';
 import TrainStopTimesComponent from './components/stops/train/TrainStopsTimes';
 import StaticMaps from './components/maps/StaticMaps';
 import { unregister } from './serviceWorkerRegistration';
+import { getSystemTheme } from './components/stops/Utils';
 
 export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 export const getDesignTokens = (mode: PaletteMode) => ({
@@ -56,9 +57,9 @@ export const getDesignTokens = (mode: PaletteMode) => ({
 
 
 export default function App() {
-  //get saved theme
-  const savedTheme = localStorage.getItem('theme') as PaletteMode | null;
-  const [mode, setMode] = React.useState<PaletteMode>(savedTheme ?? 'light');
+  let savedTheme = localStorage.getItem('theme') as PaletteMode | null;
+  if (savedTheme !== 'dark' && savedTheme !== 'light') savedTheme = null;
+  const [mode, setMode] = React.useState<PaletteMode>(savedTheme ?? getSystemTheme());
   const colorMode = React.useMemo(
     () => ({
       toggleColorMode: () => {
