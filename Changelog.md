@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.1
+- Fix an issue that caused the map location marker to be created every time the location was found.
+
 ## 1.1.0
 - Add message to say if times are not available and cache is being used.
 
