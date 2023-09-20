@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.4
+- Use status codes properly.
+
 ## 1.0.3
 - Fix an issue that caused the app to be unusable if Firebase messaging was not supported.
 - Use system theme by default.
