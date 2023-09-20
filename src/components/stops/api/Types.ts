@@ -26,7 +26,8 @@ export type StopTimes = {
         destination: string,
         estimatedArrives: number[],
     }[] | null,
-    incidents: Incident[]
+    incidents: Incident[],
+    staled?: boolean //This means its cached but because it couldn't be refreshed
 }
 
 export type Incident = {
@@ -71,7 +72,8 @@ export type TrainStopTimes = {
         horaLlegadaReal?: string,
         duracion: string,
         accesible: boolean,
-    }[]
+    }[],
+    staled?: boolean //This means its cached but because it couldn't be refreshed
 }
 
 export type Alert = {

@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.0
+- Add message to say if times are not available and cache is being used.
+
 ## 1.0.4
 - Use status codes properly.
 

@@ -18,6 +18,7 @@ import useToken from "./UseToken";
 import ErrorMessage from "../Error";
 import Line from "../Line";
 import RenderAffected from "./Affected";
+import StaledMessage from "../Staled";
 
 export default function BusStopsTimes() {
   const interval = 1000 * 30;
@@ -87,6 +88,7 @@ export default function BusStopsTimes() {
             </div>
           </div>
           <ul className="rounded w-full border-b mb-1">
+            {times.staled === true ? <StaledMessage message="Los tiempos de espera podrian estar desactualizados ya que el servidor no responde" /> : <></>}
             {RenderTimesOrEmpty(times)}
           </ul>
           <TimeToReachStop stopLocation={times.coordinates} />

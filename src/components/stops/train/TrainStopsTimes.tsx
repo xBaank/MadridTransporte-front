@@ -14,6 +14,7 @@ import FavoriteSave from "../../favorites/FavoriteSave";
 import LoadingSpinner from "../../LoadingSpinner";
 import RenderAffected from "../Affected";
 import ErrorMessage from "../../Error";
+import StaledMessage from "../../Staled";
 
 export default function TrainStopTimesComponent() {
     const [searchParams] = useSearchParams();
@@ -73,6 +74,7 @@ export default function TrainStopTimesComponent() {
                         />
                     </div>
                 </div>
+                {times.staled === true ? <StaledMessage message="Los tiempos de espera podrian estar desactualizados ya que el servidor no responde" /> : <></>}
                 <ul>
                     <li className="flex justify-between font-bold">
                         <div className="w-[33%]">Linea</div>
