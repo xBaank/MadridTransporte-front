@@ -11,10 +11,11 @@ export default function LocationMarker() {
         {
             locationfound: (e) => {
                 map.flyTo(e.latlng, 16);
+                const circleExists = circle !== undefined;
                 const newCircle = circle ?? L.circle(e.latlng, 16);
                 newCircle.setLatLng(e.latlng);
-                setCircle(newCircle);
-                newCircle.addTo(map);
+                if (!circleExists) setCircle(newCircle);
+                if (!circleExists) newCircle.addTo(map);
             }
         }
     )
