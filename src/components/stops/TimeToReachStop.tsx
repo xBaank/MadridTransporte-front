@@ -10,7 +10,7 @@ export default function TimeToReachStop({ stopLocation }: { stopLocation: Coordi
     const textColor = useColor()
 
     useEffect(() => {
-        navigator.geolocation.getCurrentPosition((position) => {
+        navigator?.geolocation?.getCurrentPosition((position) => {
             setLocation({
                 latitude: position.coords.latitude,
                 longitude: position.coords.longitude
