@@ -28,7 +28,7 @@ export default function Settings() {
                 control={
                     <Switch checked={minutesToDisplay} onChange={handleMinutesDisplayChange} name="gilad" />
                 }
-                label="Ver tiempo de espera en minutos"
+                label="Tiempo en minutos"
             />
         </>
     }
