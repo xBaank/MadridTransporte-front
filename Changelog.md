@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.2.0
+- Added settings page
+- Added option to show time in minutes
 ## 1.1.2
 - Remove webVitals
 
