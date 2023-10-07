@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.2
+- Remove webVitals
+
 ## 1.1.1
 - Fix an issue that caused the map location marker to be created every time the location was found.
 
