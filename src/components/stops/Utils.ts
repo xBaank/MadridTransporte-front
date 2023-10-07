@@ -37,6 +37,6 @@ export function getMinutesDisplay() {
 export function formatTime(time: number) {
     if (!getMinutesDisplay()) return new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     const minutes = Math.floor((time - Date.now()) / 60000);
-    if (minutes > 99) return new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    if (minutes > 60) return new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     return minutes + " min";
 }
