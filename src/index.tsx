@@ -17,6 +17,7 @@ import TrainStopTimesComponent from './components/stops/train/TrainStopsTimes';
 import StaticMaps from './components/maps/StaticMaps';
 import { unregister } from './serviceWorkerRegistration';
 import { getSystemTheme } from './components/stops/Utils';
+import Settings from './components/settings/Settings';
 
 export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 export const getDesignTokens = (mode: PaletteMode) => ({
@@ -109,6 +110,10 @@ const router = createHashRouter([
   {
     path: "/info",
     element: <DefaultElement element={<Info />} />,
+  },
+  {
+    path: "/settings",
+    element: <DefaultElement element={<Settings />} />,
   },
   {
     path: "abono",

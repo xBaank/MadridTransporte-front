@@ -11,7 +11,7 @@ import FavoriteSave from "../favorites/FavoriteSave";
 import RenderAlerts from "./Alerts";
 import LoadingSpinner from "../LoadingSpinner";
 import TimeToReachStop from "./TimeToReachStop";
-import useColor, { useBorderColor } from "./Utils";
+import useColor, { formatTime, useBorderColor } from "./Utils";
 import StopTimesSubscribe from "./StopTimesSubscribe";
 import { getSubscription } from "./api/Subscriptions";
 import useToken from "./UseToken";
@@ -102,7 +102,7 @@ export default function BusStopsTimes() {
     if (times.arrives === null) return <ErrorMessage message="No se pueden recuperar los tiempos" />
     if (times.arrives.length === 0) return <div className="text-center">No hay tiempos de espera</div>
     return times.arrives.map((time) => {
-      const arrivesFormatted = time.estimatedArrives.map(i => new Date(i).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
+      const arrivesFormatted = time.estimatedArrives.map(formatTime)
       return (
         <li key={`${time.line} ${time.destination}`} className="p-2 border-b-blue-900 border-blue-900">
           <div className="flex items-center flex-wrap justify-between">

@@ -3,11 +3,10 @@ import { Link } from 'react-router-dom'
 import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
 import MapIcon from '@mui/icons-material/Map';
 import { IconButton, useTheme } from '@mui/material';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { Brightness4, Brightness7 } from '@mui/icons-material';
 import { ColorModeContext } from '..';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
-
+import SettingsIcon from '@mui/icons-material/Settings';
 
 function ThemeComponent() {
     const theme = useTheme();
@@ -60,10 +59,10 @@ export default function NavBar() {
                         </Link>
                     </li>
                     <li className='mr-5 mt-2'>
-                        <Link to={"/info"}>
+                        <Link to={"/Settings"}>
                             <div className='flex flex-row  hover:text-blue-500'>
-                                <HelpOutlineIcon />
-                                <h3 className='ml-1' >Info </h3>
+                                <SettingsIcon />
+                                <h3 className='ml-1' >Ajustes </h3>
                             </div>
                         </Link>
                     </li>
