@@ -15,7 +15,6 @@ import { trainCodMode } from './components/stops/api/Utils';
 import { uniqueId } from 'lodash';
 import TrainStopTimesComponent from './components/stops/train/TrainStopsTimes';
 import StaticMaps from './components/maps/StaticMaps';
-import { unregister } from './serviceWorkerRegistration';
 import { getSystemTheme } from './components/stops/Utils';
 import Settings from './components/settings/Settings';
 
@@ -129,7 +128,6 @@ const router = createHashRouter([
   }
 ]);
 
-unregister();
 requestPermission();
 
 const throwEx = () => { throw new Error("No root element found") }
@@ -137,6 +135,9 @@ const root = ReactDOM.createRoot(document.getElementById('root') ?? throwEx());
 root.render(<App />);
 
 function requestPermission() {
+  if (!("Notification" in window)) return
+  if (Notification.permission === "granted") return
+
   console.log('Requesting permission...');
   Notification?.requestPermission()?.then((permission) => {
     if (permission === 'granted') {
