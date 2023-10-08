@@ -101,7 +101,6 @@ export default function BusStopsTimes() {
   function RenderTimesOrEmpty(times: StopTimes) {
     if (times.arrives === null) return <ErrorMessage message="No se pueden recuperar los tiempos" />
     if (times.arrives.length === 0) return <div className="text-center">No hay tiempos de espera</div>
-    times.arrives = [...times.arrives, ...times.arrives]
     return times.arrives.map((time) => {
       const arrivesFormatted = time.estimatedArrives.map(FormatTime)
       return (
