@@ -135,6 +135,9 @@ const root = ReactDOM.createRoot(document.getElementById('root') ?? throwEx());
 root.render(<App />);
 
 function requestPermission() {
+  if (!("Notification" in window)) return
+  if (Notification.permission === "granted") return
+
   console.log('Requesting permission...');
   Notification?.requestPermission()?.then((permission) => {
     if (permission === 'granted') {
