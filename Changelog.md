@@ -1,14 +1,17 @@
 # Changelog
+.
+## 1.2.2
+- Fix bug that crashed the app when the browser didn't support Notification API.
 
 ## 1.2.1
-- Fix text too large in settings page
+- Fix text too large in settings page.
 
 ## 1.2.0
-- Added settings page
-- Added option to show time in minutes
+- Added settings page.
+- Added option to show time in minutes.
 
 ## 1.1.2
-- Remove webVitals
+- Remove webVitals.
 
 ## 1.1.1
 - Fix an issue that caused the map location marker to be created every time the location was found.
