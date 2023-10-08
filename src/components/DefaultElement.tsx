@@ -33,7 +33,7 @@ function RenderElement(element: JSX.Element) {
                 </Link>
               </div>
             </div>
-            <div className="overflow-scroll flex flex-col w-full h-full">
+            <div className="overflow-scroll flex flex-col w-full h-full pb-16">
               {element}
             </div>
             <MobileNavBar />

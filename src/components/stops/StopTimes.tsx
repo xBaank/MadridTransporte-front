@@ -11,7 +11,7 @@ import FavoriteSave from "../favorites/FavoriteSave";
 import RenderAlerts from "./Alerts";
 import LoadingSpinner from "../LoadingSpinner";
 import TimeToReachStop from "./TimeToReachStop";
-import useColor, { formatTime, useBorderColor } from "./Utils";
+import { useColor, getMinutesDisplay, useBorderColor, useRoseColor, useAmberColor } from "./Utils";
 import StopTimesSubscribe from "./StopTimesSubscribe";
 import { getSubscription } from "./api/Subscriptions";
 import useToken from "./UseToken";
@@ -101,16 +101,17 @@ export default function BusStopsTimes() {
   function RenderTimesOrEmpty(times: StopTimes) {
     if (times.arrives === null) return <ErrorMessage message="No se pueden recuperar los tiempos" />
     if (times.arrives.length === 0) return <div className="text-center">No hay tiempos de espera</div>
+    times.arrives = [...times.arrives, ...times.arrives]
     return times.arrives.map((time) => {
-      const arrivesFormatted = time.estimatedArrives.map(formatTime)
+      const arrivesFormatted = time.estimatedArrives.map(FormatTime)
       return (
         <li key={`${time.line} ${time.destination}`} className="p-2 border-b-blue-900 border-blue-900">
           <div className="flex items-center flex-wrap justify-between">
             <div className="flex-col min-w-0 max-w-[90%]">
               <div className="flex">
                 <Line info={time} />
-                <div className={`${textColor} overflow-scroll`}>
-                  <pre>{arrivesFormatted.join("   ")}</pre>
+                <div className={`${textColor} gap-5 flex overflow-scroll`}>
+                  {arrivesFormatted}
                 </div>
               </div>
               <div className="flex-col text-xs font-bold min-w-0 overflow-hidden pt-1 w-full items-center mx-auto">
@@ -133,4 +134,22 @@ export default function BusStopsTimes() {
     }
     )
   }
+
+
+  function FormatTime(time: number): JSX.Element {
+    const minutes = Math.floor((time - Date.now()) / 60000);
+
+    let color: string;
+    if (minutes < 5) color = `${useRoseColor()} font-bold`;
+    else if (minutes < 10) color = `${useAmberColor()} font-bold`;
+    else color = `${useColor()} font-bold`;
+
+    const timeFormatted = new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    if (!getMinutesDisplay()) return <pre className={color}>{timeFormatted}</pre>
+
+    if (minutes > 60) return <pre className={color}>{timeFormatted}</pre>
+
+    return <pre className={color}>{minutes <= 0 ? "<<" : `${minutes} min`} </pre>
+  }
+
 }

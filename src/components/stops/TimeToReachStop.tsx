@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Coordinates, Route } from "./api/RouteTypes";
 import DirectionsWalkIcon from '@mui/icons-material/DirectionsWalk';
 import routeTime from "./api/Route";
-import useColor from "./Utils";
+import { useColor } from "./Utils";
 
 export default function TimeToReachStop({ stopLocation }: { stopLocation: Coordinates }) {
     const [timeToReachStop, setTimeToReachStop] = useState<Route>();

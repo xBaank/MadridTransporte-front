@@ -30,40 +30,38 @@ export default function MobileNavBar() {
     }, [theme.palette.mode])
 
     return (
-        <div className='z-50 w-full mt-auto self-end justify-between overflow-clip sticky bottom-0' >
-            <Paper>
-                <BottomNavigation
-                    value={value}
-                    onChange={handleChange}
-                    style={{ height: 70 }}
-                    className='pb-1'
-                >
-                    <BottomNavigationAction
-                        component={Link}
-                        to={"/"}
-                        label="Buscar"
-                        value="Buscar"
-                        icon={<DirectionsBusIcon />} />
-                    <BottomNavigationAction
-                        component={Link}
-                        to={"/stops/map"}
-                        label="Mapa"
-                        value="Mapa"
-                        icon={<MapIcon />} />
-                    <BottomNavigationAction
-                        component={Link}
-                        to={"/abono"}
-                        label="Abono"
-                        value="Abono"
-                        icon={<CreditCardIcon />} />
-                    <BottomNavigationAction
-                        component={Link}
-                        to={"/settings"}
-                        label="Ajustes"
-                        value="Ajustes"
-                        icon={<SettingsIcon />} />
-                </BottomNavigation>
-            </Paper>
-        </div>
+        <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+            <BottomNavigation
+                value={value}
+                onChange={handleChange}
+                style={{ height: 70 }}
+                className='pb-1'
+            >
+                <BottomNavigationAction
+                    component={Link}
+                    to={"/"}
+                    label="Buscar"
+                    value="Buscar"
+                    icon={<DirectionsBusIcon />} />
+                <BottomNavigationAction
+                    component={Link}
+                    to={"/stops/map"}
+                    label="Mapa"
+                    value="Mapa"
+                    icon={<MapIcon />} />
+                <BottomNavigationAction
+                    component={Link}
+                    to={"/abono"}
+                    label="Abono"
+                    value="Abono"
+                    icon={<CreditCardIcon />} />
+                <BottomNavigationAction
+                    component={Link}
+                    to={"/settings"}
+                    label="Ajustes"
+                    value="Ajustes"
+                    icon={<SettingsIcon />} />
+            </BottomNavigation>
+        </Paper>
     )
 }

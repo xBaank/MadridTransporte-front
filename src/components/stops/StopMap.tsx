@@ -84,7 +84,7 @@ function BusStopMapBase() {
     }
 
     return (
-        <div className="h-full w-full z-0">
+        <div className="h-full w-full z-0 pb-2">
             <MapContainer ref={mapRef} className="h-full" center={defaultPosition} preferCanvas={false} zoom={16} maxZoom={18} scrollWheelZoom={true}>
                 <DisplayOnMove />
                 <LocationMarker />
