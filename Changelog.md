@@ -1,5 +1,5 @@
 # Changelog
-.
+
 ## 1.2.2
 - Fix bug that crashed the app when the browser didn't support Notification API.
 
