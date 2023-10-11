@@ -1,8 +1,11 @@
 # Changelog
 
+## 1.3.1
+- Improve performance when searching for stops.
+
 ## 1.3.0
 - Use colors depending on the time left.
-- Fix proble that caused the mobile navigation bar to be displayed incorrectly.
+- Fix problem that caused the mobile navigation bar to be displayed incorrectly.
 
 ## 1.2.2
 - Fix bug that crashed the app when the browser didn't support Notification API.
