@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.2
+- Add service worker.
+- Fix typo.
+
 ## 1.3.1
 - Improve performance when searching for stops.
 
