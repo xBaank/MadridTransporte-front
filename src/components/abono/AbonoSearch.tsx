@@ -28,7 +28,7 @@ export default function AbonoSearch() {
     return (
         <div>
             <div className='grid grid-cols-1 p-5 max-w-md mx-auto justify-center'>
-                <div className=' font-bold text-2xl pb-4'>Buscar Abono</div>
+                <div className=' font-bold text-2xl pb-4'>Buscar abono</div>
                 <form onSubmit={handleSubmit}>
                     <div className='mb-4 grid'>
                         <TextField
