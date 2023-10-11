@@ -21,7 +21,7 @@ export default function FilteredStopsComponent(
             stopLink.stop.stop_name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(query.toLowerCase())
             ||
             stopLink.stop.stop_code.toString().toLowerCase().includes(query.toLowerCase())
-        );
+        ).slice(0, 25);
 
         setStops(filteredStops);
     }, [codMode, query, stopLinks]);
