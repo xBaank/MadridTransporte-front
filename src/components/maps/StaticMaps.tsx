@@ -1,6 +1,4 @@
-import React from "react"
 import { getIconByCodMode, getUrlByCodMode, metroCodMode, trainCodMode } from "../stops/api/Utils";
-import { Link } from "react-router-dom";
 
 export default function StaticMaps() {
     return (
