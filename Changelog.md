@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.8
+- Add nearest stop button.
+- Update location marker when user moves.
+
 ## 1.3.7
 - Fix filter.
 
