@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.5
+- Ask for app update when new version is available.
+- Rename maps to .png.
+
 ## 1.3.4
 - Use jpg format as public folder cant webp doesn't work.
 
