@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.4
+- Use jpg format as public folder cant webp doesn't work.
+
 ## 1.3.3
 - Move files to public folder (this will cache those file and make the app faster)
 

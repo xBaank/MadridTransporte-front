@@ -16,8 +16,8 @@ export function getIconByCodMode(codMode: number): string {
 }
 
 export function getUrlByCodMode(codMode: number): string {
-    if (codMode === metroCodMode) return "/maps/metro.webp";
-    if (codMode === trainCodMode) return "/maps/cercanias.webp";
+    if (codMode === metroCodMode) return "/maps/metro.jpg";
+    if (codMode === trainCodMode) return "/maps/cercanias.jpg";
     return "#"
 }
 
