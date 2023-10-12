@@ -19,12 +19,12 @@ function getStopTimesLinkByMode(codMode, stopCode, originCode) {
 }
 
 function getIconByCodMode(codMode) {
-    if (codMode === metroCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons/metro.png";
-    if (codMode === trainCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons/train.png";
-    if (codMode === emtCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons/emt.png";
-    if (codMode === busCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons/interurban.png";
-    if (codMode === metroLigeroCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons/metro_ligero.png";
-    return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons/interurban.png"
+    if (codMode === metroCodMode) return "/icons/metro.png";
+    if (codMode === trainCodMode) return "/icons/train.png";
+    if (codMode === emtCodMode) return "/icons/emt.png";
+    if (codMode === busCodMode) return "/icons/interurban.png";
+    if (codMode === metroLigeroCodMode) return "/icons/metro_ligero.png";
+    return "/icons/interurban.png"
 }
 
 

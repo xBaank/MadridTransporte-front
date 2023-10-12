@@ -7,27 +7,18 @@ const busCodMode = 8;
 const metroLigeroCodMode = 10;
 
 export function getIconByCodMode(codMode: number): string {
-    if (codMode === metroCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons/metro.png";
-    if (codMode === trainCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons/train.png";
-    if (codMode === emtCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons/emt.png";
-    if (codMode === busCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons/interurban.png";
-    if (codMode === metroLigeroCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons/metro_ligero.png";
-    return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons/interurban.png"
+    if (codMode === metroCodMode) return "/icons/metro.png";
+    if (codMode === trainCodMode) return "/icons/train.png";
+    if (codMode === emtCodMode) return "/icons/emt.png";
+    if (codMode === busCodMode) return "/icons/interurban.png";
+    if (codMode === metroLigeroCodMode) return "/icons/metro_ligero.png";
+    return "/icons/interurban.png"
 }
 
 export function getUrlByCodMode(codMode: number): string {
-    if (codMode === metroCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/maps/metro.webp";
-    if (codMode === trainCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/maps/cercanias.webp";
+    if (codMode === metroCodMode) return "/maps/metro.webp";
+    if (codMode === trainCodMode) return "/maps/cercanias.webp";
     return "#"
-}
-
-export function getIconSvgByCodMode(codMode: number): string {
-    if (codMode === metroCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons-svg/metro.svg";
-    if (codMode === trainCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons-svg/train.svg";
-    if (codMode === emtCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons-svg/emt.svg";
-    if (codMode === busCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons-svg/interurban.svg";
-    if (codMode === metroLigeroCodMode) return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons-svg/metro_ligero.svg";
-    return "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons-svg/interurban.svg"
 }
 
 export function getStopTimesLinkByMode(codMode: number, stopCode: string, originCode: string | null = null): string {

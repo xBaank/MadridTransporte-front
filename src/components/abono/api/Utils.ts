@@ -1,6 +1,6 @@
 import { FavoriteAbono } from "./Types";
 
-export const AbonoIcon = "https://raw.githubusercontent.com/xBaank/bus-tracker-static/main/icons/TTP.jpeg"
+export const AbonoIcon = "/icons/TTP.jpeg"
 
 export function getFavorites(): FavoriteAbono[] {
     const favorites = localStorage.getItem("abonosFavorites");

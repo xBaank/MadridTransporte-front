@@ -16,13 +16,13 @@ export default function StaticMaps() {
 
     function Map({ iconLink, url }: { iconLink: string, url: string }) {
         return (
-            <Link to={url} className="w-32 h-full flex-col justify-center items-center rounded-full shadow-lg shadow-gray-900 hover:shadow-gray-700">
+            <a href={url} className="w-32 h-full flex-col justify-center items-center rounded-full shadow-lg shadow-gray-900 hover:shadow-gray-700">
                 <div className="flex justify-center h-32 w-32">
                     <div className="flex h-full items-center justify-center">
                         <img className="w-20" src={iconLink} alt="Metro" />
                     </div>
                 </div>
-            </Link>
+            </a>
         )
     }
 }
