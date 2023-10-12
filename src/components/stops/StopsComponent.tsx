@@ -1,9 +1,8 @@
 /* eslint-disable no-mixed-operators */
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { StopLink } from "./api/Types";
-import { FormControl, InputLabel, MenuItem, Select, useTheme } from "@mui/material";
-import { getIconByCodMode } from "./api/Utils";
+import { useTheme } from "@mui/material";
 
 
 export default function FilteredStopsComponent(
