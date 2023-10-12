@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.3
+- Move files to public folder (this will cache those file and make the app faster)
+
 ## 1.3.2
 - Add service worker.
 - Fix typo.
