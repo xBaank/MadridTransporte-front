@@ -2,15 +2,13 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { StopLink } from "./api/Types";
-import { useTheme } from "@mui/material";
-
+import { Button, useTheme } from "@mui/material";
+import NearMeIcon from '@mui/icons-material/NearMe';
 
 export default function FilteredStopsComponent(
     { query, stopLinks, codMode }: { query: string, stopLinks: StopLink[], codMode: number | null }
 ) {
     const [stops, setStops] = useState<StopLink[]>([]);
-    const navigate = useNavigate();
-    const theme = useTheme();
 
     useEffect(() => {
         if (query === "" || query.length < 3) return setStops([]);
@@ -32,16 +30,22 @@ export default function FilteredStopsComponent(
 
 
     function StopsElement(stopsLinks: StopLink[]) {
-        if (stopsLinks.length === 0) return (
-            <div className="flex justify-between">
-                <button style={{ backgroundColor: theme.palette.text.primary }} className=" p-2 mr-0.5 w-full text-center text-sm font-bold text-white rounded-lg" onClick={() => navigate("/maps")}>
+        if (stopsLinks.length === 0) return (<>
+            <div className="flex justify-between gap-1">
+                <Button component={Link} fullWidth to="/maps" variant="contained">
                     Planos
-                </button>
-                <button style={{ backgroundColor: theme.palette.text.primary }} className=" p-2 ml-0.5 w-full text-center text-sm font-bold text-white rounded-lg" onClick={() => navigate("/stops/map")}>
+                </Button>
+                <Button component={Link} fullWidth to="/stops/map" variant="contained">
                     Mapa
-                </button>
+                </Button>
             </div>
-        )
+            <div className="flex justify-center mt-2">
+                <Button component={Link} fullWidth to="/stops/nearest" className="w-full" variant="contained">
+                    <NearMeIcon />
+                    Parada mas cercana
+                </Button>
+            </div>
+        </>)
         return (<>
             <ul className="max-w-md divide-y rounded border border-blue-900">
                 {stopsLinks.map(StopComponent)}
