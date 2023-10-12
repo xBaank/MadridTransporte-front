@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.6
+- Use autoUpdate always.
+
 ## 1.3.5
 - Ask for app update when new version is available.
 - Rename maps to .png.
