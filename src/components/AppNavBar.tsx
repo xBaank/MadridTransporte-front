@@ -59,7 +59,7 @@ export default function NavBar() {
                         </Link>
                     </li>
                     <li className='mr-5 mt-2'>
-                        <Link to={"/Settings"}>
+                        <Link to={"/settings"}>
                             <div className='flex flex-row  hover:text-blue-500'>
                                 <SettingsIcon />
                                 <h3 className='ml-1' >Ajustes </h3>

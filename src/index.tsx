@@ -1,7 +1,7 @@
 import React, { } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import { createHashRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, createHashRouter, createMemoryRouter, RouterProvider } from 'react-router-dom';
 import BusStopSearch from './components/stops/StopSearch';
 import BusStopsTimes from './components/stops/StopTimes';
 import { createTheme, CssBaseline, PaletteMode, ThemeProvider } from '@mui/material';
@@ -82,7 +82,7 @@ export default function App() {
   );
 }
 
-const router = createHashRouter([
+const router = createBrowserRouter([
   {
     path: "/",
     element: <DefaultElement key={uniqueId()} element={<BusStopSearch title={'Buscar parada'} codMode={null} />} />,
