@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.7
+- Fix filter.
+
 ## 1.3.6
 - Use autoUpdate always.
 

@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { StopLink } from "./api/Types";
-import { useTheme } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, useTheme } from "@mui/material";
+import { getIconByCodMode } from "./api/Utils";
 
 
 export default function FilteredStopsComponent(
@@ -15,13 +16,15 @@ export default function FilteredStopsComponent(
     useEffect(() => {
         if (query === "" || query.length < 3) return setStops([]);
 
-        const filteredStops = stopLinks.filter((stopLink) =>
-            (codMode === null || stopLink.stop.cod_mode === codMode)
-            &&
-            stopLink.stop.stop_name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(query.toLowerCase())
-            ||
-            stopLink.stop.stop_code.toString().toLowerCase().includes(query.toLowerCase())
-        ).slice(0, 25);
+        const filteredStops = stopLinks
+            .sort((a, b) => a.stop.cod_mode - b.stop.cod_mode)
+            .filter((stopLink) =>
+                (codMode === null || stopLink.stop.cod_mode === codMode)
+                &&
+                stopLink.stop.stop_name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(query.toLowerCase())
+                ||
+                stopLink.stop.stop_code.toString().toLowerCase().includes(query.toLowerCase())
+            ).slice(0, 25);
 
         setStops(filteredStops);
     }, [codMode, query, stopLinks]);
@@ -40,10 +43,11 @@ export default function FilteredStopsComponent(
                 </button>
             </div>
         )
-        return (
+        return (<>
             <ul className="max-w-md divide-y rounded border border-blue-900">
                 {stopsLinks.map(StopComponent)}
             </ul>
+        </>
         );
     }
 }

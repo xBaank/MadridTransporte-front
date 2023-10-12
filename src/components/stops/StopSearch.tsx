@@ -1,5 +1,5 @@
 import { InputAdornment, TextField } from '@mui/material'
-import React, { Fragment, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Search } from '@mui/icons-material';
 import AllStopsComponent, { StopComponent } from './StopsComponent';
 import StopsFavorites from './StopsFavorites';
@@ -60,7 +60,7 @@ export default function BusStopSearch(
                 }
                 <div className=' font-bold text-2xl pb-4'>{title}</div>
                 <div className='mb-4 grid'>
-                    <TextField
+                    <TextField fullWidth
                         id="StopCode"
                         label="Codigo o nombre de la parada"
                         onChange={search}
