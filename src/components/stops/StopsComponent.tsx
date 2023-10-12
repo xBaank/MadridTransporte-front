@@ -3,14 +3,12 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { StopLink } from "./api/Types";
 import { Button, useTheme } from "@mui/material";
-
+import NearMeIcon from '@mui/icons-material/NearMe';
 
 export default function FilteredStopsComponent(
     { query, stopLinks, codMode }: { query: string, stopLinks: StopLink[], codMode: number | null }
 ) {
     const [stops, setStops] = useState<StopLink[]>([]);
-    const navigate = useNavigate();
-    const theme = useTheme();
 
     useEffect(() => {
         if (query === "" || query.length < 3) return setStops([]);
@@ -42,7 +40,10 @@ export default function FilteredStopsComponent(
                 </Button>
             </div>
             <div className="flex justify-center mt-2">
-                <Button component={Link} fullWidth to="/stops/nearest" className="w-full" variant="contained">Parada mas cercana</Button>
+                <Button component={Link} fullWidth to="/stops/nearest" className="w-full" variant="contained">
+                    <NearMeIcon />
+                    Parada mas cercana
+                </Button>
             </div>
         </>)
         return (<>
