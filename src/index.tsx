@@ -17,6 +17,7 @@ import TrainStopTimesComponent from './components/stops/train/TrainStopsTimes';
 import StaticMaps from './components/maps/StaticMaps';
 import { getSystemTheme } from './components/stops/Utils';
 import Settings from './components/settings/Settings';
+import StopNearest from './components/stops/StopNearest';
 
 export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 export const getDesignTokens = (mode: PaletteMode) => ({
@@ -85,6 +86,10 @@ const router = createHashRouter([
   {
     path: "/",
     element: <DefaultElement key={uniqueId()} element={<BusStopSearch title={'Buscar parada'} codMode={null} />} />,
+  },
+  {
+    path: "/stops/nearest",
+    element: <DefaultElement element={<StopNearest />} />,
   },
   {
     path: "/stops/:type/:code/times",
