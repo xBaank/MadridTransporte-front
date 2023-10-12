@@ -51,7 +51,7 @@ export default function BusStopSearch(
                         <div className='flex mb-3 border-b-2'>
                             <div className='my-auto font-bold text-lg'>Origen: </div>
                             <ul>
-                                {StopComponent(mapStopToStopLink(stops.find(stop => stop.stop_code.toString() === code)!!))}
+                                {StopComponent(mapStopToStopLink(stops.find(stop => stop.stop_code.toString() === code && stop.cod_mode === codMode)!!))}
                             </ul>
                         </div>
                         :
