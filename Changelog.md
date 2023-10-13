@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.9
+- Load stop info before stop times.
+
 ## 1.3.8
 - Add nearest stop button.
 - Update location marker when user moves.

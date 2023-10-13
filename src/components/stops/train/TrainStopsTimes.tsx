@@ -3,7 +3,6 @@ import { useSearchParams } from "react-router-dom";
 import { fold } from "fp-ts/lib/Either";
 import { getTrainStopsTimes } from "../api/Times";
 import { Alert, TrainStopTimes } from "../api/Types";
-import React from "react";
 import { useTheme } from "@mui/material";
 import { addToTrainFavorites, getIconByCodMode, getLineColorByCodMode, getTrainFavorites, removeFromTrainFavorites, trainCodMode } from "../api/Utils";
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';

@@ -91,7 +91,7 @@ export default function BusStopsTimes() {
                 comparator={() => getFavorites().some((favorite: { type: TransportType, code: string }) => favorite.type === type && favorite.code === code)}
                 saveF={(name: string) => addToFavorites({ type: type!, code: code!, name: name, cod_mode: getCodModeByType(type!) })}
                 deleteF={() => removeFromFavorites({ type: type!, code: code! })}
-                defaultName={stopTimes?.stopName ?? null}
+                defaultName={stop.stop_name}
               />
             </div>
           </div>
