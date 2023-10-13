@@ -1,12 +1,12 @@
 export type Coordinates = {
-    latitude: number,
-    longitude: number,
-}
+  latitude: number;
+  longitude: number;
+};
 
 export type Route = {
-    code: string,
-    routes: {
-        duration: number,
-        distance: number,
-    }[]
-}
+  code: string;
+  routes: Array<{
+    duration: number;
+    distance: number;
+  }>;
+};

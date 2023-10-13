@@ -1,7 +1,5 @@
-import { CircularProgress } from "@mui/material";
+import {CircularProgress} from "@mui/material";
 
 export default function LoadingSpinner() {
-    return (
-        <CircularProgress className="my-auto mx-auto" />
-    )
+  return <CircularProgress className="my-auto mx-auto" />;
 }
