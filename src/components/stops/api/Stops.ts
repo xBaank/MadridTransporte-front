@@ -1,6 +1,7 @@
-import { Either, left, right } from "fp-ts/lib/Either";
+import { Either, fold, left, right } from "fp-ts/lib/Either";
 import { Alert, Stop, TransportType } from "./Types";
 import { apiUrl } from "../../Urls";
+import { getCodModeByType } from "./Utils";
 
 let allStops: Either<string, Stop[]> | undefined
 
@@ -11,6 +12,13 @@ export async function getAllStops(): Promise<Either<string, Stop[]>> {
     const data = await response.json() as Stop[];
     allStops = right(data);
     return right(data);
+}
+
+export async function getStop(type: TransportType, code: string) {
+    return fold(
+        () => null,
+        (stops: Stop[]) => stops.find(stop => stop.stop_code === code && stop.cod_mode == getCodModeByType(type))
+    )(await getAllStops());
 }
 
 export async function getAlertsByTransportType(type: TransportType): Promise<Either<string, Alert[]>> {

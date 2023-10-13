@@ -18,16 +18,18 @@ export type StopTimes = {
     codMode: number,
     stopName: string,
     coordinates: Coordinates,
-    arrives: {
-        line: string,
-        stop: string,
-        anden: number | null,
-        codMode: number,
-        destination: string,
-        estimatedArrives: number[],
-    }[] | null,
+    arrives: Arrive[] | null,
     incidents: Incident[],
     staled?: boolean //This means its cached but because it couldn't be refreshed
+}
+
+export type Arrive = {
+    line: string,
+    stop: string,
+    anden: number | null,
+    codMode: number,
+    destination: string,
+    estimatedArrives: number[],
 }
 
 export type Incident = {
