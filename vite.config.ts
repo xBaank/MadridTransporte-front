@@ -11,7 +11,7 @@ export default defineConfig({
       registerType: "autoUpdate",
       injectRegister: "auto",
       workbox: {
-        globPatterns: ["**/*.{js,css,html,ico,png,jpg,svg,txt}"],
+        globPatterns: ["**/*.{js,css,html,ico,png,jpg,jpeg,svg,json}"],
       },
     }),
   ],

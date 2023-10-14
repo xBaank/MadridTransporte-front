@@ -7,7 +7,7 @@ let allStops: Either<string, Stop[]> | undefined;
 
 export async function getAllStops(): Promise<Either<string, Stop[]>> {
   if (allStops !== undefined) return allStops;
-  const response = await fetch(`${apiUrl}/stops/all`);
+  const response = await fetch(`/stops/stops.json`);
   if (!response.ok) return left("Error al obtener las paradas");
   const data = (await response.json()) as Stop[];
   allStops = right(data);
