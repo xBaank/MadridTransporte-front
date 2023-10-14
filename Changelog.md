@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.10
+
+- Remove usage of `v1/stops/all`
+- Improve performance when searching for stops.
+
 ## 1.3.9
 
 - Load stop info before stop times.
