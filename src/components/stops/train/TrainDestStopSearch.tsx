@@ -1,5 +1,5 @@
 import BusStopSearch from "../StopSearch";
-import { trainCodMode } from "../api/Utils";
+import {trainCodMode} from "../api/Utils";
 
-
-export const TrainDestStopSearch = () => BusStopSearch({ title: "Parada Destino", codMode: trainCodMode })
+export const TrainDestStopSearch = () =>
+  BusStopSearch({title: "Parada Destino", codMode: trainCodMode});

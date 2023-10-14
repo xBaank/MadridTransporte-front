@@ -1,7 +1,7 @@
-import { Either, fold, left, right } from "fp-ts/lib/Either";
-import { Alert, Stop, TransportType } from "./Types";
-import { apiUrl } from "../../Urls";
-import { getCodModeByType } from "./Utils";
+import {type Either, fold, left, right} from "fp-ts/lib/Either";
+import {type Alert, type Stop, type TransportType} from "./Types";
+import {apiUrl} from "../../Urls";
+import {getCodModeByType} from "./Utils";
 
 let allStops: Either<string, Stop[]> | undefined;
 
@@ -19,14 +19,14 @@ export async function getStop(type: TransportType, code: string) {
     () => null,
     (stops: Stop[]) =>
       stops.find(
-        (stop) =>
-          stop.stop_code === code && stop.cod_mode == getCodModeByType(type)
-      )
+        stop =>
+          stop.stop_code === code && stop.cod_mode === getCodModeByType(type),
+      ),
   )(await getAllStops());
 }
 
 export async function getAlertsByTransportType(
-  type: TransportType
+  type: TransportType,
 ): Promise<Either<string, Alert[]>> {
   const response = await fetch(`${apiUrl}/stops/${type}/alerts`);
   if (!response.ok) return left("Error al obtener las paradas");
