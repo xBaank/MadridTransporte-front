@@ -8,4 +8,5 @@ module.exports = {
   useTabs: false,
   semi: true,
   printWidth: 80,
+  endOfLine: 'auto'
 };
