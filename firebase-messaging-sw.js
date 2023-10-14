@@ -10,14 +10,14 @@ const busCodMode = 8;
 const metroLigeroCodMode = 10;
 
 function getStopTimesLinkByMode(codMode, stopCode, originCode) {
-  if (codMode === metroCodMode) return `#/stops/metro/${stopCode}/times`;
-  if (codMode === metroLigeroCodMode) return `#/stops/tram/${stopCode}/times`;
+  if (codMode === metroCodMode) return `/stops/metro/${stopCode}/times`;
+  if (codMode === metroLigeroCodMode) return `/stops/tram/${stopCode}/times`;
   if (codMode === trainCodMode)
     return originCode === null
-      ? `#/stops/train/${stopCode}/destination`
+      ? `/stops/train/${stopCode}/destination`
       : `/stops/train/times/?origin=${originCode}&destination=${stopCode}`;
-  if (codMode === emtCodMode) return `#/stops/emt/${stopCode}/times`;
-  if (codMode === busCodMode) return `#/stops/bus/${stopCode}/times`;
+  if (codMode === emtCodMode) return `/stops/emt/${stopCode}/times`;
+  if (codMode === busCodMode) return `/stops/bus/${stopCode}/times`;
   return "#";
 }
 
@@ -81,22 +81,21 @@ messaging.onBackgroundMessage(payload => {
     const anden = arrive.anden === null ? "" : `Andén ${arrive.anden} - `;
     const minutes = Math.floor(
       (new Date(arrive.estimatedArrives[0]).getTime() - new Date().getTime()) /
-        60000,
+      60000,
     );
     //check if minutes is less than 100
     const notificationOptions = {
       body: `${new Date(arrive.estimatedArrives[0]).toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
-      })} ${minutes < 100 ? `(${minutes} min)` : ""} - ${anden} ${
-        arrive.destination
-      }`,
+      })} ${minutes < 100 ? `(${minutes} min)` : ""} - ${anden} ${arrive.destination
+        }`,
       icon: getIconByCodMode(arrive.codMode),
       data: stopTime,
       tag: stopTime.stopCode + arrive.line + arrive.destination,
       renotify: true,
     };
-    return {notificationTitle, notificationOptions};
+    return { notificationTitle, notificationOptions };
   });
 
   notifications.forEach(notification =>
