@@ -1,52 +1,87 @@
-import React, { useEffect, useState } from "react";
-import { LineDestination, Subscriptions, TransportType } from "./api/Types";
-import { fold } from "fp-ts/lib/Either";
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
+import React, {useEffect, useState} from "react";
+import {
+  type LineDestination,
+  type Subscriptions,
+  type TransportType,
+} from "./api/Types";
+import {fold} from "fp-ts/lib/Either";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import NotificationsOffIcon from "@mui/icons-material/NotificationsOff";
 import useToken from "./UseToken";
-import { subscribe, unsubscribe } from "./api/Subscriptions";
-import { getCodModeByType } from "./api/Utils";
+import {subscribe, unsubscribe} from "./api/Subscriptions";
+import {getCodModeByType} from "./api/Utils";
 
-export default function StopTimesSubscribe({ stopId, type, subscription, line }: { stopId: string, type: TransportType, subscription: Subscriptions | null, line: LineDestination }) {
-    const token = useToken();
-    const [isSubscribed, setIsSubscribed] = useState(false);
+export default function StopTimesSubscribe({
+  stopId,
+  type,
+  subscription,
+  line,
+}: {
+  stopId: string;
+  type: TransportType;
+  subscription: Subscriptions | null;
+  line: LineDestination;
+}) {
+  const token = useToken();
+  const [isSubscribed, setIsSubscribed] = useState(false);
 
-    useEffect(() => {
-        if (subscription === null) return;
-        if (subscription.stopCode.split("_")[1] !== stopId) return;
-        if (!subscription.linesDestinations.some(i => i.line === line.line && i.destination === line.destination && i.codMode === line.codMode)) return;;
-        setIsSubscribed(true);
-    }, [subscription, stopId, line])
+  useEffect(() => {
+    if (subscription === null) return;
+    if (subscription.stopCode.split("_")[1] !== stopId) return;
+    if (
+      !subscription.linesDestinations.some(
+        i =>
+          i.line === line.line &&
+          i.destination === line.destination &&
+          i.codMode === line.codMode,
+      )
+    )
+      return;
+    setIsSubscribed(true);
+  }, [subscription, stopId, line]);
 
-    const handleSubscription = () => {
-        if (token === undefined) return;
-        if (subscription === null) return;
-        subscribe(type, token, { stopCode: stopId, codMode: getCodModeByType(type), lineDestination: line }).then((result) => {
-            fold(
-                (error) => console.log(error),
-                (result) => setIsSubscribed(true)
-            )(result)
-        })
-    }
+  const handleSubscription = () => {
+    if (token === undefined) return;
+    if (subscription === null) return;
+    subscribe(type, token, {
+      stopCode: stopId,
+      codMode: getCodModeByType(type),
+      lineDestination: line,
+    }).then(result => {
+      fold(
+        error => console.log(error),
+        () => setIsSubscribed(true),
+      )(result);
+    });
+  };
 
-    const handleUnsubscription = () => {
-        if (token === undefined) return;
-        if (subscription === null) return;
-        unsubscribe(type, token, { stopCode: stopId, codMode: getCodModeByType(type), lineDestination: line }).then((result) => {
-            fold(
-                (error) => console.log(error),
-                (result) => setIsSubscribed(false)
-            )(result)
-        })
-    }
+  const handleUnsubscription = () => {
+    if (token === undefined) return;
+    if (subscription === null) return;
+    unsubscribe(type, token, {
+      stopCode: stopId,
+      codMode: getCodModeByType(type),
+      lineDestination: line,
+    }).then(result => {
+      fold(
+        error => console.log(error),
+        () => setIsSubscribed(false),
+      )(result);
+    });
+  };
 
-    if (token === undefined) return <></>
+  if (token === undefined) return <></>;
 
-    if (isSubscribed) return <button onClick={handleUnsubscription}>
+  if (isSubscribed)
+    return (
+      <button onClick={handleUnsubscription}>
         <NotificationsOffIcon className="text-red-500" />
-    </button>
+      </button>
+    );
 
-    return <button onClick={handleSubscription}>
-        <NotificationsIcon className="text-green-500" />
+  return (
+    <button onClick={handleSubscription}>
+      <NotificationsIcon className="text-green-500" />
     </button>
+  );
 }
