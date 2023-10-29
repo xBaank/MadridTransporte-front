@@ -16,8 +16,7 @@ import {Link} from "react-router-dom";
 import LocationMarker from "./LocationMarker";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import {IconButton} from "@mui/material";
-
-const defaultPosition = {lat: 40.4165, lng: -3.70256};
+import {defaultPosition} from "./Utils";
 
 export default function BusStopMap() {
   return useMemo(() => <BusStopMapBase />, []);

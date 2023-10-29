@@ -1,5 +1,7 @@
 import {useTheme} from "@mui/material";
 
+export const defaultPosition = {lat: 40.4165, lng: -3.70256};
+
 export function useColor() {
   const theme = useTheme();
   return theme.palette.mode === "dark" ? "text-white" : "text-black";
