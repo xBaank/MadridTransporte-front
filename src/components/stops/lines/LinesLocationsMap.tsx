@@ -1,6 +1,6 @@
 import {IconButton} from "@mui/material";
-import {MapContainer, Marker, TileLayer} from "react-leaflet";
-import {type Map} from "leaflet";
+import {MapContainer, Marker, Polyline, TileLayer} from "react-leaflet";
+import L, {type LatLngLiteral, type Map} from "leaflet";
 import LocationMarker from "../LocationMarker";
 import React, {useCallback, useEffect, useState} from "react";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
@@ -16,6 +16,8 @@ import ErrorMessage from "../../Error";
 import {defaultPosition} from "../Utils";
 import {useInterval} from "usehooks-ts";
 import {getIconByCodMode} from "../api/Utils";
+import {routeTimeCar} from "../api/Route";
+import LoadingSpinner from "../../LoadingSpinner";
 
 export default function LinesLocationsMap() {
   const interval = 1000 * 10;
@@ -27,8 +29,9 @@ export default function LinesLocationsMap() {
   const mapRef = React.createRef<Map>();
   const [lineLocations, setLineLocations] = useState<LineLocation[]>();
   const [stopsOrdered, setstopsOrdered] = useState<StopWithOrder[]>();
+  const [coordinates, setCoordinates] = useState<LatLngLiteral[]>();
   const [error, setError] = useState<string>();
-  const [errorOnInterval, setErrorOnInterval] = useState<boolean>(false);
+  const [isOnInterval, setIsOnInterval] = useState(false);
 
   const getLocations = useCallback(() => {
     if (type === undefined || code === undefined || direction === undefined)
@@ -57,16 +60,33 @@ export default function LinesLocationsMap() {
     getStops();
   }, [type, code, direction, getLocations, getStops]);
 
-  useInterval(
-    () => {
-      getLocations();
-      if (error != null) setErrorOnInterval(true);
-    },
-    error != null ? null : interval,
-  );
+  useEffect(() => {
+    if (stopsOrdered === undefined || stopsOrdered.length === 0) return;
 
-  if (error !== undefined && !errorOnInterval)
+    const mapped = routeTimeCar(
+      stopsOrdered?.map(i => {
+        return {latitude: i.stop_lat, longitude: i.stop_lon};
+      }) ?? [],
+    );
+
+    mapped.then(i =>
+      setCoordinates(
+        i.routes[0].geometry.coordinates.map(i => {
+          return {lat: i[1], lng: i[0]};
+        }),
+      ),
+    );
+  }, [stopsOrdered]);
+
+  useInterval(() => {
+    setIsOnInterval(true);
+    getLocations();
+  }, interval);
+
+  if (error !== undefined && !isOnInterval)
     return <ErrorMessage message={error}></ErrorMessage>;
+
+  if (coordinates === undefined) return <LoadingSpinner></LoadingSpinner>;
 
   return (
     <div className="h-full w-full z-0 pb-2">
@@ -79,6 +99,10 @@ export default function LinesLocationsMap() {
         maxZoom={18}
         scrollWheelZoom={true}>
         <LocationMarker />
+        <Polyline
+          fillColor="blue"
+          weight={15}
+          positions={coordinates}></Polyline>
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -89,24 +113,21 @@ export default function LinesLocationsMap() {
             iconSize: [32, 32],
             iconAnchor: [16, 32],
           });
+          const nearestPoint = coordinates.reduce((prev, curr) => {
+            const prevDistance = Math.sqrt(
+              Math.pow(prev.lat - i.coordinates.latitude, 2) +
+                Math.pow(prev.lng - i.coordinates.longitude, 2),
+            );
+            const currDistance = Math.sqrt(
+              Math.pow(curr.lat - i.coordinates.latitude, 2) +
+                Math.pow(curr.lng - i.coordinates.longitude, 2),
+            );
+            return prevDistance < currDistance ? prev : curr;
+          });
           return (
-            <Marker
-              key={index}
-              icon={icon}
-              position={{
-                lat: i.coordinates.latitude,
-                lng: i.coordinates.longitude,
-              }}></Marker>
+            <Marker key={index} icon={icon} position={nearestPoint}></Marker>
           );
         })}
-        {stopsOrdered?.map((i, index) => (
-          <Marker
-            key={index}
-            position={{
-              lat: i.stop_lat,
-              lng: i.stop_lon,
-            }}></Marker>
-        ))}
       </MapContainer>
       <div
         style={{zIndex: 500}}
