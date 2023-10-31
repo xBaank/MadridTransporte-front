@@ -1,22 +1,14 @@
 import React, {useEffect, useMemo, useState} from "react";
-import {
-  MapContainer,
-  Marker,
-  Popup,
-  TileLayer,
-  useMap,
-  useMapEvents,
-} from "react-leaflet";
+import {MapContainer, TileLayer, useMap, useMapEvents} from "react-leaflet";
 import {type Stop} from "./api/Types";
 import * as E from "fp-ts/Either";
-import L, {type Map} from "leaflet";
-import {getIconByCodMode, getStopTimesLinkByMode} from "./api/Utils";
+import {type Map} from "leaflet";
 import {getAllStops} from "./api/Stops";
-import {Link} from "react-router-dom";
 import LocationMarker from "./LocationMarker";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import {IconButton} from "@mui/material";
 import {defaultPosition} from "./Utils";
+import {StopsMarkers} from "./StopsMarkers";
 
 export default function BusStopMap() {
   return useMemo(() => <BusStopMapBase />, []);
@@ -35,42 +27,7 @@ function BusStopMapBase() {
   }, []);
 
   const markers = useMemo(() => {
-    return stops.map(stop => {
-      const icon = L.icon({
-        iconUrl: getIconByCodMode(stop.cod_mode),
-        iconSize: [32, 32],
-        iconAnchor: [16, 32],
-      });
-
-      return (
-        <Marker
-          eventHandlers={{
-            click: () => {
-              mapRef.current?.flyTo(
-                {lat: stop.stop_lat, lng: stop.stop_lon},
-                18,
-              );
-            },
-          }}
-          key={`${stop.cod_mode}_${stop.stop_code}`}
-          icon={icon}
-          title={stop.stop_name}
-          position={{lat: stop.stop_lat, lng: stop.stop_lon}}>
-          <Popup keepInView={false} className="pb-8 pl-14 mr-5">
-            <div>{stop.stop_name}</div>
-            <div className="mt-3 p-1 bg-blue-900 text-center">
-              <Link
-                to={getStopTimesLinkByMode(
-                  stop.cod_mode,
-                  stop.stop_code.toString(),
-                )}>
-                <div className="text-white"> Consultar parada </div>
-              </Link>
-            </div>
-          </Popup>
-        </Marker>
-      );
-    });
+    return <StopsMarkers stops={stops} mapRef={mapRef} />;
   }, [mapRef, stops]);
 
   function DisplayMarkers() {

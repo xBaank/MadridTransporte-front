@@ -14,7 +14,7 @@ export default async function routeTimeFoot(
 export async function routeTimeCar(coordinates: Coordinates[]) {
   const joined = coordinates.map(i => `${i.longitude},${i.latitude}`).join(";");
   const result = await fetch(
-    `https://routing.openstreetmap.de/routed-car/route/v1/driving/${joined}?overview=full&geometries=geojson`,
+    `https://routing.openstreetmap.de/routed-car/route/v1/driving/${joined}?overview=full&geometries=geojson&continue_straight=true`,
   );
   const data = (await result.json()) as Route;
   return data;

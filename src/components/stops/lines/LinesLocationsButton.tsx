@@ -5,15 +5,17 @@ export default function LinesLocationsButton({
   codMode,
   code,
   direction,
+  stopCode,
 }: {
   codMode: number;
   code: string;
   direction: string;
+  stopCode: string;
 }) {
   if (codMode !== busCodMode) return <></>;
   return (
     <a
-      href={getLocationLink(codMode, code, direction)}
+      href={getLocationLink(codMode, code, direction, stopCode)}
       className=" text-blue-500">
       <MyLocationIcon></MyLocationIcon>
     </a>

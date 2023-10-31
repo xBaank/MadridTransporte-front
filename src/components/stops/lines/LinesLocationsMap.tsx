@@ -4,7 +4,7 @@ import L, {type LatLngLiteral, type Map} from "leaflet";
 import LocationMarker from "../LocationMarker";
 import React, {useCallback, useEffect, useState} from "react";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
-import {useParams} from "react-router-dom";
+import {useParams, useSearchParams} from "react-router-dom";
 import {
   type StopWithOrder,
   type LineLocation,
@@ -15,9 +15,9 @@ import {fold} from "fp-ts/lib/Either";
 import ErrorMessage from "../../Error";
 import {defaultPosition} from "../Utils";
 import {useInterval} from "usehooks-ts";
-import {getIconByCodMode} from "../api/Utils";
 import {routeTimeCar} from "../api/Route";
 import LoadingSpinner from "../../LoadingSpinner";
+import {StopsMarkers} from "../StopsMarkers";
 
 export default function LinesLocationsMap() {
   const interval = 1000 * 10;
@@ -26,6 +26,7 @@ export default function LinesLocationsMap() {
     direction: string;
     code: string;
   }>();
+  const [searchParam] = useSearchParams();
   const mapRef = React.createRef<Map>();
   const [lineLocations, setLineLocations] = useState<LineLocation[]>();
   const [stopsOrdered, setstopsOrdered] = useState<StopWithOrder[]>();
@@ -34,13 +35,21 @@ export default function LinesLocationsMap() {
   const [isOnInterval, setIsOnInterval] = useState(false);
 
   const getLocations = useCallback(() => {
-    if (type === undefined || code === undefined || direction === undefined)
+    const stopCode = searchParam.get("stopCode");
+
+    if (
+      type === undefined ||
+      code === undefined ||
+      direction === undefined ||
+      stopCode === null
+    )
       return;
-    getLineLocations(type, code, Number.parseInt(direction)).then(result =>
-      fold(
-        (error: string) => setError(error),
-        (locations: LineLocation[]) => setLineLocations(locations),
-      )(result),
+    getLineLocations(type, code, Number.parseInt(direction), stopCode).then(
+      result =>
+        fold(
+          (error: string) => setError(error),
+          (locations: LineLocation[]) => setLineLocations(locations),
+        )(result),
     );
   }, [type, code, direction]);
 
@@ -101,7 +110,7 @@ export default function LinesLocationsMap() {
         <LocationMarker />
         <Polyline
           fillColor="blue"
-          weight={15}
+          weight={7}
           positions={coordinates}></Polyline>
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -109,10 +118,11 @@ export default function LinesLocationsMap() {
         />
         {lineLocations?.map((i, index) => {
           const icon = L.icon({
-            iconUrl: getIconByCodMode(8),
-            iconSize: [32, 32],
+            iconUrl: "/icons/bus_location.png",
+            iconSize: [42, 42],
             iconAnchor: [16, 32],
           });
+
           const nearestPoint = coordinates.reduce((prev, curr) => {
             const prevDistance = Math.sqrt(
               Math.pow(prev.lat - i.coordinates.latitude, 2) +
@@ -124,10 +134,12 @@ export default function LinesLocationsMap() {
             );
             return prevDistance < currDistance ? prev : curr;
           });
+
           return (
             <Marker key={index} icon={icon} position={nearestPoint}></Marker>
           );
         })}
+        <StopsMarkers stops={stopsOrdered ?? []} mapRef={mapRef} />
       </MapContainer>
       <div
         style={{zIndex: 500}}

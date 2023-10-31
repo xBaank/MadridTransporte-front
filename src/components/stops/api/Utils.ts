@@ -14,9 +14,10 @@ export function getLocationLink(
   codMode: number,
   code: string,
   direction: string,
+  stopCode: string,
 ) {
   if (codMode === busCodMode)
-    return `/lines/bus/${code}/locations/${direction}`;
+    return `/lines/bus/${code}/locations/${direction}?stopCode=${stopCode}`;
   return "#";
 }
 

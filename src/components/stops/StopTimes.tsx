@@ -229,6 +229,7 @@ export default function BusStopsTimes() {
               codMode={getCodModeByType(type!)}
               code={arrive?.lineCode ?? ""}
               direction={arrive?.direction?.toString() ?? ""}
+              stopCode={code ?? ""}
             />
           </div>
         </div>
