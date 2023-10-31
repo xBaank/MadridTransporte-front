@@ -9,6 +9,7 @@ import {
   type StopWithOrder,
   type LineLocation,
   type TransportType,
+  type Stop,
 } from "../api/Types";
 import {getLineLocations, getLineStops} from "../api/Lines";
 import {fold} from "fp-ts/lib/Either";
@@ -18,6 +19,7 @@ import {useInterval} from "usehooks-ts";
 import {routeTimeCar} from "../api/Route";
 import LoadingSpinner from "../../LoadingSpinner";
 import {StopsMarkers} from "../StopsMarkers";
+import {type Route} from "../api/RouteTypes";
 
 export default function LinesLocationsMap() {
   const interval = 1000 * 10;
@@ -30,18 +32,18 @@ export default function LinesLocationsMap() {
   const mapRef = React.createRef<Map>();
   const [lineLocations, setLineLocations] = useState<LineLocation[]>();
   const [stopsOrdered, setstopsOrdered] = useState<StopWithOrder[]>();
+  const [currentStop, setCurrentStop] = useState<Stop>();
+  const [stopCode, setStopCode] = useState<string>();
   const [coordinates, setCoordinates] = useState<LatLngLiteral[]>();
   const [error, setError] = useState<string>();
   const [isOnInterval, setIsOnInterval] = useState(false);
 
   const getLocations = useCallback(() => {
-    const stopCode = searchParam.get("stopCode");
-
     if (
       type === undefined ||
       code === undefined ||
       direction === undefined ||
-      stopCode === null
+      stopCode === undefined
     )
       return;
     getLineLocations(type, code, Number.parseInt(direction), stopCode).then(
@@ -51,7 +53,7 @@ export default function LinesLocationsMap() {
           (locations: LineLocation[]) => setLineLocations(locations),
         )(result),
     );
-  }, [type, code, direction]);
+  }, [type, code, direction, stopCode]);
 
   const getStops = useCallback(() => {
     if (type === undefined || code === undefined || direction === undefined)
@@ -70,6 +72,17 @@ export default function LinesLocationsMap() {
   }, [type, code, direction, getLocations, getStops]);
 
   useEffect(() => {
+    setStopCode(searchParam.get("stopCode") ?? undefined);
+  }, []);
+
+  useEffect(() => {
+    if (stopsOrdered === undefined) return;
+    const current = stopsOrdered.find(i => i.stop_code === stopCode);
+    if (current === undefined) return;
+    setCurrentStop(current);
+  }, [stopsOrdered, stopCode]);
+
+  useEffect(() => {
     if (stopsOrdered === undefined || stopsOrdered.length === 0) return;
 
     const mapped = routeTimeCar(
@@ -78,19 +91,19 @@ export default function LinesLocationsMap() {
       }) ?? [],
     );
 
-    mapped.then(i =>
-      setCoordinates(
-        i.routes[0].geometry.coordinates.map(i => {
-          return {lat: i[1], lng: i[0]};
-        }),
-      ),
-    );
+    mapped.then(i => setCoordinates(coordinatesToExpression(i)));
   }, [stopsOrdered]);
 
   useInterval(() => {
     setIsOnInterval(true);
     getLocations();
   }, interval);
+
+  function coordinatesToExpression(route: Route) {
+    return route.routes[0].geometry.coordinates.map(i => {
+      return {lat: i[1], lng: i[0]};
+    });
+  }
 
   if (error !== undefined && !isOnInterval)
     return <ErrorMessage message={error}></ErrorMessage>;
@@ -108,10 +121,7 @@ export default function LinesLocationsMap() {
         maxZoom={18}
         scrollWheelZoom={true}>
         <LocationMarker />
-        <Polyline
-          fillColor="blue"
-          weight={7}
-          positions={coordinates}></Polyline>
+        <Polyline fillColor="blue" weight={7} positions={coordinates} />
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -134,6 +144,25 @@ export default function LinesLocationsMap() {
             );
             return prevDistance < currDistance ? prev : curr;
           });
+
+          const currentStopPoint = coordinates.reduce((prev, curr) => {
+            if (currentStop === undefined) return curr;
+
+            const prevDistance = Math.sqrt(
+              Math.pow(prev.lat - currentStop.stop_lat, 2) +
+                Math.pow(prev.lng - currentStop.stop_lon, 2),
+            );
+            const currDistance = Math.sqrt(
+              Math.pow(curr.lat - currentStop.stop_lat, 2) +
+                Math.pow(curr.lng - currentStop.stop_lon, 2),
+            );
+            return prevDistance < currDistance ? prev : curr;
+          });
+
+          const indexOfNearestPoint = coordinates.indexOf(nearestPoint);
+          const indexOfStop = coordinates.indexOf(currentStopPoint);
+
+          if (indexOfNearestPoint > indexOfStop) return <></>;
 
           return (
             <Marker key={index} icon={icon} position={nearestPoint}></Marker>
