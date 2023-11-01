@@ -1,6 +1,6 @@
 import {IconButton} from "@mui/material";
-import {MapContainer, Marker, Polyline, TileLayer} from "react-leaflet";
-import L, {type LatLngLiteral, type Map} from "leaflet";
+import {MapContainer, Polyline, TileLayer} from "react-leaflet";
+import {type LatLngLiteral, type Map} from "leaflet";
 import LocationMarker from "../LocationMarker";
 import React, {useCallback, useEffect, useState} from "react";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
@@ -20,6 +20,7 @@ import {routeTimeCar} from "../api/Route";
 import LoadingSpinner from "../../LoadingSpinner";
 import {StopsMarkers} from "../StopsMarkers";
 import {type Route} from "../api/RouteTypes";
+import {LineLocationsMarkers} from "./LineLocationsMarkers";
 
 export default function LinesLocationsMap() {
   const interval = 1000 * 10;
@@ -34,9 +35,11 @@ export default function LinesLocationsMap() {
   const [stopsOrdered, setstopsOrdered] = useState<StopWithOrder[]>();
   const [currentStop, setCurrentStop] = useState<Stop>();
   const [stopCode, setStopCode] = useState<string>();
-  const [coordinates, setCoordinates] = useState<LatLngLiteral[]>();
+  const [allRoute, setAllRoute] = useState<LatLngLiteral[]>();
   const [error, setError] = useState<string>();
+  const [stopCentered, setStopCentered] = useState(false);
   const [isOnInterval, setIsOnInterval] = useState(false);
+  const [flyToLocation, setFlyToLocation] = useState(false);
 
   const getLocations = useCallback(() => {
     if (
@@ -91,8 +94,18 @@ export default function LinesLocationsMap() {
       }) ?? [],
     );
 
-    mapped.then(i => setCoordinates(coordinatesToExpression(i)));
+    mapped.then(i => setAllRoute(coordinatesToExpression(i)));
   }, [stopsOrdered]);
+
+  useEffect(() => {
+    if (mapRef.current === null || currentStop === undefined || stopCentered)
+      return;
+    mapRef.current.panTo({
+      lat: currentStop.stop_lat,
+      lng: currentStop.stop_lon,
+    });
+    setStopCentered(true);
+  }, [mapRef, currentStop]);
 
   useInterval(() => {
     setIsOnInterval(true);
@@ -108,7 +121,12 @@ export default function LinesLocationsMap() {
   if (error !== undefined && !isOnInterval)
     return <ErrorMessage message={error}></ErrorMessage>;
 
-  if (coordinates === undefined) return <LoadingSpinner></LoadingSpinner>;
+  if (
+    allRoute === undefined ||
+    currentStop === undefined ||
+    lineLocations === undefined
+  )
+    return <LoadingSpinner></LoadingSpinner>;
 
   return (
     <div className="h-full w-full z-0 pb-2">
@@ -120,60 +138,27 @@ export default function LinesLocationsMap() {
         zoom={16}
         maxZoom={18}
         scrollWheelZoom={true}>
-        <LocationMarker />
-        <Polyline fillColor="blue" weight={7} positions={coordinates} />
+        <LocationMarker flyToLocation={flyToLocation} />
+        <Polyline fillColor="blue" weight={7} positions={allRoute} />
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {lineLocations?.map((i, index) => {
-          const icon = L.icon({
-            iconUrl: "/icons/bus_location.png",
-            iconSize: [42, 42],
-            iconAnchor: [16, 32],
-          });
-
-          const nearestPoint = coordinates.reduce((prev, curr) => {
-            const prevDistance = Math.sqrt(
-              Math.pow(prev.lat - i.coordinates.latitude, 2) +
-                Math.pow(prev.lng - i.coordinates.longitude, 2),
-            );
-            const currDistance = Math.sqrt(
-              Math.pow(curr.lat - i.coordinates.latitude, 2) +
-                Math.pow(curr.lng - i.coordinates.longitude, 2),
-            );
-            return prevDistance < currDistance ? prev : curr;
-          });
-
-          const currentStopPoint = coordinates.reduce((prev, curr) => {
-            if (currentStop === undefined) return curr;
-
-            const prevDistance = Math.sqrt(
-              Math.pow(prev.lat - currentStop.stop_lat, 2) +
-                Math.pow(prev.lng - currentStop.stop_lon, 2),
-            );
-            const currDistance = Math.sqrt(
-              Math.pow(curr.lat - currentStop.stop_lat, 2) +
-                Math.pow(curr.lng - currentStop.stop_lon, 2),
-            );
-            return prevDistance < currDistance ? prev : curr;
-          });
-
-          const indexOfNearestPoint = coordinates.indexOf(nearestPoint);
-          const indexOfStop = coordinates.indexOf(currentStopPoint);
-
-          if (indexOfNearestPoint > indexOfStop) return <></>;
-
-          return (
-            <Marker key={index} icon={icon} position={nearestPoint}></Marker>
-          );
-        })}
+        <LineLocationsMarkers
+          allRoute={allRoute}
+          lineLocations={lineLocations}
+        />
         <StopsMarkers stops={stopsOrdered ?? []} mapRef={mapRef} />
       </MapContainer>
       <div
         style={{zIndex: 500}}
         className="bg-white absolute bottom-24 right-5 rounded-full">
-        <IconButton onClick={() => mapRef.current?.locate()} size="large">
+        <IconButton
+          onClick={() => {
+            setFlyToLocation(true);
+            mapRef.current?.locate();
+          }}
+          size="large">
           <MyLocationIcon color="primary" fontSize="large"></MyLocationIcon>
         </IconButton>
       </div>
