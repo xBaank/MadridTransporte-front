@@ -36,6 +36,13 @@ export default function Info() {
             Aqui
           </Link>
         </p>
+        <br />
+        <div className="font-bold text-xl mb-2">- Icons</div>
+        <a
+          href="https://www.flaticon.com/free-icons/bus-stop"
+          title="bus stop icons">
+          Bus stop icons created by mavadee - Flaticon
+        </a>
       </div>
     </div>
   );
