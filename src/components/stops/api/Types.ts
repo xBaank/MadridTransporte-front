@@ -1,6 +1,7 @@
 import {type Coordinates} from "./RouteTypes";
 
 export type Stop = {
+  stop_id: string;
   stop_code: string;
   cod_mode: number;
   stop_name: string;
@@ -25,6 +26,8 @@ export type StopTimes = {
 
 export type Arrive = {
   line: string;
+  lineCode: string | null;
+  direction: number | null;
   stop: string;
   anden: number | null;
   codMode: number;
@@ -119,5 +122,28 @@ export type LineDestination = {
   destination: string;
   codMode: number;
 };
+
+export type LineLocation = {
+  lineCode: string;
+  codVehicle: string;
+  coordinates: {
+    latitude: number;
+    longitude: number;
+  };
+  direction: number;
+};
+
+export type Itinerary = {
+  codItinerary: string;
+  direction: number;
+  stops: ItineraryStop[];
+};
+
+export type ItineraryStop = {
+  fullStopCode: string;
+  order: number;
+};
+
+export type StopWithOrder = Stop & {order: number};
 
 export type TransportType = "metro" | "train" | "emt" | "bus" | "tram";
