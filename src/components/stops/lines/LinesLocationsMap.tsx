@@ -14,7 +14,6 @@ import {
 import {getLineLocations, getLineStops} from "../api/Lines";
 import {fold} from "fp-ts/lib/Either";
 import ErrorMessage from "../../Error";
-import {defaultPosition} from "../Utils";
 import {useInterval} from "usehooks-ts";
 import {routeTimeCar} from "../api/Route";
 import LoadingSpinner from "../../LoadingSpinner";
@@ -37,7 +36,6 @@ export default function LinesLocationsMap() {
   const [stopCode, setStopCode] = useState<string>();
   const [allRoute, setAllRoute] = useState<LatLngLiteral[]>();
   const [error, setError] = useState<string>();
-  const [stopCentered, setStopCentered] = useState(false);
   const [isOnInterval, setIsOnInterval] = useState(false);
   const [flyToLocation, setFlyToLocation] = useState(false);
 
@@ -97,16 +95,6 @@ export default function LinesLocationsMap() {
     mapped.then(i => setAllRoute(coordinatesToExpression(i)));
   }, [stopsOrdered]);
 
-  useEffect(() => {
-    if (mapRef.current === null || currentStop === undefined || stopCentered)
-      return;
-    mapRef.current.panTo({
-      lat: currentStop.stop_lat,
-      lng: currentStop.stop_lon,
-    });
-    setStopCentered(true);
-  }, [mapRef, currentStop]);
-
   useInterval(() => {
     setIsOnInterval(true);
     getLocations();
@@ -134,7 +122,7 @@ export default function LinesLocationsMap() {
         ref={mapRef}
         className="h-full"
         preferCanvas={false}
-        center={defaultPosition}
+        center={{lat: currentStop.stop_lat, lng: currentStop.stop_lon}}
         zoom={16}
         maxZoom={18}
         scrollWheelZoom={true}>

@@ -191,7 +191,7 @@ export default function BusStopsTimes() {
         key={`${arrive.line} ${arrive.destination}`}
         className="p-2 border-b-blue-900 border-blue-900">
         <div className="flex items-center flex-wrap justify-between">
-          <div className="flex-col min-w-0 max-w-[70%]">
+          <div className="flex-col min-w-0 max-w-[75%]">
             <div className="flex">
               <Line info={arrive} />
               <div className={`${textColor} gap-5 flex overflow-scroll`}>

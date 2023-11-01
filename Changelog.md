@@ -1,8 +1,12 @@
 # Changelog
 
+## 1.4.1
+
+- Fix a bug that caused the map to not center the stop when looking for a line location
+
 ## 1.4.0
 
-- Added a button to see the locations of a bus line in the map (Only available for urban and interurban buses)
+- Add a button to see the locations of a bus line in the map (Only available for urban and interurban buses)
 
 ## 1.3.11
 
