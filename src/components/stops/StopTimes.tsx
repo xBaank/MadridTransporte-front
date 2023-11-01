@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {
   type Alert,
@@ -37,6 +37,7 @@ import ErrorMessage from "../Error";
 import Line from "../Line";
 import RenderAffected from "./Affected";
 import StaledMessage from "../Staled";
+import LinesLocationsButton from "./lines/LinesLocationsButton";
 
 export default function BusStopsTimes() {
   const interval = 1000 * 30;
@@ -190,7 +191,7 @@ export default function BusStopsTimes() {
         key={`${arrive.line} ${arrive.destination}`}
         className="p-2 border-b-blue-900 border-blue-900">
         <div className="flex items-center flex-wrap justify-between">
-          <div className="flex-col min-w-0 max-w-[90%]">
+          <div className="flex-col min-w-0 max-w-[70%]">
             <div className="flex">
               <Line info={arrive} />
               <div className={`${textColor} gap-5 flex overflow-scroll`}>
@@ -206,22 +207,31 @@ export default function BusStopsTimes() {
               )}
             </div>
           </div>
-          <StopTimesSubscribe
-            stopId={code!}
-            type={type!}
-            subscription={
-              subscription ?? {
-                stopCode: code!,
-                codMode: getCodModeByType(type!),
-                linesDestinations: [],
+
+          <div className="ml-auto flex gap-3 p-1 mb-auto">
+            <StopTimesSubscribe
+              stopId={code!}
+              type={type!}
+              subscription={
+                subscription ?? {
+                  stopCode: code!,
+                  codMode: getCodModeByType(type!),
+                  linesDestinations: [],
+                }
               }
-            }
-            line={{
-              line: arrive.line,
-              destination: arrive.destination,
-              codMode: arrive.codMode,
-            }}
-          />
+              line={{
+                line: arrive.line,
+                destination: arrive.destination,
+                codMode: arrive.codMode,
+              }}
+            />
+            <LinesLocationsButton
+              codMode={getCodModeByType(type!)}
+              code={arrive?.lineCode ?? ""}
+              direction={arrive?.direction?.toString() ?? ""}
+              stopCode={code ?? ""}
+            />
+          </div>
         </div>
       </li>
     );

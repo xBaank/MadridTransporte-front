@@ -6,6 +6,9 @@ export type Coordinates = {
 export type Route = {
   code: string;
   routes: Array<{
+    geometry: {
+      coordinates: number[][];
+    };
     duration: number;
     distance: number;
   }>;

@@ -6,9 +6,20 @@ import {
 
 export const metroCodMode = 4;
 export const trainCodMode = 5;
-const emtCodMode = 6;
-const busCodMode = 8;
-const metroLigeroCodMode = 10;
+export const emtCodMode = 6;
+export const busCodMode = 8;
+export const metroLigeroCodMode = 10;
+
+export function getLocationLink(
+  codMode: number,
+  code: string,
+  direction: string,
+  stopCode: string,
+) {
+  if (codMode === busCodMode)
+    return `/lines/bus/${code}/locations/${direction}?stopCode=${stopCode}`;
+  return "#";
+}
 
 export function getIconByCodMode(codMode: number): string {
   if (codMode === metroCodMode) return "/icons/metro.png";

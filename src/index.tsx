@@ -23,6 +23,7 @@ import StaticMaps from "./components/maps/StaticMaps";
 import {getSystemTheme} from "./components/stops/Utils";
 import Settings from "./components/settings/Settings";
 import StopNearest from "./components/stops/StopNearest";
+import LinesLocationsMap from "./components/stops/lines/LinesLocationsMap";
 
 export const ColorModeContext = React.createContext({
   toggleColorMode: () => {},
@@ -106,6 +107,10 @@ const router = createBrowserRouter([
   {
     path: "/stops/:type/:code/times",
     element: <DefaultElement element={<BusStopsTimes />} />,
+  },
+  {
+    path: "/lines/:type/:code/locations/:direction",
+    element: <DefaultElement element={<LinesLocationsMap />} />,
   },
   {
     path: "/stops/train/:code/destination",

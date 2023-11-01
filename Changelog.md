@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.0
+
+- Added a button to see the locations of a bus line in the map (Only available for urban and interurban buses)
+
 ## 1.3.11
 
 - Fix bug that did't open the stop when clicking the notification.
