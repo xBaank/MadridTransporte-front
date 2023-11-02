@@ -136,7 +136,11 @@ export default function LinesLocationsMap() {
           allRoute={allRoute}
           lineLocations={lineLocations}
         />
-        <StopsMarkers stops={stopsOrdered ?? []} mapRef={mapRef} />
+        <StopsMarkers
+          current={currentStop}
+          stops={stopsOrdered ?? []}
+          mapRef={mapRef}
+        />
       </MapContainer>
       <div
         style={{zIndex: 500}}

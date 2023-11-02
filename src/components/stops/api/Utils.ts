@@ -9,6 +9,7 @@ export const trainCodMode = 5;
 export const emtCodMode = 6;
 export const busCodMode = 8;
 export const metroLigeroCodMode = 10;
+export const currentStop = 999;
 
 export function getLocationLink(
   codMode: number,
@@ -27,6 +28,7 @@ export function getIconByCodMode(codMode: number): string {
   if (codMode === emtCodMode) return "/icons/emt.png";
   if (codMode === busCodMode) return "/icons/interurban.png";
   if (codMode === metroLigeroCodMode) return "/icons/metro_ligero.png";
+  if (codMode === currentStop) return "/icons/current_stop.png";
   return "/icons/interurban.png";
 }
 

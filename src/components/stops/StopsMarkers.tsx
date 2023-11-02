@@ -2,19 +2,27 @@ import {type RefObject} from "react";
 import {type Stop} from "./api/Types";
 import {Marker, Popup} from "react-leaflet";
 import {Link} from "react-router-dom";
-import {getIconByCodMode, getStopTimesLinkByMode} from "./api/Utils";
+import {
+  currentStop,
+  getIconByCodMode,
+  getStopTimesLinkByMode,
+} from "./api/Utils";
 import L from "leaflet";
 
 export function StopsMarkers({
   stops,
   mapRef,
+  current,
 }: {
   stops: Stop[];
   mapRef: RefObject<L.Map>;
+  current?: Stop;
 }) {
   return stops.map(stop => {
+    const isCurrent = stop.stop_id === current?.stop_id;
+    const codMode = isCurrent ? currentStop : stop.cod_mode;
     const icon = L.icon({
-      iconUrl: getIconByCodMode(stop.cod_mode),
+      iconUrl: getIconByCodMode(codMode),
       iconSize: [32, 32],
       iconAnchor: [16, 32],
     });
