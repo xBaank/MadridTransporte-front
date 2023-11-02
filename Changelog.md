@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.2
+
+- Added a different color for the selected stop when seeing line locations
+
 ## 1.4.1
 
 - Fix a bug that caused the map to not center the stop when looking for a line location
