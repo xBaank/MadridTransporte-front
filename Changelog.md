@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.3
+
+- Visual improvements
+
 ## 1.4.2
 
 - Added a different color for the selected stop when seeing line locations
