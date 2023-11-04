@@ -5,7 +5,7 @@ export default function Line({info}: {info: {line: string; codMode: number}}) {
     <div
       className={`text-sm font-bold text-center ${getLineColorByCodMode(
         info.codMode,
-      )} text-white w-16 rounded-lg p-1 mr-3`}>
+      )} text-white w-16 min-w-min rounded-lg p-1 mr-3`}>
       {info.line}
     </div>
   );

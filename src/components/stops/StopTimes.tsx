@@ -164,8 +164,7 @@ export default function BusStopsTimes() {
     if (times === undefined)
       return (
         <div className="w-full flex justify-center py-4">
-          {" "}
-          <LoadingSpinner />{" "}
+          <LoadingSpinner />
         </div>
       );
     if (times.arrives === null)
@@ -191,10 +190,10 @@ export default function BusStopsTimes() {
         key={`${arrive.line} ${arrive.destination}`}
         className="p-2 border-b-blue-900 border-blue-900">
         <div className="flex items-center flex-wrap justify-between">
-          <div className="flex-col min-w-0 max-w-[75%]">
+          <div className="flex-col min-w-0 max-w-[80%]">
             <div className="flex">
               <Line info={arrive} />
-              <div className={`${textColor} gap-5 flex overflow-scroll`}>
+              <div className={`${textColor} gap-5 flex overflow-scroll w-64`}>
                 {arrivesFormatted}
               </div>
             </div>
@@ -208,7 +207,7 @@ export default function BusStopsTimes() {
             </div>
           </div>
 
-          <div className="ml-auto flex gap-3 p-1 mb-auto">
+          <div className="ml-auto flex gap-3 p-1 mb-auto max-w-[20%]">
             <StopTimesSubscribe
               stopId={code!}
               type={type!}
