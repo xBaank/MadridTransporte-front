@@ -39,7 +39,10 @@ export function StopsMarkers({
         title={stop.stop_name}
         position={{lat: stop.stop_lat, lng: stop.stop_lon}}>
         <Popup keepInView={false} className="pb-8 pl-14 mr-5">
-          <div>{stop.stop_name}</div>
+          <div>
+            {stop.stop_name}
+            {` (${stop.stop_code})`}
+          </div>
           <div className="mt-3 p-1 bg-blue-900 text-center">
             <Link
               to={getStopTimesLinkByMode(
