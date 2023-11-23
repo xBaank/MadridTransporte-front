@@ -121,8 +121,8 @@ export default function BusStopsTimes() {
             />
             <div
               className={`flex items-center gap-2 whitespace-nowrap overflow-scroll`}>
+              <div className="font-bold mx-1">{stop.stop_code}</div>
               <div>{stop.stop_name}</div>
-              <div className="font-bold ">({stop.stop_code})</div>
             </div>
             <div className="ml-auto flex pl-3 items-baseline">
               <RenderAffected alerts={alerts} stopId={code!} />
