@@ -1,20 +1,24 @@
 # Changelog
 
+## 1.4.4
+
+- Add stop code to map stop markers and stop times.
+
 ## 1.4.3
 
-- Visual improvements
+- Visual improvements.
 
 ## 1.4.2
 
-- Added a different color for the selected stop when seeing line locations
+- Added a different color for the selected stop when seeing line locations.
 
 ## 1.4.1
 
-- Fix a bug that caused the map to not center the stop when looking for a line location
+- Fix a bug that caused the map to not center the stop when looking for a line .
 
 ## 1.4.0
 
-- Add a button to see the locations of a bus line in the map (Only available for urban and interurban buses)
+- Add a button to see the locations of a bus line in the map (Only available for urban and interurban buses).
 
 ## 1.3.11
 
@@ -22,7 +26,7 @@
 
 ## 1.3.10
 
-- Remove usage of `v1/stops/all`
+- Remove usage of `v1/stops/all`.
 - Improve performance when searching for stops.
 
 ## 1.3.9
