@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.5
+
+- Fix favorite icon.
+
 ## 1.4.4
 
 - Add stop code to map stop markers and stop times.
