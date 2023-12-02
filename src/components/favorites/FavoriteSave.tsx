@@ -59,7 +59,7 @@ export default function FavoriteSave({
       <button
         onClick={handleClickOpen}
         className={`text-red-500 hover:text-red-700`}>
-        {isFavorite ? <FavoriteBorderIcon /> : <FavoriteIcon />}
+        {isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
       </button>
 
       {isFavorite ? (
