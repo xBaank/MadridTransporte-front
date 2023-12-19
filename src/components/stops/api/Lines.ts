@@ -16,9 +16,11 @@ export async function getLineLocations(
   code: string,
   direction: number,
   stopCode: string,
+  signal: AbortSignal,
 ): Promise<Either<string, LineLocation[]>> {
   const response = await fetch(
     `${apiUrl}/lines/${type}/${code}/locations/${direction.toString()}?stopCode=${stopCode}`,
+    {signal},
   );
   if (response.status === 404) return left(NotFound);
   if (response.status === 400) return left(BadRequest);

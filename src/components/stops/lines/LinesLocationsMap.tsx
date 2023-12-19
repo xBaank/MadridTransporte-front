@@ -2,7 +2,7 @@ import {IconButton} from "@mui/material";
 import {MapContainer, Polyline, TileLayer} from "react-leaflet";
 import {type LatLngLiteral, type Map} from "leaflet";
 import LocationMarker from "../LocationMarker";
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import {useParams, useSearchParams} from "react-router-dom";
 import {
@@ -38,6 +38,7 @@ export default function LinesLocationsMap() {
   const [error, setError] = useState<string>();
   const [isOnInterval, setIsOnInterval] = useState(false);
   const [flyToLocation, setFlyToLocation] = useState(false);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const getLocations = useCallback(() => {
     if (
@@ -47,13 +48,27 @@ export default function LinesLocationsMap() {
       stopCode === undefined
     )
       return;
-    getLineLocations(type, code, Number.parseInt(direction), stopCode).then(
-      result =>
+
+    abortControllerRef.current?.abort();
+    abortControllerRef.current = new AbortController();
+
+    getLineLocations(
+      type,
+      code,
+      Number.parseInt(direction),
+      stopCode,
+      abortControllerRef.current.signal,
+    )
+      .then(result =>
         fold(
           (error: string) => setError(error),
           (locations: LineLocation[]) => setLineLocations(locations),
         )(result),
-    );
+      )
+      .catch(async ex => {
+        if (ex instanceof DOMException) return;
+        throw ex;
+      });
   }, [type, code, direction, stopCode]);
 
   const getStops = useCallback(() => {
