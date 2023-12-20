@@ -1,7 +1,7 @@
 {
   "name": "madrid-transporte",
   "homepage": "https://www.madridtransporte.com",
-  "version": "1.4.6",
+  "version": "1.4.7",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.6",
