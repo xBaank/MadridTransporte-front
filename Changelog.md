@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.8
+
+- Update stops data.
+
 ## 1.4.7
 
 - Optimize locations fetch.

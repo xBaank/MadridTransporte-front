@@ -19,8 +19,8 @@ export function StopsMarkers({
   current?: Stop;
 }) {
   return stops.map(stop => {
-    const isCurrent = stop.stop_id === current?.stop_id;
-    const codMode = isCurrent ? currentStop : stop.cod_mode;
+    const isCurrent = stop.fullStopCode === current?.fullStopCode;
+    const codMode = isCurrent ? currentStop : stop.codMode;
     const icon = L.icon({
       iconUrl: getIconByCodMode(codMode),
       iconSize: [32, 32],
@@ -31,23 +31,23 @@ export function StopsMarkers({
       <Marker
         eventHandlers={{
           click: () => {
-            mapRef.current?.flyTo({lat: stop.stop_lat, lng: stop.stop_lon}, 18);
+            mapRef.current?.flyTo({lat: stop.stopLat, lng: stop.stopLon}, 18);
           },
         }}
-        key={`${stop.cod_mode}_${stop.stop_code}`}
+        key={`${stop.codMode}_${stop.stopCode}`}
         icon={icon}
-        title={stop.stop_name}
-        position={{lat: stop.stop_lat, lng: stop.stop_lon}}>
+        title={stop.stopName}
+        position={{lat: stop.stopLat, lng: stop.stopLon}}>
         <Popup keepInView={false} className="pb-8 pl-14 mr-5">
           <div>
-            {stop.stop_name}
-            {` (${stop.stop_code})`}
+            {stop.stopName}
+            {` (${stop.stopCode})`}
           </div>
           <div className="mt-3 p-1 bg-blue-900 text-center">
             <Link
               to={getStopTimesLinkByMode(
-                stop.cod_mode,
-                stop.stop_code.toString(),
+                stop.codMode,
+                stop.stopCode.toString(),
               )}>
               <div className="text-white"> Consultar parada </div>
             </Link>

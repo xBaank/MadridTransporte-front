@@ -116,13 +116,13 @@ export default function BusStopsTimes() {
             className={`flex items-end justify-start mb-3 ${textColor} border-b ${borderColor} pb-2`}>
             <img
               className="w-8 h-8 max-md:w-7 max-md:h-7 mr-2 rounded-full"
-              src={getIconByCodMode(stop.cod_mode)}
+              src={getIconByCodMode(stop.codMode)}
               alt="Logo"
             />
             <div
               className={`flex items-center gap-2 whitespace-nowrap overflow-scroll`}>
-              <div className="font-bold mx-1">{stop.stop_code}</div>
-              <div>{stop.stop_name}</div>
+              <div className="font-bold mx-1">{stop.stopCode}</div>
+              <div>{stop.stopName}</div>
             </div>
             <div className="ml-auto flex pl-3 items-baseline">
               <RenderAffected alerts={alerts} stopId={code!} />
@@ -142,7 +142,7 @@ export default function BusStopsTimes() {
                   })
                 }
                 deleteF={() => removeFromFavorites({type: type!, code: code!})}
-                defaultName={stop.stop_name}
+                defaultName={stop.stopName}
               />
             </div>
           </div>
@@ -150,7 +150,7 @@ export default function BusStopsTimes() {
             {RenderTimesOrEmpty(stopTimes)}
           </ul>
           <TimeToReachStop
-            stopLocation={{latitude: stop.stop_lat, longitude: stop.stop_lon}}
+            stopLocation={{latitude: stop.stopLat, longitude: stop.stopLon}}
           />
           <RenderAlerts
             alerts={alerts}

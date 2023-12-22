@@ -43,9 +43,7 @@ export async function getLineStops(
   const data = (await response.json()) as Itinerary;
   const mapped = data.stops
     .map(i => {
-      const stop = stops.right.find(
-        x => x.stop_id.replace("par_", "") === i.fullStopCode,
-      );
+      const stop = stops.right.find(x => x.fullStopCode === i.fullStopCode);
       if (stop === undefined) return null;
       return {...stop, order: i.order}!;
     })

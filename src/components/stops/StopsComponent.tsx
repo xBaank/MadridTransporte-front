@@ -20,16 +20,16 @@ export default function FilteredStopsComponent({
     if (query === "" || query.length < 3) return setStops([]);
 
     const filteredStops = stopLinks
-      .sort((a, b) => a.stop.cod_mode - b.stop.cod_mode)
+      .sort((a, b) => a.stop.codMode - b.stop.codMode)
       .filter(
         stopLink =>
-          ((codMode === null || stopLink.stop.cod_mode === codMode) &&
-            stopLink.stop.stop_name
+          ((codMode === null || stopLink.stop.codMode === codMode) &&
+            stopLink.stop.stopName
               .normalize("NFD")
               .replace(/[\u0300-\u036f]/g, "")
               .toLowerCase()
               .includes(query.toLowerCase())) ||
-          stopLink.stop.stop_code
+          stopLink.stop.stopCode
             .toString()
             .toLowerCase()
             .includes(query.toLowerCase()),
@@ -89,12 +89,12 @@ export function StopComponent(stop: StopLink) {
         </div>
         <div className="flex-1 items-center min-w-0 overflow-clip">
           <Link className="text-sm truncate " to={stop.url}>
-            {stop.stop.stop_name}
+            {stop.stop.stopName}
           </Link>
         </div>
         <div className="flex font-bold min-w-0">
           <Link className="text-sm truncate " to={stop.url}>
-            {stop.stop.stop_code}
+            {stop.stop.stopCode}
           </Link>
         </div>
       </div>

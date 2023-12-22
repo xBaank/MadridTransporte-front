@@ -93,7 +93,7 @@ export default function LinesLocationsMap() {
 
   useEffect(() => {
     if (stopsOrdered === undefined) return;
-    const current = stopsOrdered.find(i => i.stop_code === stopCode);
+    const current = stopsOrdered.find(i => i.stopCode === stopCode);
     if (current === undefined) return;
     setCurrentStop(current);
   }, [stopsOrdered, stopCode]);
@@ -103,7 +103,7 @@ export default function LinesLocationsMap() {
 
     const mapped = routeTimeCar(
       stopsOrdered?.map(i => {
-        return {latitude: i.stop_lat, longitude: i.stop_lon};
+        return {latitude: i.stopLat, longitude: i.stopLon};
       }) ?? [],
     );
 
@@ -137,7 +137,7 @@ export default function LinesLocationsMap() {
         ref={mapRef}
         className="h-full"
         preferCanvas={false}
-        center={{lat: currentStop.stop_lat, lng: currentStop.stop_lon}}
+        center={{lat: currentStop.stopLat, lng: currentStop.stopLon}}
         zoom={16}
         maxZoom={18}
         scrollWheelZoom={true}>

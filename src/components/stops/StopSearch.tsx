@@ -42,11 +42,11 @@ export default function BusStopSearch({
     return {
       stop,
       url: getStopTimesLinkByMode(
-        stop.cod_mode,
-        stop.stop_code.toString(),
+        stop.codMode,
+        stop.stopCode.toString(),
         code ?? null,
       ),
-      iconUrl: getIconByCodMode(stop.cod_mode),
+      iconUrl: getIconByCodMode(stop.codMode),
     };
   };
 
@@ -61,8 +61,8 @@ export default function BusStopSearch({
                 mapStopToStopLink(
                   stops.find(
                     stop =>
-                      stop.stop_code.toString() === code &&
-                      stop.cod_mode === codMode,
+                      stop.stopCode.toString() === code &&
+                      stop.codMode === codMode,
                   )!,
                 ),
               )}

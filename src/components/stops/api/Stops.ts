@@ -20,7 +20,7 @@ export async function getStop(type: TransportType, code: string) {
     (stops: Stop[]) =>
       stops.find(
         stop =>
-          stop.stop_code === code && stop.cod_mode === getCodModeByType(type),
+          stop.stopCode === code && stop.codMode === getCodModeByType(type),
       ),
   )(await getAllStops());
 }

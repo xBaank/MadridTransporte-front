@@ -1,12 +1,12 @@
 import {type Coordinates} from "./RouteTypes";
 
 export type Stop = {
-  stop_id: string;
-  stop_code: string;
-  cod_mode: number;
-  stop_name: string;
-  stop_lat: number;
-  stop_lon: number;
+  fullStopCode: string;
+  stopCode: string;
+  codMode: number;
+  stopName: string;
+  stopLat: number;
+  stopLon: number;
 };
 
 export type StopLink = {

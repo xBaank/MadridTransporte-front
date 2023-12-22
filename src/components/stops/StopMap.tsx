@@ -37,7 +37,7 @@ function BusStopMapBase() {
       return null;
     }
     const markers = allStops.filter(m => {
-      const pos = {lat: m.stop_lat, lng: m.stop_lon};
+      const pos = {lat: m.stopLat, lng: m.stopLon};
       return map?.getBounds().contains(pos);
     });
     setStops(markers);

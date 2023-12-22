@@ -33,20 +33,20 @@ export default function StopNearest() {
     if (location === null) return;
     const nearestStop = allStops.reduce((prev, curr) => {
       const prevDistance = Math.sqrt(
-        Math.pow(prev.stop_lat - location.coords.latitude, 2) +
-          Math.pow(prev.stop_lon - location.coords.longitude, 2),
+        Math.pow(prev.stopLat - location.coords.latitude, 2) +
+          Math.pow(prev.stopLon - location.coords.longitude, 2),
       );
       const currDistance = Math.sqrt(
-        Math.pow(curr.stop_lat - location.coords.latitude, 2) +
-          Math.pow(curr.stop_lon - location.coords.longitude, 2),
+        Math.pow(curr.stopLat - location.coords.latitude, 2) +
+          Math.pow(curr.stopLon - location.coords.longitude, 2),
       );
       return prevDistance < currDistance ? prev : curr;
     });
 
     navigate(
       getStopTimesLinkByMode(
-        nearestStop.cod_mode,
-        nearestStop.stop_code.toString(),
+        nearestStop.codMode,
+        nearestStop.stopCode.toString(),
         null,
       ),
     );
