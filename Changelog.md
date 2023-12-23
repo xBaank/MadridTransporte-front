@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.9
+
+- Use shapes for line routes instead of generating the stop route.
+
 ## 1.4.8
 
 - Update stops data.
