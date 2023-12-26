@@ -1,4 +1,4 @@
-import { type Coordinates } from "./RouteTypes";
+import {type Coordinates} from "./RouteTypes";
 
 export type Stop = {
   fullStopCode: string;
@@ -145,15 +145,15 @@ export type ItineraryStop = {
 };
 
 export type Shape = {
-  sequence: number
-  longitude: number
-  latitude: number
-}
+  sequence: number;
+  longitude: number;
+  latitude: number;
+};
 
-export type StopWithOrder = Stop & { order: number };
+export type StopWithOrder = Stop & {order: number};
 export type ItineraryWithStopsOrder = {
   codItinerary: string;
   stops: StopWithOrder[];
-}
+};
 
 export type TransportType = "metro" | "train" | "emt" | "bus" | "tram";

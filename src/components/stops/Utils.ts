@@ -20,6 +20,11 @@ export function useBorderColor() {
   return theme.palette.mode === "dark" ? "border-white" : "border-black";
 }
 
+export function useBackgroundColor() {
+  const theme = useTheme();
+  return theme.palette.mode === "dark" ? "bg-gray-800" : "bg-white";
+}
+
 export function getSystemTheme() {
   const theme = window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"

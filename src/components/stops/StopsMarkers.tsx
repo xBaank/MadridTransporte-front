@@ -8,6 +8,7 @@ import {
   getStopTimesLinkByMode,
 } from "./api/Utils";
 import L from "leaflet";
+import {useTheme} from "@mui/material";
 
 export function StopsMarkers({
   stops,
@@ -18,6 +19,7 @@ export function StopsMarkers({
   mapRef: RefObject<L.Map>;
   current?: Stop;
 }) {
+  const theme = useTheme();
   return stops.map(stop => {
     const isCurrent = stop.fullStopCode === current?.fullStopCode;
     const codMode = isCurrent ? currentStop : stop.codMode;
@@ -38,7 +40,13 @@ export function StopsMarkers({
         icon={icon}
         title={stop.stopName}
         position={{lat: stop.stopLat, lng: stop.stopLon}}>
-        <Popup keepInView={false} className="pb-8 pl-14 mr-5">
+        <Popup
+          keepInView={false}
+          className={`${
+            theme.palette.mode === "dark"
+              ? "leaflet-popup-content-wrapper-dark"
+              : ""
+          } pb-8 pl-14 mr-5`}>
           <div>
             {stop.stopName}
             {` (${stop.stopCode})`}
