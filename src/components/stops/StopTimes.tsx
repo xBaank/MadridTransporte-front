@@ -94,6 +94,7 @@ export default function BusStopsTimes() {
     getTimes();
     getAlerts();
   }, [type, code, getTimes, getAlerts, getStopInfo]);
+
   useInterval(
     () => {
       getTimes();

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.10
+
+- Fix requests being sent twice.
+
 ## 1.4.9
 
 - Use shapes for line routes instead of generating the stop route.

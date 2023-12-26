@@ -1,30 +1,30 @@
-import { IconButton } from "@mui/material";
-import { MapContainer, Polyline, TileLayer } from "react-leaflet";
-import { type LatLngLiteral, type Map } from "leaflet";
+import {IconButton} from "@mui/material";
+import {MapContainer, Polyline, TileLayer} from "react-leaflet";
+import {type LatLngLiteral, type Map} from "leaflet";
 import LocationMarker from "../LocationMarker";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
-import { useParams, useSearchParams } from "react-router-dom";
+import {useParams, useSearchParams} from "react-router-dom";
 import {
   type LineLocation,
   type TransportType,
   type Stop,
-  ItineraryWithStopsOrder,
-  Shape,
+  type ItineraryWithStopsOrder,
+  type Shape,
 } from "../api/Types";
-import { getLineLocations, getItinerary, getShapes } from "../api/Lines";
-import { fold } from "fp-ts/lib/Either";
+import {getLineLocations, getItinerary, getShapes} from "../api/Lines";
+import {fold} from "fp-ts/lib/Either";
 import ErrorMessage from "../../Error";
-import { useInterval } from "usehooks-ts";
-import { routeTimeCar } from "../api/Route";
+import {useInterval} from "usehooks-ts";
+import {routeTimeCar} from "../api/Route";
 import LoadingSpinner from "../../LoadingSpinner";
-import { StopsMarkers } from "../StopsMarkers";
-import { type Route } from "../api/RouteTypes";
-import { LineLocationsMarkers } from "./LineLocationsMarkers";
+import {StopsMarkers} from "../StopsMarkers";
+import {type Route} from "../api/RouteTypes";
+import {LineLocationsMarkers} from "./LineLocationsMarkers";
 
 export default function LinesLocationsMap() {
   const interval = 1000 * 10;
-  const { type, direction, code } = useParams<{
+  const {type, direction, code} = useParams<{
     type: TransportType;
     direction: string;
     code: string;
@@ -84,13 +84,11 @@ export default function LinesLocationsMap() {
   }, [type, code, direction]);
 
   useEffect(() => {
-    getLocations();
-    getStops();
-  }, [type, code, direction, getLocations, getStops]);
-
-  useEffect(() => {
     setStopCode(searchParam.get("stopCode") ?? undefined);
   }, []);
+
+  useEffect(getLocations, [getLocations]);
+  useEffect(getStops, [getStops]);
 
   useEffect(() => {
     if (itinerary === undefined) return;
@@ -100,7 +98,12 @@ export default function LinesLocationsMap() {
   }, [itinerary, stopCode]);
 
   useEffect(() => {
-    if (itinerary === undefined || type === undefined || itinerary.stops.length === 0) return;
+    if (
+      itinerary === undefined ||
+      type === undefined ||
+      itinerary.stops.length === 0
+    )
+      return;
 
     getShapes(type, itinerary.codItinerary).then(shapes =>
       fold(
@@ -109,23 +112,21 @@ export default function LinesLocationsMap() {
           if (value.length === 0) {
             const mapped = routeTimeCar(
               itinerary.stops.map(i => {
-                return { latitude: i.stopLat, longitude: i.stopLon };
+                return {latitude: i.stopLat, longitude: i.stopLon};
               }) ?? [],
             );
 
             mapped.then(i => setAllRoute(coordinatesToExpression(i)));
-            return
+            return;
           }
           const mapped = value.map(i => {
-            return { lat: i.latitude, lng: i.longitude };
-          })
+            return {lat: i.latitude, lng: i.longitude};
+          });
 
-          setAllRoute(mapped)
-        }
+          setAllRoute(mapped);
+        },
       )(shapes),
-    )
-
-
+    );
   }, [itinerary, type]);
 
   useInterval(() => {
@@ -135,7 +136,7 @@ export default function LinesLocationsMap() {
 
   function coordinatesToExpression(route: Route) {
     return route.routes[0].geometry.coordinates.map(i => {
-      return { lat: i[1], lng: i[0] };
+      return {lat: i[1], lng: i[0]};
     });
   }
 
@@ -155,7 +156,7 @@ export default function LinesLocationsMap() {
         ref={mapRef}
         className="h-full"
         preferCanvas={false}
-        center={{ lat: currentStop.stopLat, lng: currentStop.stopLon }}
+        center={{lat: currentStop.stopLat, lng: currentStop.stopLon}}
         zoom={16}
         maxZoom={18}
         scrollWheelZoom={true}>
@@ -176,7 +177,7 @@ export default function LinesLocationsMap() {
         />
       </MapContainer>
       <div
-        style={{ zIndex: 500 }}
+        style={{zIndex: 500}}
         className="bg-white absolute bottom-24 right-5 rounded-full">
         <IconButton
           onClick={() => {

@@ -1,14 +1,14 @@
-import { type Either, left, right } from "fp-ts/lib/Either";
+import {type Either, left, right} from "fp-ts/lib/Either";
 import {
   type Itinerary,
   type LineLocation,
   type TransportType,
   type StopWithOrder,
-  Shape,
-  ItineraryWithStopsOrder,
+  type Shape,
+  type ItineraryWithStopsOrder,
 } from "./Types";
-import { apiUrl } from "../../Urls";
-import { getAllStops } from "./Stops";
+import {apiUrl} from "../../Urls";
+import {getAllStops} from "./Stops";
 
 const NotFound = "No se ha encontrado la linea especificada";
 const BadRequest = "Error al obtener la localizacion";
@@ -22,7 +22,7 @@ export async function getLineLocations(
 ): Promise<Either<string, LineLocation[]>> {
   const response = await fetch(
     `${apiUrl}/lines/${type}/${code}/locations/${direction.toString()}?stopCode=${stopCode}`,
-    { signal },
+    {signal},
   );
   if (response.status === 404) return left(NotFound);
   if (response.status === 400) return left(BadRequest);
@@ -48,17 +48,17 @@ export async function getItinerary(
       .map(i => {
         const stop = stops.right.find(x => x.fullStopCode === i.fullStopCode);
         if (stop === undefined) return null;
-        return { ...stop, order: i.order }!;
+        return {...stop, order: i.order}!;
       })
       .filter(i => i != null) as StopWithOrder[],
-    codItinerary: data.codItinerary
-  }
+    codItinerary: data.codItinerary,
+  };
   return right(mapped);
 }
 
 export async function getShapes(
   type: TransportType,
-  itineraryCode: string
+  itineraryCode: string,
 ): Promise<Either<string, Shape[]>> {
   const response = await fetch(
     `${apiUrl}/lines/${type}/shapes/${itineraryCode}`,
