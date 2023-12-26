@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.0
+
+- Add dark theme to map.
+
 ## 1.4.10
 
 - Fix requests being sent twice.
