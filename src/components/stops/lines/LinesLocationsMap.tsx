@@ -1,5 +1,5 @@
-import {type LatLngLiteral, type Map} from "leaflet";
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import {type Map, type LatLngLiteral} from "leaflet";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {useParams, useSearchParams} from "react-router-dom";
 import {
   type LineLocation,
@@ -28,7 +28,7 @@ export default function LinesLocationsMap() {
     code: string;
   }>();
   const [searchParam] = useSearchParams();
-  const mapRef = React.createRef<Map>();
+  const [map, setMap] = useState<Map | null>(null);
   const [lineLocations, setLineLocations] = useState<LineLocation[]>();
   const [itinerary, setItinerary] = useState<ItineraryWithStopsOrder>();
   const [currentStop, setCurrentStop] = useState<Stop>();
@@ -138,6 +138,19 @@ export default function LinesLocationsMap() {
     });
   }
 
+  function StopsMarkersMemo() {
+    return useMemo(() => {
+      if (map == null) return <></>;
+      return (
+        <StopsMarkers
+          current={currentStop}
+          stops={itinerary?.stops ?? []}
+          map={map}
+        />
+      );
+    }, [map, currentStop, itinerary]);
+  }
+
   if (error !== undefined && !isOnInterval)
     return <ErrorMessage message={error}></ErrorMessage>;
 
@@ -150,20 +163,16 @@ export default function LinesLocationsMap() {
 
   return (
     <ThemedMap
-      mapRef={mapRef}
+      setMap={setMap}
       flyToLocation={flyToLocation}
       center={{lat: currentStop?.stopLat, lng: currentStop.stopLon}}
-      onClick={() => {
+      onLocateClick={() => {
         setFlyToLocation(true);
-        mapRef.current?.locate();
+        map?.locate();
       }}>
       <Polyline fillColor="blue" weight={7} positions={allRoute} />
       <LineLocationsMarkers allRoute={allRoute} lineLocations={lineLocations} />
-      <StopsMarkers
-        current={currentStop}
-        stops={itinerary?.stops ?? []}
-        mapRef={mapRef}
-      />
+      <StopsMarkersMemo />
     </ThemedMap>
   );
 }

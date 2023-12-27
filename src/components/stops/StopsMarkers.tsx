@@ -1,4 +1,3 @@
-import {type RefObject} from "react";
 import {type Stop} from "./api/Types";
 import {Marker, Popup} from "react-leaflet";
 import {Link} from "react-router-dom";
@@ -12,11 +11,11 @@ import {useTheme} from "@mui/material";
 
 export function StopsMarkers({
   stops,
-  mapRef,
+  map,
   current,
 }: {
   stops: Stop[];
-  mapRef: RefObject<L.Map>;
+  map: L.Map;
   current?: Stop;
 }) {
   const theme = useTheme();
@@ -33,7 +32,7 @@ export function StopsMarkers({
       <Marker
         eventHandlers={{
           click: () => {
-            mapRef.current?.flyTo({lat: stop.stopLat, lng: stop.stopLon}, 18);
+            map.flyTo({lat: stop.stopLat, lng: stop.stopLon}, 18);
           },
         }}
         key={`${stop.codMode}_${stop.stopCode}`}

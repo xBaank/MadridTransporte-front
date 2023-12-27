@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from "react";
-import {useMap, useMapEvents} from "react-leaflet";
+import {useMapEvents} from "react-leaflet";
 import {type Stop} from "./api/Types";
 import * as E from "fp-ts/Either";
 import {type Map} from "leaflet";
@@ -15,8 +15,11 @@ export default function BusStopMap() {
 function BusStopMapBase() {
   const [allStops, setAllStops] = useState<Stop[]>([]);
   const [stops, setStops] = useState<Stop[]>([]);
-  const [mounted, setMounted] = useState(false);
-  const mapRef = React.createRef<Map>();
+  const [map, setMap] = useState<Map | null>(null);
+
+  useEffect(() => {
+    map?.panTo(defaultPosition);
+  }, [map, allStops]);
 
   useEffect(() => {
     getAllStops().then(i =>
@@ -25,47 +28,37 @@ function BusStopMapBase() {
   }, []);
 
   const markers = useMemo(() => {
-    return <StopsMarkers stops={stops} mapRef={mapRef} />;
-  }, [mapRef, stops]);
+    if (map === null) return <></>;
+    return <StopsMarkers stops={stops} map={map} />;
+  }, [map, stops]);
 
-  function DisplayMarkers() {
-    const map = mapRef.current;
+  function displayMarkers() {
     if (map == null || map.getZoom() < 16) {
       setStops([]);
-      return null;
+      return;
     }
     const markers = allStops.filter(m => {
       const pos = {lat: m.stopLat, lng: m.stopLon};
       return map?.getBounds().contains(pos);
     });
     setStops(markers);
-    return null;
   }
 
   function DisplayOnMove() {
-    const map = useMap();
-    useEffect(() => {
-      if (mounted) return;
-      if (
-        !mounted &&
-        (mapRef.current?.getBounds().contains(defaultPosition) ?? false)
-      )
-        setMounted(true);
-    }, [map]);
     useMapEvents({
-      locationfound: DisplayMarkers,
-      locationerror: DisplayMarkers,
-      moveend: DisplayMarkers,
+      locationfound: displayMarkers,
+      locationerror: displayMarkers,
+      moveend: displayMarkers,
     });
     return null;
   }
 
   return (
     <ThemedMap
-      mapRef={mapRef}
+      setMap={setMap}
       flyToLocation={true}
       center={defaultPosition}
-      onClick={() => mapRef.current?.locate()}>
+      onLocateClick={() => map?.locate()}>
       <DisplayOnMove />
       {markers}
     </ThemedMap>

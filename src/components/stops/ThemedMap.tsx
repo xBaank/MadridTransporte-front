@@ -9,22 +9,27 @@ import {type LatLngExpression, type Map} from "leaflet";
 export default function ThemedMap({
   children,
   flyToLocation,
-  mapRef,
+  setMap,
   center,
-  onClick,
+  onLocateClick,
+  whenReady,
 }: {
   children: JSX.Element[];
   flyToLocation: boolean;
-  mapRef: RefObject<Map>;
+  setMap: React.Dispatch<React.SetStateAction<Map | null>>;
   center: LatLngExpression;
-  onClick: () => void;
+  onLocateClick: () => void;
+  whenReady?: () => void;
 }) {
   const theme = useTheme();
   return (
     <div className="h-full w-full z-0 pb-2 ">
       <MapContainer
+        whenReady={() => {
+          if (whenReady !== undefined) whenReady();
+        }}
         zoomControl={false}
-        ref={mapRef}
+        ref={setMap as unknown as RefObject<Map>}
         className={`h-full ${useBackgroundColor()}`}
         center={center}
         preferCanvas={false}
@@ -42,7 +47,7 @@ export default function ThemedMap({
       <div
         style={{zIndex: 500}}
         className={`${useBackgroundColor()} absolute bottom-24 right-5 rounded-full`}>
-        <IconButton onClick={onClick} size="large">
+        <IconButton onClick={onLocateClick} size="large">
           <MyLocationIcon color="primary" fontSize="large"></MyLocationIcon>
         </IconButton>
       </div>
