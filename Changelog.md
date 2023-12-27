@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.1
+
+- Change map background to black on dark mode.
+- Fix bug that caused the stops to not be rendered on the map until the user moved the camera.
+
 ## 1.5.0
 
 - Add dark theme to map.
