@@ -21,11 +21,11 @@ export default function ThemedMap({
 }) {
   const theme = useTheme();
   return (
-    <div className="h-full w-full z-0 pb-2">
+    <div className="h-full w-full z-0 pb-2 ">
       <MapContainer
         zoomControl={false}
         ref={mapRef}
-        className="h-full"
+        className={`h-full ${useBackgroundColor()}`}
         center={center}
         preferCanvas={false}
         zoom={16}
