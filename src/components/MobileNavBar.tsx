@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {createContext, useContext, useEffect, useState} from "react";
 import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
 import {
   BottomNavigation,
@@ -11,23 +11,51 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import {Link, useLocation} from "react-router-dom";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 
+export const MenuContext = createContext({
+  buscar: "/",
+  mapa: "/stops/map",
+  abono: "/abono",
+  ajustes: "/settings",
+});
+
 export default function MobileNavBar() {
   const theme = useTheme();
-  const [value, setValue] = useState("Buscar");
   const location = useLocation();
+  const menuContext = useContext(MenuContext);
+  const [value, setValue] = useState<"Mapa" | "Abono" | "Ajustes" | "Buscar">(
+    "Buscar",
+  );
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    if (newValue === "Tema") return;
+    if (
+      newValue !== "Mapa" &&
+      newValue !== "Abono" &&
+      newValue !== "Ajustes" &&
+      newValue !== "Buscar"
+    )
+      return;
     setValue(newValue);
   };
 
   useEffect(() => {
     const path = location.pathname;
-    if (path.startsWith("/stops/map")) setValue("Mapa");
-    else if (path.startsWith("/abono")) setValue("Abono");
-    else if (path.startsWith("/settings")) setValue("Ajustes");
-    else if (path.startsWith("/info")) setValue("Ajustes");
-    else setValue("Buscar");
+    if (path.startsWith("/stops/map")) {
+      setValue("Mapa");
+      menuContext.mapa = path;
+    } else if (path.startsWith("/abono")) {
+      setValue("Abono");
+      menuContext.abono = path;
+    } else if (path.startsWith("/settings")) {
+      setValue("Ajustes");
+      menuContext.ajustes = path;
+    } else if (path.startsWith("/info")) {
+      setValue("Ajustes");
+      menuContext.ajustes = path;
+    } else {
+      setValue("Buscar");
+      menuContext.buscar = path;
+    }
+    console.log(menuContext);
   }, [location]);
 
   useEffect(() => {
@@ -43,28 +71,28 @@ export default function MobileNavBar() {
         className="pb-1">
         <BottomNavigationAction
           component={Link}
-          to={"/"}
+          to={menuContext.buscar}
           label="Buscar"
           value="Buscar"
           icon={<DirectionsBusIcon />}
         />
         <BottomNavigationAction
           component={Link}
-          to={"/stops/map"}
+          to={menuContext.mapa}
           label="Mapa"
           value="Mapa"
           icon={<MapIcon />}
         />
         <BottomNavigationAction
           component={Link}
-          to={"/abono"}
+          to={menuContext.abono}
           label="Abono"
           value="Abono"
           icon={<CreditCardIcon />}
         />
         <BottomNavigationAction
           component={Link}
-          to={"/settings"}
+          to={menuContext.ajustes}
           label="Ajustes"
           value="Ajustes"
           icon={<SettingsIcon />}
