@@ -25,7 +25,7 @@ function RenderElement(element: JSX.Element) {
             <div className="m-auto">
               <Link
                 className="text-2xl whitespace-nowrap text-white font-bold align-middle"
-                to={"/"}>
+                to={"#"}>
                 Madrid Transporte
               </Link>
             </div>

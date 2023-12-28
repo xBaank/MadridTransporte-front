@@ -1,5 +1,6 @@
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import {busCodMode, getLocationLink} from "../api/Utils";
+import {Link} from "react-router-dom";
 
 export default function LinesLocationsButton({
   codMode,
@@ -14,10 +15,10 @@ export default function LinesLocationsButton({
 }) {
   if (codMode !== busCodMode) return <></>;
   return (
-    <a
-      href={getLocationLink(codMode, code, direction, stopCode)}
+    <Link
+      to={getLocationLink(codMode, code, direction, stopCode)}
       className=" text-blue-500">
       <MyLocationIcon></MyLocationIcon>
-    </a>
+    </Link>
   );
 }
