@@ -1,9 +1,9 @@
 /* eslint-disable no-mixed-operators */
 import {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
 import {type StopLink} from "./api/Types";
 import {Button} from "@mui/material";
 import NearMeIcon from "@mui/icons-material/NearMe";
+import LinkReplace from "../LinkReplace";
 
 export default function FilteredStopsComponent({
   query,
@@ -46,11 +46,15 @@ export default function FilteredStopsComponent({
       return (
         <>
           <div className="flex justify-between gap-1">
-            <Button component={Link} fullWidth to="/maps" variant="contained">
+            <Button
+              component={LinkReplace}
+              fullWidth
+              to="/maps"
+              variant="contained">
               Planos
             </Button>
             <Button
-              component={Link}
+              component={LinkReplace}
               fullWidth
               to="/stops/map"
               variant="contained">
@@ -59,7 +63,7 @@ export default function FilteredStopsComponent({
           </div>
           <div className="flex justify-center mt-2">
             <Button
-              component={Link}
+              component={LinkReplace}
               fullWidth
               to="/stops/nearest"
               className="w-full"
@@ -88,14 +92,14 @@ export function StopComponent(stop: StopLink) {
           <img className="w-8 h-8 rounded-full" src={stop.iconUrl} alt="Logo" />
         </div>
         <div className="flex-1 items-center min-w-0 overflow-clip">
-          <Link className="text-sm truncate " to={stop.url}>
+          <LinkReplace className="text-sm truncate " to={stop.url}>
             {stop.stop.stopName}
-          </Link>
+          </LinkReplace>
         </div>
         <div className="flex font-bold min-w-0">
-          <Link className="text-sm truncate " to={stop.url}>
+          <LinkReplace className="text-sm truncate " to={stop.url}>
             {stop.stop.stopCode}
-          </Link>
+          </LinkReplace>
         </div>
       </div>
     </li>

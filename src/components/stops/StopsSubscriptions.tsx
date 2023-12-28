@@ -9,7 +9,6 @@ import {fold} from "fp-ts/lib/Either";
 import useToken from "./UseToken";
 import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
 import NotificationsOffIcon from "@mui/icons-material/NotificationsOff";
-import {Link} from "react-router-dom";
 import {
   getIconByCodMode,
   getStopTimesLinkByMode,
@@ -17,6 +16,7 @@ import {
 } from "./api/Utils";
 import ErrorMessage from "../Error";
 import Line from "../Line";
+import LinkReplace from "../LinkReplace";
 
 export default function AllSubscriptions() {
   const [subscriptions, setSubscriptions] = useState<Subscriptions[] | null>(
@@ -80,14 +80,14 @@ export default function AllSubscriptions() {
                     />
                   </div>
                   <div className="flex-1 ml-2 items-center min-w-0 overflow-clip">
-                    <Link
+                    <LinkReplace
                       className="text-sm truncate font-bold"
                       to={getStopTimesLinkByMode(
                         subscription.codMode,
                         subscription.simpleStopCode ?? "",
                       )}>
                       {subscription.stopName}
-                    </Link>
+                    </LinkReplace>
                   </div>
                 </div>
               </div>
@@ -99,14 +99,14 @@ export default function AllSubscriptions() {
                       className="flex items-center space-x-4 p-2  border-blue-900">
                       <Line info={lineDestination} />
                       <div className="flex-1 items-center min-w-0 overflow-clip">
-                        <Link
+                        <LinkReplace
                           className="text-sm truncate "
                           to={getStopTimesLinkByMode(
                             subscription.codMode,
                             subscription.simpleStopCode ?? "",
                           )}>
                           {lineDestination.destination}
-                        </Link>
+                        </LinkReplace>
                       </div>
                       <button
                         onClick={() => {

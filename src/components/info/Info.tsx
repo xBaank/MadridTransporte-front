@@ -1,4 +1,4 @@
-import {Link} from "react-router-dom";
+import LinkReplace from "../LinkReplace";
 
 export default function Info() {
   return (
@@ -20,21 +20,21 @@ export default function Info() {
         <div className="font-bold text-xl mb-2">- Problemas</div>
         <p>
           Si encuentras algun problema, puedes reportarlo{" "}
-          <Link
+          <LinkReplace
             className="border-b"
             to={"https://github.com/xBaank/MadridTransporte/issues/new/choose"}>
             Aqui
-          </Link>
+          </LinkReplace>
         </p>
         <br />
         <div className="font-bold text-xl mb-2">- Codigo Fuente</div>
         <p>
           El codigo fuente puedes encontrarlo{" "}
-          <Link
+          <LinkReplace
             className="border-b"
             to={"https://github.com/xBaank/MadridTransporte"}>
             Aqui
-          </Link>
+          </LinkReplace>
         </p>
         <br />
         <div className="font-bold text-xl mb-2">- Icons</div>

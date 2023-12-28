@@ -4,7 +4,7 @@ import {ColorModeContext} from "../..";
 import {Brightness7} from "@mui/icons-material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import {changeMinutesDisplay, getMinutesDisplay} from "../stops/Utils";
-import {Link} from "react-router-dom";
+import LinkReplace from "../LinkReplace";
 
 export default function Settings() {
   const theme = useTheme();
@@ -74,7 +74,7 @@ export default function Settings() {
           </li>
           <li className="w-full mt-3">
             <Button
-              component={Link}
+              component={LinkReplace}
               to="/info"
               className="w-full"
               variant="contained">

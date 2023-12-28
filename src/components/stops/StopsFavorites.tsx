@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
 import {type FavoriteStop, type TrainFavoriteStop} from "./api/Types";
 import {
   getFavorites,
@@ -14,6 +13,7 @@ import {
 import GradeIcon from "@mui/icons-material/Grade";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {Dialog, DialogTitle, DialogActions, Button} from "@mui/material";
+import LinkReplace from "../LinkReplace";
 
 export default function StopsFavorites() {
   const [favorites, setFavorites] = useState<
@@ -81,24 +81,24 @@ export default function StopsFavorites() {
               />
             </div>
             <div className="flex-1 items-center min-w-0 overflow-clip">
-              <Link
+              <LinkReplace
                 className="text-sm truncate "
                 to={getStopTimesLinkByMode(
                   stop.cod_mode,
                   stop.code.toString(),
                 )}>
                 {stop.name}
-              </Link>
+              </LinkReplace>
             </div>
             <div className="flex font-bold min-w-0">
-              <Link
+              <LinkReplace
                 className="text-sm truncate "
                 to={getStopTimesLinkByMode(
                   stop.cod_mode,
                   stop.code.toString(),
                 )}>
                 {stop.code}
-              </Link>
+              </LinkReplace>
             </div>
             <button onClick={handleClickOpen}>
               <DeleteIcon className=" text-red-500" />
@@ -142,7 +142,7 @@ export default function StopsFavorites() {
               />
             </div>
             <div className="flex-1 items-center min-w-0 overflow-clip">
-              <Link
+              <LinkReplace
                 className="text-sm truncate "
                 to={getStopTimesLinkByMode(
                   trainCodMode,
@@ -150,10 +150,10 @@ export default function StopsFavorites() {
                   stop.originCode,
                 )}>
                 {stop.name}
-              </Link>
+              </LinkReplace>
             </div>
             <div className="flex font-bold min-w-0">
-              <Link
+              <LinkReplace
                 className="text-sm truncate "
                 to={getStopTimesLinkByMode(
                   trainCodMode,
@@ -161,7 +161,7 @@ export default function StopsFavorites() {
                   stop.originCode,
                 )}>
                 {stop.originCode} - {stop.destinationCode}
-              </Link>
+              </LinkReplace>
             </div>
             <button onClick={handleClickOpen}>
               <DeleteIcon className=" text-red-500" />

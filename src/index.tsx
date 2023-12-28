@@ -90,7 +90,7 @@ export default function App() {
   );
 }
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     path: "/",
     element: (

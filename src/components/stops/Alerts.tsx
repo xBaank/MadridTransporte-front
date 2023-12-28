@@ -1,7 +1,7 @@
 import {Modal, Box, Typography, useTheme} from "@mui/material";
-import {Link} from "react-router-dom";
 import {type Alert, type Incident} from "./api/Types";
 import React from "react";
+import LinkReplace from "../LinkReplace";
 
 export default function RenderAlerts({
   alerts,
@@ -76,11 +76,11 @@ export default function RenderAlerts({
                     dangerouslySetInnerHTML={{
                       __html: incident.description.replace(/(<([^>]+)>)/gi, ""),
                     }}></div>
-                  <Link
+                  <LinkReplace
                     className="text-sm text-blue-400 border-b mt-3"
                     to={incident.url}>
                     Mas Informacion
-                  </Link>
+                  </LinkReplace>
                   <div className="mt-3">
                     <pre className="text-sm">Desde {incident.from}</pre>
                     <pre className="text-sm">Hasta {incident.to}</pre>
