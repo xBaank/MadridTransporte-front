@@ -1,7 +1,7 @@
 import {Modal, Box, Typography, useTheme} from "@mui/material";
-import {Link} from "react-router-dom";
 import {type Alert, type Incident} from "./api/Types";
 import React from "react";
+import {Link} from "react-router-dom";
 
 export default function RenderAlerts({
   alerts,

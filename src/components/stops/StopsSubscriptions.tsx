@@ -9,7 +9,6 @@ import {fold} from "fp-ts/lib/Either";
 import useToken from "./UseToken";
 import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
 import NotificationsOffIcon from "@mui/icons-material/NotificationsOff";
-import {Link} from "react-router-dom";
 import {
   getIconByCodMode,
   getStopTimesLinkByMode,
@@ -17,6 +16,7 @@ import {
 } from "./api/Utils";
 import ErrorMessage from "../Error";
 import Line from "../Line";
+import {Link} from "react-router-dom";
 
 export default function AllSubscriptions() {
   const [subscriptions, setSubscriptions] = useState<Subscriptions[] | null>(

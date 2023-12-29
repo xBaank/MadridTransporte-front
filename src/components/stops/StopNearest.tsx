@@ -49,6 +49,7 @@ export default function StopNearest() {
         nearestStop.stopCode.toString(),
         null,
       ),
+      {replace: true},
     );
   }, [location, allStops]);
 

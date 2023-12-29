@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
 import GradeIcon from "@mui/icons-material/Grade";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {type FavoriteAbono} from "./api/Types";
@@ -10,6 +9,7 @@ import {
   removeFromFavorites,
 } from "./api/Utils";
 import {Button, Dialog, DialogActions, DialogTitle} from "@mui/material";
+import {Link} from "react-router-dom";
 
 export default function AbonoFavorites() {
   const [favorites, setFavorites] = useState<FavoriteAbono[]>([]);

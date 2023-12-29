@@ -1,9 +1,9 @@
 /* eslint-disable no-mixed-operators */
 import {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
 import {type StopLink} from "./api/Types";
 import {Button} from "@mui/material";
 import NearMeIcon from "@mui/icons-material/NearMe";
+import {Link} from "react-router-dom";
 
 export default function FilteredStopsComponent({
   query,

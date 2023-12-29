@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
 import {type FavoriteStop, type TrainFavoriteStop} from "./api/Types";
 import {
   getFavorites,
@@ -14,6 +13,7 @@ import {
 import GradeIcon from "@mui/icons-material/Grade";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {Dialog, DialogTitle, DialogActions, Button} from "@mui/material";
+import {Link} from "react-router-dom";
 
 export default function StopsFavorites() {
   const [favorites, setFavorites] = useState<

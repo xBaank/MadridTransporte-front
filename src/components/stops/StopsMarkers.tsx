@@ -1,6 +1,5 @@
 import {type Stop} from "./api/Types";
 import {Marker, Popup} from "react-leaflet";
-import {Link} from "react-router-dom";
 import {
   currentStop,
   getIconByCodMode,
@@ -8,6 +7,7 @@ import {
 } from "./api/Utils";
 import L from "leaflet";
 import {useTheme} from "@mui/material";
+import {Link} from "react-router-dom";
 
 export function StopsMarkers({
   stops,
