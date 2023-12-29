@@ -9,7 +9,7 @@ import {
   removeFromFavorites,
 } from "./api/Utils";
 import {Button, Dialog, DialogActions, DialogTitle} from "@mui/material";
-import LinkReplace from "../LinkReplace";
+import {Link} from "react-router-dom";
 
 export default function AbonoFavorites() {
   const [favorites, setFavorites] = useState<FavoriteAbono[]>([]);
@@ -64,18 +64,18 @@ export default function AbonoFavorites() {
               <img className="w-8 h-5 " src={AbonoIcon} alt="Logo" />
             </div>
             <div className="flex-1 items-center min-w-0 overflow-clip">
-              <LinkReplace
+              <Link
                 className="text-sm truncate "
                 to={getAbonoRoute(abono.ttpNumber)}>
                 {abono.name}
-              </LinkReplace>
+              </Link>
             </div>
             <div className="flex font-bold min-w-0">
-              <LinkReplace
+              <Link
                 className="text-sm truncate "
                 to={getAbonoRoute(abono.ttpNumber)}>
                 {abono.ttpNumber}
-              </LinkReplace>
+              </Link>
             </div>
             <button onClick={handleClickOpen}>
               <DeleteIcon className=" text-red-500" />

@@ -16,7 +16,7 @@ import {
 } from "./api/Utils";
 import ErrorMessage from "../Error";
 import Line from "../Line";
-import LinkReplace from "../LinkReplace";
+import {Link} from "react-router-dom";
 
 export default function AllSubscriptions() {
   const [subscriptions, setSubscriptions] = useState<Subscriptions[] | null>(
@@ -80,14 +80,14 @@ export default function AllSubscriptions() {
                     />
                   </div>
                   <div className="flex-1 ml-2 items-center min-w-0 overflow-clip">
-                    <LinkReplace
+                    <Link
                       className="text-sm truncate font-bold"
                       to={getStopTimesLinkByMode(
                         subscription.codMode,
                         subscription.simpleStopCode ?? "",
                       )}>
                       {subscription.stopName}
-                    </LinkReplace>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -99,14 +99,14 @@ export default function AllSubscriptions() {
                       className="flex items-center space-x-4 p-2  border-blue-900">
                       <Line info={lineDestination} />
                       <div className="flex-1 items-center min-w-0 overflow-clip">
-                        <LinkReplace
+                        <Link
                           className="text-sm truncate "
                           to={getStopTimesLinkByMode(
                             subscription.codMode,
                             subscription.simpleStopCode ?? "",
                           )}>
                           {lineDestination.destination}
-                        </LinkReplace>
+                        </Link>
                       </div>
                       <button
                         onClick={() => {

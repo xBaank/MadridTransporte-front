@@ -7,7 +7,7 @@ import {
 } from "./api/Utils";
 import L from "leaflet";
 import {useTheme} from "@mui/material";
-import LinkReplace from "../LinkReplace";
+import {Link} from "react-router-dom";
 
 export function StopsMarkers({
   stops,
@@ -51,13 +51,13 @@ export function StopsMarkers({
             {` (${stop.stopCode})`}
           </div>
           <div className="mt-3 p-1 bg-blue-900 text-center">
-            <LinkReplace
+            <Link
               to={getStopTimesLinkByMode(
                 stop.codMode,
                 stop.stopCode.toString(),
               )}>
               <div className="text-white"> Consultar parada </div>
-            </LinkReplace>
+            </Link>
           </div>
         </Popup>
       </Marker>

@@ -1,27 +1,13 @@
-import React, {createContext, useContext, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
-import {
-  BottomNavigation,
-  BottomNavigationAction,
-  Paper,
-  useTheme,
-} from "@mui/material";
+import {BottomNavigation, BottomNavigationAction, Paper} from "@mui/material";
 import MapIcon from "@mui/icons-material/Map";
 import SettingsIcon from "@mui/icons-material/Settings";
 import {Link, useLocation} from "react-router-dom";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 
-export const MenuContext = createContext({
-  buscar: "/",
-  mapa: "/stops/map",
-  abono: "/abono",
-  ajustes: "/settings",
-});
-
 export default function MobileNavBar() {
-  const theme = useTheme();
   const location = useLocation();
-  const menuContext = useContext(MenuContext);
   const [value, setValue] = useState<"Mapa" | "Abono" | "Ajustes" | "Buscar">(
     "Buscar",
   );
@@ -41,26 +27,16 @@ export default function MobileNavBar() {
     const path = location.pathname;
     if (path.startsWith("/stops/map")) {
       setValue("Mapa");
-      menuContext.mapa = path;
     } else if (path.startsWith("/abono")) {
       setValue("Abono");
-      menuContext.abono = path;
     } else if (path.startsWith("/settings")) {
       setValue("Ajustes");
-      menuContext.ajustes = path;
     } else if (path.startsWith("/info")) {
       setValue("Ajustes");
-      menuContext.ajustes = path;
     } else {
       setValue("Buscar");
-      menuContext.buscar = path;
     }
-    console.log(menuContext);
   }, [location]);
-
-  useEffect(() => {
-    localStorage.setItem("theme", theme.palette.mode);
-  }, [theme.palette.mode]);
 
   return (
     <Paper sx={{position: "fixed", bottom: 0, left: 0, right: 0}} elevation={3}>
@@ -71,28 +47,28 @@ export default function MobileNavBar() {
         className="pb-1">
         <BottomNavigationAction
           component={Link}
-          to={menuContext.buscar}
+          to={"/"}
           label="Buscar"
           value="Buscar"
           icon={<DirectionsBusIcon />}
         />
         <BottomNavigationAction
           component={Link}
-          to={menuContext.mapa}
+          to={"/stops/map"}
           label="Mapa"
           value="Mapa"
           icon={<MapIcon />}
         />
         <BottomNavigationAction
           component={Link}
-          to={menuContext.abono}
+          to={"/abono"}
           label="Abono"
           value="Abono"
           icon={<CreditCardIcon />}
         />
         <BottomNavigationAction
           component={Link}
-          to={menuContext.ajustes}
+          to={"/settings"}
           label="Ajustes"
           value="Ajustes"
           icon={<SettingsIcon />}

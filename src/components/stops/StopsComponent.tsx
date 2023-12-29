@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {type StopLink} from "./api/Types";
 import {Button} from "@mui/material";
 import NearMeIcon from "@mui/icons-material/NearMe";
-import LinkReplace from "../LinkReplace";
+import {Link} from "react-router-dom";
 
 export default function FilteredStopsComponent({
   query,
@@ -46,15 +46,11 @@ export default function FilteredStopsComponent({
       return (
         <>
           <div className="flex justify-between gap-1">
-            <Button
-              component={LinkReplace}
-              fullWidth
-              to="/maps"
-              variant="contained">
+            <Button component={Link} fullWidth to="/maps" variant="contained">
               Planos
             </Button>
             <Button
-              component={LinkReplace}
+              component={Link}
               fullWidth
               to="/stops/map"
               variant="contained">
@@ -63,7 +59,7 @@ export default function FilteredStopsComponent({
           </div>
           <div className="flex justify-center mt-2">
             <Button
-              component={LinkReplace}
+              component={Link}
               fullWidth
               to="/stops/nearest"
               className="w-full"
@@ -92,14 +88,14 @@ export function StopComponent(stop: StopLink) {
           <img className="w-8 h-8 rounded-full" src={stop.iconUrl} alt="Logo" />
         </div>
         <div className="flex-1 items-center min-w-0 overflow-clip">
-          <LinkReplace className="text-sm truncate " to={stop.url}>
+          <Link className="text-sm truncate " to={stop.url}>
             {stop.stop.stopName}
-          </LinkReplace>
+          </Link>
         </div>
         <div className="flex font-bold min-w-0">
-          <LinkReplace className="text-sm truncate " to={stop.url}>
+          <Link className="text-sm truncate " to={stop.url}>
             {stop.stop.stopCode}
-          </LinkReplace>
+          </Link>
         </div>
       </div>
     </li>
