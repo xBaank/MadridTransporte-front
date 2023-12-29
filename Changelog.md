@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.2
+
+- Remove PC version.
+
+
 ## 1.5.1
 
 - Change map background to black on dark mode.
