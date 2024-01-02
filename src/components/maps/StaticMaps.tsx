@@ -4,6 +4,7 @@ import {
   metroCodMode,
   trainCodMode,
 } from "../stops/api/Utils";
+import {Browser} from "@capacitor/browser";
 
 export default function StaticMaps() {
   return (
@@ -23,15 +24,21 @@ export default function StaticMaps() {
 
   function Map({iconLink, url}: {iconLink: string; url: string}) {
     return (
-      <a
-        href={url}
-        className="w-32 h-full flex-col justify-center items-center rounded-full shadow-lg shadow-gray-900 hover:shadow-gray-700">
+      <div
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        onClick={async () => {
+          await Browser.open({
+            url: `${window.origin}${url}`,
+            windowName: "_self",
+          });
+        }}
+        className="w-32 hover:cursor-pointer h-full flex-col justify-center items-center rounded-full shadow-lg shadow-gray-900 hover:shadow-gray-700">
         <div className="flex justify-center h-32 w-32">
           <div className="flex h-full items-center justify-center">
             <img className="w-20" src={iconLink} alt="Metro" />
           </div>
         </div>
-      </a>
+      </div>
     );
   }
 }
