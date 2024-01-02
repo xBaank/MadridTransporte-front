@@ -8,6 +8,7 @@ import {
   BannerAdSize,
 } from "@capacitor-community/admob";
 const ADID = import.meta.env.VITE_ADID as string;
+const isDev = import.meta.env.DEV;
 
 export async function banner(): Promise<void> {
   AdMob.addListener(BannerAdPluginEvents.Loaded, () => {
@@ -19,7 +20,7 @@ export async function banner(): Promise<void> {
     adSize: BannerAdSize.ADAPTIVE_BANNER,
     position: BannerAdPosition.TOP_CENTER,
     margin: 0,
-    isTesting: true,
+    isTesting: isDev,
     // npa: true
   };
   AdMob.showBanner(options);
@@ -27,15 +28,19 @@ export async function banner(): Promise<void> {
 
 export async function initialize(): Promise<void> {
   await AdMob.initialize({
-    initializeForTesting: true,
+    initializeForTesting: isDev,
   });
+
+  const options = isDev
+    ? {
+        debugGeography: AdmobConsentDebugGeography.EEA,
+        testDeviceIdentifiers: ["CCA44288BE472FDEF1E330F0A6785CC1"],
+      }
+    : {};
 
   const [trackingInfo, consentInfo] = await Promise.all([
     AdMob.trackingAuthorizationStatus(),
-    AdMob.requestConsentInfo({
-      debugGeography: AdmobConsentDebugGeography.EEA,
-      testDeviceIdentifiers: ["CCA44288BE472FDEF1E330F0A6785CC1"],
-    }),
+    AdMob.requestConsentInfo(options),
   ]);
 
   if (trackingInfo.status === "notDetermined") {
