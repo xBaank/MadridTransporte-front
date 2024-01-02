@@ -29,7 +29,6 @@ export default function StaticMaps() {
         onClick={async () => {
           await Browser.open({
             url: `${window.origin}${url}`,
-            windowName: "_self",
           });
         }}
         className="w-32 hover:cursor-pointer h-full flex-col justify-center items-center rounded-full shadow-lg shadow-gray-900 hover:shadow-gray-700">

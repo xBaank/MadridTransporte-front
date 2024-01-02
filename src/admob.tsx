@@ -9,6 +9,9 @@ import {
 } from "@capacitor-community/admob";
 const ADID = import.meta.env.VITE_ADID as string;
 const isDev = import.meta.env.DEV;
+const testDevices = JSON.parse(
+  import.meta.env.VITE_TEST_DEVICES ?? [],
+) as string[];
 
 export async function banner(): Promise<void> {
   AdMob.addListener(BannerAdPluginEvents.Loaded, () => {
@@ -34,7 +37,7 @@ export async function initialize(): Promise<void> {
   const options = isDev
     ? {
         debugGeography: AdmobConsentDebugGeography.EEA,
-        testDeviceIdentifiers: ["CCA44288BE472FDEF1E330F0A6785CC1"],
+        testDeviceIdentifiers: testDevices,
       }
     : {};
 
