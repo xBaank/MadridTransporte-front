@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.3
+
+- Add emt locations.
+
 ## 1.5.2
 
 - Remove PC version.
