@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Madrid Transporte</string>
+    <string name="title_activity_main">madridtransporte</string>
+    <string name="package_name">com.madridtransporte</string>
+    <string name="custom_url_scheme">com.madridtransporte</string>
+    <string name="admob_app_id">ca-app-pub-8867745135397165~9928287875</string>
+</resources>
