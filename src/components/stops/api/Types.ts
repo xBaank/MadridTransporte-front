@@ -125,6 +125,7 @@ export type LineDestination = {
 
 export type LineLocation = {
   lineCode: string;
+  simpleLineCode: string;
   codVehicle: string;
   coordinates: {
     latitude: number;

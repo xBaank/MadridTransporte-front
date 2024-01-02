@@ -19,6 +19,8 @@ import {type Route} from "../api/RouteTypes";
 import {LineLocationsMarkers} from "./LineLocationsMarkers";
 import ThemedMap from "../ThemedMap";
 import {Polyline} from "react-leaflet";
+import Line from "../../Line";
+import {getCodModeByType} from "../api/Utils";
 
 export default function LinesLocationsMap() {
   const interval = 1000 * 10;
@@ -170,9 +172,23 @@ export default function LinesLocationsMap() {
         setFlyToLocation(true);
         map?.locate();
       }}>
-      <Polyline fillColor="blue" weight={7} positions={allRoute} />
-      <LineLocationsMarkers allRoute={allRoute} lineLocations={lineLocations} />
+      <Polyline fillColor="blue" weight={3} positions={allRoute} />
+      <LineLocationsMarkers
+        allRoute={allRoute}
+        lineLocations={lineLocations}
+        nearestPointRound={type === "bus"}
+      />
       <StopsMarkersMemo />
+      <div
+        style={{zIndex: 500}}
+        className={`absolute top-4 w-20 h-5 right-0 left-0 mr-auto ml-auto rounded-sm`}>
+        <Line
+          info={{
+            line: lineLocations.at(0)?.simpleLineCode ?? "",
+            codMode: getCodModeByType(type ?? "bus"),
+          }}
+        />
+      </div>
     </ThemedMap>
   );
 }

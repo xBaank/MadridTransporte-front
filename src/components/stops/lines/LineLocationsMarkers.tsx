@@ -5,9 +5,11 @@ import {Marker} from "react-leaflet";
 export function LineLocationsMarkers({
   allRoute,
   lineLocations,
+  nearestPointRound,
 }: {
   allRoute: LatLngLiteral[];
   lineLocations: LineLocation[];
+  nearestPointRound: boolean;
 }) {
   if (allRoute === undefined) return <></>;
 
@@ -44,7 +46,11 @@ export function LineLocationsMarkers({
         zIndexOffset={50}
         key={index}
         icon={icon}
-        position={nearestPoint}></Marker>
+        position={
+          nearestPointRound
+            ? nearestPoint
+            : {lat: i.coordinates.latitude, lng: i.coordinates.longitude}
+        }></Marker>
     );
   });
 }
