@@ -3,23 +3,22 @@ import {
   AdmobConsentDebugGeography,
   AdmobConsentStatus,
   type BannerAdOptions,
-  BannerAdPluginEvents,
   BannerAdPosition,
   BannerAdSize,
+  type AdOptions,
 } from "@capacitor-community/admob";
-const ADID = import.meta.env.VITE_ADID as string;
+
+const bannerId = import.meta.env.VITE_BANNERID as string;
+const interstitialId = import.meta.env.VITE_INTERSTITIALID as string;
 const isDev = import.meta.env.DEV;
-const testDevices = JSON.parse(
-  import.meta.env.VITE_TEST_DEVICES ?? [],
-) as string[];
+// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+const testDevices = import.meta.env.VITE_TEST_DEVICES
+  ? (JSON.parse(import.meta.env.VITE_TEST_DEVICES) as string[])
+  : undefined;
 
 export async function banner(): Promise<void> {
-  AdMob.addListener(BannerAdPluginEvents.Loaded, () => {
-    // Subscribe Banner Event Listener
-  });
-
   const options: BannerAdOptions = {
-    adId: ADID,
+    adId: bannerId,
     adSize: BannerAdSize.ADAPTIVE_BANNER,
     position: BannerAdPosition.TOP_CENTER,
     margin: 0,
@@ -27,6 +26,16 @@ export async function banner(): Promise<void> {
     // npa: true
   };
   AdMob.showBanner(options);
+}
+
+export async function interstitial(): Promise<void> {
+  const options: AdOptions = {
+    adId: interstitialId,
+    isTesting: isDev,
+    // npa: true
+  };
+  await AdMob.prepareInterstitial(options);
+  await AdMob.showInterstitial();
 }
 
 export async function initialize(): Promise<void> {
@@ -39,7 +48,7 @@ export async function initialize(): Promise<void> {
         debugGeography: AdmobConsentDebugGeography.EEA,
         testDeviceIdentifiers: testDevices,
       }
-    : {};
+    : undefined;
 
   const [trackingInfo, consentInfo] = await Promise.all([
     AdMob.trackingAuthorizationStatus(),

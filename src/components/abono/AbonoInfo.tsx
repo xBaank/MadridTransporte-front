@@ -13,6 +13,7 @@ import {
 import FavoriteSave from "../favorites/FavoriteSave";
 import LoadingSpinner from "../LoadingSpinner";
 import ErrorMessage from "../Error";
+import {interstitial} from "../../admob";
 
 export default function AbonoInfo() {
   const {code} = useParams<{code: string}>();
@@ -22,6 +23,10 @@ export default function AbonoInfo() {
   const textColor = theme.palette.mode === "dark" ? "text-white" : "text-black";
   const borderColor =
     theme.palette.mode === "dark" ? "border-white" : "border-black";
+
+  useEffect(() => {
+    interstitial();
+  }, []);
 
   useEffect(() => {
     GetAbono(code!).then(abono => {
