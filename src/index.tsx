@@ -66,13 +66,13 @@ export const getDesignTokens = (mode: PaletteMode) => ({
 });
 
 export default function App() {
-  useEffect(() => {
+  /*   useEffect(() => {
     initialize();
   }, []);
 
   useEffect(() => {
     banner();
-  }, []);
+  }, []); */
 
   let savedTheme = localStorage.getItem("theme") as PaletteMode | null;
   if (savedTheme !== "dark" && savedTheme !== "light") savedTheme = null;

@@ -24,9 +24,9 @@ export default function AbonoInfo() {
   const borderColor =
     theme.palette.mode === "dark" ? "border-white" : "border-black";
 
-  useEffect(() => {
+  /*   useEffect(() => {
     interstitial();
-  }, []);
+  }, []); */
 
   useEffect(() => {
     GetAbono(code!).then(abono => {

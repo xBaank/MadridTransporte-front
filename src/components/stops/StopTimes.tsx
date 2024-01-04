@@ -53,9 +53,9 @@ export default function BusStopsTimes() {
   const textColor = useColor();
   const borderColor = useBorderColor();
 
-  useEffect(() => {
+  /*   useEffect(() => {
     interstitial();
-  }, []);
+  }, []); */
 
   const getTimes = useCallback(() => {
     if (type === undefined || code === undefined) return;
