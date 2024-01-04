@@ -1,11 +1,11 @@
 import {type Either, left, right} from "fp-ts/lib/Either";
 import {
   type Itinerary,
-  type LineLocation,
   type TransportType,
   type StopWithOrder,
   type Shape,
   type ItineraryWithStopsOrder,
+  type LineLocations,
 } from "./Types";
 import {apiUrl} from "../../Urls";
 import {getAllStops} from "./Stops";
@@ -19,7 +19,7 @@ export async function getLineLocations(
   direction: number,
   stopCode: string,
   signal: AbortSignal,
-): Promise<Either<string, LineLocation[]>> {
+): Promise<Either<string, LineLocations>> {
   const response = await fetch(
     `${apiUrl}/lines/${type}/${code}/locations/${direction.toString()}?stopCode=${stopCode}`,
     {signal},
@@ -27,7 +27,7 @@ export async function getLineLocations(
   if (response.status === 404) return left(NotFound);
   if (response.status === 400) return left(BadRequest);
 
-  const data = (await response.json()) as LineLocation[];
+  const data = (await response.json()) as LineLocations;
   return right(data);
 }
 
