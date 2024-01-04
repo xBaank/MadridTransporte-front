@@ -2,11 +2,11 @@ import {type Map, type LatLngLiteral} from "leaflet";
 import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {useParams, useSearchParams} from "react-router-dom";
 import {
-  type LineLocation,
   type TransportType,
   type Stop,
   type ItineraryWithStopsOrder,
   type Shape,
+  type LineLocations,
 } from "../api/Types";
 import {getLineLocations, getItinerary, getShapes} from "../api/Lines";
 import {fold} from "fp-ts/lib/Either";
@@ -20,7 +20,6 @@ import {LineLocationsMarkers} from "./LineLocationsMarkers";
 import ThemedMap from "../ThemedMap";
 import {Polyline} from "react-leaflet";
 import Line from "../../Line";
-import {getCodModeByType} from "../api/Utils";
 
 export default function LinesLocationsMap() {
   const interval = 1000 * 10;
@@ -31,7 +30,7 @@ export default function LinesLocationsMap() {
   }>();
   const [searchParam] = useSearchParams();
   const [map, setMap] = useState<Map | null>(null);
-  const [lineLocations, setLineLocations] = useState<LineLocation[]>();
+  const [lineLocations, setLineLocations] = useState<LineLocations>();
   const [itinerary, setItinerary] = useState<ItineraryWithStopsOrder>();
   const [currentStop, setCurrentStop] = useState<Stop>();
   const [stopCode, setStopCode] = useState<string>();
@@ -63,7 +62,7 @@ export default function LinesLocationsMap() {
       .then(result =>
         fold(
           (error: string) => setError(error),
-          (locations: LineLocation[]) => setLineLocations(locations),
+          (locations: LineLocations) => setLineLocations(locations),
         )(result),
       )
       .catch(async ex => {
@@ -175,7 +174,7 @@ export default function LinesLocationsMap() {
       <Polyline fillColor="blue" weight={3} positions={allRoute} />
       <LineLocationsMarkers
         allRoute={allRoute}
-        lineLocations={lineLocations}
+        lineLocations={lineLocations.locations}
         nearestPointRound={type === "bus"}
       />
       <StopsMarkersMemo />
@@ -184,8 +183,8 @@ export default function LinesLocationsMap() {
         className={`absolute top-4 w-20 h-5 right-0 left-0 mr-auto ml-auto rounded-sm`}>
         <Line
           info={{
-            line: lineLocations.at(0)?.simpleLineCode ?? "",
-            codMode: getCodModeByType(type ?? "bus"),
+            line: lineLocations.lineCode,
+            codMode: lineLocations.codMode,
           }}
         />
       </div>

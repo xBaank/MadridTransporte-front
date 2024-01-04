@@ -134,6 +134,12 @@ export type LineLocation = {
   direction: number;
 };
 
+export type LineLocations = {
+  codMode: number;
+  lineCode: string;
+  locations: LineLocation[];
+};
+
 export type Itinerary = {
   codItinerary: string;
   direction: number;
