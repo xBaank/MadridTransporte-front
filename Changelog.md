@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.4
+
+- Update types according to the api.
+
 ## 1.5.3
 
 - Add emt locations.
