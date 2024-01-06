@@ -1,8 +1,13 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     namespace "com.madridtransporte"
     compileSdkVersion rootProject.ext.compileSdkVersion
+    buildFeatures {
+        dataBinding = true
+    }
     defaultConfig {
         applicationId "com.madridtransporte"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -28,6 +33,7 @@ repositories {
     flatDir{
         dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
     }
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -36,10 +42,16 @@ dependencies {
     implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"
     implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
     implementation project(':capacitor-android')
+    implementation "androidx.core:core-ktx:1.10.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
     implementation project(':capacitor-cordova-android-plugins')
+}
+
+kotlin {
+    jvmToolchain(17)
 }
 
 apply from: 'capacitor.build.gradle'

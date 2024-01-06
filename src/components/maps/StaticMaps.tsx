@@ -1,3 +1,4 @@
+import {Capacitor} from "@capacitor/core";
 import {
   getIconByCodMode,
   getUrlByCodMode,
@@ -5,6 +6,7 @@ import {
   trainCodMode,
 } from "../stops/api/Utils";
 import {Browser} from "@capacitor/browser";
+import {PhotoViewer} from "@capacitor-community/photoviewer";
 
 export default function StaticMaps() {
   return (
@@ -27,9 +29,16 @@ export default function StaticMaps() {
       <div
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
         onClick={async () => {
-          await Browser.open({
-            url: `${window.origin}${url}`,
-          });
+          const fullUrl = `${window.origin}${url}`;
+          if (Capacitor.getPlatform() === "web") {
+            await Browser.open({
+              url: fullUrl,
+            });
+          } else {
+            await PhotoViewer.show({
+              images: [{url: fullUrl}],
+            });
+          }
         }}
         className="w-32 hover:cursor-pointer h-full flex-col justify-center items-center rounded-full shadow-lg shadow-gray-900 hover:shadow-gray-700">
         <div className="flex justify-center h-32 w-32">

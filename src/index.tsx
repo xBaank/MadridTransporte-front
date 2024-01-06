@@ -74,6 +74,25 @@ export default function App() {
     banner();
   }, []); */
 
+  useEffect(() => {
+    const realWindow = window as any;
+    if (realWindow.nfc === undefined) return;
+    realWindow.nfc.addTagDiscoveredListener(
+      (nfcEvent: any) => {
+        realWindow.nfc.connect("android.nfc.tech.IsoDep").then(
+          () =>
+            alert(
+              "connected to " +
+                realWindow.nfc.bytesToHexString(nfcEvent.tag.id),
+            ),
+          (error: string) => alert("connection failed " + error),
+        );
+      },
+      undefined,
+      () => alert("ERROR"),
+    );
+  }, []);
+
   let savedTheme = localStorage.getItem("theme") as PaletteMode | null;
   if (savedTheme !== "dark" && savedTheme !== "light") savedTheme = null;
   const [mode, setMode] = React.useState<PaletteMode>(
