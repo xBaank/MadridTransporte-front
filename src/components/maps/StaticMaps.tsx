@@ -37,6 +37,12 @@ export default function StaticMaps() {
           } else {
             await PhotoViewer.show({
               images: [{url: fullUrl}],
+              mode: "one",
+              options: {
+                transformer: "depth",
+                backgroundcolor: "ivory",
+                maxzoomscale: 10,
+              },
             });
           }
         }}
