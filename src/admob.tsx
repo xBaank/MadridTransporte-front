@@ -7,6 +7,7 @@ import {
   BannerAdSize,
   type AdOptions,
 } from "@capacitor-community/admob";
+import {Capacitor} from "@capacitor/core";
 
 const bannerId = import.meta.env.VITE_BANNERID as string;
 const interstitialId = import.meta.env.VITE_INTERSTITIALID as string;
@@ -17,6 +18,8 @@ const testDevices = import.meta.env.VITE_TEST_DEVICES
   : undefined;
 
 export async function banner(): Promise<void> {
+  if (Capacitor.getPlatform() === "web") return;
+
   const options: BannerAdOptions = {
     adId: bannerId,
     adSize: BannerAdSize.ADAPTIVE_BANNER,
@@ -29,6 +32,8 @@ export async function banner(): Promise<void> {
 }
 
 export async function interstitial(): Promise<void> {
+  if (Capacitor.getPlatform() === "web") return;
+
   const options: AdOptions = {
     adId: interstitialId,
     isTesting: isDev,
@@ -39,6 +44,8 @@ export async function interstitial(): Promise<void> {
 }
 
 export async function initialize(): Promise<void> {
+  if (Capacitor.getPlatform() === "web") return;
+
   await AdMob.initialize({
     initializeForTesting: isDev,
   });

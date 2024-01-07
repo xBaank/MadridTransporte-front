@@ -1,5 +1,7 @@
 import {CapacitorHttp, type HttpResponse} from "@capacitor/core";
 
+const middlelat = "https://lat1p.crtm.es:39480/middlelat";
+
 // CODE FROM https://github.com/CRTM-NFC/Mifare-Desfire
 export async function TTPInfo() {
   const realWindow = window as any;
@@ -32,7 +34,7 @@ export async function TTPInfo() {
   };
 
   const result = await CapacitorHttp.post({
-    url: "https://lat1p.crtm.es:39480/middlelat/midd/device/init/conn",
+    url: `${middlelat}/midd/device/init/conn`,
     data: body,
     headers: {
       "Content-Type": "application/json; charset=utf-8",
@@ -43,7 +45,7 @@ export async function TTPInfo() {
   const pattern = /STATUS=(\w+)\nCMD=(\w+)/;
 
   const comandoResponse = await CapacitorHttp.get({
-    url: "https://lat1p.crtm.es:39480/middlelat/device/front/GeneraComando?tdSalePoint=010201000001&OpInspeccion=false",
+    url: `${middlelat}/device/front/GeneraComando?tdSalePoint=010201000001&OpInspeccion=false`,
     headers: {
       Cookie: cookie,
     },
@@ -60,7 +62,7 @@ export async function TTPInfo() {
     );
 
     responseAux = await CapacitorHttp.get({
-      url: `https://lat1p.crtm.es:39480/middlelat/device/front/GeneraComando?respuesta=${cardResponse}`,
+      url: `${middlelat}/device/front/GeneraComando?respuesta=${cardResponse}`,
       headers: {
         Cookie: cookie,
       },
@@ -78,11 +80,54 @@ export async function TTPInfo() {
   if (repuestaAuxMatch[1] !== "00") return;
 
   const saldoResponse = await CapacitorHttp.get({
-    url: "https://lat1p.crtm.es:39480/middlelat/device/front/MuestraSaldo",
+    url: `${middlelat}/device/front/MuestraSaldo`,
     headers: {
       Cookie: cookie,
     },
   });
 
-  return saldoResponse.data;
+  return parseData(saldoResponse.data);
+}
+
+function parseData(input: string) {
+  const regex = /(\w+)=(\S+)/g;
+  const resultMap = new Map<string, string>();
+  let match;
+
+  while ((match = regex.exec(input)) !== null) {
+    resultMap.set(match[1], match[2]);
+  }
+
+  return resultMap;
+}
+
+function generateArrayWithLoop(number: number) {
+  const resultArray = [];
+
+  for (let i = 1; i <= number; i++) {
+    resultArray.push(i);
+  }
+
+  return resultArray;
+}
+
+export function profileCount(map: Map<string, string>) {
+  const extractNumber = (key: string) => {
+    const match = key.match(/\d+/);
+    return match != null ? parseInt(match[0], 10) : null;
+  };
+
+  // Find the max number in the keys with the pattern 'pxn'
+  let maxNumber = -Infinity;
+
+  for (const key of map.keys()) {
+    if (key.match(/p\d+n/i) != null) {
+      const currentNumber = extractNumber(key);
+      if (currentNumber !== null && currentNumber > maxNumber) {
+        maxNumber = currentNumber;
+      }
+    }
+  }
+
+  return generateArrayWithLoop(maxNumber);
 }
