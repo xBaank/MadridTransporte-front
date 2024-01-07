@@ -1,55 +1,70 @@
-import {Search} from "@mui/icons-material";
-import {InputAdornment, TextField} from "@mui/material";
-import React, {useEffect} from "react";
-import {useNavigate} from "react-router-dom";
-import AbonoFavorites from "./AbonosFavorites";
-import {getAbonoRoute} from "./api/Utils";
+import {CreditCard} from "@mui/icons-material";
+import {useBackgroundColor, useBorderColor, useColor} from "../stops/Utils";
+import {useEffect, useState} from "react";
+import {TTPInfo} from "./api/Abono";
+import LoadingSpinner from "../LoadingSpinner";
+import ErrorMessage from "../Error";
 
 export default function AbonoSearch() {
-  const navigate = useNavigate();
-  const [error, setError] = React.useState<string | null>(null);
+  const bgColor = useBackgroundColor();
+  const textColor = useColor();
+  const borderColor = useBorderColor();
+  const [data, setData] = useState<any>();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const abonoCode = e.currentTarget.AbonoCode.value;
-    if (abonoCode === undefined) {
-      setError("Introduzca un codigo");
-      return;
-    }
-    if (abonoCode.length < 22) {
-      setError("El codigo debe tener al menos 22 digitos");
-      return;
-    }
-    if (isNaN(abonoCode)) {
-      setError("El codigo solo puede contener numeros");
-      return;
-    }
-    navigate(getAbonoRoute(abonoCode));
-  };
+  useEffect(() => {
+    const realWindow = window as any;
+    if (realWindow.nfc === undefined) return;
+
+    const callback = (nfcEvent: any) => {
+      realWindow.nfc.connect("android.nfc.tech.IsoDep").then(
+        () => {
+          setLoading(true);
+          setError(false);
+          TTPInfo()
+            .then(i => setData(i))
+            .catch(() => setError(true))
+            .then(() => setLoading(false));
+        },
+        (error: string) => alert("connection failed " + error),
+      );
+    };
+
+    realWindow.nfc.addTagDiscoveredListener(callback);
+
+    return () => realWindow.nfc.removeTagDiscoveredListener(callback);
+  }, []);
+
+  function RenderErrorOrInfo() {
+    if (error) return <ErrorMessage message={"No quites la tarjeta"} />;
+    return (
+      <p className={`mb-3 font-normal ${textColor}`}>
+        {data !== undefined
+          ? data
+          : "Acerca tu tarjeta transporte al telefono para consultar los datos"}
+      </p>
+    );
+  }
+
   return (
-    <div>
-      <div className="grid grid-cols-1 p-5 max-w-md mx-auto justify-center">
-        <div className=" font-bold text-2xl pb-4">Buscar abono</div>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4 grid">
-            <TextField
-              id="StopCode"
-              name="AbonoCode"
-              label="Introduzca el numero completo"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Search />
-                  </InputAdornment>
-                ),
-              }}
-            />
-            {error !== null ? (
-              <div className="text-red-500">{error}</div>
-            ) : null}
+    <div
+      className={`max-w-xs w-full px-6 py-4 my-10 mx-auto border border-gray-200 rounded-lg shadow ${bgColor} dark:border-gray-700`}>
+      <CreditCard fontSize="large" />
+      <a href="#">
+        <h5
+          className={`mb-2 text-2xl font-semibold tracking-tight ${textColor}`}>
+          Tarjeta Transporte
+        </h5>
+      </a>
+      <div className={`border-t ${borderColor} pt-4`}>
+        {loading ? (
+          <div className="flex ">
+            <LoadingSpinner />
           </div>
-        </form>
-        {AbonoFavorites()}
+        ) : (
+          <RenderErrorOrInfo />
+        )}
       </div>
     </div>
   );
