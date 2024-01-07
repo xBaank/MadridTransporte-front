@@ -1,54 +1,35 @@
-import {CapacitorHttp, type HttpResponse} from "@capacitor/core";
+import {
+  CapacitorCookies,
+  CapacitorHttp,
+  type HttpResponse,
+} from "@capacitor/core";
 
-const middlelat = "https://lat1p.crtm.es:39480/middlelat";
+const middlelat = "https://lat1p.crtm.es:39480/LAT2";
 
 // CODE FROM https://github.com/CRTM-NFC/Mifare-Desfire
 export async function TTPInfo() {
   const realWindow = window as any;
 
-  const body = {
-    board: "MSM8974",
-    bootLoader: "unknown",
-    brand: "oneplus",
-    build: "MTC20F",
-    device: "A0001",
-    display: "MTC20F test-keys",
-    fingerprint:
-      "oneplus/bacon/A0001:6.0.1/MMB29X/ZNH0EAS2JK:user/release-keys",
-    hardware: "bacon",
-    initAt: "Wed Jan 29 21:23:15 GMT+01:00 2020",
-    language: "en",
-    macAddress: "02:00:00:00:00:00",
-    manufacture: "OnePlus",
-    model: "A0001",
-    networkType: 0,
-    osName: "LOLLIPOP_MR1",
-    osVersion: "6.0.1",
-    product: "bacon",
-    radio: "unknown",
-    screenResolution: "1080x1920",
-    serial: "1a5e4ecc",
-    time: 0,
-    timezone: "Europe/Madrid",
-    uuid: "e626f4c4-34aa-4ca2-bf2b-3c8e0e5e7d26b1f3ee2f-6bdc-49f4-af27-f40218c3e3d1",
-  };
-
-  const result = await CapacitorHttp.post({
-    url: `${middlelat}/midd/device/init/conn`,
-    data: body,
-    headers: {
-      "Content-Type": "application/json; charset=utf-8",
-    },
-  });
-
-  const cookie = result.headers["Set-Cookie"];
   const pattern = /STATUS=(\w+)\nCMD=(\w+)/;
 
+  await CapacitorCookies.clearAllCookies();
+
   const comandoResponse = await CapacitorHttp.get({
-    url: `${middlelat}/device/front/GeneraComando?tdSalePoint=010201000001&OpInspeccion=false`,
-    headers: {
-      Cookie: cookie,
-    },
+    url: `${middlelat}/GeneraComando?tdSalePoint=CD0000000000`,
+    headers: {},
+  });
+  const cookie = comandoResponse.headers["Set-Cookie"];
+
+  await CapacitorCookies.setCookie({
+    url: "https://lat1p.crtm.es:39480",
+    key: "Cookie",
+    value: cookie,
+  });
+
+  await CapacitorCookies.setCookie({
+    url: "https://lat1p.crtm.es:39480",
+    key: "Cookie2",
+    value: "$version=1",
   });
 
   const resultComando = comandoResponse.data as string;
@@ -62,10 +43,7 @@ export async function TTPInfo() {
     );
 
     responseAux = await CapacitorHttp.get({
-      url: `${middlelat}/device/front/GeneraComando?respuesta=${cardResponse}`,
-      headers: {
-        Cookie: cookie,
-      },
+      url: `${middlelat}/GeneraComando?respuesta=${cardResponse}`,
     });
 
     match = (responseAux.data as string).match(pattern);
@@ -80,13 +58,14 @@ export async function TTPInfo() {
   if (repuestaAuxMatch[1] !== "00") return;
 
   const saldoResponse = await CapacitorHttp.get({
-    url: `${middlelat}/device/front/MuestraSaldo`,
-    headers: {
-      Cookie: cookie,
-    },
+    url: `${middlelat}/MuestraSaldo`,
   });
 
-  return parseData(saldoResponse.data);
+  const listaResponse = await CapacitorHttp.get({
+    url: `${middlelat}/ListaTitulosCarga`,
+  });
+  alert(listaResponse.data);
+  return parseData(listaResponse.data);
 }
 
 function parseData(input: string) {
