@@ -25,11 +25,11 @@ export default function StaticMaps() {
   );
 
   function Map({iconLink, url}: {iconLink: string; url: string}) {
+    const fullUrl = `https://madridtransporte.com${url}`; // TODO save image to filesystem on native using window.origin instead of web https://madridtransporte.com
     return (
       <div
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
         onClick={async () => {
-          const fullUrl = `${window.origin}${url}`;
           if (Capacitor.getPlatform() === "web") {
             await Browser.open({
               url: fullUrl,

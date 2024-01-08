@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.1
+
+- Fix maps on native.
+
 ## 1.6.0
 
 - Replace TTP card check by using NFC.

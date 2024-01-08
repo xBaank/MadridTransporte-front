@@ -5,8 +5,6 @@ const config: CapacitorConfig = {
   appName: "Madrid Transporte",
   webDir: "dist",
   server: {
-    /*  url: "http://192.168.0.11:5173",
-    cleartext: true, */
     androidScheme: "https",
   },
   plugins: {
