@@ -49,6 +49,8 @@ export async function TTPInfo() {
     match = (responseAux.data as string).match(pattern);
   }
 
+  realWindow.nfc.close();
+
   if (responseAux === undefined) return;
 
   const matchApiResponse = /STATUS=(\w+)/;
@@ -65,7 +67,8 @@ export async function TTPInfo() {
     url: `${middlelat}/ListaTitulosCarga`,
   });
   alert(listaResponse.data);
-  return parseData(listaResponse.data);
+  alert(saldoResponse.data);
+  return parseData(saldoResponse.data);
 }
 
 function parseData(input: string) {
@@ -101,6 +104,27 @@ export function profileCount(map: Map<string, string>) {
 
   for (const key of map.keys()) {
     if (key.match(/p\d+n/i) != null) {
+      const currentNumber = extractNumber(key);
+      if (currentNumber !== null && currentNumber > maxNumber) {
+        maxNumber = currentNumber;
+      }
+    }
+  }
+
+  return generateArrayWithLoop(maxNumber);
+}
+
+export function titleCount(map: Map<string, string>) {
+  const extractNumber = (key: string) => {
+    const match = key.match(/\d+/);
+    return match != null ? parseInt(match[0], 10) : null;
+  };
+
+  // Find the max number in the keys with the pattern 'pxn'
+  let maxNumber = -Infinity;
+
+  for (const key of map.keys()) {
+    if (key.match(/t\d+n/i) != null) {
       const currentNumber = extractNumber(key);
       if (currentNumber !== null && currentNumber > maxNumber) {
         maxNumber = currentNumber;

@@ -1,7 +1,7 @@
 import {CreditCard} from "@mui/icons-material";
 import {useBackgroundColor, useBorderColor, useColor} from "../stops/Utils";
 import {useEffect, useState} from "react";
-import {TTPInfo, profileCount} from "./api/Abono";
+import {TTPInfo, profileCount, titleCount} from "./api/Abono";
 import LoadingSpinner from "../LoadingSpinner";
 import ErrorMessage from "../Error";
 import {AbonoType} from "./api/Types";
@@ -37,16 +37,9 @@ export default function AbonoSearch() {
     return () => realWindow.nfc.removeTagDiscoveredListener(callback);
   }, []);
 
-  function mapToObject(map: Map<string, string>) {
-    const obj: any = {};
-    map.forEach((value, key) => {
-      obj[key] = value;
-    });
-    return obj;
-  }
-
   function RenderErrorOrInfo() {
-    if (error) return <ErrorMessage message={"No quites la tarjeta"} />;
+    if (error)
+      return <ErrorMessage message={"Ha habido un error al leer la tarjeta"} />;
     return (
       <p className={`mb-3 font-normal ${textColor}`}>
         {data !== undefined ? (
@@ -68,19 +61,19 @@ export default function AbonoSearch() {
               </>
             ))}
             <br></br>
-            <>
-              <div className={`border-b ${borderColor} mt-3`}>
-                <h2 className=" text-lg font-semibold mb-1">
-                  Título abono {data.get(`T1P`)}
-                </h2>
-                <p>Dias: {data.get(`T1N`)}</p>
-                <p>Fecha de compra: {data.get(`T1VCFI`)}</p>
-                <p>Último día válido: {data.get(`T1VCFF`)}</p>
-                <p>Primer día de uso: {data.get(`T1LASTVALTIME`)}</p>
-              </div>
-            </>
-            <br />
-            {JSON.stringify(mapToObject(data), null, 3)}
+            {titleCount(data).map(i => (
+              <>
+                <div className={`border-b ${borderColor} mt-3`}>
+                  <h2 className=" text-lg font-semibold mb-1">
+                    Título abono {data.get(`T${i}P`)}
+                  </h2>
+                  <p>Dias: {data.get(`T${i}N`)}</p>
+                  <p>Fecha de compra: {data.get(`T${i}VCFI`)}</p>
+                  <p>Último día válido: {data.get(`T${i}VCFF`)}</p>
+                  <p>Primer día de uso: {data.get(`T${i}LASTVALTIME`)}</p>
+                </div>
+              </>
+            ))}
           </>
         ) : (
           "Acerca tu tarjeta transporte al telefono para consultar los datos"
