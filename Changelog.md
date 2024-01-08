@@ -5,7 +5,7 @@
 - Replace TTP card check by using NFC.
 
 > [!NOTE]\
-> This means it's not posible to check card via web.
+> This means it's not posible to check TTP card via web.
 
 ## 1.5.4
 
