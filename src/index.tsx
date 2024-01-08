@@ -23,9 +23,9 @@ import {getSystemTheme} from "./components/stops/Utils";
 import Settings from "./components/settings/Settings";
 import StopNearest from "./components/stops/StopNearest";
 import LinesLocationsMap from "./components/stops/lines/LinesLocationsMap";
-import {App as CapacitorApp} from "@capacitor/app";
-import {StatusBar} from "@capacitor/status-bar";
 import {banner, initialize} from "./admob";
+import {showStatusBar} from "./statusbar";
+import {setupBackButton} from "./backButtons";
 
 export const ColorModeContext = React.createContext({
   toggleColorMode: () => {},
@@ -168,17 +168,8 @@ export const router = createBrowserRouter([
 ]);
 
 requestPermission();
-
-CapacitorApp.addListener("backButton", ({canGoBack}) => {
-  if (!canGoBack) {
-    CapacitorApp.exitApp();
-  } else {
-    window.history.back();
-  }
-});
-
-await StatusBar.setBackgroundColor({color: "#1e3a8a"});
-await StatusBar.show();
+showStatusBar();
+setupBackButton();
 
 const throwEx = () => {
   throw new Error("No root element found");

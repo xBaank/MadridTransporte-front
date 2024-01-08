@@ -22,7 +22,7 @@ import {Polyline} from "react-leaflet";
 import Line from "../../Line";
 
 export default function LinesLocationsMap() {
-  const interval = 1000 * 10;
+  const interval = 1000 * 15;
   const {type, direction, code} = useParams<{
     type: TransportType;
     direction: string;
