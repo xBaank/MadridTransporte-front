@@ -72,13 +72,14 @@ export async function TTPInfo() {
 }
 
 function parseData(input: string) {
-  const regex = /(\w+)=(\S+)/g;
+  const regex = /([^=]+)\s*=\s*([^;]+)/;
   const resultMap = new Map<string, string>();
-  let match;
 
-  while ((match = regex.exec(input)) !== null) {
+  input.split("\n").forEach(i => {
+    const match = i.match(regex);
+    if (match == null) return;
     resultMap.set(match[1], match[2]);
-  }
+  });
 
   return resultMap;
 }

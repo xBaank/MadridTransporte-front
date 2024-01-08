@@ -49,17 +49,6 @@ export default function AbonoSearch() {
             <p>Alta: {data?.get("FIV")}</p>
             <p>Vencimiento: {data.get("FFV")}</p>
             <div className={`border-b ${borderColor} mt-3`}></div>
-            {profileCount(data).map(i => (
-              <>
-                <div className={`border-b ${borderColor} mt-3`}>
-                  <h2 className=" text-lg font-semibold mb-1">
-                    Perfil {data.get(`P${i}N`)}
-                  </h2>
-                  <p>Alta: {data.get(`P${i}FI`)}</p>
-                  <p>Vencimiento: {data.get(`P${i}FF`)}</p>
-                </div>
-              </>
-            ))}
             <br></br>
             {titleCount(data).map(i => (
               <>
@@ -70,7 +59,10 @@ export default function AbonoSearch() {
                   <p>Dias: {data.get(`T${i}N`)}</p>
                   <p>Fecha de compra: {data.get(`T${i}VCFI`)}</p>
                   <p>Último día válido: {data.get(`T${i}VCFF`)}</p>
-                  <p>Primer día de uso: {data.get(`T${i}LASTVALTIME`)}</p>
+                  <p>
+                    Primer día de uso:{" "}
+                    {data.get(`T${i}LASTVALTIME`)?.split(" ")[0]}
+                  </p>
                 </div>
               </>
             ))}
@@ -90,7 +82,6 @@ export default function AbonoSearch() {
         <h5
           className={`mb-2 text-2xl font-semibold tracking-tight ${textColor}`}>
           Tarjeta Transporte
-          {` ${data?.get("CRN") ?? ""}`}
         </h5>
       </a>
       <div className={`border-t ${borderColor} pt-4`}>
