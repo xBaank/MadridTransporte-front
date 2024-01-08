@@ -5,6 +5,7 @@ import MapIcon from "@mui/icons-material/Map";
 import SettingsIcon from "@mui/icons-material/Settings";
 import {Link, useLocation} from "react-router-dom";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
+import {Capacitor} from "@capacitor/core";
 
 export default function MobileNavBar() {
   const location = useLocation();
@@ -59,13 +60,17 @@ export default function MobileNavBar() {
           value="Mapa"
           icon={<MapIcon />}
         />
-        <BottomNavigationAction
-          component={Link}
-          to={"/abono"}
-          label="Abono"
-          value="Abono"
-          icon={<CreditCardIcon />}
-        />
+        {Capacitor.getPlatform() !== "web" ? (
+          <BottomNavigationAction
+            component={Link}
+            to={"/abono"}
+            label="Abono"
+            value="Abono"
+            icon={<CreditCardIcon />}
+          />
+        ) : (
+          <></>
+        )}
         <BottomNavigationAction
           component={Link}
           to={"/settings"}

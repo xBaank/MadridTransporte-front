@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
@@ -15,7 +15,6 @@ import DefaultElement from "./components/DefaultElement";
 import BusStopMap from "./components/stops/StopMap";
 import Info from "./components/info/Info";
 import AbonoSearch from "./components/abono/AbonoSearch";
-import AbonoInfo from "./components/abono/AbonoInfo";
 import {trainCodMode} from "./components/stops/api/Utils";
 import {uniqueId} from "lodash";
 import TrainStopTimesComponent from "./components/stops/train/TrainStopsTimes";
@@ -24,6 +23,9 @@ import {getSystemTheme} from "./components/stops/Utils";
 import Settings from "./components/settings/Settings";
 import StopNearest from "./components/stops/StopNearest";
 import LinesLocationsMap from "./components/stops/lines/LinesLocationsMap";
+import {banner, initialize} from "./admob";
+import {showStatusBar} from "./statusbar";
+import {setupBackButton} from "./backButtons";
 
 export const ColorModeContext = React.createContext({
   toggleColorMode: () => {},
@@ -64,6 +66,14 @@ export const getDesignTokens = (mode: PaletteMode) => ({
 });
 
 export default function App() {
+  /*   useEffect(() => {
+    initialize();
+  }, []);
+
+  useEffect(() => {
+    banner();
+  }, []); */
+
   let savedTheme = localStorage.getItem("theme") as PaletteMode | null;
   if (savedTheme !== "dark" && savedTheme !== "light") savedTheme = null;
   const [mode, setMode] = React.useState<PaletteMode>(
@@ -148,10 +158,6 @@ export const router = createBrowserRouter([
     element: <DefaultElement element={<AbonoSearch />} />,
   },
   {
-    path: "abono/:code",
-    element: <DefaultElement element={<AbonoInfo />} />,
-  },
-  {
     path: "*",
     element: (
       <DefaultElement
@@ -162,10 +168,13 @@ export const router = createBrowserRouter([
 ]);
 
 requestPermission();
+showStatusBar();
+setupBackButton();
 
 const throwEx = () => {
   throw new Error("No root element found");
 };
+
 const root = ReactDOM.createRoot(document.getElementById("root") ?? throwEx());
 root.render(<App />);
 

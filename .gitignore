@@ -24,3 +24,5 @@ yarn-debug.log*
 yarn-error.log*
 
 .env.development.local  
+.env.development  
+.env.production  

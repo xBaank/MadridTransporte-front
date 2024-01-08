@@ -1,9 +1,12 @@
+import {Capacitor} from "@capacitor/core";
 import {
   getIconByCodMode,
   getUrlByCodMode,
   metroCodMode,
   trainCodMode,
 } from "../stops/api/Utils";
+import {Browser} from "@capacitor/browser";
+import {PhotoViewer} from "@capacitor-community/photoviewer";
 
 export default function StaticMaps() {
   return (
@@ -23,15 +26,33 @@ export default function StaticMaps() {
 
   function Map({iconLink, url}: {iconLink: string; url: string}) {
     return (
-      <a
-        href={url}
-        className="w-32 h-full flex-col justify-center items-center rounded-full shadow-lg shadow-gray-900 hover:shadow-gray-700">
+      <div
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        onClick={async () => {
+          const fullUrl = `${window.origin}${url}`;
+          if (Capacitor.getPlatform() === "web") {
+            await Browser.open({
+              url: fullUrl,
+            });
+          } else {
+            await PhotoViewer.show({
+              images: [{url: fullUrl}],
+              mode: "one",
+              options: {
+                transformer: "depth",
+                backgroundcolor: "ivory",
+                maxzoomscale: 10,
+              },
+            });
+          }
+        }}
+        className="w-32 hover:cursor-pointer h-full flex-col justify-center items-center rounded-full shadow-lg shadow-gray-900 hover:shadow-gray-700">
         <div className="flex justify-center h-32 w-32">
           <div className="flex h-full items-center justify-center">
             <img className="w-20" src={iconLink} alt="Metro" />
           </div>
         </div>
-      </a>
+      </div>
     );
   }
 }

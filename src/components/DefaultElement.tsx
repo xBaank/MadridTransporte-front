@@ -1,5 +1,6 @@
 import MobileNavBar from "./MobileNavBar";
 import {Link} from "react-router-dom";
+const isDev = import.meta.env.DEV;
 
 export default function DefaultElement({element}: {element: JSX.Element}) {
   return (
@@ -10,7 +11,7 @@ export default function DefaultElement({element}: {element: JSX.Element}) {
             replace={true}
             className="text-2xl whitespace-nowrap text-white font-bold align-middle"
             to={"#"}>
-            Madrid Transporte
+            Madrid Transporte {isDev ? " Dev " : ""}
           </Link>
         </div>
       </div>

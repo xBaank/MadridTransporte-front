@@ -13,8 +13,8 @@ export default function Info() {
         <br />
         <div className="font-bold text-xl mb-2">- Extraccion de datos</div>
         <p>
-          Todos los datos se extraen de Metro de Madrid, EMT Madrid y Consorcio
-          Regional de Transportes de Madrid.
+          Todos los datos se extraen de Metro de Madrid, EMT Madrid, Renfe y
+          CRTM.
         </p>
         <br />
         <div className="font-bold text-xl mb-2">- Problemas</div>
