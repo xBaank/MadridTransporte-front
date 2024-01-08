@@ -6,7 +6,7 @@ import {
 
 const middlelat = "https://lat1p.crtm.es:39480/LAT2";
 
-// CODE FROM https://github.com/CRTM-NFC/Mifare-Desfire
+// CODE FROM https://github.com/CRTM-NFC/Mifare-Desfire and https://www.contratos-publicos.comunidad.madrid/medias/pliego-prescripciones-tecnicas-1056/download
 export async function TTPInfo() {
   const realWindow = window as any;
 
@@ -63,11 +63,6 @@ export async function TTPInfo() {
     url: `${middlelat}/MuestraSaldo`,
   });
 
-  const listaResponse = await CapacitorHttp.get({
-    url: `${middlelat}/ListaTitulosCarga`,
-  });
-  alert(listaResponse.data);
-  alert(saldoResponse.data);
   return parseData(saldoResponse.data);
 }
 

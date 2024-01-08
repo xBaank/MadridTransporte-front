@@ -1,10 +1,9 @@
 import {CreditCard} from "@mui/icons-material";
 import {useBackgroundColor, useBorderColor, useColor} from "../stops/Utils";
 import {useEffect, useState} from "react";
-import {TTPInfo, profileCount, titleCount} from "./api/Abono";
+import {TTPInfo, titleCount} from "./api/Abono";
 import LoadingSpinner from "../LoadingSpinner";
 import ErrorMessage from "../Error";
-import {AbonoType} from "./api/Types";
 
 export default function AbonoSearch() {
   const bgColor = useBackgroundColor();
@@ -12,23 +11,25 @@ export default function AbonoSearch() {
   const borderColor = useBorderColor();
   const [data, setData] = useState<Map<string, string>>();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<string>();
 
   useEffect(() => {
     const realWindow = window as any;
     if (realWindow.nfc === undefined) return;
 
-    const callback = (nfcEvent: any) => {
+    const callback = (_nfcEvent: any) => {
       realWindow.nfc.connect("android.nfc.tech.IsoDep").then(
         () => {
           setLoading(true);
-          setError(false);
+          setError(undefined);
           TTPInfo()
             .then(i => setData(i))
-            .catch(() => setError(true))
+            .catch(() => setError("Ha habido un error al leer la tarjeta"))
             .then(() => setLoading(false));
         },
-        (error: string) => alert("connection failed " + error),
+        (_error: string) => {
+          setError("Esta tarjeta no es soportada");
+        },
       );
     };
 
@@ -38,8 +39,7 @@ export default function AbonoSearch() {
   }, []);
 
   function RenderErrorOrInfo() {
-    if (error)
-      return <ErrorMessage message={"Ha habido un error al leer la tarjeta"} />;
+    if (error !== undefined) return <ErrorMessage message={error} />;
     return (
       <p className={`mb-3 font-normal ${textColor}`}>
         {data !== undefined ? (
@@ -52,17 +52,26 @@ export default function AbonoSearch() {
             <br></br>
             {titleCount(data).map(i => (
               <>
-                <div className={`border-b ${borderColor} mt-3`}>
+                <div className={`border-b ${borderColor} mt-3 pb-2`}>
                   <h2 className=" text-lg font-semibold mb-1">
-                    Título abono {data.get(`T${i}P`)}
+                    Abono {data.get(`T${i}N`)}
                   </h2>
-                  <p>Dias: {data.get(`T${i}N`)}</p>
-                  <p>Fecha de compra: {data.get(`T${i}VCFI`)}</p>
-                  <p>Último día válido: {data.get(`T${i}VCFF`)}</p>
-                  <p>
-                    Primer día de uso:{" "}
-                    {data.get(`T${i}LASTVALTIME`)?.split(" ")[0]}
-                  </p>
+                  <h2 className="font-semibold mb-1">{data.get(`T${i}P`)}</h2>
+                  {data.get(`T${i}VCFI`) != null ? (
+                    <p>Fecha de compra: {data.get(`T${i}VCFI`)}</p>
+                  ) : (
+                    <></>
+                  )}
+                  {data.get(`T${i}VCFF`) != null ? (
+                    <p>Último día válido: {data.get(`T${i}VCFF`)}</p>
+                  ) : (
+                    <></>
+                  )}
+                  {data.get(`T${i}VC`) != null ? (
+                    <p>Cargas : {data.get(`T${i}VC`)}</p>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </>
             ))}

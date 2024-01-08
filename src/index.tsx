@@ -15,7 +15,6 @@ import DefaultElement from "./components/DefaultElement";
 import BusStopMap from "./components/stops/StopMap";
 import Info from "./components/info/Info";
 import AbonoSearch from "./components/abono/AbonoSearch";
-import AbonoInfo from "./components/abono/AbonoInfo";
 import {trainCodMode} from "./components/stops/api/Utils";
 import {uniqueId} from "lodash";
 import TrainStopTimesComponent from "./components/stops/train/TrainStopsTimes";
@@ -156,10 +155,6 @@ export const router = createBrowserRouter([
   {
     path: "abono",
     element: <DefaultElement element={<AbonoSearch />} />,
-  },
-  {
-    path: "abono/:code",
-    element: <DefaultElement element={<AbonoInfo />} />,
   },
   {
     path: "*",
