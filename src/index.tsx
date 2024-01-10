@@ -19,7 +19,7 @@ import {trainCodMode} from "./components/stops/api/Utils";
 import {uniqueId} from "lodash";
 import TrainStopTimesComponent from "./components/stops/train/TrainStopsTimes";
 import StaticMaps from "./components/maps/StaticMaps";
-import {getSystemTheme} from "./components/stops/Utils";
+import {getSystemTheme} from "./hooks/hooks";
 import Settings from "./components/settings/Settings";
 import StopNearest from "./components/stops/StopNearest";
 import LinesLocationsMap from "./components/stops/lines/LinesLocationsMap";

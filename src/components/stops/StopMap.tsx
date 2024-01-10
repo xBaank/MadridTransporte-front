@@ -4,7 +4,7 @@ import {type Stop} from "./api/Types";
 import * as E from "fp-ts/Either";
 import {type Map} from "leaflet";
 import {getAllStops} from "./api/Stops";
-import {defaultPosition} from "./Utils";
+import {defaultPosition} from "../../hooks/hooks";
 import {StopsMarkers} from "./StopsMarkers";
 import ThemedMap from "./ThemedMap";
 

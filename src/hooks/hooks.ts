@@ -1,4 +1,4 @@
-import {useTheme} from "@mui/material";
+import {type PaletteMode, useTheme} from "@mui/material";
 
 export const defaultPosition = {lat: 40.4165, lng: -3.70256};
 
@@ -29,8 +29,21 @@ export function getSystemTheme() {
   const theme = window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light";
-  console.log("Theme: " + theme);
   return theme;
+}
+
+export function useLocalTheme() {
+  const defaultTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+  let savedTheme = localStorage.getItem("theme") as PaletteMode | null;
+  if (savedTheme !== "dark" && savedTheme !== "light")
+    savedTheme = defaultTheme;
+
+  return [
+    savedTheme,
+    (value: "dark" | "light") => localStorage.setItem("theme", value),
+  ];
 }
 
 export function changeMinutesDisplay() {

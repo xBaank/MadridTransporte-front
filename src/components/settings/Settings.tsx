@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import {ColorModeContext} from "../..";
 import {Brightness7} from "@mui/icons-material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import {changeMinutesDisplay, getMinutesDisplay} from "../stops/Utils";
+import {changeMinutesDisplay, getMinutesDisplay} from "../../hooks/hooks";
 import {Link} from "react-router-dom";
 
 export default function Settings() {
