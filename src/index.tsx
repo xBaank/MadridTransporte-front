@@ -19,7 +19,7 @@ import {trainCodMode} from "./components/stops/api/Utils";
 import {uniqueId} from "lodash";
 import TrainStopTimesComponent from "./components/stops/train/TrainStopsTimes";
 import StaticMaps from "./components/maps/StaticMaps";
-import {getSystemTheme} from "./components/stops/Utils";
+import {useLocalTheme} from "./hooks/hooks";
 import Settings from "./components/settings/Settings";
 import StopNearest from "./components/stops/StopNearest";
 import LinesLocationsMap from "./components/stops/lines/LinesLocationsMap";
@@ -66,6 +66,8 @@ export const getDesignTokens = (mode: PaletteMode) => ({
 });
 
 export default function App() {
+  const [mode, setMode] = useLocalTheme();
+
   /*   useEffect(() => {
     initialize();
   }, []);
@@ -74,18 +76,13 @@ export default function App() {
     banner();
   }, []); */
 
-  let savedTheme = localStorage.getItem("theme") as PaletteMode | null;
-  if (savedTheme !== "dark" && savedTheme !== "light") savedTheme = null;
-  const [mode, setMode] = React.useState<PaletteMode>(
-    savedTheme ?? getSystemTheme(),
-  );
   const colorMode = React.useMemo(
     () => ({
       toggleColorMode: () => {
-        setMode(prevMode => (prevMode === "light" ? "dark" : "light"));
+        setMode(mode === "light" ? "dark" : "light");
       },
     }),
-    [],
+    [mode],
   );
 
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);

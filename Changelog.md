@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.2
+
+- Fix theme not being saved
+
 ## 1.6.1
 
 - Fix maps on native.

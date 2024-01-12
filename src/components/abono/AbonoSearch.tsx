@@ -1,5 +1,5 @@
 import {CreditCard} from "@mui/icons-material";
-import {useBackgroundColor, useBorderColor, useColor} from "../stops/Utils";
+import {useBackgroundColor, useBorderColor, useColor} from "../../hooks/hooks";
 import {useEffect, useState} from "react";
 import {TTPInfo, titleCount} from "./api/Abono";
 import LoadingSpinner from "../LoadingSpinner";

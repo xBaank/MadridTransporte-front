@@ -29,7 +29,7 @@ import {
   useBorderColor,
   useRoseColor,
   useAmberColor,
-} from "./Utils";
+} from "../../hooks/hooks";
 import StopTimesSubscribe from "./StopTimesSubscribe";
 import {getSubscription} from "./api/Subscriptions";
 import useToken from "./UseToken";

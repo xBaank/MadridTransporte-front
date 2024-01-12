@@ -1,7 +1,7 @@
 import {IconButton, useTheme} from "@mui/material";
 import {MapContainer, TileLayer} from "react-leaflet";
 import LocationMarker from "./LocationMarker";
-import {useBackgroundColor} from "./Utils";
+import {useBackgroundColor} from "../../hooks/hooks";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import {type RefObject} from "react";
 import {type LatLngExpression, type Map} from "leaflet";
