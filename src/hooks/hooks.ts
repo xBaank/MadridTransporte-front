@@ -1,4 +1,5 @@
 import {type PaletteMode, useTheme} from "@mui/material";
+import {useEffect, useState} from "react";
 
 export const defaultPosition = {lat: 40.4165, lng: -3.70256};
 
@@ -25,24 +26,28 @@ export function useBackgroundColor() {
   return theme.palette.mode === "dark" ? "bg-gray-800" : "bg-white";
 }
 
-export function getSystemTheme() {
-  const theme = window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
-  return theme;
-}
+export function useLocalTheme(): [PaletteMode, (value: PaletteMode) => void] {
+  const [theme, setTheme] = useState<PaletteMode>("dark");
 
-export function useLocalTheme() {
-  const defaultTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
-  let savedTheme = localStorage.getItem("theme") as PaletteMode | null;
-  if (savedTheme !== "dark" && savedTheme !== "light")
-    savedTheme = defaultTheme;
+  useEffect(() => {
+    const defaultTheme = window.matchMedia("(prefers-color-scheme: dark)")
+      .matches
+      ? "dark"
+      : "light";
+
+    let savedTheme = localStorage.getItem("theme") as PaletteMode | null;
+    if (savedTheme !== "dark" && savedTheme !== "light") {
+      savedTheme = defaultTheme;
+    }
+    setTheme(savedTheme);
+  }, []);
 
   return [
-    savedTheme,
-    (value: "dark" | "light") => localStorage.setItem("theme", value),
+    theme,
+    (value: PaletteMode) => {
+      setTheme(value);
+      localStorage.setItem("theme", value);
+    },
   ];
 }
 

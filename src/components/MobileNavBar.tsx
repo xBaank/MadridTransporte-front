@@ -68,9 +68,7 @@ export default function MobileNavBar() {
             value="Abono"
             icon={<CreditCardIcon />}
           />
-        ) : (
-          <></>
-        )}
+        ) : null}
         <BottomNavigationAction
           component={Link}
           to={"/settings"}
