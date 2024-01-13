@@ -12,7 +12,7 @@ import {getLineLocations, getItinerary, getShapes} from "../api/Lines";
 import {fold} from "fp-ts/lib/Either";
 import ErrorMessage from "../../Error";
 import {useInterval} from "usehooks-ts";
-import {match, routeTimeCar} from "../api/Route";
+import {fixRouteShapes, routeTimeCar} from "../api/Route";
 import LoadingSpinner from "../../LoadingSpinner";
 import {StopsMarkers} from "../StopsMarkers";
 import {type Route} from "../api/RouteTypes";
@@ -118,12 +118,12 @@ export default function LinesLocationsMap() {
             mapped.then(i => setAllRoute(coordinatesToExpression(i)));
             return;
           }
-          match(value);
-          const mapped = value.map(i => {
-            return {lat: i.latitude, lng: i.longitude};
+          fixRouteShapes(value).then(shape => {
+            const mapped = shape.map(i => {
+              return {lat: i.latitude, lng: i.longitude};
+            });
+            setAllRoute(mapped);
           });
-
-          setAllRoute(mapped);
         },
       )(shapes),
     );

@@ -21,8 +21,11 @@ export async function routeTimeCar(coordinates: Coordinates[]) {
   return data;
 }
 
-export async function match(coordinates: Coordinates[]) {
-  const chunks: Coordinates[][] = _.chunk(coordinates, 100);
+export async function fixRouteShapes(coordinates: Coordinates[]) {
+  const chunks: Coordinates[][] = _.chunk(
+    coordinates.filter((_, index) => index % 10 === 0),
+    100,
+  );
 
   const fixedRoutePromise = chunks.map(async coordinates => {
     const joined = coordinates
@@ -32,7 +35,17 @@ export async function match(coordinates: Coordinates[]) {
     const result = await fetch(
       `https://routing.openstreetmap.de/routed-car/match/v1/driving/${joined}`,
     );
-    return (await result.json()) as Coordinates[];
+
+    const parsed: Coordinates[] = (await result.json()).tracepoints.map(
+      (i: any) => {
+        return {
+          latitude: i.location[1],
+          longitude: i.location[0],
+        };
+      },
+    );
+
+    return parsed;
   });
 
   return (await Promise.all(fixedRoutePromise)).flat();
