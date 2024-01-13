@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
@@ -19,13 +19,12 @@ import {trainCodMode} from "./components/stops/api/Utils";
 import {uniqueId} from "lodash";
 import TrainStopTimesComponent from "./components/stops/train/TrainStopsTimes";
 import StaticMaps from "./components/maps/StaticMaps";
-import {useLocalTheme} from "./hooks/hooks";
 import Settings from "./components/settings/Settings";
 import StopNearest from "./components/stops/StopNearest";
 import LinesLocationsMap from "./components/stops/lines/LinesLocationsMap";
-import {banner, initialize} from "./admob";
 import {showStatusBar} from "./statusbar";
 import {setupBackButton} from "./backButtons";
+import {useSavedTheme} from "./hooks/hooks";
 
 export const ColorModeContext = React.createContext({
   toggleColorMode: () => {},
@@ -66,7 +65,7 @@ export const getDesignTokens = (mode: PaletteMode) => ({
 });
 
 export default function App() {
-  const [mode, setMode] = useLocalTheme();
+  const [mode, setMode] = useSavedTheme();
 
   /*   useEffect(() => {
     initialize();
