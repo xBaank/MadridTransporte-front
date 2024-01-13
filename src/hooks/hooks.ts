@@ -1,5 +1,5 @@
 import {type PaletteMode, useTheme} from "@mui/material";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 
 export const defaultPosition = {lat: 40.4165, lng: -3.70256};
 
@@ -26,10 +26,8 @@ export function useBackgroundColor() {
   return theme.palette.mode === "dark" ? "bg-gray-800" : "bg-white";
 }
 
-export function useLocalTheme(): [PaletteMode, (value: PaletteMode) => void] {
-  const [theme, setTheme] = useState<PaletteMode>("dark");
-
-  useEffect(() => {
+export function useSavedTheme(): [PaletteMode, (value: PaletteMode) => void] {
+  const loadSavedTheme = () => {
     const defaultTheme = window.matchMedia("(prefers-color-scheme: dark)")
       .matches
       ? "dark"
@@ -39,8 +37,10 @@ export function useLocalTheme(): [PaletteMode, (value: PaletteMode) => void] {
     if (savedTheme !== "dark" && savedTheme !== "light") {
       savedTheme = defaultTheme;
     }
-    setTheme(savedTheme);
-  }, []);
+    return savedTheme ?? "dark";
+  };
+
+  const [theme, setTheme] = useState<PaletteMode>(loadSavedTheme());
 
   return [
     theme,

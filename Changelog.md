@@ -1,8 +1,12 @@
 # Changelog
 
+## 1.6.3
+
+- Fix theme loading delay.
+
 ## 1.6.2
 
-- Fix theme not being saved
+- Fix theme not being saved.
 
 ## 1.6.1
 
