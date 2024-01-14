@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.4
+
+- Fix shapes routes by using OSRM `match` endpoint.
+
 ## 1.6.3
 
 - Fix theme loading delay.

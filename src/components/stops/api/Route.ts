@@ -1,4 +1,5 @@
 import {type Coordinates, type Route} from "./RouteTypes";
+import _ from "lodash";
 
 export default async function routeTimeFoot(
   from: Coordinates,
@@ -18,4 +19,40 @@ export async function routeTimeCar(coordinates: Coordinates[]) {
   );
   const data = (await result.json()) as Route;
   return data;
+}
+
+export async function fixRouteShapes(coordinates: Coordinates[]) {
+  if (coordinates.length === 0) return [];
+
+  const chunks: Coordinates[][] = _.chunk(
+    [
+      coordinates[0],
+      ...coordinates.filter((_, index) => index % 10 === 0),
+      coordinates[coordinates.length - 1],
+    ],
+    100,
+  );
+
+  const fixedRoutePromise = chunks.map(async coordinates => {
+    const joined = coordinates
+      .map(i => `${i.longitude},${i.latitude}`)
+      .join(";");
+
+    const result = await fetch(
+      `https://routing.openstreetmap.de/routed-car/match/v1/driving/${joined}`,
+    );
+
+    const parsed: Coordinates[] = (await result.json()).tracepoints.map(
+      (i: any) => {
+        return {
+          latitude: i.location[1],
+          longitude: i.location[0],
+        };
+      },
+    );
+
+    return parsed;
+  });
+
+  return (await Promise.all(fixedRoutePromise)).flat();
 }
