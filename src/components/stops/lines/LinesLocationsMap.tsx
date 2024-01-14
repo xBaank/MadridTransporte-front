@@ -12,10 +12,9 @@ import {getLineLocations, getItinerary, getShapes} from "../api/Lines";
 import {fold} from "fp-ts/lib/Either";
 import ErrorMessage from "../../Error";
 import {useInterval} from "usehooks-ts";
-import {fixRouteShapes, routeTimeCar} from "../api/Route";
+import {routeToCoordinates, fixRouteShapes, routeTimeCar} from "../api/Route";
 import LoadingSpinner from "../../LoadingSpinner";
 import {StopsMarkers} from "../StopsMarkers";
-import {type Route} from "../api/RouteTypes";
 import {LineLocationsMarkers} from "./LineLocationsMarkers";
 import ThemedMap from "../ThemedMap";
 import {Polyline} from "react-leaflet";
@@ -115,14 +114,11 @@ export default function LinesLocationsMap() {
               }) ?? [],
             );
 
-            mapped.then(i => setAllRoute(coordinatesToExpression(i)));
+            mapped.then(i => setAllRoute(routeToCoordinates(i)));
             return;
           }
           fixRouteShapes(value).then(shape => {
-            const mapped = shape.map(i => {
-              return {lat: i.latitude, lng: i.longitude};
-            });
-            setAllRoute(mapped);
+            setAllRoute(shape);
           });
         },
       )(shapes),
@@ -133,12 +129,6 @@ export default function LinesLocationsMap() {
     setIsOnInterval(true);
     getLocations();
   }, interval);
-
-  function coordinatesToExpression(route: Route) {
-    return route.routes[0].geometry.coordinates.map(i => {
-      return {lat: i[1], lng: i[0]};
-    });
-  }
 
   function StopsMarkersMemo() {
     return useMemo(() => {
