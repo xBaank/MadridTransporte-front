@@ -44,14 +44,16 @@ export async function fixRouteShapes(coordinates: Coordinates[]) {
       `https://routing.openstreetmap.de/routed-car/match/v1/driving/${joined}?overview=full&geometries=geojson`,
     );
 
-    const parsed = (await result.json()).matchings[0].geometry.coordinates.map(
-      (i: any) => {
+    const parsed: Array<{lat: number; lng: number}> = (
+      await result.json()
+    ).matchings.flatMap((i: any) => {
+      return i.geometry.coordinates.map((i: any) => {
         return {
           lat: i[1],
           lng: i[0],
         };
-      },
-    );
+      });
+    });
 
     return parsed;
   });
