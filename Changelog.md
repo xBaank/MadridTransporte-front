@@ -2,7 +2,7 @@
 
 ## 1.6.4
 
-- Fix shapes routes by using OSRM `match` endpoint .
+- Fix shapes routes by using OSRM `match` endpoint.
 
 ## 1.6.3
 
