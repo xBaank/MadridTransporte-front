@@ -22,8 +22,14 @@ export async function routeTimeCar(coordinates: Coordinates[]) {
 }
 
 export async function fixRouteShapes(coordinates: Coordinates[]) {
+  if (coordinates.length === 0) return [];
+
   const chunks: Coordinates[][] = _.chunk(
-    coordinates.filter((_, index) => index % 10 === 0),
+    [
+      coordinates[0],
+      ...coordinates.filter((_, index) => index % 10 === 0),
+      coordinates[coordinates.length - 1],
+    ],
     100,
   );
 
