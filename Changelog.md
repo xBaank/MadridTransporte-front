@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.6
+
+- Improve shapes.
+
 ## 1.6.5
 
 - Redeploy.
