@@ -26,8 +26,6 @@ export async function fixRouteShapes(coordinates: Coordinates[]) {
 
   const percentage = (coordinates.length * 0.008) | 0;
 
-  console.log(percentage);
-
   const chunks: Coordinates[][] = _.chunk(
     [
       coordinates[0],
