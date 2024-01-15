@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.6.8
+
+- Improve searching.
+- Improve stop clicking.
+
+
 ## 1.6.7
 
 - Optimize.
