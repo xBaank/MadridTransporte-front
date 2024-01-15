@@ -67,7 +67,7 @@ export default function AllSubscriptions() {
           <div>Suscripciones</div>
           <CircleNotificationsIcon className="p-1 text-yellow-500" />
         </div>
-        <div className="">
+        <div>
           {subscriptions.map((subscription, index) => (
             <div key={index}>
               <div className="pb-1">
