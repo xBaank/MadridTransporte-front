@@ -17,7 +17,7 @@ export default function FilteredStopsComponent({
   const [stops, setStops] = useState<StopLink[]>([]);
 
   useEffect(() => {
-    if (query === "" || query.length < 3) return setStops([]);
+    if (query === "") return setStops([]);
 
     const filteredStops = stopLinks
       .sort((a, b) => a.stop.codMode - b.stop.codMode)
@@ -29,10 +29,8 @@ export default function FilteredStopsComponent({
               .replace(/[\u0300-\u036f]/g, "")
               .toLowerCase()
               .includes(query.toLowerCase())) ||
-          stopLink.stop.stopCode
-            .toString()
-            .toLowerCase()
-            .includes(query.toLowerCase()),
+          stopLink.stop.stopCode.toString().toLowerCase() ===
+            query.toLowerCase(),
       )
       .slice(0, 25);
 
@@ -83,7 +81,7 @@ export default function FilteredStopsComponent({
 export function StopComponent(stop: StopLink) {
   return (
     <li key={stop.url} className="p-2 border-b-blue-900 border-blue-900">
-      <div className="flex items-center space-x-4">
+      <Link to={stop.url} className=" flex items-center space-x-4">
         <div className="flex-shrink-0">
           <img className="w-8 h-8 rounded-full" src={stop.iconUrl} alt="Logo" />
         </div>
@@ -97,7 +95,7 @@ export function StopComponent(stop: StopLink) {
             {stop.stop.stopCode}
           </Link>
         </div>
-      </div>
+      </Link>
     </li>
   );
 }

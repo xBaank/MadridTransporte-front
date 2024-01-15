@@ -71,8 +71,10 @@ export default function StopsFavorites() {
 
     return (
       <>
-        <li className="p-2 border-b-blue-900 border-blue-900">
-          <div className="flex items-center space-x-4">
+        <li className="py-2 pl-2 border-b-blue-900 border-blue-900 flex">
+          <Link
+            to={getStopTimesLinkByMode(stop.cod_mode, stop.code.toString())}
+            className="flex items-center w-[85%]">
             <div className="flex-shrink-0">
               <img
                 className="w-8 h-8 rounded-full"
@@ -80,30 +82,16 @@ export default function StopsFavorites() {
                 alt="Logo"
               />
             </div>
-            <div className="flex-1 items-center min-w-0 overflow-clip">
-              <Link
-                className="text-sm truncate "
-                to={getStopTimesLinkByMode(
-                  stop.cod_mode,
-                  stop.code.toString(),
-                )}>
-                {stop.name}
-              </Link>
+            <div className="flex-1 items-center min-w-0 px-2 mr-2 overflow-clip">
+              <div className="text-sm truncate">{stop.name}</div>
             </div>
             <div className="flex font-bold min-w-0">
-              <Link
-                className="text-sm truncate "
-                to={getStopTimesLinkByMode(
-                  stop.cod_mode,
-                  stop.code.toString(),
-                )}>
-                {stop.code}
-              </Link>
+              <div className="text-sm truncate">{stop.code}</div>
             </div>
-            <button onClick={handleClickOpen}>
-              <DeleteIcon className=" text-red-500" />
-            </button>
-          </div>
+          </Link>
+          <button className="ml-auto mr-2" onClick={handleClickOpen}>
+            <DeleteIcon className=" text-red-500" />
+          </button>
         </li>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Borrar {stop.name} de favoritos</DialogTitle>
@@ -132,8 +120,14 @@ export default function StopsFavorites() {
     };
     return (
       <>
-        <li className="p-2 border-b-blue-900 border-blue-900">
-          <div className="flex items-center space-x-4">
+        <li className="py-2 pl-2 border-b-blue-900 border-blue-900 flex">
+          <Link
+            to={getStopTimesLinkByMode(
+              trainCodMode,
+              stop.destinationCode,
+              stop.originCode,
+            )}
+            className="flex items-center w-[85%]">
             <div className="flex-shrink-0">
               <img
                 className="w-8 h-8 rounded-full"
@@ -141,32 +135,18 @@ export default function StopsFavorites() {
                 alt="Logo"
               />
             </div>
-            <div className="flex-1 items-center min-w-0 overflow-clip">
-              <Link
-                className="text-sm truncate "
-                to={getStopTimesLinkByMode(
-                  trainCodMode,
-                  stop.destinationCode,
-                  stop.originCode,
-                )}>
-                {stop.name}
-              </Link>
+            <div className="flex-1 items-center min-w-0 px-2 mr-2 overflow-clip">
+              <div className="text-sm truncate ">{stop.name}</div>
             </div>
             <div className="flex font-bold min-w-0">
-              <Link
-                className="text-sm truncate "
-                to={getStopTimesLinkByMode(
-                  trainCodMode,
-                  stop.destinationCode,
-                  stop.originCode,
-                )}>
+              <div className="text-sm truncate">
                 {stop.originCode} - {stop.destinationCode}
-              </Link>
+              </div>
             </div>
-            <button onClick={handleClickOpen}>
-              <DeleteIcon className=" text-red-500" />
-            </button>
-          </div>
+          </Link>
+          <button className="ml-auto mr-2" onClick={handleClickOpen}>
+            <DeleteIcon className=" text-red-500" />
+          </button>
         </li>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Borrar {stop.name} de favoritos</DialogTitle>

@@ -67,7 +67,7 @@ export default function AllSubscriptions() {
           <div>Suscripciones</div>
           <CircleNotificationsIcon className="p-1 text-yellow-500" />
         </div>
-        <div className="">
+        <div>
           {subscriptions.map((subscription, index) => (
             <div key={index}>
               <div className="pb-1">
@@ -80,35 +80,31 @@ export default function AllSubscriptions() {
                     />
                   </div>
                   <div className="flex-1 ml-2 items-center min-w-0 overflow-clip">
-                    <Link
-                      className="text-sm truncate font-bold"
-                      to={getStopTimesLinkByMode(
-                        subscription.codMode,
-                        subscription.simpleStopCode ?? "",
-                      )}>
+                    <div className="text-sm truncate font-bold">
                       {subscription.stopName}
-                    </Link>
+                    </div>
                   </div>
                 </div>
               </div>
               <ul className="max-w-md divide-y rounded mb-1 border border-blue-900">
                 {subscription.linesDestinations.map(
                   (lineDestination, index) => (
-                    <li
-                      key={index}
-                      className="flex items-center space-x-4 p-2  border-blue-900">
-                      <Line info={lineDestination} />
-                      <div className="flex-1 items-center min-w-0 overflow-clip">
-                        <Link
-                          className="text-sm truncate "
-                          to={getStopTimesLinkByMode(
-                            subscription.codMode,
-                            subscription.simpleStopCode ?? "",
-                          )}>
-                          {lineDestination.destination}
-                        </Link>
-                      </div>
+                    <li key={index} className="flex border-blue-900">
+                      <Link
+                        className="flex items-center space-x-4 p-2 text-sm truncate w-[85%]"
+                        to={getStopTimesLinkByMode(
+                          subscription.codMode,
+                          subscription.simpleStopCode ?? "",
+                        )}>
+                        <Line info={lineDestination} />
+                        <div className="flex-1 items-center min-w-0 overflow-clip">
+                          <div className="text-sm truncate">
+                            {lineDestination.destination}
+                          </div>
+                        </div>
+                      </Link>
                       <button
+                        className="ml-auto mr-2"
                         onClick={() => {
                           handleUnsubscription(
                             getTransportTypeByCodMode(subscription.codMode),
