@@ -17,7 +17,7 @@ export default function FilteredStopsComponent({
   const [stops, setStops] = useState<StopLink[]>([]);
 
   useEffect(() => {
-    if (query === "" || query.length < 3) return setStops([]);
+    if (query === "") return setStops([]);
 
     const filteredStops = stopLinks
       .sort((a, b) => a.stop.codMode - b.stop.codMode)
@@ -29,10 +29,8 @@ export default function FilteredStopsComponent({
               .replace(/[\u0300-\u036f]/g, "")
               .toLowerCase()
               .includes(query.toLowerCase())) ||
-          stopLink.stop.stopCode
-            .toString()
-            .toLowerCase()
-            .includes(query.toLowerCase()),
+          stopLink.stop.stopCode.toString().toLowerCase() ===
+            query.toLowerCase(),
       )
       .slice(0, 25);
 
