@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.0
+
+- Added train times.
+
 ## 1.6.9
 
 - Remove scrolls on edge.
