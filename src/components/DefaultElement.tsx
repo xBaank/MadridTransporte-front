@@ -15,7 +15,7 @@ export default function DefaultElement({element}: {element: JSX.Element}) {
           </Link>
         </div>
       </div>
-      <div className="overflow-scroll flex flex-col w-full h-full pb-16">
+      <div className="overflow-scroll no-scrollbar flex flex-col w-full h-full pb-16">
         {element}
       </div>
       <MobileNavBar />

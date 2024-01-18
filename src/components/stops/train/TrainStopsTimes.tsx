@@ -83,7 +83,7 @@ export default function TrainStopTimesComponent() {
             alt="Logo"
           />
           <div
-            className={`flex items-center whitespace-nowrap overflow-scroll`}>
+            className={`flex items-center whitespace-nowrap overflow-scroll no-scrollbar`}>
             {times?.peticion?.descEstOrigen} - {times?.peticion?.descEstDestino}
           </div>
           <div className="ml-auto flex pl-3 items-baseline">

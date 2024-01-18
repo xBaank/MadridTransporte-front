@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.9
+
+- Remove scrolls on edge.
+
 ## 1.6.8
 
 - Improve searching.

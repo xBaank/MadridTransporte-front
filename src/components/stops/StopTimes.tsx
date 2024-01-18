@@ -126,7 +126,7 @@ export default function BusStopsTimes() {
               alt="Logo"
             />
             <div
-              className={`flex items-center gap-2 whitespace-nowrap overflow-scroll`}>
+              className={`flex items-center gap-2 whitespace-nowrap overflow-scroll no-scrollbar`}>
               <div className="font-bold mx-1">{stop.stopCode}</div>
               <div>{stop.stopName}</div>
             </div>
@@ -200,7 +200,8 @@ export default function BusStopsTimes() {
           <div className="flex-col min-w-0 max-w-[80%]">
             <div className="flex">
               <Line info={arrive} />
-              <div className={`${textColor} gap-5 flex overflow-scroll w-64`}>
+              <div
+                className={`${textColor} gap-5 flex overflow-scroll no-scrollbar w-64`}>
                 {arrivesFormatted}
               </div>
             </div>

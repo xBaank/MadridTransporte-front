@@ -29,3 +29,14 @@
     Source: https://github.com/pkrasicki/issviewer
     Discovered via: https://github.com/openstreetmap/openstreetmap-website/issues/2332
 **/
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
