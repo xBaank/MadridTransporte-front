@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.1
+
+- Fix notification bug.
+
 ## 1.7.0
 
 - Added train times.

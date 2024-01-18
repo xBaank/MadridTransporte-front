@@ -10,12 +10,14 @@ const busCodMode = 8;
 const metroLigeroCodMode = 10;
 
 function getStopTimesLinkByMode(codMode, stopCode, originCode) {
-  if (codMode === metroCodMode) return `/stops/metro/${stopCode}/times`;
-  if (codMode === metroLigeroCodMode) return `/stops/tram/${stopCode}/times`;
-  if (codMode === trainCodMode)
+  if (codMode === trainCodMode && originCode != null)
     return originCode === null
       ? `/stops/train/${stopCode}/destination`
       : `/stops/train/times/?origin=${originCode}&destination=${stopCode}`;
+
+  if (codMode === metroCodMode) return `/stops/metro/${stopCode}/times`;
+  if (codMode === metroLigeroCodMode) return `/stops/tram/${stopCode}/times`;
+  if (codMode === trainCodMode) return `/stops/train/${stopCode}/times`;
   if (codMode === emtCodMode) return `/stops/emt/${stopCode}/times`;
   if (codMode === busCodMode) return `/stops/bus/${stopCode}/times`;
   return "#";
