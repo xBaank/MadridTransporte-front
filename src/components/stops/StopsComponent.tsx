@@ -40,6 +40,7 @@ export default function FilteredStopsComponent({
   return StopsElement(stops);
 
   function StopsElement(stopsLinks: StopLink[]) {
+    if (codMode !== null && query.length === 0) return <></>;
     if (stopsLinks.length === 0)
       return (
         <>

@@ -39,6 +39,7 @@ import RenderAffected from "./Affected";
 import StaledMessage from "../Staled";
 import LinesLocationsButton from "./lines/LinesLocationsButton";
 import {interstitial} from "../../admob";
+import TrainTimesDestIcon from "./train/TrainTimesDestinationIcon";
 
 export default function BusStopsTimes() {
   const interval = 1000 * 30;
@@ -110,10 +111,12 @@ export default function BusStopsTimes() {
 
   if (error !== undefined && !errorOnInterval)
     return <ErrorMessage message={error} />;
-  if (stop === undefined) return <LoadingSpinner />;
-  return RenderTimes(stop, stopTimes);
 
-  function RenderTimes(stop: Stop, stopTimes?: StopTimes) {
+  if (stop === undefined) return <LoadingSpinner />;
+
+  return <RenderTimes stop={stop} stopTimes={stopTimes} />;
+
+  function RenderTimes({stop, stopTimes}: {stop: Stop; stopTimes?: StopTimes}) {
     return (
       <>
         <div
@@ -131,6 +134,7 @@ export default function BusStopsTimes() {
               <div>{stop.stopName}</div>
             </div>
             <div className="ml-auto flex pl-3 items-baseline">
+              {type === "train" ? <TrainTimesDestIcon code={code!} /> : null}
               <RenderAffected alerts={alerts} stopId={code!} />
               <FavoriteSave
                 comparator={() =>
@@ -207,7 +211,7 @@ export default function BusStopsTimes() {
             </div>
             <div className="flex-col text-xs font-bold min-w-0 overflow-hidden pt-1 w-full items-center mx-auto">
               <pre className="overflow-scroll no-scrollbar">
-                {arrive.destination}
+                {` ${arrive.destination} `}
               </pre>
               {arrive.anden !== null ? (
                 <pre className={` text-gray-500`}> Anden {arrive.anden} </pre>
