@@ -206,7 +206,9 @@ export default function BusStopsTimes() {
               </div>
             </div>
             <div className="flex-col text-xs font-bold min-w-0 overflow-hidden pt-1 w-full items-center mx-auto">
-              <pre> {arrive.destination} </pre>
+              <pre className="overflow-scroll no-scrollbar">
+                {arrive.destination}
+              </pre>
               {arrive.anden !== null ? (
                 <pre className={` text-gray-500`}> Anden {arrive.anden} </pre>
               ) : (
