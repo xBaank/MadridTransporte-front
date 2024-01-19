@@ -3,8 +3,20 @@ import {
   CapacitorHttp,
   type HttpResponse,
 } from "@capacitor/core";
+import {left, right} from "fp-ts/lib/Either";
+import {apiUrl} from "../../Urls";
+import {type AbonoType} from "./Types";
 
 const middlelat = "https://lat1p.crtm.es:39480/LAT2";
+const BadRequest = "No se pudo obtener informacion";
+
+export async function GetAbono(id: string) {
+  const response = await fetch(`${apiUrl}/abono/${id}`);
+  if (response.status === 400) return left(BadRequest);
+  if (!response.ok) return left((await response.json()).message);
+  const data = (await response.json()) as AbonoType;
+  return right(data);
+}
 
 // CODE FROM https://github.com/CRTM-NFC/Mifare-Desfire and https://www.contratos-publicos.comunidad.madrid/medias/pliego-prescripciones-tecnicas-1056/download
 export async function TTPInfo() {

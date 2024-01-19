@@ -58,29 +58,23 @@ export default function AbonoFavorites() {
 
     return (
       <>
-        <li className="p-2 border-b-blue-900 border-blue-900">
-          <div className="flex items-center space-x-4">
+        <li className="border-b-blue-900 flex border-blue-900">
+          <Link
+            className="flex items-center space-x-4 p-2 text-sm truncate w-[85%]"
+            to={getAbonoRoute(abono.ttpNumber)}>
             <div className="flex-shrink-0">
               <img className="w-8 h-5 " src={AbonoIcon} alt="Logo" />
             </div>
             <div className="flex-1 items-center min-w-0 overflow-clip">
-              <Link
-                className="text-sm truncate "
-                to={getAbonoRoute(abono.ttpNumber)}>
-                {abono.name}
-              </Link>
+              <div className="text-sm truncate ">{abono.name}</div>
             </div>
             <div className="flex font-bold min-w-0">
-              <Link
-                className="text-sm truncate "
-                to={getAbonoRoute(abono.ttpNumber)}>
-                {abono.ttpNumber}
-              </Link>
+              <div className="text-sm truncate">{abono.ttpNumber}</div>
             </div>
-            <button onClick={handleClickOpen}>
-              <DeleteIcon className=" text-red-500" />
-            </button>
-          </div>
+          </Link>
+          <button className="ml-auto mr-2" onClick={handleClickOpen}>
+            <DeleteIcon className=" text-red-500" />
+          </button>
         </li>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Borrar {abono.name} de favoritos</DialogTitle>

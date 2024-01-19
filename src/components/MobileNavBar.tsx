@@ -60,15 +60,13 @@ export default function MobileNavBar() {
           value="Mapa"
           icon={<MapIcon />}
         />
-        {Capacitor.getPlatform() !== "web" ? (
-          <BottomNavigationAction
-            component={Link}
-            to={"/abono"}
-            label="Abono"
-            value="Abono"
-            icon={<CreditCardIcon />}
-          />
-        ) : null}
+        <BottomNavigationAction
+          component={Link}
+          to={"/abono"}
+          label="Abono"
+          value="Abono"
+          icon={<CreditCardIcon />}
+        />
         <BottomNavigationAction
           component={Link}
           to={"/settings"}

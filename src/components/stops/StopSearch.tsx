@@ -9,6 +9,7 @@ import {getAllStops} from "./api/Stops";
 import {getIconByCodMode, getStopTimesLinkByMode} from "./api/Utils";
 import {useParams} from "react-router-dom";
 import AllSubscriptions from "./StopsSubscriptions";
+
 export default function BusStopSearch({
   title,
   codMode,

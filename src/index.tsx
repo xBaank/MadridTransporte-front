@@ -14,7 +14,7 @@ import {blue, grey} from "@mui/material/colors";
 import DefaultElement from "./components/DefaultElement";
 import BusStopMap from "./components/stops/StopMap";
 import Info from "./components/info/Info";
-import AbonoSearch from "./components/abono/AbonoSearch";
+import AbonoNFC from "./components/abono/AbonoNFC";
 import {trainCodMode} from "./components/stops/api/Utils";
 import {uniqueId} from "lodash";
 import TrainStopTimesComponent from "./components/stops/train/TrainStopsTimes";
@@ -25,6 +25,8 @@ import LinesLocationsMap from "./components/stops/lines/LinesLocationsMap";
 import {showStatusBar} from "./statusbar";
 import {setupBackButton} from "./backButtons";
 import {useSavedTheme} from "./hooks/hooks";
+import AbonoSearch from "./components/abono/AbonoSearch";
+import AbonoInfo from "./components/abono/AbonoInfo";
 
 export const ColorModeContext = React.createContext({
   toggleColorMode: () => {},
@@ -150,8 +152,16 @@ export const router = createBrowserRouter([
     element: <DefaultElement element={<Settings />} />,
   },
   {
-    path: "abono",
+    path: "/abono",
     element: <DefaultElement element={<AbonoSearch />} />,
+  },
+  {
+    path: "/abono/:code",
+    element: <DefaultElement element={<AbonoInfo />} />,
+  },
+  {
+    path: "/abonoNFC",
+    element: <DefaultElement element={<AbonoNFC />} />,
   },
   {
     path: "*",
