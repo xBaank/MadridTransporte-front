@@ -200,17 +200,17 @@ export default function BusStopsTimes() {
       <li
         key={`${arrive.line} ${arrive.destination}`}
         className="p-2 border-b-blue-900 border-blue-900">
-        <div className="flex items-center flex-wrap justify-between">
-          <div className="flex-col min-w-0 max-w-[80%]">
+        <div className="flex items-center justify-between w-full">
+          <div className="flex-col flex-wrap  min-w-0 max-w-full">
             <div className="flex">
               <Line info={arrive} />
               <div
-                className={`${textColor} gap-5 flex overflow-scroll no-scrollbar w-64`}>
+                className={`${textColor} gap-5 flex grow-0 overflow-scroll no-scrollbar`}>
                 {arrivesFormatted}
               </div>
             </div>
             <div className="flex-col text-xs font-bold min-w-0 overflow-hidden pt-1 w-full items-center mx-auto">
-              <pre className="overflow-scroll no-scrollbar">
+              <pre className="overflow-scroll no-scrollbar ">
                 {` ${arrive.destination} `}
               </pre>
               {arrive.anden !== null ? (
@@ -221,7 +221,7 @@ export default function BusStopsTimes() {
             </div>
           </div>
 
-          <div className="ml-auto flex gap-3 p-1 mb-auto max-w-[20%]">
+          <div className="ml-auto flex gap-3 p-1 mb-auto ">
             <StopTimesSubscribe
               stopId={code!}
               type={type!}
