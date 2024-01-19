@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.5
+
+- Fix abono favorite save.
+
 ## 1.7.4
 
 - Update stops.

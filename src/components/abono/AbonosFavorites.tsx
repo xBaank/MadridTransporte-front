@@ -65,10 +65,10 @@ export default function AbonoFavorites() {
             <div className="flex-shrink-0">
               <img className="w-8 h-5 " src={AbonoIcon} alt="Logo" />
             </div>
-            <div className="flex-1 items-center min-w-0 overflow-clip">
-              <div className="text-sm truncate ">{abono.name}</div>
+            <div className="flex-1 items-center">
+              <div className="text-sm ">{abono.name}</div>
             </div>
-            <div className="flex font-bold min-w-0">
+            <div className="flex font-bold min-w-0 overflow-clip">
               <div className="text-sm truncate">{abono.ttpNumber}</div>
             </div>
           </Link>
