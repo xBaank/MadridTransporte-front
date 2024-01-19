@@ -2,7 +2,7 @@
 
 ## 1.7.5
 
-- Fix abono favorite save.
+- Fix abono favorite name.
 
 ## 1.7.4
 
