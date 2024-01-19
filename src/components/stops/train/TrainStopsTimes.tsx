@@ -36,9 +36,9 @@ export default function TrainStopTimesComponent() {
   const borderColor =
     theme.palette.mode === "dark" ? "border-white" : "border-black";
 
-  useEffect(() => {
+  /*   useEffect(() => {
     interstitial();
-  }, []);
+  }, []); */
 
   useEffect(() => {
     if (origin === null || destination === null) {
