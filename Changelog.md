@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.2
+
+- Improve UI.
+
 ## 1.7.1
 
 - Fix notification bug.
