@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.3
+
+- Reimplemented abono NFC.
+
 ## 1.7.2
 
 - Improve UI.
