@@ -27,6 +27,7 @@ import {setupBackButton} from "./backButtons";
 import {useSavedTheme} from "./hooks/hooks";
 import AbonoSearch from "./components/abono/AbonoSearch";
 import AbonoInfo from "./components/abono/AbonoInfo";
+import {requestPermission} from "./notifications";
 
 export const ColorModeContext = React.createContext({
   toggleColorMode: () => {},
@@ -183,17 +184,3 @@ const throwEx = () => {
 
 const root = ReactDOM.createRoot(document.getElementById("root") ?? throwEx());
 root.render(<App />);
-
-function requestPermission() {
-  if (!("Notification" in window)) return;
-  if (Notification.permission === "granted") return;
-
-  console.log("Requesting permission...");
-  void Notification?.requestPermission()?.then(permission => {
-    if (permission === "granted") {
-      console.log("Notification permission granted.");
-    } else {
-      console.log("Unable to get permission to notify.");
-    }
-  });
-}
