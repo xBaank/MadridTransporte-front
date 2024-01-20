@@ -29,7 +29,8 @@ export async function requestPermissionMobile() {
   }
 
   if (permStatus.receive !== "granted") {
-    throw new Error("User denied permissions!");
+    console.error("Notifications permission not granted");
+    return;
   }
 
   await PushNotifications.register();
