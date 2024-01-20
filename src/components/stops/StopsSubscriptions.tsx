@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useContext, useEffect, useState} from "react";
 import {
   type Subscription,
   type Subscriptions,
@@ -6,7 +6,6 @@ import {
 } from "./api/Types";
 import {getAllSubscriptions, unsubscribe} from "./api/Subscriptions";
 import {fold} from "fp-ts/lib/Either";
-import useToken from "./UseToken";
 import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
 import NotificationsOffIcon from "@mui/icons-material/NotificationsOff";
 import {
@@ -17,13 +16,14 @@ import {
 import ErrorMessage from "../Error";
 import Line from "../Line";
 import {Link} from "react-router-dom";
+import {TokenContext} from "../../notifications";
 
 export default function AllSubscriptions() {
   const [subscriptions, setSubscriptions] = useState<Subscriptions[] | null>(
     [],
   );
   const [error, setError] = useState<string>();
-  const token = useToken();
+  const token = useContext(TokenContext);
 
   const reloadSubscriptions = useCallback(() => {
     if (token === undefined) return;

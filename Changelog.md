@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.7
+
+- Fix notification bug that caused subscriptions to not load.
+
 ## 1.7.6
 
 - Add notifications on android.

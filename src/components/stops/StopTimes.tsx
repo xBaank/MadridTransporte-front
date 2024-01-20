@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useContext, useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {
   type Alert,
@@ -32,7 +32,6 @@ import {
 } from "../../hooks/hooks";
 import StopTimesSubscribe from "./StopTimesSubscribe";
 import {getSubscription} from "./api/Subscriptions";
-import useToken from "./UseToken";
 import ErrorMessage from "../Error";
 import Line from "../Line";
 import RenderAffected from "./Affected";
@@ -40,6 +39,7 @@ import StaledMessage from "../Staled";
 import LinesLocationsButton from "./lines/LinesLocationsButton";
 import {interstitial} from "../../admob";
 import TrainTimesDestIcon from "./train/TrainTimesDestinationIcon";
+import {TokenContext} from "../../notifications";
 
 export default function BusStopsTimes() {
   const interval = 1000 * 30;
@@ -48,7 +48,7 @@ export default function BusStopsTimes() {
   const [stop, setStop] = useState<Stop>();
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [subscription, setSubscription] = useState<Subscriptions | null>(null);
-  const token = useToken();
+  const token = useContext(TokenContext);
   const [error, setError] = useState<string>();
   const [errorOnInterval, setErrorOnInterval] = useState<boolean>(false);
   const textColor = useColor();

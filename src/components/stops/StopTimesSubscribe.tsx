@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {
   type LineDestination,
   type Subscriptions,
@@ -7,9 +7,9 @@ import {
 import {fold} from "fp-ts/lib/Either";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import NotificationsOffIcon from "@mui/icons-material/NotificationsOff";
-import useToken from "./UseToken";
 import {subscribe, unsubscribe} from "./api/Subscriptions";
 import {getCodModeByType} from "./api/Utils";
+import {TokenContext} from "../../notifications";
 
 export default function StopTimesSubscribe({
   stopId,
@@ -22,7 +22,7 @@ export default function StopTimesSubscribe({
   subscription: Subscriptions | null;
   line: LineDestination;
 }) {
-  const token = useToken();
+  const token = useContext(TokenContext);
   const [isSubscribed, setIsSubscribed] = useState(false);
 
   useEffect(() => {

@@ -27,7 +27,7 @@ import {setupBackButton} from "./backButtons";
 import {useSavedTheme} from "./hooks/hooks";
 import AbonoSearch from "./components/abono/AbonoSearch";
 import AbonoInfo from "./components/abono/AbonoInfo";
-import {requestPermission} from "./notifications";
+import {TokenContext, useToken} from "./notifications";
 
 export const ColorModeContext = React.createContext({
   toggleColorMode: () => {},
@@ -88,14 +88,17 @@ export default function App() {
   );
 
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+  const token = useToken();
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <RouterProvider router={router} />
-      </ThemeProvider>
-    </ColorModeContext.Provider>
+    <TokenContext.Provider value={token}>
+      <ColorModeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <RouterProvider router={router} />
+        </ThemeProvider>
+      </ColorModeContext.Provider>
+    </TokenContext.Provider>
   );
 }
 
@@ -174,7 +177,6 @@ export const router = createBrowserRouter([
   },
 ]);
 
-requestPermission();
 showStatusBar();
 setupBackButton();
 
