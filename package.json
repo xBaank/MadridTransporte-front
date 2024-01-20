@@ -1,7 +1,7 @@
 {
   "name": "madrid-transporte",
   "homepage": "https://www.madridtransporte.com",
-  "version": "1.7.5",
+  "version": "1.7.6",
   "private": true,
   "dependencies": {
     "@capacitor-community/admob": "^5.3.1",
@@ -14,6 +14,7 @@
     "@capacitor/filesystem": "^5.2.0",
     "@capacitor/geolocation": "^5.0.6",
     "@capacitor/ios": "^5.6.0",
+    "@capacitor/push-notifications": "^5.1.0",
     "@capacitor/status-bar": "^5.0.6",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",

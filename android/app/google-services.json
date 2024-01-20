@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "79652901486",
+    "project_id": "bustracker-dev",
+    "storage_bucket": "bustracker-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:79652901486:android:65f75c530accd378614c7f",
+        "android_client_info": {
+          "package_name": "com.madridtransporte"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "79652901486-15ns82ubr9v5n7k4tfc8scmsn2f1g7ug.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwLXua4DCjrVh3JLB1cl_GtllOAJIaXGY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "79652901486-15ns82ubr9v5n7k4tfc8scmsn2f1g7ug.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
