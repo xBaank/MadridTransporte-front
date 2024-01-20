@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.6
+
+- Add notifications on android.
+
 ## 1.7.5
 
 - Fix abono favorite name.
