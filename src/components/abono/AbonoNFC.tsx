@@ -140,14 +140,11 @@ export default function AbonoNFC() {
 
   return (
     <div
-      className={`max-w-xs w-full px-6 py-4 my-10 mx-auto border border-gray-200 rounded-lg shadow ${bgColor} dark:border-gray-700`}>
+      className={`max-w-sm w-[90%] px-6 py-4 my-10 mx-auto border border-gray-200 rounded-lg shadow ${bgColor} dark:border-gray-700`}>
       <CreditCard fontSize="large" />
-      <a href="#">
-        <h5
-          className={`mb-2 text-2xl font-semibold tracking-tight ${textColor}`}>
-          Tarjeta Transporte
-        </h5>
-      </a>
+      <h5 className={`mb-2 text-2xl font-semibold tracking-tight ${textColor}`}>
+        Tarjeta Transporte
+      </h5>
       <div className={`border-t ${borderColor} pt-4`}>
         {loading ? (
           <div className="flex ">
