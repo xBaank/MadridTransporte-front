@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import {TTPInfo} from "./api/Abono";
 import LoadingSpinner from "../LoadingSpinner";
 import ErrorMessage from "../Error";
-import {type TtpResponse} from "./api/Types";
+import {type TitTemp, type TitMV, type TtpResponse} from "./api/Types";
 
 export default function AbonoNFC() {
   const bgColor = useBackgroundColor();
@@ -43,13 +43,81 @@ export default function AbonoNFC() {
     return () => window.nfc!.removeTagDiscoveredListener(callback);
   }, []);
 
+  function RenderTitMV({tit}: {tit: TitMV | null}) {
+    return tit === null ? null : (
+      <>
+        <div className={`border-b ${borderColor} mt-3 pb-2`}>
+          <h2 className=" text-lg font-semibold mb-1">Abono {tit.name}</h2>
+          <div className=" text-sm">
+            <div>Zona: {tit.validityZones}</div>
+            <div>
+              Fecha recarga:{" "}
+              {new Date(tit.purchaseChargeDate).toLocaleDateString(
+                "es-ES",
+                options,
+              )}
+            </div>
+            <div>Viajes restantes: {tit.trips}</div>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  function RenderTitTemp({tit}: {tit: TitTemp | null}) {
+    return tit === null ? null : (
+      <>
+        <div className={`border-b ${borderColor} mt-3 pb-2`}>
+          <h2 className=" text-lg font-semibold mb-1">Abono {tit.name}</h2>
+          <div className=" text-sm">
+            <div>Zona: {tit.validityZones}</div>
+            <div>
+              Fecha recarga:{" "}
+              {new Date(tit.initChargeDate).toLocaleDateString(
+                "es-ES",
+                options,
+              )}
+            </div>
+            <div>
+              Fecha expiración:{" "}
+              {new Date(tit.finishChargeDate).toLocaleDateString(
+                "es-ES",
+                options,
+              )}
+            </div>
+            {tit.finalDateValCharge !== null ? (
+              <div>
+                Fecha limite primer uso:{" "}
+                {new Date(tit.finalDateValCharge).toLocaleDateString(
+                  "es-ES",
+                  options,
+                )}
+              </div>
+            ) : (
+              <div>
+                Fecha primer uso:{" "}
+                {new Date(tit.firstDateValCharge).toLocaleDateString(
+                  "es-ES",
+                  options,
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </>
+    );
+  }
+
   function RenderErrorOrInfo() {
     if (error !== undefined) return <ErrorMessage message={error} />;
     return (
       <p className={`mb-3 font-normal ${textColor}`}>
         {data !== undefined ? (
           <>
-            <p>Numero tarjeta: {data.balance.cardNumber}</p>
+            <p>
+              Numero tarjeta:{" "}
+              {data.balance.cardNumber ?? data.balance.desfireSerial}
+            </p>
             <p>Alta: {data.balance.initAppDate.toString()}</p>
             <p>Vencimiento: {data.balance.finishAppDate.toString()}</p>
             <p>
@@ -58,42 +126,10 @@ export default function AbonoNFC() {
             </p>
             <div className={`border-b ${borderColor} mt-3`}></div>
             <br></br>
-
-            <div className={`border-b ${borderColor} mt-3 pb-2`}>
-              <h2 className=" text-lg font-semibold mb-1">
-                Abono {data.balance.titTemp.name}
-              </h2>
-              <div className=" text-sm">
-                <div>Zona: {data.balance.titTemp.validityZones}</div>
-                <div>
-                  Fecha recarga:{" "}
-                  {new Date(
-                    data.balance.titTemp.initChargeDate,
-                  ).toLocaleDateString("es-ES", options)}
-                </div>
-                <div>
-                  Fecha expiración:{" "}
-                  {new Date(
-                    data.balance.titTemp.finishChargeDate,
-                  ).toLocaleDateString("es-ES", options)}
-                </div>
-                {data.balance.titTemp.firstDateValCharge !== null ? (
-                  <div>
-                    Fecha limite primer uso:{" "}
-                    {new Date(
-                      data.balance.titTemp.firstDateValCharge,
-                    ).toLocaleDateString("es-ES", options)}
-                  </div>
-                ) : (
-                  <div>
-                    Fecha primer uso:{" "}
-                    {new Date(
-                      data.balance.titTemp.firstDateValCharge,
-                    ).toLocaleDateString("es-ES", options)}
-                  </div>
-                )}
-              </div>
-            </div>
+            <RenderTitTemp tit={data.balance.titTemp} />
+            <RenderTitMV tit={data.balance.titMV1} />
+            <RenderTitMV tit={data.balance.titMV2} />
+            <RenderTitMV tit={data.balance.titMV3} />
           </>
         ) : (
           "Acerca tu tarjeta transporte al telefono para consultar los datos"

@@ -52,10 +52,10 @@ export type Balance = {
   prepersoId: string;
   persoId: string;
   cardNumber: string;
-  titTemp: TitTemp;
-  titMV3: null;
-  titMV1: null;
-  titMV2: null;
+  titTemp: TitTemp | null;
+  titMV3: TitMV | null;
+  titMV1: TitMV | null;
+  titMV2: TitMV | null;
 };
 
 export type Name = "Joven" | "Normal";
@@ -65,6 +65,26 @@ export type Profile = {
   profileName: Name;
   initProfileDate: Date;
   finishProfileDate: Date;
+};
+
+export type TitMV = {
+  name: string;
+  titleId: string;
+  chargeState: string;
+  profileName: string;
+  profileId: string;
+  blocked: boolean;
+  canBlock: boolean;
+  validityZones: string;
+  fedtIndex: number;
+  purchaseChargeDate: Date;
+  operators: string[];
+  lastValidationDate: Date;
+  lastValidationPoint: string;
+  lastUserQtyInsp: number;
+  trips: string;
+  suplementInfo: null;
+  fedtindex: number;
 };
 
 export type TitTemp = {
@@ -85,7 +105,7 @@ export type TitTemp = {
   initChargeDate: Date;
   finishChargeDate: Date;
   firstDateValCharge: Date;
-  finalDateValCharge: null;
+  finalDateValCharge: Date | null;
   purchaseRechargeDate: null;
   initRechargeDate: null;
   finishRechargeDate: null;
