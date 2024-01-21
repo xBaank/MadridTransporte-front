@@ -4,6 +4,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {type FavoriteAbono} from "./api/Types";
 import {
   AbonoIcon,
+  formatTTPNumber,
   getAbonoRoute,
   getFavorites,
   removeFromFavorites,
@@ -69,7 +70,9 @@ export default function AbonoFavorites() {
               <div className="text-sm ">{abono.name}</div>
             </div>
             <div className="flex font-bold min-w-0 overflow-clip">
-              <div className="text-sm truncate">{abono.ttpNumber}</div>
+              <div className="text-sm truncate">
+                {formatTTPNumber(abono.ttpNumber)}
+              </div>
             </div>
           </Link>
           <button className="ml-auto mr-2" onClick={handleClickOpen}>

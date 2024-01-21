@@ -1,16 +1,22 @@
-import {Search} from "@mui/icons-material";
+import {Search, CreditCard} from "@mui/icons-material";
 import {Button, InputAdornment, TextField} from "@mui/material";
-import React from "react";
+import React, {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import AbonoFavorites from "./AbonosFavorites";
-import {getAbonoRoute} from "./api/Utils";
+import {formatTTPNumber, getAbonoRoute} from "./api/Utils";
 
 export default function AbonoSearch() {
   const navigate = useNavigate();
+  const [formattedValue, setFormattedValue] = useState<string | undefined>("");
   const [error, setError] = React.useState<string | null>(null);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const abonoCode = e.currentTarget.AbonoCode.value;
+
+    const abonoCode = (
+      e.currentTarget.AbonoCode.value as string | undefined
+    )?.replace(/\s/g, "");
+
     if (abonoCode === undefined) {
       setError("Introduzca un codigo");
       return;
@@ -19,12 +25,23 @@ export default function AbonoSearch() {
       setError("El codigo debe tener al menos 22 digitos");
       return;
     }
-    if (isNaN(abonoCode)) {
+    if (isNaN(abonoCode as unknown as number)) {
       setError("El codigo solo puede contener numeros");
       return;
     }
     navigate(getAbonoRoute(abonoCode));
   };
+
+  const handleChange = (event: any) => {
+    const inputValue = event.target.value;
+    if (inputValue === "") {
+      setFormattedValue(undefined);
+      return;
+    }
+    const formattedInput = formatTTPNumber(inputValue);
+    setFormattedValue(formattedInput);
+  };
+
   return (
     <div>
       <div className="grid grid-cols-1 p-5 max-w-md mx-auto justify-center">
@@ -33,9 +50,17 @@ export default function AbonoSearch() {
           <div className="mb-4 grid">
             <TextField
               id="StopCode"
+              value={formattedValue}
+              onChange={handleChange}
               name="AbonoCode"
               label="Introduzca el numero completo"
+              placeholder="001 000 000 00X XXXXXXXXXX"
               InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <CreditCard color="primary" />
+                  </InputAdornment>
+                ),
                 endAdornment: (
                   <InputAdornment position="end">
                     <Search />

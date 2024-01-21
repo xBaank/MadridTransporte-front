@@ -31,3 +31,20 @@ export function removeFromFavorites({ttpNumber}: {ttpNumber: string}) {
 export function getAbonoRoute(ttpNumber: string) {
   return `/abono/${ttpNumber}`;
 }
+
+export const formatTTPNumber = (input: string) => {
+  // Remove non-digit characters
+  const digitsOnly = input.replace(/\D/g, "");
+
+  // Split the digits into groups
+  const groups = [
+    digitsOnly.slice(0, 3),
+    digitsOnly.slice(3, 6),
+    digitsOnly.slice(6, 9),
+    digitsOnly.slice(9, 12),
+    digitsOnly.slice(12, 22), // The last group with XXXXXXXXXX
+  ];
+
+  // Join the groups with spaces
+  return groups.join(" ").trim();
+};
