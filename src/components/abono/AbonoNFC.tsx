@@ -1,17 +1,24 @@
 import {CreditCard} from "@mui/icons-material";
 import {useBackgroundColor, useBorderColor, useColor} from "../../hooks/hooks";
 import {useEffect, useState} from "react";
-import {TTPInfo, titleCount} from "./api/Abono";
+import {TTPInfo} from "./api/Abono";
 import LoadingSpinner from "../LoadingSpinner";
 import ErrorMessage from "../Error";
+import {type TtpResponse} from "./api/Types";
 
 export default function AbonoNFC() {
   const bgColor = useBackgroundColor();
   const textColor = useColor();
   const borderColor = useBorderColor();
-  const [data, setData] = useState<Map<string, string>>();
+  const [data, setData] = useState<TtpResponse>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>();
+
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
 
   useEffect(() => {
     if (window.nfc === undefined) return;
@@ -42,37 +49,51 @@ export default function AbonoNFC() {
       <p className={`mb-3 font-normal ${textColor}`}>
         {data !== undefined ? (
           <>
-            <p>Numero tarjeta: {data?.get("NUM")}</p>
-            <p>Lote: {data?.get("LOTE")}</p>
-            <p>Alta: {data?.get("FIV")}</p>
-            <p>Vencimiento: {data.get("FFV")}</p>
+            <p>Numero tarjeta: {data.balance.cardNumber}</p>
+            <p>Alta: {data.balance.initAppDate.toString()}</p>
+            <p>Vencimiento: {data.balance.finishAppDate.toString()}</p>
+            <p>
+              Esta tarjeta{" "}
+              {data.balance.blockedApp ? "esta bloqueada" : "no esta bloqueada"}
+            </p>
             <div className={`border-b ${borderColor} mt-3`}></div>
             <br></br>
-            {titleCount(data).map(i => (
-              <>
-                <div className={`border-b ${borderColor} mt-3 pb-2`}>
-                  <h2 className=" text-lg font-semibold mb-1">
-                    Abono {data.get(`T${i}N`)}
-                  </h2>
-                  <h2 className="font-semibold mb-1">{data.get(`T${i}P`)}</h2>
-                  {data.get(`T${i}VCFI`) != null ? (
-                    <p>Fecha de compra: {data.get(`T${i}VCFI`)}</p>
-                  ) : (
-                    <></>
-                  )}
-                  {data.get(`T${i}VCFF`) != null ? (
-                    <p>Último día válido: {data.get(`T${i}VCFF`)}</p>
-                  ) : (
-                    <></>
-                  )}
-                  {data.get(`T${i}VC`) != null ? (
-                    <p>Cargas : {data.get(`T${i}VC`)}</p>
-                  ) : (
-                    <></>
-                  )}
+
+            <div className={`border-b ${borderColor} mt-3 pb-2`}>
+              <h2 className=" text-lg font-semibold mb-1">
+                Abono {data.balance.titTemp.name}
+              </h2>
+              <div className=" text-sm">
+                <div>Zona: {data.balance.titTemp.validityZones}</div>
+                <div>
+                  Fecha recarga:{" "}
+                  {new Date(
+                    data.balance.titTemp.initChargeDate,
+                  ).toLocaleDateString("es-ES", options)}
                 </div>
-              </>
-            ))}
+                <div>
+                  Fecha expiración:{" "}
+                  {new Date(
+                    data.balance.titTemp.finishChargeDate,
+                  ).toLocaleDateString("es-ES", options)}
+                </div>
+                {data.balance.titTemp.firstDateValCharge !== null ? (
+                  <div>
+                    Fecha limite primer uso:{" "}
+                    {new Date(
+                      data.balance.titTemp.firstDateValCharge,
+                    ).toLocaleDateString("es-ES", options)}
+                  </div>
+                ) : (
+                  <div>
+                    Fecha primer uso:{" "}
+                    {new Date(
+                      data.balance.titTemp.firstDateValCharge,
+                    ).toLocaleDateString("es-ES", options)}
+                  </div>
+                )}
+              </div>
+            </div>
           </>
         ) : (
           "Acerca tu tarjeta transporte al telefono para consultar los datos"

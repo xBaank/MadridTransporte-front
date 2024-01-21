@@ -1,13 +1,9 @@
-import {
-  CapacitorCookies,
-  CapacitorHttp,
-  type HttpResponse,
-} from "@capacitor/core";
+import {CapacitorCookies, CapacitorHttp} from "@capacitor/core";
 import {left, right} from "fp-ts/lib/Either";
 import {apiUrl} from "../../Urls";
-import {type AbonoType} from "./Types";
+import {type TtpResponse, type AbonoType} from "./Types";
 
-const middlelat = "https://lat1p.crtm.es:39480/LAT2";
+const middlelat = "https://latsecu.comunidad.madrid";
 const BadRequest = "No se pudo obtener informacion";
 
 export async function GetAbono(id: string) {
@@ -18,127 +14,81 @@ export async function GetAbono(id: string) {
   return right(data);
 }
 
-// CODE FROM https://github.com/CRTM-NFC/Mifare-Desfire and https://www.contratos-publicos.comunidad.madrid/medias/pliego-prescripciones-tecnicas-1056/download
+// CODE FROM https://github.com/xBaank/bus-tracker-front/issues/46
 export async function TTPInfo() {
   if (window.nfc === undefined) return;
 
-  const pattern = /STATUS=(\w+)\nCMD=(\w+)/;
-
   await CapacitorCookies.clearAllCookies();
 
-  const comandoResponse = await CapacitorHttp.get({
-    url: `${middlelat}/GeneraComando?tdSalePoint=CD0000000000`,
-    headers: {},
-  });
-  const cookie = comandoResponse.headers["Set-Cookie"];
-
-  await CapacitorCookies.setCookie({
-    url: "https://lat1p.crtm.es:39480",
-    key: "Cookie",
-    value: cookie,
-  });
-
-  await CapacitorCookies.setCookie({
-    url: "https://lat1p.crtm.es:39480",
-    key: "Cookie2",
-    value: "$version=1",
+  // This is just to get the cookie
+  const comandoResponse = await CapacitorHttp.post({
+    url: `${middlelat}/middlelat/midd/device/init/conn`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: JSON.stringify({
+      model: "iPhone",
+      osName: "iOS",
+      osVersion: "15.4.1",
+      screenResolution: "375x667",
+      uuid: "1852fb2a-9cf0-42d6-8687-55099568f7e5",
+    }),
   });
 
-  const resultComando = comandoResponse.data as string;
-  let match = resultComando.match(pattern);
-  let responseAux: HttpResponse | undefined;
+  if (comandoResponse.status !== 200) return;
 
-  while (match != null && match[1] === "AF") {
-    const cmdBytes = match[2];
-    const cardResponse = window.util!.arrayBufferToHexString(
-      await window.nfc.transceive(cmdBytes),
-    );
+  const salePointResponse = await CapacitorHttp.post({
+    url: `${middlelat}/middlelat/device/front/CardReading`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: JSON.stringify({
+      titleList: "COMMON",
+      salePoint: "010201000005",
+      updateCard: true,
+      commandType: "WRAPPED",
+      opInspection: false,
+    }),
+  });
 
-    responseAux = await CapacitorHttp.get({
-      url: `${middlelat}/GeneraComando?respuesta=${cardResponse}`,
+  let responseData = salePointResponse.data as TtpResponse;
+
+  while (responseData != null && responseData.status.code === "0010") {
+    const rapdu: string[] = [];
+
+    for (let index = 0; index < responseData.capdu.length; index++) {
+      const cmdBytes = responseData.capdu[index];
+      const result = window
+        .util!.arrayBufferToHexString(await window.nfc.transceive(cmdBytes))
+        .toUpperCase();
+
+      rapdu[index] = result;
+    }
+
+    const requestData = {
+      titleList: "COMMON",
+      rapdu,
+      salePoint: "010201000005",
+      updateCard: true,
+      commandType: "WRAPPED",
+      opInspection: false,
+    };
+
+    const response = await CapacitorHttp.post({
+      url: `${middlelat}/middlelat/device/front/CardReading`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: JSON.stringify(requestData),
     });
 
-    match = (responseAux.data as string).match(pattern);
+    responseData = response.data as TtpResponse;
   }
 
   window.nfc.close();
 
-  if (responseAux === undefined) return;
+  if (responseData === undefined) return;
+  if (responseData.status.code !== "0000") return;
 
-  const matchApiResponse = /STATUS=(\w+)/;
-  const repuestaAuxMatch = (responseAux.data as string).match(matchApiResponse);
-
-  if (repuestaAuxMatch == null) return;
-  if (repuestaAuxMatch[1] !== "00") return;
-
-  const saldoResponse = await CapacitorHttp.get({
-    url: `${middlelat}/MuestraSaldo`,
-  });
-
-  return parseData(saldoResponse.data);
-}
-
-function parseData(input: string) {
-  const regex = /([^=]+)\s*=\s*([^;]+)/;
-  const resultMap = new Map<string, string>();
-
-  input.split("\n").forEach(i => {
-    const match = i.match(regex);
-    if (match == null) return;
-    resultMap.set(match[1], match[2]);
-  });
-
-  return resultMap;
-}
-
-function generateArrayWithLoop(number: number) {
-  const resultArray = [];
-
-  for (let i = 1; i <= number; i++) {
-    resultArray.push(i);
-  }
-
-  return resultArray;
-}
-
-export function profileCount(map: Map<string, string>) {
-  const extractNumber = (key: string) => {
-    const match = key.match(/\d+/);
-    return match != null ? parseInt(match[0], 10) : null;
-  };
-
-  // Find the max number in the keys with the pattern 'pxn'
-  let maxNumber = -Infinity;
-
-  for (const key of map.keys()) {
-    if (key.match(/p\d+n/i) != null) {
-      const currentNumber = extractNumber(key);
-      if (currentNumber !== null && currentNumber > maxNumber) {
-        maxNumber = currentNumber;
-      }
-    }
-  }
-
-  return generateArrayWithLoop(maxNumber);
-}
-
-export function titleCount(map: Map<string, string>) {
-  const extractNumber = (key: string) => {
-    const match = key.match(/\d+/);
-    return match != null ? parseInt(match[0], 10) : null;
-  };
-
-  // Find the max number in the keys with the pattern 'pxn'
-  let maxNumber = -Infinity;
-
-  for (const key of map.keys()) {
-    if (key.match(/t\d+n/i) != null) {
-      const currentNumber = extractNumber(key);
-      if (currentNumber !== null && currentNumber > maxNumber) {
-        maxNumber = currentNumber;
-      }
-    }
-  }
-
-  return generateArrayWithLoop(maxNumber);
+  return responseData;
 }
