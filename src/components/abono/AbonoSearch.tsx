@@ -17,8 +17,6 @@ export default function AbonoSearch() {
       e.currentTarget.AbonoCode.value as string | undefined
     )?.replace(/\s/g, "");
 
-    console.log(abonoCode);
-
     if (abonoCode === undefined) {
       setError("Introduzca un codigo");
       return;
@@ -36,7 +34,6 @@ export default function AbonoSearch() {
 
   const handleChange = (event: any) => {
     const inputValue = event.target.value;
-    console.log(inputValue);
     if (inputValue === "") {
       setFormattedValue(undefined);
       return;
