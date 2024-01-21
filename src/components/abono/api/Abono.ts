@@ -2,6 +2,7 @@ import {CapacitorCookies, CapacitorHttp} from "@capacitor/core";
 import {left, right} from "fp-ts/lib/Either";
 import {apiUrl} from "../../Urls";
 import {type TtpResponse, type AbonoType} from "./Types";
+import {v4 as uuidv4} from "uuid";
 
 const middlelat = "https://latsecu.comunidad.madrid";
 const BadRequest = "No se pudo obtener informacion";
@@ -28,7 +29,7 @@ export async function TTPInfo() {
     },
     data: JSON.stringify({
       osVersion: "12",
-      uuid: "74857589-08e6-41ce-8266-1aa9bcc89024",
+      uuid: uuidv4(),
       model: "M2101K6G",
       screenResolution: "1080x2177",
       osName: "S",
