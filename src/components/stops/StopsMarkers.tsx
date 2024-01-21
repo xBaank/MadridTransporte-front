@@ -32,7 +32,7 @@ export function StopsMarkers({
       <Marker
         eventHandlers={{
           click: () => {
-            map.flyTo({lat: stop.stopLat, lng: stop.stopLon}, 18);
+            map.flyTo({lat: stop.stopLat, lng: stop.stopLon}, map.getZoom());
           },
         }}
         key={`${stop.codMode}_${stop.stopCode}`}
