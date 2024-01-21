@@ -27,11 +27,11 @@ export async function TTPInfo() {
       "Content-Type": "application/json",
     },
     data: JSON.stringify({
-      model: "iPhone",
-      osName: "iOS",
-      osVersion: "15.4.1",
-      screenResolution: "375x667",
-      uuid: "1852fb2a-9cf0-42d6-8687-55099568f7e5",
+      osVersion: "12",
+      uuid: "74857589-08e6-41ce-8266-1aa9bcc89024",
+      model: "M2101K6G",
+      screenResolution: "1080x2177",
+      osName: "S",
     }),
   });
 
