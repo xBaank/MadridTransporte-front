@@ -9,6 +9,7 @@ import {getAllStops} from "./api/Stops";
 import {getIconByCodMode, getStopTimesLinkByMode} from "./api/Utils";
 import {useParams} from "react-router-dom";
 import AllSubscriptions from "./StopsSubscriptions";
+import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
 
 export default function BusStopSearch({
   title,
@@ -78,9 +79,15 @@ export default function BusStopSearch({
             fullWidth
             id="StopCode"
             label="Codigo o nombre de la parada"
+            placeholder="Por ejemplo: Atocha"
             onChange={search}
             key={code}
             InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <DirectionsBusIcon color="primary" />
+                </InputAdornment>
+              ),
               endAdornment: (
                 <InputAdornment position="end">
                   <Search />

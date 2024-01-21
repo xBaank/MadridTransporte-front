@@ -6,10 +6,12 @@ import {v4 as uuidv4} from "uuid";
 
 const middlelat = "https://latsecu.comunidad.madrid";
 const BadRequest = "No se pudo obtener informacion";
+const NotFound = "No existe el abono";
 
 export async function GetAbono(id: string) {
   const response = await fetch(`${apiUrl}/abono/${id}`);
   if (response.status === 400) return left(BadRequest);
+  if (response.status === 404) return left(NotFound);
   if (!response.ok) return left((await response.json()).message);
   const data = (await response.json()) as AbonoType;
   return right(data);

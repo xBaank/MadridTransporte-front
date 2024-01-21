@@ -4,7 +4,12 @@ import {GetAbono} from "./api/Abono";
 import {fold} from "fp-ts/lib/Either";
 import {type AbonoType} from "./api/Types";
 import {useTheme} from "@mui/material";
-import {addToFavorites, getFavorites, removeFromFavorites} from "./api/Utils";
+import {
+  addToFavorites,
+  formatTTPNumber,
+  getFavorites,
+  removeFromFavorites,
+} from "./api/Utils";
 import FavoriteSave from "../favorites/FavoriteSave";
 import LoadingSpinner from "../LoadingSpinner";
 import ErrorMessage from "../Error";
@@ -14,7 +19,7 @@ import {useBackgroundColor, useColor} from "../../hooks/hooks";
 export default function AbonoInfo() {
   const {code} = useParams<{code: string}>();
   const [abono, setAbono] = React.useState<AbonoType>();
-  const [error, setError] = React.useState<string | null>(null);
+  const [error, setError] = React.useState<string>();
   const theme = useTheme();
   const bgColor = useBackgroundColor();
   const textColor = useColor();
@@ -30,7 +35,7 @@ export default function AbonoInfo() {
     });
   }, [code]);
 
-  if (error !== null) return <ErrorMessage message={error} />;
+  if (error !== undefined) return <ErrorMessage message={error} />;
   if (abono === undefined) return <LoadingSpinner />;
 
   const options: Intl.DateTimeFormatOptions = {
@@ -66,7 +71,7 @@ export default function AbonoInfo() {
       </h5>
       <div className={`flex items-baseline ${textColor}`}>
         <div className="font-bold text-xl mb-2 max-md:text-base overflow-scroll">
-          {abono.ttpNumber}
+          {formatTTPNumber(abono.ttpNumber)}
         </div>
       </div>
       <ul className={`${textColor}`}>
