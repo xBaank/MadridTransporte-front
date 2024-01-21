@@ -54,7 +54,7 @@ export default function AbonoSearch() {
               onChange={handleChange}
               name="AbonoCode"
               label="Introduzca el numero completo"
-              placeholder="001 000 000 001 XXXXXXXXXX"
+              placeholder="001 000 000 00X XXXXXXXXXX"
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
