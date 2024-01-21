@@ -20,7 +20,7 @@ export async function GetAbono(id: string) {
 
 // CODE FROM https://github.com/CRTM-NFC/Mifare-Desfire and https://www.contratos-publicos.comunidad.madrid/medias/pliego-prescripciones-tecnicas-1056/download
 export async function TTPInfo() {
-  const realWindow = window as any;
+  if (window.nfc === undefined) return;
 
   const pattern = /STATUS=(\w+)\nCMD=(\w+)/;
 
@@ -50,8 +50,8 @@ export async function TTPInfo() {
 
   while (match != null && match[1] === "AF") {
     const cmdBytes = match[2];
-    const cardResponse = realWindow.util.arrayBufferToHexString(
-      await realWindow.nfc.transceive(cmdBytes),
+    const cardResponse = window.util!.arrayBufferToHexString(
+      await window.nfc.transceive(cmdBytes),
     );
 
     responseAux = await CapacitorHttp.get({
@@ -61,7 +61,7 @@ export async function TTPInfo() {
     match = (responseAux.data as string).match(pattern);
   }
 
-  realWindow.nfc.close();
+  window.nfc.close();
 
   if (responseAux === undefined) return;
 

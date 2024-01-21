@@ -14,11 +14,9 @@ export default function AbonoNFC() {
   const [error, setError] = useState<string>();
 
   useEffect(() => {
-    const realWindow = window as any;
-    if (realWindow.nfc === undefined) return;
-
+    if (window.nfc === undefined) return;
     const callback = (_nfcEvent: any) => {
-      realWindow.nfc.connect("android.nfc.tech.IsoDep").then(
+      window.nfc!.connect("android.nfc.tech.IsoDep").then(
         () => {
           setLoading(true);
           setError(undefined);
@@ -33,9 +31,9 @@ export default function AbonoNFC() {
       );
     };
 
-    realWindow.nfc.addTagDiscoveredListener(callback);
+    window.nfc.addTagDiscoveredListener(callback);
 
-    return () => realWindow.nfc.removeTagDiscoveredListener(callback);
+    return () => window.nfc!.removeTagDiscoveredListener(callback);
   }, []);
 
   function RenderErrorOrInfo() {

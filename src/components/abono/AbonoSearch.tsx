@@ -6,8 +6,6 @@ import AbonoFavorites from "./AbonosFavorites";
 import {getAbonoRoute} from "./api/Utils";
 
 export default function AbonoSearch() {
-  const realWindow = window as any;
-
   const navigate = useNavigate();
   const [error, setError] = React.useState<string | null>(null);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -49,7 +47,7 @@ export default function AbonoSearch() {
               <div className="text-red-500">{error}</div>
             ) : null}
           </div>
-          {realWindow.nfc === undefined ? null : (
+          {window.nfc === undefined ? null : (
             <Button
               component={Link}
               fullWidth
