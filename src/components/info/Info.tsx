@@ -1,4 +1,10 @@
 import {Link} from "react-router-dom";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import MyLocationIcon from "@mui/icons-material/MyLocation";
+import ErrorIcon from "@mui/icons-material/Error";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function Info() {
   return (
@@ -37,12 +43,36 @@ export default function Info() {
           </Link>
         </p>
         <br />
-        <div className="font-bold text-xl mb-2">- Icons</div>
-        <a
-          href="https://www.flaticon.com/free-icons/bus-stop"
-          title="bus stop icons">
-          Bus stop icons created by mavadee - Flaticon
-        </a>
+        <div className="font-bold text-xl mb-2">- Iconos</div>
+        <ul className="mt-3">
+          <li>
+            <NotificationsIcon className="text-green-500" />
+            <span className="text-sm ml-1">
+              Notificacion con el tiempo restante cada minuto.
+            </span>
+          </li>
+          <li>
+            <MyLocationIcon className="text-blue-500" />
+            <span className="text-sm ml-1">
+              Ubicacion del autobus en el mapa.
+            </span>
+          </li>
+          <li>
+            <ErrorIcon className="text-red-500" />
+            <span className="text-sm ml-1">
+              Parada afectada por incidencia.
+            </span>
+          </li>
+          <li>
+            <FavoriteBorderIcon className="text-red-500" />
+            <span className="text-sm ml-1">Añadir a favoritos.</span>
+          </li>
+          <li>
+            <FavoriteIcon className="text-red-500" />
+            <DeleteIcon className="text-red-500" />
+            <span className="text-sm ml-1">Borrar de favoritos.</span>
+          </li>
+        </ul>
       </div>
     </div>
   );
