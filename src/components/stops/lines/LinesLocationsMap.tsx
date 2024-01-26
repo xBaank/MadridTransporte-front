@@ -162,7 +162,7 @@ export default function LinesLocationsMap() {
         setFlyToLocation(true);
         map?.locate();
       }}>
-      <Polyline fillColor="blue" weight={3} positions={allRoute} />
+      <Polyline fillColor="blue" weight={6} positions={allRoute} />
       <LineLocationsMarkers
         allRoute={allRoute}
         lineLocations={lineLocations.locations}
