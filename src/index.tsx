@@ -70,14 +70,6 @@ export const getDesignTokens = (mode: PaletteMode) => ({
 export default function App() {
   const [mode, setMode] = useSavedTheme();
 
-  /*   useEffect(() => {
-    initialize();
-  }, []);
-
-  useEffect(() => {
-    banner();
-  }, []); */
-
   const colorMode = React.useMemo(
     () => ({
       toggleColorMode: () => {

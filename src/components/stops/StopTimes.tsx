@@ -36,7 +36,6 @@ import Line from "../Line";
 import RenderAffected from "./Affected";
 import StaledMessage from "../Staled";
 import LinesLocationsButton from "./lines/LinesLocationsButton";
-import {interstitial} from "../../admob";
 import TrainTimesDestIcon from "./train/TrainTimesDestinationIcon";
 import {TokenContext} from "../../notifications";
 
@@ -52,10 +51,6 @@ export default function BusStopsTimes() {
   const [errorOnInterval, setErrorOnInterval] = useState<boolean>(false);
   const textColor = useColor();
   const borderColor = useBorderColor();
-
-  /*   useEffect(() => {
-    interstitial();
-  }, []); */
 
   const getTimes = useCallback(() => {
     if (type === undefined || code === undefined) return;
