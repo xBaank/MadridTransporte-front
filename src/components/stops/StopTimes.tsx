@@ -22,7 +22,6 @@ import {getAlertsByTransportType, getStop} from "./api/Stops";
 import FavoriteSave from "../favorites/FavoriteSave";
 import RenderAlerts from "./Alerts";
 import LoadingSpinner from "../LoadingSpinner";
-import TimeToReachStop from "./TimeToReachStop";
 import {
   useColor,
   getMinutesDisplay,
@@ -159,9 +158,6 @@ export default function BusStopsTimes() {
           <ul className="rounded w-full border-b mb-1">
             {RenderTimesOrEmpty(stopTimes)}
           </ul>
-          <TimeToReachStop
-            stopLocation={{latitude: stop.stopLat, longitude: stop.stopLon}}
-          />
           <RenderAlerts
             alerts={alerts}
             incidents={stopTimes?.incidents ?? []}
