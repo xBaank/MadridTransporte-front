@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.7.9
+
+- Added pull to refresh.
+- Removed time to reach stop.
+- UI improvements.
+
+
 ## 1.7.8
 
 - Add more information for abono.
