@@ -10,7 +10,6 @@ import {
 } from "./api/Types";
 import {getStopsTimes} from "./api/Times";
 import {fold} from "fp-ts/lib/Either";
-import {useInterval} from "usehooks-ts";
 import {
   addToFavorites,
   getCodModeByType,
@@ -38,9 +37,9 @@ import StaledMessage from "../Staled";
 import LinesLocationsButton from "./lines/LinesLocationsButton";
 import TrainTimesDestIcon from "./train/TrainTimesDestinationIcon";
 import {TokenContext} from "../../notifications";
+import PullToRefresh from "react-simple-pull-to-refresh";
 
 export default function BusStopsTimes() {
-  const interval = 1000 * 30;
   const {type, code} = useParams<{type: TransportType; code: string}>();
   const [stopTimes, setStopTimes] = useState<StopTimes>();
   const [stop, setStop] = useState<Stop>();
@@ -48,7 +47,6 @@ export default function BusStopsTimes() {
   const [subscription, setSubscription] = useState<Subscriptions | null>(null);
   const token = useContext(TokenContext);
   const [error, setError] = useState<string>();
-  const [errorOnInterval, setErrorOnInterval] = useState<boolean>(false);
   const textColor = useColor();
   const borderColor = useBorderColor();
 
@@ -95,16 +93,7 @@ export default function BusStopsTimes() {
     getAlerts();
   }, [type, code, getTimes, getAlerts, getStopInfo]);
 
-  useInterval(
-    () => {
-      getTimes();
-      if (error != null) setErrorOnInterval(true);
-    },
-    error != null ? null : interval,
-  );
-
-  if (error !== undefined && !errorOnInterval)
-    return <ErrorMessage message={error} />;
+  if (error !== undefined) return <ErrorMessage message={error} />;
 
   if (stop === undefined) return <LoadingSpinner />;
 
@@ -150,9 +139,16 @@ export default function BusStopsTimes() {
               />
             </div>
           </div>
-          <ul className="rounded w-full border-b mb-1">
-            {RenderTimesOrEmpty(stopTimes)}
-          </ul>
+          <PullToRefresh
+            onRefresh={async () => {
+              setStopTimes(undefined);
+              getTimes();
+            }}
+            pullingContent={""}>
+            <ul className="rounded w-full border-b mb-1">
+              <RenderTimesOrEmpty times={stopTimes} />
+            </ul>
+          </PullToRefresh>
           <RenderAlerts
             alerts={alerts}
             incidents={stopTimes?.incidents ?? []}
@@ -162,7 +158,7 @@ export default function BusStopsTimes() {
     );
   }
 
-  function RenderTimesOrEmpty(times?: StopTimes) {
+  function RenderTimesOrEmpty({times}: {times?: StopTimes}) {
     if (times === undefined)
       return (
         <div className="w-full flex justify-center py-4">
