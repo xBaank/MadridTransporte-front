@@ -50,14 +50,28 @@ export default function BusStopsTimes() {
   const textColor = useColor();
   const borderColor = useBorderColor();
 
-  const getTimes = useCallback(() => {
+  const getTimesAsync = async () => {
     if (type === undefined || code === undefined) return;
-    getStopsTimes(type, code).then(stops =>
+    await getStopsTimes(type, code).then(stops =>
       fold(
         (error: string) => setError(error),
         (stops: StopTimes) => setStopTimes(stops),
       )(stops),
     );
+  }
+
+  const getSubscriptionsAsync = async () => {
+    if (type === undefined || code === undefined || token === undefined) return;
+    await getSubscription(type, token, code).then(subscriptions =>
+      fold(
+        (error: string) => setError(error),
+        (subscriptions: Subscriptions | null) => setSubscription(subscriptions),
+      )(subscriptions),
+    );
+  }
+
+  const getTimes = useCallback(() => {
+    getTimesAsync()
   }, [type, code]);
 
   const getStopInfo = useCallback(() => {
@@ -77,21 +91,16 @@ export default function BusStopsTimes() {
     );
   }, [type, code]);
 
-  useEffect(() => {
-    if (type === undefined || code === undefined || token === undefined) return;
-    getSubscription(type, token, code).then(subscriptions =>
-      fold(
-        (error: string) => setError(error),
-        (subscriptions: Subscriptions | null) => setSubscription(subscriptions),
-      )(subscriptions),
-    );
+  const getSubscriptions = useCallback(() => {
+    getSubscriptionsAsync();
   }, [type, code, token]);
 
   useEffect(() => {
     getStopInfo();
     getTimes();
     getAlerts();
-  }, [type, code, getTimes, getAlerts, getStopInfo]);
+    getSubscriptions();
+  }, [type, code, getTimes, getAlerts, getStopInfo, getSubscriptions]);
 
   if (error !== undefined) return <ErrorMessage message={error} />;
 
@@ -141,8 +150,8 @@ export default function BusStopsTimes() {
           </div>
           <PullToRefresh
             onRefresh={async () => {
-              setStopTimes(undefined);
-              getTimes();
+              await getSubscriptionsAsync();
+              await getTimesAsync();
             }}
             pullingContent={""}>
             <ul className="rounded w-full border-b mb-1">
