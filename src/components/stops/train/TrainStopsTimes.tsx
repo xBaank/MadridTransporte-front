@@ -21,7 +21,6 @@ import LoadingSpinner from "../../LoadingSpinner";
 import RenderAffected from "../Affected";
 import ErrorMessage from "../../Error";
 import StaledMessage from "../../Staled";
-import {interstitial} from "../../../admob";
 
 export default function TrainStopTimesComponent() {
   const [searchParams] = useSearchParams();
@@ -35,10 +34,6 @@ export default function TrainStopTimesComponent() {
   const textColor = theme.palette.mode === "dark" ? "text-white" : "text-black";
   const borderColor =
     theme.palette.mode === "dark" ? "border-white" : "border-black";
-
-  /*   useEffect(() => {
-    interstitial();
-  }, []); */
 
   useEffect(() => {
     if (origin === null || destination === null) {
