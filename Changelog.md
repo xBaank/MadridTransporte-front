@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.10
+
+- Fix problem that where subscriptions were not refrehed along with times.
+
 ## 1.7.9
 
 - Added pull to refresh.
