@@ -1,56 +1,44 @@
-import L, {type LatLngLiteral} from "leaflet";
+import L, {LatLngExpression, type LatLngLiteral} from "leaflet";
 import {type LineLocation} from "../api/Types";
 import {Marker} from "react-leaflet";
+import {nearestPoint} from "../api/Route";
+import {useEffect, useState} from "react";
 
 export function LineLocationsMarkers({
   allRoute,
   lineLocations,
-  nearestPointRound,
 }: {
   allRoute: LatLngLiteral[];
   lineLocations: LineLocation[];
-  nearestPointRound: boolean;
 }) {
   if (allRoute === undefined) return <></>;
 
   return lineLocations?.map((i, index) => {
+    const [nearest, setNearest] = useState<LatLngExpression>();
+
+    useEffect(() => {
+      nearestPoint(i.coordinates).then(i => {
+        return setNearest({
+          lat: i.waypoints[0].location[1],
+          lng: i.waypoints[0].location[0],
+        });
+      });
+    }, [lineLocations, allRoute]);
+
     const icon = L.icon({
       iconUrl: "/icons/bus_location.png",
       iconSize: [42, 42],
       iconAnchor: [16, 32],
     });
 
-    const maxDistance = 10;
-
-    const nearestPoint = allRoute.reduce((prev, curr) => {
-      const prevDistance = Math.sqrt(
-        Math.pow(prev.lat - i.coordinates.latitude, 2) +
-          Math.pow(prev.lng - i.coordinates.longitude, 2),
-      );
-      const currDistance = Math.sqrt(
-        Math.pow(curr.lat - i.coordinates.latitude, 2) +
-          Math.pow(curr.lng - i.coordinates.longitude, 2),
-      );
-
-      if (prevDistance > maxDistance) {
-        return curr;
-      } else if (currDistance > maxDistance) {
-        return prev;
-      }
-
-      return prevDistance < currDistance ? prev : curr;
-    });
+    if (nearest === undefined) return <></>;
 
     return (
       <Marker
         zIndexOffset={50}
         key={index}
         icon={icon}
-        position={
-          nearestPointRound
-            ? nearestPoint
-            : {lat: i.coordinates.latitude, lng: i.coordinates.longitude}
-        }></Marker>
+        position={nearest}></Marker>
     );
   });
 }

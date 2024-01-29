@@ -13,3 +13,11 @@ export type Route = {
     distance: number;
   }>;
 };
+
+
+export type Nearest = {
+  code: string;
+  waypoints: Array<{
+    location: [number,number];
+  }>;
+};

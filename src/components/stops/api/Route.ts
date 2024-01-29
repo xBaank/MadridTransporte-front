@@ -1,14 +1,19 @@
-import {type Coordinates, type Route} from "./RouteTypes";
+import {Nearest, type Coordinates, type Route} from "./RouteTypes";
 import _ from "lodash";
 
-export default async function routeTimeFoot(
-  from: Coordinates,
-  to: Coordinates,
-) {
+export async function routeTimeFoot(from: Coordinates, to: Coordinates) {
   const result = await fetch(
     `https://routing.openstreetmap.de/routed-foot/route/v1/driving/${from.longitude},${from.latitude};${to.longitude},${to.latitude}`,
   );
   const data = (await result.json()) as Route;
+  return data;
+}
+
+export async function nearestPoint(coordinates: Coordinates) {
+  const result = await fetch(
+    `https://routing.openstreetmap.de/routed-foot/nearest/v1/driving/${coordinates.longitude},${coordinates.latitude}`,
+  );
+  const data = (await result.json()) as Nearest;
   return data;
 }
 

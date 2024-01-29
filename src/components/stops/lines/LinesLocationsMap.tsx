@@ -166,7 +166,6 @@ export default function LinesLocationsMap() {
       <LineLocationsMarkers
         allRoute={allRoute}
         lineLocations={lineLocations.locations}
-        nearestPointRound={type === "bus"}
       />
       <StopsMarkersMemo />
       <div
