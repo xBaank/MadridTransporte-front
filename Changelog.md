@@ -1,8 +1,14 @@
 # Changelog
 
+## 1.7.11
+
+- Updated dependencies.
+- Changed the way bus locations are shown. 
+
+
 ## 1.7.10
 
-- Fix problem that where subscriptions were not refrehed along with times.
+- Fixed problem where subscriptions were not refrehed along with times.
 
 ## 1.7.9
 
