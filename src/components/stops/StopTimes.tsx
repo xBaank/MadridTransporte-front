@@ -106,7 +106,18 @@ export default function BusStopsTimes() {
 
   if (stop === undefined) return <LoadingSpinner />;
 
-  return <RenderTimes stop={stop} stopTimes={stopTimes} />;
+  return (
+    <>
+      <PullToRefresh
+        onRefresh={async () => {
+          await getSubscriptionsAsync();
+          await getTimesAsync();
+        }}
+        pullingContent={""}>
+        <RenderTimes stop={stop} stopTimes={stopTimes} />
+      </PullToRefresh>
+    </>
+  );
 
   function RenderTimes({stop, stopTimes}: {stop: Stop; stopTimes?: StopTimes}) {
     return (
@@ -148,16 +159,9 @@ export default function BusStopsTimes() {
               />
             </div>
           </div>
-          <PullToRefresh
-            onRefresh={async () => {
-              await getSubscriptionsAsync();
-              await getTimesAsync();
-            }}
-            pullingContent={""}>
-            <ul className="rounded w-full border-b mb-1">
-              <RenderTimesOrEmpty times={stopTimes} />
-            </ul>
-          </PullToRefresh>
+          <ul className="rounded w-full border-b mb-1">
+            <RenderTimesOrEmpty times={stopTimes} />
+          </ul>
           <RenderAlerts
             alerts={alerts}
             incidents={stopTimes?.incidents ?? []}
@@ -194,7 +198,7 @@ export default function BusStopsTimes() {
     const arrivesFormatted = arrive.estimatedArrives.map(FormatTime);
     return (
       <li
-        key={`${arrive.line} ${arrive.destination}`}
+        key={`${arrive.line}-${arrive.destination}-${arrive.direction}`}
         className="p-2 border-b-blue-900 border-blue-900">
         <div className="flex items-center justify-between w-full">
           <div className="flex-col flex-wrap  min-w-0 max-w-full">

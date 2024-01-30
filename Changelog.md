@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.7.12
+
+- Visual improvements.
+- Request permission when to update to a new version.
+
 ## 1.7.11
 
 - Updated dependencies.

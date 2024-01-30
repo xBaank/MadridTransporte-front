@@ -28,6 +28,15 @@ import {useSavedTheme} from "./hooks/hooks";
 import AbonoSearch from "./components/abono/AbonoSearch";
 import AbonoInfo from "./components/abono/AbonoInfo";
 import {TokenContext, useToken} from "./notifications";
+import {registerSW} from "virtual:pwa-register";
+
+const updateSW = registerSW({
+  onNeedRefresh() {
+    const response = confirm("¿Quieres actualizar a la última versión?");
+    if (response) updateSW(true);
+  },
+  onOfflineReady() {},
+});
 
 export const ColorModeContext = React.createContext({
   toggleColorMode: () => {},
@@ -83,14 +92,16 @@ export default function App() {
   const token = useToken();
 
   return (
-    <TokenContext.Provider value={token}>
-      <ColorModeContext.Provider value={colorMode}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <RouterProvider router={router} />
-        </ThemeProvider>
-      </ColorModeContext.Provider>
-    </TokenContext.Provider>
+    <>
+      <TokenContext.Provider value={token}>
+        <ColorModeContext.Provider value={colorMode}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <RouterProvider router={router} />
+          </ThemeProvider>
+        </ColorModeContext.Provider>
+      </TokenContext.Provider>
+    </>
   );
 }
 
