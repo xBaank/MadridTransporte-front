@@ -2,7 +2,7 @@
   "type": "module",
   "name": "madrid-transporte",
   "homepage": "https://www.madridtransporte.com",
-  "version": "1.7.11",
+  "version": "1.7.12",
   "private": true,
   "dependencies": {
     "@capacitor-community/admob": "^5.3.1",
