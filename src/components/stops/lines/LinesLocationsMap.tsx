@@ -1,4 +1,4 @@
-import {type Map, type LatLngLiteral} from "leaflet";
+import L, {type Map, type LatLngLiteral} from "leaflet";
 import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {useParams, useSearchParams} from "react-router-dom";
 import {
@@ -19,6 +19,8 @@ import {LineLocationsMarkers} from "./LineLocationsMarkers";
 import ThemedMap from "../ThemedMap";
 import {Polyline} from "react-leaflet";
 import Line from "../../Line";
+
+const renderer = L.svg({padding: 100});
 
 export default function LinesLocationsMap() {
   const interval = 1000 * 15;
@@ -162,7 +164,12 @@ export default function LinesLocationsMap() {
         setFlyToLocation(true);
         map?.locate();
       }}>
-      <Polyline fillColor="blue" weight={6} positions={allRoute} />
+      <Polyline
+        renderer={renderer}
+        fillColor="blue"
+        weight={6}
+        positions={allRoute}
+      />
       <LineLocationsMarkers
         allRoute={allRoute}
         lineLocations={lineLocations.locations}

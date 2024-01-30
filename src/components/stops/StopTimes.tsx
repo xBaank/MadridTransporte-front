@@ -58,7 +58,7 @@ export default function BusStopsTimes() {
         (stops: StopTimes) => setStopTimes(stops),
       )(stops),
     );
-  }
+  };
 
   const getSubscriptionsAsync = async () => {
     if (type === undefined || code === undefined || token === undefined) return;
@@ -68,10 +68,10 @@ export default function BusStopsTimes() {
         (subscriptions: Subscriptions | null) => setSubscription(subscriptions),
       )(subscriptions),
     );
-  }
+  };
 
   const getTimes = useCallback(() => {
-    getTimesAsync()
+    getTimesAsync();
   }, [type, code]);
 
   const getStopInfo = useCallback(() => {
