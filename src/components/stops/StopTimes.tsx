@@ -238,12 +238,15 @@ export default function BusStopsTimes() {
                 codMode: arrive.codMode,
               }}
             />
-            <LinesLocationsButton
-              codMode={getCodModeByType(type!)}
-              code={arrive?.lineCode ?? ""}
-              direction={arrive?.direction?.toString() ?? ""}
-              stopCode={code ?? ""}
-            />
+            {arrive.itineraryCode != null ? (
+              <LinesLocationsButton
+                codMode={getCodModeByType(type!)}
+                itineraryCode={arrive?.itineraryCode ?? ""}
+                stopCode={code ?? ""}
+              />
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </li>

@@ -13,14 +13,13 @@ export const currentStop = 999;
 
 export function getLocationLink(
   codMode: number,
-  code: string,
-  direction: string,
+  itineraryCode: string,
   stopCode: string,
 ) {
   if (codMode === busCodMode)
-    return `/lines/bus/${code}/locations/${direction}?stopCode=${stopCode}`;
+    return `/lines/bus/locations/${itineraryCode}?stopCode=${stopCode}`;
   if (codMode === emtCodMode)
-    return `/lines/emt/${code}/locations/${direction}?stopCode=${stopCode}`;
+    return `/lines/emt/locations/${itineraryCode}?stopCode=${stopCode}`;
   return "#";
 }
 

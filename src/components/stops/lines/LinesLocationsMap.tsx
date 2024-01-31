@@ -24,10 +24,9 @@ const renderer = L.svg({padding: 100});
 
 export default function LinesLocationsMap() {
   const interval = 1000 * 15;
-  const {type, direction, code} = useParams<{
+  const {type, itineraryCode} = useParams<{
     type: TransportType;
-    direction: string;
-    code: string;
+    itineraryCode: string;
   }>();
   const [searchParam] = useSearchParams();
   const [map, setMap] = useState<Map | null>(null);
@@ -44,8 +43,7 @@ export default function LinesLocationsMap() {
   const getLocations = useCallback(() => {
     if (
       type === undefined ||
-      code === undefined ||
-      direction === undefined ||
+      itineraryCode === undefined ||
       stopCode === undefined
     )
       return;
@@ -55,8 +53,7 @@ export default function LinesLocationsMap() {
 
     getLineLocations(
       type,
-      code,
-      Number.parseInt(direction),
+      itineraryCode,
       stopCode,
       abortControllerRef.current.signal,
     )
@@ -70,18 +67,17 @@ export default function LinesLocationsMap() {
         if (ex instanceof DOMException) return;
         throw ex;
       });
-  }, [type, code, direction, stopCode]);
+  }, [type, itineraryCode, stopCode]);
 
   const getStops = useCallback(() => {
-    if (type === undefined || code === undefined || direction === undefined)
-      return;
-    getItinerary(type, code, Number.parseInt(direction)).then(result =>
+    if (type === undefined || itineraryCode === undefined) return;
+    getItinerary(type, itineraryCode).then(result =>
       fold(
         (error: string) => setError(error),
         (stops: ItineraryWithStopsOrder) => setItinerary(stops),
       )(result),
     );
-  }, [type, code, direction]);
+  }, [type, itineraryCode]);
 
   useEffect(() => {
     setStopCode(searchParam.get("stopCode") ?? undefined);
@@ -148,18 +144,14 @@ export default function LinesLocationsMap() {
   if (error !== undefined && !isOnInterval)
     return <ErrorMessage message={error}></ErrorMessage>;
 
-  if (
-    allRoute === undefined ||
-    currentStop === undefined ||
-    lineLocations === undefined
-  )
+  if (allRoute === undefined || lineLocations === undefined)
     return <LoadingSpinner></LoadingSpinner>;
 
   return (
     <ThemedMap
       setMap={setMap}
-      flyToLocation={flyToLocation}
-      center={{lat: currentStop?.stopLat, lng: currentStop.stopLon}}
+      flyToLocation={currentStop === undefined || flyToLocation}
+      center={{lat: currentStop?.stopLat ?? 0, lng: currentStop?.stopLon ?? 0}}
       onLocateClick={() => {
         setFlyToLocation(true);
         map?.locate();

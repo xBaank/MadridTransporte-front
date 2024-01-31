@@ -15,13 +15,12 @@ const BadRequest = "Error al obtener la localizacion";
 
 export async function getLineLocations(
   type: TransportType,
-  code: string,
-  direction: number,
+  itineraryCode: string,
   stopCode: string,
   signal: AbortSignal,
 ): Promise<Either<string, LineLocations>> {
   const response = await fetch(
-    `${apiUrl}/lines/${type}/${code}/locations/${direction.toString()}?stopCode=${stopCode}`,
+    `${apiUrl}/lines/${type}/locations/${itineraryCode}?stopCode=${stopCode}`,
     {signal},
   );
   if (response.status === 404) return left(NotFound);
@@ -33,11 +32,10 @@ export async function getLineLocations(
 
 export async function getItinerary(
   type: TransportType,
-  code: string,
-  direction: number,
+  itineraryCode: string,
 ): Promise<Either<string, ItineraryWithStopsOrder>> {
   const response = await fetch(
-    `${apiUrl}/lines/${type}/${code}/itineraries/${direction.toString()}`,
+    `${apiUrl}/lines/${type}/itineraries/${itineraryCode}`,
   );
   if (response.status === 404) return left(NotFound);
   const stops = await getAllStops();
@@ -48,7 +46,7 @@ export async function getItinerary(
       .map(i => {
         const stop = stops.right.find(x => x.fullStopCode === i.fullStopCode);
         if (stop === undefined) return null;
-        return {...stop, order: i.order}!;
+        return {...stop, order: i.order};
       })
       .filter(i => i != null) as StopWithOrder[],
     codItinerary: data.codItinerary,

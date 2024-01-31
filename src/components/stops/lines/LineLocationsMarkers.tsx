@@ -1,4 +1,4 @@
-import L, {LatLngExpression, type LatLngLiteral} from "leaflet";
+import L, {type LatLngExpression, type LatLngLiteral} from "leaflet";
 import {type LineLocation} from "../api/Types";
 import {Marker} from "react-leaflet";
 import {nearestPoint} from "../api/Route";

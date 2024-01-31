@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.13
+
+- Adapt to new endpoints.
+
 ## 1.7.12
 
 - Visual improvements.
