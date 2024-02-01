@@ -14,10 +14,9 @@ export type Route = {
   }>;
 };
 
-
 export type Nearest = {
   code: string;
   waypoints: Array<{
-    location: [number,number];
+    location: [number, number];
   }>;
 };

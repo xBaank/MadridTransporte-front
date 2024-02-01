@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.14
+
+- Fix locations map lag.
+
 ## 1.7.13
 
 - Adapt to new endpoints.
