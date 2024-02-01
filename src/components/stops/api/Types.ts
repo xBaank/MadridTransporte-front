@@ -156,6 +156,7 @@ export type Shape = {
   sequence: number;
   longitude: number;
   latitude: number;
+  distance: number;
 };
 
 export type StopWithOrder = Stop & {order: number};
