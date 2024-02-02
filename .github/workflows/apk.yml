@@ -39,4 +39,4 @@ jobs:
         - name: Make Gradle executable
           run: chmod +x ./android/gradlew
         - name: Build apk release project 
-          run: cd ./android && ./gradlew assemble
+          run: cd ./android && ./gradlew assemble --stacktrace
