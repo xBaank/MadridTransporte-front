@@ -34,12 +34,14 @@ jobs:
           run: npx cap sync
         - name: checkout code
           uses: actions/checkout@v2
+        - name: cd android
+          run: cd android
         - name: Make Gradle executable
-          run: chmod +x ./android/gradlew
+          run: chmod +x ./gradlew
         - name: Build Release APK
-          run: ./android/gradlew -p ./android assembleRelease
+          run: ./gradlew assembleRelease
         - name: Releasing using Hub
           uses: kyze8439690/action-release-releaseapk@master
           env:
             GITHUB_TOKEN: ${{ secrets.TOKEN }}
-            APP_FOLDER: ./android/app
+            APP_FOLDER: app
