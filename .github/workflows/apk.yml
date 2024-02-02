@@ -27,21 +27,19 @@ jobs:
           uses: actions/setup-node@v3
           with:
             node-version: 16.x
-        - run: npm ci
+        - run: npm i
         - name: Build
           run: npm run build
         - name: Capacitor sync
           run: npx cap sync
         - name: checkout code
           uses: actions/checkout@v2
-        - name: cd android
-          run: cd android
         - name: Make Gradle executable
-          run: chmod +x ./gradlew
+          run: chmod +x ./android/gradlew
         - name: Build Release APK
-          run: ./gradlew assembleRelease
+          run: ./android/gradlew -p ./android assembleRelease
         - name: Releasing using Hub
           uses: kyze8439690/action-release-releaseapk@master
           env:
             GITHUB_TOKEN: ${{ secrets.TOKEN }}
-            APP_FOLDER: app
+            APP_FOLDER: ./android/app
