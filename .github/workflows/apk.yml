@@ -26,8 +26,10 @@ jobs:
         - name: Setup Node.js
           uses: actions/setup-node@v3
           with:
-            node-version: 19.x
+            node-version: 20.x
         - run: npm install
+        - name: Writable
+          run: chmod 777 -R ./android
         - name: Build
           run: npm run build
         - name: Capacitor update
