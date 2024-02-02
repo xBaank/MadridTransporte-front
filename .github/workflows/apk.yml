@@ -39,7 +39,7 @@ jobs:
         - name: Make Gradle executable
           run: chmod +x ./android/gradlew
         - name: Build gradle project
-          run: ./gradlew build
+          run: ./android/gradlew -p ./android build
         - name: Build Release APK
           run: ./android/gradlew -p ./android assemble
         - name: Releasing using Hub
