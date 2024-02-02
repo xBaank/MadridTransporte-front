@@ -37,7 +37,7 @@ jobs:
         - name: Make Gradle executable
           run: chmod +x ./android/gradlew
         - name: Build Release APK
-          run: ./android/gradlew -p ./android assembleRelease
+          run: ./android/gradlew -p ./android assemble
         - name: Releasing using Hub
           uses: kyze8439690/action-release-releaseapk@master
           env:
