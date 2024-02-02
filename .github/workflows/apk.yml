@@ -24,21 +24,18 @@ jobs:
         - run: npm run build --if-present
         - run: npx cap update
         - run: npx cap sync
-  gradle:
-    runs-on: ubuntu-latest
-    steps:
-    - name: checkout code
-      uses: actions/checkout@v2
-    - name: setup jdk
-      uses: actions/setup-java@v1
-      with:
-        java-version: 17
-    - name: Make Gradle executable
-      run: chmod +x ./android/gradlew
-    - name: Build Release APK
-      run: ./android/gradlew -p ./android assembleRelease
-    - name: Releasing using Hub
-      uses: kyze8439690/action-release-releaseapk@master
-      env:
-       GITHUB_TOKEN: ${{ secrets.TOKEN }}
-       APP_FOLDER: ./android/app
+        - name: checkout code
+          uses: actions/checkout@v2
+        - name: setup jdk
+          uses: actions/setup-java@v1
+          with:
+            java-version: 17
+        - name: Make Gradle executable
+          run: chmod +x ./android/gradlew
+        - name: Build Release APK
+          run: ./android/gradlew -p ./android assembleRelease
+        - name: Releasing using Hub
+          uses: kyze8439690/action-release-releaseapk@master
+          env:
+            GITHUB_TOKEN: ${{ secrets.TOKEN }}
+            APP_FOLDER: ./android/app
