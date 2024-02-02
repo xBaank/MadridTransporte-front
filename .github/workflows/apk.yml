@@ -24,9 +24,13 @@ jobs:
           uses: actions/setup-java@v1
           with:
             java-version: 17
-        - run: npm i
-        - run: npm run build
-        - run: npx cap sync
+        - run: npm install
+        - name: Build
+          run: npm run build
+        - name: Capacitor update
+          run: npx cap update
+        - name: Capacitor copy
+          run: npx cap copy
         - name: checkout code
           uses: actions/checkout@v2
         - name: Make Gradle executable
