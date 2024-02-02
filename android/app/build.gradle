@@ -34,6 +34,7 @@ repositories {
         dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
     }
     maven { url 'https://jitpack.io' }
+    mavenCentral()
 }
 
 dependencies {
