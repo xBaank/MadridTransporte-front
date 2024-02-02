@@ -48,7 +48,7 @@ jobs:
           run:  if [ -d "./resources" ]; then npm install @capacitor/assets --save-dev && npx capacitor-assets generate --android; fi
   apk:
     name: Generate APK
-    needs: test
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
