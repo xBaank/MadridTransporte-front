@@ -38,7 +38,7 @@ jobs:
           run: chmod +x ./android/gradlew
         - name: Clean
           run: ./android/gradlew -p ./android clean
-        - name: Clean
+        - name: Rebuild
           run: ./android/gradlew -p ./android rebuild
         - name: Build Release APK
           run: ./android/gradlew -p ./android assembleRelease
