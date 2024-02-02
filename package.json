@@ -18,20 +18,20 @@
     "@capacitor/status-bar": "^5.0.6",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@jridgewell/sourcemap-codec": "^1.4.15",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.11.14",
     "@mui/types": "^7.2.5",
+    "@rollup/plugin-terser": "^0.4.4",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^29.5.1",
-    "@types/leaflet": "^1.9.3",
     "@types/lodash": "^4.14.194",
     "@types/node": "^18.16.0",
     "@types/phonegap-nfc": "^0.0.36",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
-    "@types/react-leaflet": "^3.0.0",
     "@types/react-router-dom": "^5.3.3",
     "@types/uuid": "^9.0.7",
     "@vitejs/plugin-react-swc": "^3.4.0",
@@ -81,7 +81,6 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@capacitor/assets": "^3.0.4",
     "@types/react-leaflet-pixi-overlay": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^6.7.5",
@@ -102,7 +101,7 @@
     "typescript": "^5.2.2",
     "vite-plugin-pwa": "^0.17.4"
   },
-    "optionalDependencies": {
+  "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.9.5"
   }
 }
