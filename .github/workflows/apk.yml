@@ -31,15 +31,11 @@ jobs:
         - name: Build
           run: npm run build
         - name: Capacitor sync
-          run: npx cap sync
+          run: npx cap sync --preserveProjectNodeModules=true
         - name: checkout code
           uses: actions/checkout@v2
         - name: Make Gradle executable
           run: chmod +x ./android/gradlew
-        - name: Clean
-          run: ./android/gradlew -p ./android clean
-        - name: Rebuild
-          run: ./android/gradlew -p ./android build
         - name: Build Release APK
           run: ./android/gradlew -p ./android assembleRelease
         - name: Releasing using Hub
