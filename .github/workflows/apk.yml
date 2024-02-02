@@ -39,7 +39,7 @@ jobs:
         - name: Clean
           run: ./android/gradlew -p ./android clean
         - name: Rebuild
-          run: ./android/gradlew -p ./android rebuild
+          run: ./android/gradlew -p ./android build
         - name: Build Release APK
           run: ./android/gradlew -p ./android assembleRelease
         - name: Releasing using Hub
