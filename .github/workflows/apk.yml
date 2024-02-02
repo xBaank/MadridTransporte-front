@@ -20,9 +20,10 @@ jobs:
           with:
             node-version: ${{ matrix.node-version }}
             cache: "npm"
-        - run: npm ci --legacy-peer-deps
+        - run: npm i
         - run: npm run build
         - run: npx cap sync android
+        - run: npx cap update android
         - name: checkout code
           uses: actions/checkout@v2
         - name: setup jdk
