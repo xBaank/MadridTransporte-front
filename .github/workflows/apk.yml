@@ -2,7 +2,9 @@ name: Build & Publish Release APK
 
 on:
   push:
-    branches: ["apk-cd"]
+    branches: ["*"]
+  pull_request:
+    branches: ["*"]
 
 jobs:
   build:
