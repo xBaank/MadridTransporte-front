@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.15
+
+- Update dependencies.
+
 ## 1.7.14
 
 - Fix locations map lag.
