@@ -63,7 +63,7 @@ jobs:
           uses: actions/upload-artifact@v1
           with:
             name: apk
-            path: android/app/build/outputs/apk/debug/app-release-unsigned.apk 
+            path: android/app/build/outputs/apk/release/app-release-unsigned.apk 
 
   release:
     name: Release APK
