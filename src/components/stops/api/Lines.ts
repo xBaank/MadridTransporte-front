@@ -65,3 +65,10 @@ export async function getShapes(
   const data = (await response.json()) as Shape[];
   return right(data.sort((a, b) => a.sequence - b.sequence));
 }
+
+export async function getKml(type: TransportType, itineraryCode: string) {
+  const response = await fetch(`${apiUrl}/lines/${type}/kml/${itineraryCode}`);
+  if (response.status === 404) return left(NotFound);
+  const data = await response.text();
+  return right(data);
+}
