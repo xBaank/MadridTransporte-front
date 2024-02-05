@@ -1,9 +1,5 @@
 # Changelog
 
-## 1.7.16
-
-- Use Kml instead of shapes.
-
 ## 1.7.15
 
 - Update dependencies.

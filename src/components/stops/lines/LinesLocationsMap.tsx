@@ -1,22 +1,24 @@
-import {type Map} from "leaflet";
+import {type Map, type LatLngLiteral} from "leaflet";
 import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {useParams, useSearchParams} from "react-router-dom";
 import {
   type TransportType,
   type Stop,
   type ItineraryWithStopsOrder,
+  type Shape,
   type LineLocations,
 } from "../api/Types";
-import {getLineLocations, getItinerary, getKml} from "../api/Lines";
+import {getLineLocations, getItinerary, getShapes} from "../api/Lines";
 import {fold} from "fp-ts/lib/Either";
 import ErrorMessage from "../../Error";
 import {useInterval} from "usehooks-ts";
+import {routeToCoordinates, fixRouteShapes, routeTimeCar} from "../api/Route";
 import LoadingSpinner from "../../LoadingSpinner";
 import {StopsMarkers} from "../StopsMarkers";
 import {LineLocationsMarkers} from "./LineLocationsMarkers";
 import ThemedMap from "../ThemedMap";
+import {Polyline} from "react-leaflet";
 import Line from "../../Line";
-import ReactLeafletKml from "react-leaflet-kml";
 
 export default function LinesLocationsMap() {
   const interval = 1000 * 15;
@@ -30,7 +32,7 @@ export default function LinesLocationsMap() {
   const [itinerary, setItinerary] = useState<ItineraryWithStopsOrder>();
   const [currentStop, setCurrentStop] = useState<Stop>();
   const [stopCode, setStopCode] = useState<string>();
-  const [kmlText, setKmlText] = useState<string>();
+  const [allRoute, setAllRoute] = useState<LatLngLiteral[]>();
   const [error, setError] = useState<string>();
   const [isOnInterval, setIsOnInterval] = useState(false);
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -97,11 +99,25 @@ export default function LinesLocationsMap() {
     )
       return;
 
-    getKml(type, itinerary.codItinerary).then(kml =>
+    getShapes(type, itinerary.codItinerary).then(shapes =>
       fold(
         (error: string) => setError(error),
-        (value: string) => setKmlText(value),
-      )(kml),
+        (value: Shape[]) => {
+          if (value.length === 0) {
+            const mapped = routeTimeCar(
+              itinerary.stops.map(i => {
+                return {latitude: i.stopLat, longitude: i.stopLon};
+              }) ?? [],
+            );
+
+            mapped.then(i => setAllRoute(routeToCoordinates(i)));
+            return;
+          }
+          fixRouteShapes(value).then(shape => {
+            setAllRoute(shape);
+          });
+        },
+      )(shapes),
     );
   }, [itinerary, type]);
 
@@ -126,10 +142,8 @@ export default function LinesLocationsMap() {
   if (error !== undefined && !isOnInterval)
     return <ErrorMessage message={error}></ErrorMessage>;
 
-  if (kmlText === undefined || lineLocations === undefined)
+  if (allRoute === undefined || lineLocations === undefined)
     return <LoadingSpinner></LoadingSpinner>;
-
-  const kmlDom = new DOMParser().parseFromString(kmlText, "text/xml");
 
   return (
     <ThemedMap
@@ -140,8 +154,11 @@ export default function LinesLocationsMap() {
         setFlyToLocation(true);
         map?.locate();
       }}>
-      <ReactLeafletKml kml={kmlDom} />
-      <LineLocationsMarkers lineLocations={lineLocations.locations} />
+      <Polyline fillColor="blue" weight={6} positions={allRoute} />
+      <LineLocationsMarkers
+        allRoute={allRoute}
+        lineLocations={lineLocations.locations}
+      />
       <StopsMarkersMemo />
       <div
         style={{zIndex: 500}}
