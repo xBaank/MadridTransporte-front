@@ -124,7 +124,7 @@ export const router = createBrowserRouter([
     element: <DefaultElement element={<BusStopsTimes />} />,
   },
   {
-    path: "/lines/:type/locations/:itineraryCode",
+    path: "/lines/:type/:lineCode/locations/:direction",
     element: <DefaultElement element={<LinesLocationsMap />} />,
   },
   {

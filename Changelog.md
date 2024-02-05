@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.7.17
+
+- Revert kml as it does not represent all the route.
+
+## 1.7.16
+
+- Use Kml instead of shapes.
+
 ## 1.7.15
 
 - Update dependencies.

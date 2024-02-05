@@ -8,18 +8,20 @@ export const metroCodMode = 4;
 export const trainCodMode = 5;
 export const emtCodMode = 6;
 export const busCodMode = 8;
+export const urbanCodMode = 9;
 export const metroLigeroCodMode = 10;
 export const currentStop = 999;
 
 export function getLocationLink(
   codMode: number,
-  itineraryCode: string,
+  lineCode: string,
+  direction: number,
   stopCode: string,
 ) {
   if (codMode === busCodMode)
-    return `/lines/bus/locations/${itineraryCode}?stopCode=${stopCode}`;
+    return `/lines/bus/${lineCode}/locations/${direction}?stopCode=${stopCode}`;
   if (codMode === emtCodMode)
-    return `/lines/emt/locations/${itineraryCode}?stopCode=${stopCode}`;
+    return `/lines/emt/${lineCode}/locations/${direction}?stopCode=${stopCode}`;
   return "#";
 }
 
@@ -153,4 +155,11 @@ export function isFavoriteStop(
   favorite: FavoriteStop | TrainFavoriteStop,
 ): favorite is FavoriteStop {
   return (favorite as FavoriteStop).code !== undefined;
+}
+
+export function getColor(codMode: number) {
+  if (codMode === busCodMode) return "#00cc07";
+  if (codMode === urbanCodMode) return "#e0000b";
+  if (codMode === emtCodMode) return "#1c73ff";
+  return "#00cc07";
 }

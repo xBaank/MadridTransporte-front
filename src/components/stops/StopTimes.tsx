@@ -47,6 +47,7 @@ export default function BusStopsTimes() {
   const [subscription, setSubscription] = useState<Subscriptions | null>(null);
   const token = useContext(TokenContext);
   const [error, setError] = useState<string>();
+  const [isPullable, setIsPullable] = useState(true);
   const textColor = useColor();
   const borderColor = useBorderColor();
 
@@ -109,9 +110,12 @@ export default function BusStopsTimes() {
   return (
     <>
       <PullToRefresh
+        isPullable={isPullable}
         onRefresh={async () => {
+          setIsPullable(false);
           await getSubscriptionsAsync();
           await getTimesAsync();
+          setIsPullable(true);
         }}
         pullingContent={""}>
         <RenderTimes stop={stop} stopTimes={stopTimes} />
@@ -186,9 +190,7 @@ export default function BusStopsTimes() {
       <>
         {times?.staled === true ? (
           <StaledMessage message="Los tiempos de espera podrian estar desactualizados ya que el servidor no responde" />
-        ) : (
-          <></>
-        )}
+        ) : null}
         {times.arrives.map(RenderArrive)}
       </>
     );
@@ -215,9 +217,7 @@ export default function BusStopsTimes() {
               </pre>
               {arrive.anden !== null ? (
                 <pre className={` text-gray-500`}> Anden {arrive.anden} </pre>
-              ) : (
-                <></>
-              )}
+              ) : null}
             </div>
           </div>
 
@@ -238,15 +238,14 @@ export default function BusStopsTimes() {
                 codMode: arrive.codMode,
               }}
             />
-            {arrive.itineraryCode != null ? (
+            {arrive.direction != null ? (
               <LinesLocationsButton
                 codMode={getCodModeByType(type!)}
-                itineraryCode={arrive?.itineraryCode ?? ""}
+                lineCode={arrive?.lineCode ?? ""}
+                direction={arrive?.direction ?? 0}
                 stopCode={code ?? ""}
               />
-            ) : (
-              <></>
-            )}
+            ) : null}
           </div>
         </div>
       </li>

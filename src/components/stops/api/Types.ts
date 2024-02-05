@@ -30,7 +30,6 @@ export type Arrive = {
   direction: number | null;
   stop: string;
   anden: number | null;
-  itineraryCode: string | null;
   codMode: number;
   destination: string;
   estimatedArrives: number[];

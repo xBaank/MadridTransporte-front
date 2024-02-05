@@ -19,12 +19,15 @@ import {LineLocationsMarkers} from "./LineLocationsMarkers";
 import ThemedMap from "../ThemedMap";
 import {Polyline} from "react-leaflet";
 import Line from "../../Line";
+import {getColor} from "../api/Utils";
+import {defaultPosition} from "../../../hooks/hooks";
 
 export default function LinesLocationsMap() {
   const interval = 1000 * 15;
-  const {type, itineraryCode} = useParams<{
+  const {type, lineCode, direction} = useParams<{
     type: TransportType;
-    itineraryCode: string;
+    lineCode: string;
+    direction: string;
   }>();
   const [searchParam] = useSearchParams();
   const [map, setMap] = useState<Map | null>(null);
@@ -41,7 +44,8 @@ export default function LinesLocationsMap() {
   const getLocations = useCallback(() => {
     if (
       type === undefined ||
-      itineraryCode === undefined ||
+      lineCode === undefined ||
+      direction === undefined ||
       stopCode === undefined
     )
       return;
@@ -51,7 +55,8 @@ export default function LinesLocationsMap() {
 
     getLineLocations(
       type,
-      itineraryCode,
+      lineCode,
+      Number.parseInt(direction),
       stopCode,
       abortControllerRef.current.signal,
     )
@@ -65,17 +70,24 @@ export default function LinesLocationsMap() {
         if (ex instanceof DOMException) return;
         throw ex;
       });
-  }, [type, itineraryCode, stopCode]);
+  }, [type, lineCode, direction, stopCode]);
 
   const getStops = useCallback(() => {
-    if (type === undefined || itineraryCode === undefined) return;
-    getItinerary(type, itineraryCode).then(result =>
-      fold(
-        (error: string) => setError(error),
-        (stops: ItineraryWithStopsOrder) => setItinerary(stops),
-      )(result),
+    if (
+      type === undefined ||
+      lineCode === undefined ||
+      direction === undefined ||
+      stopCode === undefined
+    )
+      return;
+    getItinerary(type, lineCode, Number.parseInt(direction), stopCode).then(
+      result =>
+        fold(
+          (error: string) => setError(error),
+          (stops: ItineraryWithStopsOrder) => setItinerary(stops),
+        )(result),
     );
-  }, [type, itineraryCode]);
+  }, [type, lineCode, direction, stopCode]);
 
   useEffect(() => {
     setStopCode(searchParam.get("stopCode") ?? undefined);
@@ -149,12 +161,19 @@ export default function LinesLocationsMap() {
     <ThemedMap
       setMap={setMap}
       flyToLocation={currentStop === undefined || flyToLocation}
-      center={{lat: currentStop?.stopLat ?? 0, lng: currentStop?.stopLon ?? 0}}
+      center={{
+        lat: currentStop?.stopLat ?? defaultPosition.lat,
+        lng: currentStop?.stopLon ?? defaultPosition.lng,
+      }}
       onLocateClick={() => {
         setFlyToLocation(true);
         map?.locate();
       }}>
-      <Polyline fillColor="blue" weight={6} positions={allRoute} />
+      <Polyline
+        color={getColor(lineLocations.codMode)}
+        weight={6}
+        positions={allRoute}
+      />
       <LineLocationsMarkers
         allRoute={allRoute}
         lineLocations={lineLocations.locations}

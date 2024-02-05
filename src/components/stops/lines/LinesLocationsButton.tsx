@@ -4,19 +4,21 @@ import {Link} from "react-router-dom";
 
 export default function LinesLocationsButton({
   codMode,
-  itineraryCode,
+  lineCode,
+  direction,
   stopCode,
 }: {
   codMode: number;
-  itineraryCode: string;
+  lineCode: string;
+  direction: number;
   stopCode: string;
 }) {
   if (codMode !== busCodMode && codMode !== emtCodMode) return <></>;
   return (
     <Link
-      to={getLocationLink(codMode, itineraryCode, stopCode)}
+      to={getLocationLink(codMode, lineCode, direction, stopCode)}
       className=" text-blue-500">
-      <MyLocationIcon></MyLocationIcon>
+      <MyLocationIcon />
     </Link>
   );
 }
