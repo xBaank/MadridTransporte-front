@@ -1,6 +1,6 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {GetAbono} from "./api/Abono";
+import {getAbono} from "./api/Abono";
 import {fold} from "fp-ts/lib/Either";
 import {type AbonoType} from "./api/Types";
 import {useTheme} from "@mui/material";
@@ -15,11 +15,12 @@ import LoadingSpinner from "../LoadingSpinner";
 import ErrorMessage from "../Error";
 import {CreditCard} from "@mui/icons-material";
 import {useBackgroundColor, useColor} from "../../hooks/hooks";
+import AbonoSubscribe from "./AbonoSubscribe";
 
 export default function AbonoInfo() {
   const {code} = useParams<{code: string}>();
-  const [abono, setAbono] = React.useState<AbonoType>();
-  const [error, setError] = React.useState<string>();
+  const [abono, setAbono] = useState<AbonoType>();
+  const [error, setError] = useState<string>();
   const theme = useTheme();
   const bgColor = useBackgroundColor();
   const textColor = useColor();
@@ -27,7 +28,7 @@ export default function AbonoInfo() {
     theme.palette.mode === "dark" ? "border-white" : "border-black";
 
   useEffect(() => {
-    GetAbono(code!).then(abono => {
+    getAbono(code!).then(abono => {
       fold(
         (error: string) => setError(error),
         (abono: AbonoType) => setAbono(abono),
@@ -49,7 +50,8 @@ export default function AbonoInfo() {
       className={`max-w-sm w-[90%] px-6 py-4 my-10 mx-auto border border-gray-200 rounded-lg shadow ${bgColor} dark:border-gray-700`}>
       <div className="flex">
         <CreditCard fontSize="large" />
-        <div className="ml-auto -mr-4">
+        <div className="ml-auto -mr-4 flex gap-2">
+          <AbonoSubscribe ttpNumber={abono.ttpNumber} />
           <FavoriteSave
             comparator={() =>
               getFavorites().some(

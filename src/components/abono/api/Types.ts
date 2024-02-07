@@ -3,6 +3,12 @@ export type FavoriteAbono = {
   name: string;
 };
 
+export type AbonoSubscription = {
+  deviceToken: string;
+  ttpNumber: string;
+  name: string;
+};
+
 export type AbonoType = {
   serialNumber: string;
   ttpNumber: string;
@@ -154,9 +160,3 @@ export type Title = {
   titleChargingStatus: "AVAILABLE_COMPATIBLE";
   titleConstraints: null;
 };
-
-// To parse this data:
-//
-//   import { Convert, TTPResponse } from "./file";
-//
-//   const tTPResponse = Convert.toTTPResponse(json);
