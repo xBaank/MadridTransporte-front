@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {getAbono} from "./api/Abono";
+import {getAbono, subscribeAbono, unsubscribeAbono} from "./api/Abono";
 import {fold} from "fp-ts/lib/Either";
 import {type AbonoType} from "./api/Types";
 import {useTheme} from "@mui/material";
@@ -15,9 +15,10 @@ import LoadingSpinner from "../LoadingSpinner";
 import ErrorMessage from "../Error";
 import {CreditCard} from "@mui/icons-material";
 import {useBackgroundColor, useColor} from "../../hooks/hooks";
-import AbonoSubscribe from "./AbonoSubscribe";
+import {useToken} from "../../notifications";
 
 export default function AbonoInfo() {
+  const token = useToken();
   const {code} = useParams<{code: string}>();
   const [abono, setAbono] = useState<AbonoType>();
   const [error, setError] = useState<string>();
@@ -51,18 +52,28 @@ export default function AbonoInfo() {
       <div className="flex">
         <CreditCard fontSize="large" />
         <div className="ml-auto -mr-4 flex gap-2">
-          <AbonoSubscribe ttpNumber={abono.ttpNumber} />
           <FavoriteSave
             comparator={() =>
               getFavorites().some(
                 favorite => favorite.ttpNumber === abono.ttpNumber,
               )
             }
-            saveF={(name: string) =>
-              addToFavorites({name, ttpNumber: abono.ttpNumber})
-            }
+            saveF={(name: string) => {
+              addToFavorites({name, ttpNumber: abono.ttpNumber});
+              if (token !== undefined)
+                subscribeAbono({
+                  ttpNumber: abono.ttpNumber,
+                  deviceToken: token,
+                  name,
+                });
+            }}
             deleteF={() => {
               removeFromFavorites(abono);
+              if (token !== undefined)
+                unsubscribeAbono({
+                  ttpNumber: abono.ttpNumber,
+                  deviceToken: token,
+                });
             }}
             defaultName={null}
           />
