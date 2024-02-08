@@ -9,6 +9,7 @@ import {
 import {useToken} from "../../notifications";
 import {fold} from "fp-ts/lib/Either";
 import {Snackbar} from "@mui/material";
+import {getFavorite} from "./api/Utils";
 
 export default function AbonoSubscribe({
   ttpNumber,
@@ -30,7 +31,12 @@ export default function AbonoSubscribe({
 
   const handleSubscription = () => {
     if (token === undefined) return;
-    subscribeAbono({ttpNumber, deviceToken: token, name: ""}).then(result => {
+    const name = getFavorite(ttpNumber)?.name;
+    subscribeAbono({
+      ttpNumber,
+      deviceToken: token,
+      name: name ?? ttpNumber,
+    }).then(result => {
       fold(
         error => console.log(error),
         () => setIsSubscribed(true),

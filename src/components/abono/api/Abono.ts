@@ -32,6 +32,14 @@ export async function getIsSubscribedAbono(
   return response.ok;
 }
 
+export async function getSubscriptions(deviceToken: string) {
+  const response = await fetch(`${apiUrl}/abono/subscriptions`, {
+    method: "POST",
+    body: JSON.stringify({deviceToken}),
+  });
+  return (await response.json()) as AbonoSubscription[];
+}
+
 export async function subscribeAbono(abonoSubscription: AbonoSubscription) {
   const response = await fetch(`${apiUrl}/abono/subscribe`, {
     method: "POST",
