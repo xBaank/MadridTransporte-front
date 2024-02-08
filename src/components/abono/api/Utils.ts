@@ -16,6 +16,10 @@ export function addToFavorites(abono: FavoriteAbono) {
   );
 }
 
+export function getFavorite(ttpNumber: string) {
+  return getFavorites().find(i => i.ttpNumber === ttpNumber);
+}
+
 export function removeFromFavorites({ttpNumber}: {ttpNumber: string}) {
   const favorites = JSON.parse(localStorage.getItem("abonosFavorites") ?? "[]");
   localStorage.setItem(

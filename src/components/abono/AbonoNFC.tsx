@@ -1,7 +1,7 @@
 import {CreditCard} from "@mui/icons-material";
 import {useBackgroundColor, useBorderColor, useColor} from "../../hooks/hooks";
 import {useEffect, useState} from "react";
-import {TTPInfo} from "./api/Abono";
+import {ttpInfo} from "./api/Abono";
 import LoadingSpinner from "../LoadingSpinner";
 import ErrorMessage from "../Error";
 import {type TitTemp, type TitMV, type TtpResponse} from "./api/Types";
@@ -27,7 +27,7 @@ export default function AbonoNFC() {
         () => {
           setLoading(true);
           setError(undefined);
-          TTPInfo()
+          ttpInfo()
             .then(i => setData(i))
             .catch(() => setError("Ha habido un error al leer la tarjeta"))
             .then(() => setLoading(false));

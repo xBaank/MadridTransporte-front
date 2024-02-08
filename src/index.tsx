@@ -29,6 +29,7 @@ import AbonoSearch from "./components/abono/AbonoSearch";
 import AbonoInfo from "./components/abono/AbonoInfo";
 import {TokenContext, useToken} from "./notifications";
 import {registerSW} from "virtual:pwa-register";
+import {useSyncAbonoSubscriptions} from "./abonoSync";
 
 const updateSW = registerSW({
   onNeedRefresh() {
@@ -90,6 +91,7 @@ export default function App() {
 
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
   const token = useToken();
+  useSyncAbonoSubscriptions();
 
   return (
     <>

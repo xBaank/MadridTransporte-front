@@ -11,9 +11,12 @@ import {
 } from "./api/Utils";
 import {Button, Dialog, DialogActions, DialogTitle} from "@mui/material";
 import {Link} from "react-router-dom";
+import {unsubscribeAbono} from "./api/Abono";
+import {useToken} from "../../notifications";
 
 export default function AbonoFavorites() {
   const [favorites, setFavorites] = useState<FavoriteAbono[]>([]);
+  const token = useToken();
 
   useEffect(() => {
     reloadFavorites();
@@ -29,6 +32,11 @@ export default function AbonoFavorites() {
   function handleDeleteFavorite(favorite: FavoriteAbono) {
     removeFromFavorites(favorite);
     reloadFavorites();
+    if (token !== undefined)
+      unsubscribeAbono({
+        deviceToken: token,
+        ttpNumber: favorite.ttpNumber,
+      });
   }
 
   function AbonosElement(abonos: FavoriteAbono[]) {

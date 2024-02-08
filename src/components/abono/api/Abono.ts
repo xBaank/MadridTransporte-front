@@ -1,14 +1,19 @@
 import {CapacitorCookies, CapacitorHttp} from "@capacitor/core";
 import {left, right} from "fp-ts/lib/Either";
 import {apiUrl} from "../../Urls";
-import {type TtpResponse, type AbonoType} from "./Types";
+import {
+  type TtpResponse,
+  type AbonoType,
+  type AbonoSubscription,
+} from "./Types";
 import {v4 as uuidv4} from "uuid";
 
 const middlelat = "https://latsecu.comunidad.madrid";
 const BadRequest = "No se pudo obtener informacion";
 const NotFound = "No existe el abono";
+const ErrorSubscripcion = "Error al procesar la subscripcion";
 
-export async function GetAbono(id: string) {
+export async function getAbono(id: string) {
   const response = await fetch(`${apiUrl}/abono/${id}`);
   if (response.status === 400) return left(BadRequest);
   if (response.status === 404) return left(NotFound);
@@ -17,8 +22,46 @@ export async function GetAbono(id: string) {
   return right(data);
 }
 
+export async function getIsSubscribedAbono(
+  abonoSubscription: Omit<AbonoSubscription, "name">,
+) {
+  const response = await fetch(`${apiUrl}/abono/subscription`, {
+    method: "POST",
+    body: JSON.stringify(abonoSubscription),
+  });
+  return response.ok;
+}
+
+export async function getSubscriptions(deviceToken: string) {
+  const response = await fetch(`${apiUrl}/abono/subscriptions`, {
+    method: "POST",
+    body: JSON.stringify({deviceToken}),
+  });
+  return (await response.json()) as AbonoSubscription[];
+}
+
+export async function subscribeAbono(abonoSubscription: AbonoSubscription) {
+  const response = await fetch(`${apiUrl}/abono/subscribe`, {
+    method: "POST",
+    body: JSON.stringify(abonoSubscription),
+  });
+  if (!response.ok) return left(ErrorSubscripcion);
+  return right(undefined);
+}
+
+export async function unsubscribeAbono(
+  abonoSubscription: Omit<AbonoSubscription, "name">,
+) {
+  const response = await fetch(`${apiUrl}/abono/unsubscribe`, {
+    method: "POST",
+    body: JSON.stringify(abonoSubscription),
+  });
+  if (!response.ok) return left(ErrorSubscripcion);
+  return right(undefined);
+}
+
 // CODE FROM https://github.com/xBaank/bus-tracker-front/issues/46
-export async function TTPInfo() {
+export async function ttpInfo() {
   if (window.nfc === undefined) return;
 
   await CapacitorCookies.clearAllCookies();
