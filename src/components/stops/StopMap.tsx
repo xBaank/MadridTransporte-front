@@ -80,7 +80,7 @@ function BusStopMapBase() {
         className="mt-16"
         anchorOrigin={{vertical: "top", horizontal: "center"}}
         open={showToolTip}>
-        <span className={`bg-blue-600 p-1 text-white rounded-md font-semibold`}>
+        <span className={`bg-blue-600 p-1 text-white font-semibold`}>
           Haz zoom para ver las paradas
         </span>
       </Snackbar>

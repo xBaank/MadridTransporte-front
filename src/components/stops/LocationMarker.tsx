@@ -34,7 +34,7 @@ export default function LocationMarker({
   useMapEvents({
     locationfound: e => {
       circle.setLatLng(e.latlng);
-      if (flyToLocation) map.flyTo(e.latlng, 16);
+      if (flyToLocation) map.flyTo(e.latlng, 16, {animate: true, duration: 1});
     },
   });
 

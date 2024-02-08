@@ -8,17 +8,25 @@ import {
 } from "./api/Abono";
 import {useToken} from "../../notifications";
 import {fold} from "fp-ts/lib/Either";
+import {Snackbar} from "@mui/material";
 
-export default function AbonoSubscribe({ttpNumber}: {ttpNumber: string}) {
+export default function AbonoSubscribe({
+  ttpNumber,
+  isFavorite,
+}: {
+  ttpNumber: string;
+  isFavorite: boolean;
+}) {
   const token = useToken();
-  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState<boolean>();
+  const [showToolTip, setShowToolTip] = useState<boolean>(false);
 
   useEffect(() => {
     if (token === undefined) return;
     getIsSubscribedAbono({ttpNumber, deviceToken: token}).then(i =>
       setIsSubscribed(i),
     );
-  }, [token, ttpNumber]);
+  }, [token, ttpNumber, isFavorite]);
 
   const handleSubscription = () => {
     if (token === undefined) return;
@@ -27,6 +35,7 @@ export default function AbonoSubscribe({ttpNumber}: {ttpNumber: string}) {
         error => console.log(error),
         () => setIsSubscribed(true),
       )(result);
+      setShowToolTip(true);
     });
   };
 
@@ -37,22 +46,42 @@ export default function AbonoSubscribe({ttpNumber}: {ttpNumber: string}) {
         error => console.log(error),
         () => setIsSubscribed(false),
       )(result);
+      setShowToolTip(true);
     });
   };
 
   if (token === undefined) return <></>;
+  if (isSubscribed === undefined) return <></>;
+  if (!isFavorite) return <></>;
 
-  return isSubscribed ? (
-    <div>
-      <button onClick={handleUnsubscription}>
-        <NotificationsIconOff className="text-red-500" />
-      </button>
-    </div>
-  ) : (
-    <div>
-      <button onClick={handleSubscription}>
-        <NotificationsIcon className="text-green-500" />
-      </button>
-    </div>
+  return (
+    <>
+      {isSubscribed ? (
+        <div>
+          <button onClick={handleUnsubscription}>
+            <NotificationsIconOff className="text-red-500" />
+          </button>
+        </div>
+      ) : (
+        <div>
+          <button onClick={handleSubscription}>
+            <NotificationsIcon className="text-green-500" />
+          </button>
+        </div>
+      )}
+      <Snackbar
+        key={"top" + "vertical"}
+        className="mb-20"
+        anchorOrigin={{vertical: "bottom", horizontal: "center"}}
+        open={showToolTip}
+        onClose={() => setShowToolTip(false)}
+        autoHideDuration={4000}>
+        <span className={`bg-blue-600 p-1 text-white font-semibold`}>
+          {isSubscribed
+            ? "Recibiras una notificacion cuando el abono vaya a caducar"
+            : "No recibiras notificaciones sobre este abono"}
+        </span>
+      </Snackbar>
+    </>
   );
 }

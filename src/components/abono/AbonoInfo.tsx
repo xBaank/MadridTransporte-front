@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {getAbono} from "./api/Abono";
+import {getAbono, subscribeAbono, unsubscribeAbono} from "./api/Abono";
 import {fold} from "fp-ts/lib/Either";
 import {type AbonoType} from "./api/Types";
-import {useTheme} from "@mui/material";
 import {
   addToFavorites,
   formatTTPNumber,
@@ -14,18 +13,21 @@ import FavoriteSave from "../favorites/FavoriteSave";
 import LoadingSpinner from "../LoadingSpinner";
 import ErrorMessage from "../Error";
 import {CreditCard} from "@mui/icons-material";
-import {useBackgroundColor, useColor} from "../../hooks/hooks";
+import {useBackgroundColor, useBorderColor, useColor} from "../../hooks/hooks";
 import AbonoSubscribe from "./AbonoSubscribe";
+import {useToken} from "../../notifications";
 
 export default function AbonoInfo() {
   const {code} = useParams<{code: string}>();
   const [abono, setAbono] = useState<AbonoType>();
   const [error, setError] = useState<string>();
-  const theme = useTheme();
+  const [isFavorite, setIsFavorite] = useState(false);
   const bgColor = useBackgroundColor();
   const textColor = useColor();
-  const borderColor =
-    theme.palette.mode === "dark" ? "border-white" : "border-black";
+  const token = useToken();
+  const borderColor = useBorderColor();
+  const isFavoriteF = () =>
+    getFavorites().some(favorite => favorite.ttpNumber === abono?.ttpNumber);
 
   useEffect(() => {
     getAbono(code!).then(abono => {
@@ -35,6 +37,35 @@ export default function AbonoInfo() {
       )(abono);
     });
   }, [code]);
+
+  useEffect(() => {
+    setIsFavorite(isFavoriteF());
+  }, [abono]);
+
+  const handleSaveFavorite = async (name: string) => {
+    if (abono === undefined) return;
+    if (token !== undefined) {
+      await subscribeAbono({
+        deviceToken: token,
+        ttpNumber: abono.ttpNumber,
+        name,
+      });
+    }
+    addToFavorites({name, ttpNumber: abono.ttpNumber});
+    setIsFavorite(true);
+  };
+
+  const handleDeleteFavorite = async () => {
+    if (abono === undefined) return;
+    if (token !== undefined) {
+      await unsubscribeAbono({
+        deviceToken: token,
+        ttpNumber: abono.ttpNumber,
+      });
+    }
+    removeFromFavorites(abono);
+    setIsFavorite(false);
+  };
 
   if (error !== undefined) return <ErrorMessage message={error} />;
   if (abono === undefined) return <LoadingSpinner />;
@@ -51,18 +82,14 @@ export default function AbonoInfo() {
       <div className="flex">
         <CreditCard fontSize="large" />
         <div className="ml-auto -mr-4 flex gap-2">
-          <AbonoSubscribe ttpNumber={abono.ttpNumber} />
+          <AbonoSubscribe ttpNumber={abono.ttpNumber} isFavorite={isFavorite} />
           <FavoriteSave
-            comparator={() =>
-              getFavorites().some(
-                favorite => favorite.ttpNumber === abono.ttpNumber,
-              )
-            }
-            saveF={(name: string) =>
-              addToFavorites({name, ttpNumber: abono.ttpNumber})
-            }
+            comparator={isFavoriteF}
+            saveF={(name: string) => {
+              handleSaveFavorite(name);
+            }}
             deleteF={() => {
-              removeFromFavorites(abono);
+              handleDeleteFavorite();
             }}
             defaultName={null}
           />
@@ -72,7 +99,7 @@ export default function AbonoInfo() {
         Tarjeta Transporte
       </h5>
       <div className={`flex items-baseline ${textColor}`}>
-        <div className="font-bold text-xl mb-2 max-md:text-base overflow-scroll">
+        <div className="font-bold text-xl mb-2 max-md:text-base overflow-scroll no-scrollbar">
           {formatTTPNumber(abono.ttpNumber)}
         </div>
       </div>
