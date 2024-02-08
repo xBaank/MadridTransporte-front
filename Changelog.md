@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.0
+
+- Added abono notifications
+
 ## 1.7.17
 
 - Revert kml as it does not represent all the route.
