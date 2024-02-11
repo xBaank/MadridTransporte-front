@@ -174,10 +174,7 @@ export default function LinesLocationsMap() {
         weight={6}
         positions={allRoute}
       />
-      <LineLocationsMarkers
-        allRoute={allRoute}
-        lineLocations={lineLocations.locations}
-      />
+      <LineLocationsMarkers lineLocations={lineLocations.locations} />
       <StopsMarkersMemo />
       <div
         style={{zIndex: 500}}

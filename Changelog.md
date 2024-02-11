@@ -1,8 +1,12 @@
 # Changelog
 
+## 1.8.1
+
+- Fixed locations render error.
+
 ## 1.8.0
 
-- Added abono notifications
+- Added abono notifications.
 
 ## 1.7.17
 
