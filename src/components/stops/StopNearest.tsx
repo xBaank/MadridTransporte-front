@@ -17,6 +17,7 @@ export default function StopNearest() {
     navigator.geolocation.getCurrentPosition(
       position => setLocation(position),
       () => setError("No se pudo obtener la ubicacion"),
+      {enableHighAccuracy: true},
     );
   }, []);
 

@@ -18,12 +18,19 @@ export default function LocationMarker({
   }, []);
 
   useEffect(() => {
-    const id = navigator.geolocation.watchPosition(position => {
-      const e = {
-        latlng: {lat: position.coords.latitude, lng: position.coords.longitude},
-      };
-      circle.setLatLng(e.latlng);
-    });
+    const id = navigator.geolocation.watchPosition(
+      position => {
+        const e = {
+          latlng: {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          },
+        };
+        circle.setLatLng(e.latlng);
+      },
+      null,
+      {enableHighAccuracy: true},
+    );
 
     return () => {
       circle?.remove();
