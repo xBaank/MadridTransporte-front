@@ -84,7 +84,7 @@ export function StopComponent(stop: StopLink) {
     <li key={stop.url} className="p-2 border-b-blue-900 border-blue-900">
       <Link to={stop.url} className=" flex items-center space-x-4">
         <div className="flex-shrink-0">
-          <img className="w-8 h-8 rounded-full" src={stop.iconUrl} alt="Logo" />
+          <img className="w-8" src={stop.iconUrl} alt="Logo" />
         </div>
         <div className="flex-1 items-center min-w-0 overflow-clip">
           <Link className="text-sm truncate " to={stop.url}>

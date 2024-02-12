@@ -8,6 +8,7 @@ import {
 import L from "leaflet";
 import {useTheme} from "@mui/material";
 import {Link} from "react-router-dom";
+import {renderToString} from "react-dom/server";
 
 export function StopsMarkers({
   stops,
@@ -22,9 +23,15 @@ export function StopsMarkers({
   return stops.map(stop => {
     const isCurrent = stop.fullStopCode === current?.fullStopCode;
     const codMode = isCurrent ? currentStop : stop.codMode;
-    const icon = L.icon({
-      iconUrl: getIconByCodMode(codMode),
-      iconSize: [32, 32],
+    const icon = L.divIcon({
+      html: renderToString(
+        <img
+          className="h-8 max-md:h-7"
+          src={getIconByCodMode(codMode)}
+          alt="Logo"
+        />,
+      ),
+      className: "dummy",
       iconAnchor: [16, 32],
     });
 

@@ -77,7 +77,7 @@ export default function StopsFavorites() {
             className="flex items-center w-[85%]">
             <div className="flex-shrink-0">
               <img
-                className="w-8 h-8 rounded-full"
+                className="w-8"
                 src={getIconByCodMode(stop.cod_mode)}
                 alt="Logo"
               />
@@ -130,7 +130,7 @@ export default function StopsFavorites() {
             className="flex items-center w-[85%]">
             <div className="flex-shrink-0">
               <img
-                className="w-8 h-8 rounded-full"
+                className="w-8"
                 src={getIconByCodMode(trainCodMode)}
                 alt="Logo"
               />

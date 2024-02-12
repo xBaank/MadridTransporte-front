@@ -131,7 +131,7 @@ export default function BusStopsTimes() {
           <div
             className={`flex items-end justify-start mb-3 ${textColor} border-b ${borderColor} pb-2`}>
             <img
-              className="w-8 h-8 max-md:w-7 max-md:h-7 mr-2 rounded-full"
+              className="w-8 max-md:w-7 mr-2"
               src={getIconByCodMode(stop.codMode)}
               alt="Logo"
             />
