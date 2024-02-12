@@ -9,13 +9,14 @@ import {Link} from "react-router-dom";
 export default function Settings() {
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
-  const [minutesToDisplay, setMinutesToDisplay] = useState<boolean>(false);
+  const [minutesToDisplay, setMinutesToDisplay] = useState<boolean>();
 
   useEffect(() => {
     setMinutesToDisplay(getMinutesDisplay());
   }, [theme.palette.mode]);
 
   const handleMinutesDisplayChange = () => {
+    if (minutesToDisplay === undefined) return;
     setMinutesToDisplay(!minutesToDisplay);
     changeMinutesDisplay();
   };
@@ -59,6 +60,8 @@ export default function Settings() {
       </div>
     );
   }
+
+  if (minutesToDisplay === undefined) return <></>;
 
   return (
     <div
