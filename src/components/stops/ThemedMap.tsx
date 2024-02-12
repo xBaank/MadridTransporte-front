@@ -39,8 +39,9 @@ export default function ThemedMap({
         <LocationMarker flyToLocation={flyToLocation} />
         <TileLayer
           className={theme.palette.mode === "dark" ? "map-tiles" : ""}
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='<a href="https://www.google.es/maps">Google Maps</a>'
+          url="https://{s}.google.com/vt/lyrs=m&hl=es&src=app&x={x}&y={y}&z={z}&s=Ga&apistyle=s.t%3A2|s.e%3Al|p.v%3Aoff,s.t%3A4|s.e%3Al|p.v%3Aoff"
+          subdomains={["mt0", "mt1", "mt2", "mt3"]}
         />
         {children}
       </MapContainer>
