@@ -191,17 +191,17 @@ export default function BusStopsTimes() {
         {times?.staled === true ? (
           <StaledMessage message="Los tiempos de espera podrian estar desactualizados ya que el servidor no responde" />
         ) : null}
-        {times.arrives.map(RenderArrive)}
+        {times.arrives.map((arrive, index) => (
+          <RenderArrive key={index} arrive={arrive} />
+        ))}
       </>
     );
   }
 
-  function RenderArrive(arrive: Arrive) {
+  function RenderArrive({arrive}: {arrive: Arrive}) {
     const arrivesFormatted = arrive.estimatedArrives.map(FormatTime);
     return (
-      <li
-        key={`${arrive.line}-${arrive.destination}-${arrive.direction}`}
-        className="p-2 border-b-blue-900 border-blue-900">
+      <div className="p-2 border-b-blue-900 border-blue-900">
         <div className="flex items-center justify-between w-full">
           <div className="flex-col flex-wrap  min-w-0 max-w-full">
             <div className="flex">
@@ -248,11 +248,11 @@ export default function BusStopsTimes() {
             ) : null}
           </div>
         </div>
-      </li>
+      </div>
     );
   }
 
-  function FormatTime(time: number): JSX.Element {
+  function FormatTime(time: number, index: number): JSX.Element {
     const minutes = Math.floor((time - Date.now()) / 60000);
 
     let color: string;
@@ -265,12 +265,23 @@ export default function BusStopsTimes() {
       minute: "2-digit",
     });
     if (!getMinutesDisplay())
-      return <pre className={color}>{timeFormatted}</pre>;
+      return (
+        <pre key={index} className={color}>
+          {timeFormatted}
+        </pre>
+      );
 
-    if (minutes > 60) return <pre className={color}>{timeFormatted}</pre>;
+    if (minutes > 60)
+      return (
+        <pre key={index} className={color}>
+          {timeFormatted}
+        </pre>
+      );
 
     return (
-      <pre className={color}>{minutes <= 0 ? "<<" : `${minutes} min`} </pre>
+      <pre key={index} className={color}>
+        {minutes <= 0 ? "<<" : `${minutes} min`}{" "}
+      </pre>
     );
   }
 }

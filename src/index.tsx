@@ -185,9 +185,12 @@ export const router = createBrowserRouter([
 showStatusBar();
 setupBackButton();
 
-const throwEx = () => {
-  throw new Error("No root element found");
-};
+let container: HTMLElement | null = null;
 
-const root = ReactDOM.createRoot(document.getElementById("root") ?? throwEx());
-root.render(<App />);
+document.addEventListener("DOMContentLoaded", function () {
+  if (container == null) {
+    container = document.getElementById("root") as HTMLElement;
+    const root = ReactDOM.createRoot(container);
+    root.render(<App />);
+  }
+});

@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.8.2
+
+- Use Google Maps instead of OpenStreetMap.
+- Fixed icons size.
+
 ## 1.8.1
 
 - Fixed locations render error.
