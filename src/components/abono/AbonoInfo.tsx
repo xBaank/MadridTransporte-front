@@ -26,21 +26,20 @@ export default function AbonoInfo() {
   const textColor = useColor();
   const token = useToken();
   const borderColor = useBorderColor();
-  const isFavoriteF = () =>
-    getFavorites().some(favorite => favorite.ttpNumber === abono?.ttpNumber);
+  const isFavoriteF = (abono: AbonoType) =>
+    getFavorites().some(favorite => favorite.ttpNumber === abono.ttpNumber);
 
   useEffect(() => {
     getAbono(code!).then(abono => {
       fold(
         (error: string) => setError(error),
-        (abono: AbonoType) => setAbono(abono),
+        (abono: AbonoType) => {
+          setAbono(abono);
+          setIsFavorite(isFavoriteF(abono));
+        },
       )(abono);
     });
   }, [code]);
-
-  useEffect(() => {
-    setIsFavorite(isFavoriteF());
-  }, [abono]);
 
   const handleSaveFavorite = async (name: string) => {
     if (abono === undefined) return;
@@ -84,7 +83,7 @@ export default function AbonoInfo() {
         <div className="ml-auto -mr-4 flex gap-2">
           <AbonoSubscribe ttpNumber={abono.ttpNumber} isFavorite={isFavorite} />
           <FavoriteSave
-            comparator={isFavoriteF}
+            comparator={() => isFavoriteF(abono)}
             saveF={(name: string) => {
               handleSaveFavorite(name);
             }}

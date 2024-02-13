@@ -1,5 +1,5 @@
 import {Button, FormControlLabel, Switch, useTheme} from "@mui/material";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {ColorModeContext} from "../..";
 import {Brightness7} from "@mui/icons-material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -9,11 +9,8 @@ import {Link} from "react-router-dom";
 export default function Settings() {
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
-  const [minutesToDisplay, setMinutesToDisplay] = useState<boolean>();
-
-  useEffect(() => {
-    setMinutesToDisplay(getMinutesDisplay());
-  }, [theme.palette.mode]);
+  const [minutesToDisplay, setMinutesToDisplay] =
+    useState<boolean>(getMinutesDisplay());
 
   const handleMinutesDisplayChange = () => {
     if (minutesToDisplay === undefined) return;
@@ -60,8 +57,6 @@ export default function Settings() {
       </div>
     );
   }
-
-  if (minutesToDisplay === undefined) return <></>;
 
   return (
     <div

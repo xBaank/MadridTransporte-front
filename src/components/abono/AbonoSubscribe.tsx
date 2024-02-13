@@ -8,7 +8,7 @@ import {
 } from "./api/Abono";
 import {useToken} from "../../notifications";
 import {fold} from "fp-ts/lib/Either";
-import {Snackbar} from "@mui/material";
+import {Skeleton, Snackbar} from "@mui/material";
 import {getFavorite} from "./api/Utils";
 
 export default function AbonoSubscribe({
@@ -56,9 +56,19 @@ export default function AbonoSubscribe({
     });
   };
 
-  if (token === undefined) return <></>;
-  if (isSubscribed === undefined) return <></>;
-  if (!isFavorite) return <></>;
+  function SkeletonNotification() {
+    return (
+      <div>
+        <button>
+          <Skeleton className="w-4 mr-1" />
+        </button>
+      </div>
+    );
+  }
+
+  if (token === undefined) return <SkeletonNotification />;
+  if (isSubscribed === undefined) return <SkeletonNotification />;
+  if (!isFavorite === undefined) <SkeletonNotification />;
 
   return (
     <>
