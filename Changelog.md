@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.3
+
+- Fix manifest.json
+
 ## 1.8.2
 
 - Use Google Maps instead of OpenStreetMap.
