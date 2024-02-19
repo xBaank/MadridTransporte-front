@@ -66,9 +66,9 @@ export default function AbonoSubscribe({
     );
   }
 
+  if (!isFavorite) return <></>;
   if (token === undefined) return <SkeletonNotification />;
   if (isSubscribed === undefined) return <SkeletonNotification />;
-  if (!isFavorite === undefined) <SkeletonNotification />;
 
   return (
     <>

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.4
+
+- bugfix.
+
 ## 1.8.3
 
 - Fix manifest.json
