@@ -58,7 +58,7 @@ export default function AbonoSearch() {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <CreditCard color="primary" />
+                    <CreditCard />
                   </InputAdornment>
                 ),
                 endAdornment: (

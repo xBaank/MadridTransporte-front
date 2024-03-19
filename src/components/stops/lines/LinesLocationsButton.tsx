@@ -17,7 +17,7 @@ export default function LinesLocationsButton({
   return (
     <Link
       to={getLocationLink(codMode, lineCode, direction, stopCode)}
-      className=" text-blue-500">
+      className="text-blue-600">
       <MyLocationIcon />
     </Link>
   );

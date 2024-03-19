@@ -13,19 +13,16 @@ import FavoriteSave from "../favorites/FavoriteSave";
 import LoadingSpinner from "../LoadingSpinner";
 import ErrorMessage from "../Error";
 import {CreditCard} from "@mui/icons-material";
-import {useBackgroundColor, useBorderColor, useColor} from "../../hooks/hooks";
 import AbonoSubscribe from "./AbonoSubscribe";
 import {useToken} from "../../notifications";
+import {Card} from "@mui/material";
 
 export default function AbonoInfo() {
   const {code} = useParams<{code: string}>();
   const [abono, setAbono] = useState<AbonoType>();
   const [error, setError] = useState<string>();
   const [isFavorite, setIsFavorite] = useState(false);
-  const bgColor = useBackgroundColor();
-  const textColor = useColor();
   const token = useToken();
-  const borderColor = useBorderColor();
   const isFavoriteF = (abono: AbonoType) =>
     getFavorites().some(favorite => favorite.ttpNumber === abono.ttpNumber);
 
@@ -76,10 +73,10 @@ export default function AbonoInfo() {
   };
 
   return (
-    <div
-      className={`max-w-sm w-[90%] px-6 py-4 my-10 mx-auto border border-gray-200 rounded-lg shadow ${bgColor} dark:border-gray-700`}>
+    <Card
+      className={`max-w-sm w-[90%] px-6 py-4 my-10 mx-auto rounded-lg shadow-lg `}>
       <div className="flex">
-        <CreditCard fontSize="large" />
+        <CreditCard fontSize="large" className="text-blue-500" />
         <div className="ml-auto -mr-4 flex gap-2">
           <AbonoSubscribe ttpNumber={abono.ttpNumber} isFavorite={isFavorite} />
           <FavoriteSave
@@ -94,22 +91,22 @@ export default function AbonoInfo() {
           />
         </div>
       </div>
-      <h5 className={`mb-2 text-2xl font-semibold tracking-tight ${textColor}`}>
+      <h5 className={`mb-2 text-2xl font-semibold tracking-tight `}>
         Tarjeta Transporte
       </h5>
-      <div className={`flex items-baseline ${textColor}`}>
+      <div className={`flex items-baseline `}>
         <div className="font-bold text-xl mb-2 max-md:text-base overflow-scroll no-scrollbar">
           {formatTTPNumber(abono.ttpNumber)}
         </div>
       </div>
-      <ul className={`${textColor}`}>
+      <ul>
         {abono.contracts.length === 0 ? (
           <div>Tarjeta sin recargas</div>
         ) : (
           abono.contracts.map((contract, index) => {
             if (contract.charges !== 0 || contract.remainingCharges !== 0) {
               return (
-                <li key={index} className={`border-b ${borderColor} mt-3 pb-2`}>
+                <li key={index} className={`mt-3 pb-2`}>
                   <div>
                     <div className=" font-bold">{contract.contractName}</div>
                     <div className=" text-sm">
@@ -128,7 +125,7 @@ export default function AbonoInfo() {
               );
             }
             return (
-              <li key={index} className={`border-b ${borderColor} mt-3 pb-2`}>
+              <li key={index} className={`mt-3 pb-2`}>
                 <div>
                   <div className="max-md:text-sm font-bold">
                     {contract.contractName}
@@ -172,6 +169,6 @@ export default function AbonoInfo() {
           })
         )}
       </ul>
-    </div>
+    </Card>
   );
 }

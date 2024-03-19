@@ -24,7 +24,6 @@ import LoadingSpinner from "../LoadingSpinner";
 import {
   useColor,
   getMinutesDisplay,
-  useBorderColor,
   useRoseColor,
   useAmberColor,
 } from "../../hooks/hooks";
@@ -48,8 +47,6 @@ export default function BusStopsTimes() {
   const token = useContext(TokenContext);
   const [error, setError] = useState<string>();
   const [isPullable, setIsPullable] = useState(true);
-  const textColor = useColor();
-  const borderColor = useBorderColor();
 
   const getTimesAsync = async () => {
     if (type === undefined || code === undefined) return;
@@ -128,8 +125,7 @@ export default function BusStopsTimes() {
       <>
         <div
           className={`grid grid-cols-1 p-5 max-w-md mx-auto w-full justify-center`}>
-          <div
-            className={`flex items-end justify-start mb-3 ${textColor} border-b ${borderColor} pb-2`}>
+          <div className={`flex items-end justify-start mb-3 border-b  pb-2`}>
             <img
               className="w-8 max-md:w-7 mr-2"
               src={getIconByCodMode(stop.codMode)}
@@ -201,13 +197,12 @@ export default function BusStopsTimes() {
   function RenderArrive({arrive}: {arrive: Arrive}) {
     const arrivesFormatted = arrive.estimatedArrives.map(FormatTime);
     return (
-      <div className="p-2 border-b-blue-900 border-blue-900">
+      <div className="p-2">
         <div className="flex items-center justify-between w-full">
           <div className="flex-col flex-wrap  min-w-0 max-w-full">
             <div className="flex">
               <Line info={arrive} />
-              <div
-                className={`${textColor} gap-5 flex grow-0 overflow-scroll no-scrollbar`}>
+              <div className={`gap-5 flex grow-0 overflow-scroll no-scrollbar`}>
                 {arrivesFormatted}
               </div>
             </div>

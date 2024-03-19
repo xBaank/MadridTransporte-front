@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.9.0
+
+- Reworked theme.
+
 ## 1.8.4
 
 - bugfix.

@@ -10,7 +10,6 @@ import {
   type PaletteMode,
   ThemeProvider,
 } from "@mui/material";
-import {blue, grey} from "@mui/material/colors";
 import DefaultElement from "./components/DefaultElement";
 import BusStopMap from "./components/stops/StopMap";
 import Info from "./components/info/Info";
@@ -45,35 +44,6 @@ export const ColorModeContext = React.createContext({
 export const getDesignTokens = (mode: PaletteMode) => ({
   palette: {
     mode,
-    ...(mode === "light"
-      ? {
-          // palette values for light mode
-          border: blue,
-          primary: blue,
-          divider: blue[200],
-          background: {
-            default: "#f4f6f8",
-            paper: "#fff",
-          },
-          text: {
-            primary: blue[900],
-            secondary: blue[400],
-          },
-        }
-      : {
-          // palette values for dark mode
-          border: blue,
-          primary: blue,
-          divider: blue[200],
-          background: {
-            default: "#1f1f1f",
-            paper: grey[900],
-          },
-          text: {
-            primary: blue[400],
-            secondary: blue[700],
-          },
-        }),
   },
 });
 

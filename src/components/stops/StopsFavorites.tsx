@@ -12,7 +12,15 @@ import {
 } from "./api/Utils";
 import GradeIcon from "@mui/icons-material/Grade";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {Dialog, DialogTitle, DialogActions, Button} from "@mui/material";
+import {
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  Button,
+  List,
+  ListItem,
+  Divider,
+} from "@mui/material";
 import {Link} from "react-router-dom";
 
 export default function StopsFavorites() {
@@ -46,15 +54,18 @@ export default function StopsFavorites() {
           <div>Paradas Favoritas</div>
           <GradeIcon className="p-1 text-yellow-500" />
         </div>
-        <ul className="max-w-md divide-y rounded border border-blue-900">
-          {favorites.map((stop, index) =>
-            isFavoriteStop(stop) ? (
-              <FavoriteStop key={index} stop={stop} />
-            ) : (
-              <TrainFavoriteStop key={index} stop={stop} />
-            ),
-          )}
-        </ul>
+        <List className="max-w-md">
+          {favorites.map((stop, index) => (
+            <>
+              {isFavoriteStop(stop) ? (
+                <FavoriteStop key={index} stop={stop} />
+              ) : (
+                <TrainFavoriteStop key={index} stop={stop} />
+              )}
+              <Divider />
+            </>
+          ))}
+        </List>
       </>
     );
   }
@@ -71,7 +82,7 @@ export default function StopsFavorites() {
 
     return (
       <>
-        <li className="py-2 pl-2 border-b-blue-900 border-blue-900 flex">
+        <ListItem className="py-2 pl-2 flex">
           <Link
             to={getStopTimesLinkByMode(stop.cod_mode, stop.code.toString())}
             className="flex items-center w-[85%]">
@@ -89,10 +100,10 @@ export default function StopsFavorites() {
               <div className="text-sm truncate">{stop.code}</div>
             </div>
           </Link>
-          <button className="ml-auto mr-2" onClick={handleClickOpen}>
+          <button className="ml-auto" onClick={handleClickOpen}>
             <DeleteIcon className=" text-red-500" />
           </button>
-        </li>
+        </ListItem>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Borrar {stop.name} de favoritos</DialogTitle>
           <DialogActions>
@@ -120,7 +131,7 @@ export default function StopsFavorites() {
     };
     return (
       <>
-        <li className="py-2 pl-2 border-b-blue-900 border-blue-900 flex">
+        <ListItem>
           <Link
             to={getStopTimesLinkByMode(
               trainCodMode,
@@ -144,10 +155,10 @@ export default function StopsFavorites() {
               </div>
             </div>
           </Link>
-          <button className="ml-auto mr-2" onClick={handleClickOpen}>
+          <button className="ml-auto" onClick={handleClickOpen}>
             <DeleteIcon className=" text-red-500" />
           </button>
-        </li>
+        </ListItem>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Borrar {stop.name} de favoritos</DialogTitle>
           <DialogActions>

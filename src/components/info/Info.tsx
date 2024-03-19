@@ -52,7 +52,7 @@ export default function Info() {
             </span>
           </li>
           <li>
-            <MyLocationIcon className="text-blue-500" />
+            <MyLocationIcon className="" />
             <span className="text-sm ml-1">
               Ubicacion del autobus en el mapa.
             </span>

@@ -17,6 +17,7 @@ import ErrorMessage from "../Error";
 import Line from "../Line";
 import {Link} from "react-router-dom";
 import {TokenContext} from "../../notifications";
+import {Divider, List, ListItem} from "@mui/material";
 
 export default function AllSubscriptions() {
   const [subscriptions, setSubscriptions] = useState<Subscriptions[] | null>(
@@ -86,41 +87,44 @@ export default function AllSubscriptions() {
                   </div>
                 </div>
               </div>
-              <ul className="max-w-md divide-y rounded mb-1 border border-blue-900">
+              <List className="max-w-md">
                 {subscription.linesDestinations.map(
                   (lineDestination, index) => (
-                    <li key={index} className="flex border-blue-900">
-                      <Link
-                        className="flex items-center space-x-4 p-2 text-sm truncate w-[85%]"
-                        to={getStopTimesLinkByMode(
-                          subscription.codMode,
-                          subscription.simpleStopCode ?? "",
-                        )}>
-                        <Line info={lineDestination} />
-                        <div className="flex-1 items-center min-w-0 overflow-clip">
-                          <div className="text-sm truncate">
-                            {lineDestination.destination}
+                    <>
+                      <ListItem key={index} className="flex">
+                        <Link
+                          className="flex items-center space-x-4 text-sm truncate w-[85%]"
+                          to={getStopTimesLinkByMode(
+                            subscription.codMode,
+                            subscription.simpleStopCode ?? "",
+                          )}>
+                          <Line info={lineDestination} />
+                          <div className="flex-1 items-center min-w-0 overflow-clip">
+                            <div className="text-sm truncate">
+                              {lineDestination.destination}
+                            </div>
                           </div>
-                        </div>
-                      </Link>
-                      <button
-                        className="ml-auto mr-2"
-                        onClick={() => {
-                          handleUnsubscription(
-                            getTransportTypeByCodMode(subscription.codMode),
-                            {
-                              stopCode: subscription.simpleStopCode ?? "",
-                              codMode: subscription.codMode,
-                              lineDestination,
-                            },
-                          );
-                        }}>
-                        <NotificationsOffIcon className=" text-red-600" />
-                      </button>
-                    </li>
+                        </Link>
+                        <button
+                          className="ml-auto"
+                          onClick={() => {
+                            handleUnsubscription(
+                              getTransportTypeByCodMode(subscription.codMode),
+                              {
+                                stopCode: subscription.simpleStopCode ?? "",
+                                codMode: subscription.codMode,
+                                lineDestination,
+                              },
+                            );
+                          }}>
+                          <NotificationsOffIcon className=" text-red-600" />
+                        </button>
+                      </ListItem>
+                      <Divider />
+                    </>
                   ),
                 )}
-              </ul>
+              </List>
             </div>
           ))}
         </div>

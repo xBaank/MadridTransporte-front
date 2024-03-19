@@ -9,7 +9,15 @@ import {
   getFavorites,
   removeFromFavorites,
 } from "./api/Utils";
-import {Button, Dialog, DialogActions, DialogTitle} from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  Divider,
+  List,
+  ListItem,
+} from "@mui/material";
 import {Link} from "react-router-dom";
 import {unsubscribeAbono} from "./api/Abono";
 import {useToken} from "../../notifications";
@@ -47,11 +55,14 @@ export default function AbonoFavorites() {
           <div>Abonos Favoritos</div>
           <GradeIcon className="p-1 text-yellow-500" />
         </div>
-        <ul className="max-w-md divide-y rounded border border-blue-900">
+        <List className="max-w-md">
           {abonos.map((abono, index) => (
-            <FavoriteAbono key={index} abono={abono} />
+            <>
+              <FavoriteAbono key={index} abono={abono} />
+              <Divider />
+            </>
           ))}
-        </ul>
+        </List>
       </>
     );
   }
@@ -67,9 +78,9 @@ export default function AbonoFavorites() {
 
     return (
       <>
-        <li className="border-b-blue-900 flex border-blue-900">
+        <ListItem className="flex py-2 pl-2">
           <Link
-            className="flex items-center space-x-4 p-2 text-sm truncate w-[85%]"
+            className="flex items-center space-x-4 text-sm truncate "
             to={getAbonoRoute(abono.ttpNumber)}>
             <div className="flex-shrink-0">
               <img className="w-8 h-5 " src={AbonoIcon} alt="Logo" />
@@ -83,10 +94,10 @@ export default function AbonoFavorites() {
               </div>
             </div>
           </Link>
-          <button className="ml-auto mr-2" onClick={handleClickOpen}>
+          <button className="ml-auto" onClick={handleClickOpen}>
             <DeleteIcon className=" text-red-500" />
           </button>
-        </li>
+        </ListItem>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Borrar {abono.name} de favoritos</DialogTitle>
           <DialogActions>

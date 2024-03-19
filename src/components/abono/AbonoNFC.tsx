@@ -1,15 +1,12 @@
 import {CreditCard} from "@mui/icons-material";
-import {useBackgroundColor, useBorderColor, useColor} from "../../hooks/hooks";
 import {useEffect, useState} from "react";
 import {ttpInfo} from "./api/Abono";
 import LoadingSpinner from "../LoadingSpinner";
 import ErrorMessage from "../Error";
 import {type TitTemp, type TitMV, type TtpResponse} from "./api/Types";
+import {Card} from "@mui/material";
 
 export default function AbonoNFC() {
-  const bgColor = useBackgroundColor();
-  const textColor = useColor();
-  const borderColor = useBorderColor();
   const [data, setData] = useState<TtpResponse>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>();
@@ -46,7 +43,7 @@ export default function AbonoNFC() {
   function RenderTitMV({tit}: {tit: TitMV | null}) {
     return tit === null ? null : (
       <>
-        <div className={`border-b ${borderColor} mt-3 pb-2`}>
+        <div className={`mt-3 pb-2`}>
           <h2 className=" text-lg font-semibold mb-1">Abono {tit.name}</h2>
           <div className=" text-sm">
             <div>Zona: {tit.validityZones}</div>
@@ -67,7 +64,7 @@ export default function AbonoNFC() {
   function RenderTitTemp({tit}: {tit: TitTemp | null}) {
     return tit === null ? null : (
       <>
-        <div className={`border-b ${borderColor} mt-3 pb-2`}>
+        <div className={` mt-3 pb-2`}>
           <h2 className=" text-lg font-semibold mb-1">Abono {tit.name}</h2>
           <div className=" text-sm">
             <div>Zona: {tit.validityZones}</div>
@@ -111,7 +108,7 @@ export default function AbonoNFC() {
   function RenderErrorOrInfo() {
     if (error !== undefined) return <ErrorMessage message={error} />;
     return (
-      <p className={`mb-3 font-normal ${textColor}`}>
+      <p className={`mb-3 font-normal`}>
         {data !== undefined ? (
           <>
             <p>
@@ -124,7 +121,7 @@ export default function AbonoNFC() {
               Esta tarjeta{" "}
               {data.balance.blockedApp ? "esta bloqueada" : "no esta bloqueada"}
             </p>
-            <div className={`border-b ${borderColor} mt-3`}></div>
+            <div className={`mt-3`}></div>
             <br></br>
             <RenderTitTemp tit={data.balance.titTemp} />
             <RenderTitMV tit={data.balance.titMV1} />
@@ -139,13 +136,13 @@ export default function AbonoNFC() {
   }
 
   return (
-    <div
-      className={`max-w-sm w-[90%] px-6 py-4 my-10 mx-auto border border-gray-200 rounded-lg shadow ${bgColor} dark:border-gray-700`}>
+    <Card
+      className={`max-w-sm w-[90%] px-6 py-4 my-10 mx-auto rounded-lg shadow-lg `}>
       <CreditCard fontSize="large" />
-      <h5 className={`mb-2 text-2xl font-semibold tracking-tight ${textColor}`}>
+      <h5 className={`mb-2 text-2xl font-semibold tracking-tight`}>
         Tarjeta Transporte
       </h5>
-      <div className={`border-t ${borderColor} pt-4`}>
+      <div className={`pt-4`}>
         {loading ? (
           <div className="flex ">
             <LoadingSpinner />
@@ -154,6 +151,6 @@ export default function AbonoNFC() {
           <RenderErrorOrInfo />
         )}
       </div>
-    </div>
+    </Card>
   );
 }

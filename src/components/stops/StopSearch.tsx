@@ -1,4 +1,4 @@
-import {InputAdornment, TextField} from "@mui/material";
+import {InputAdornment, List, TextField} from "@mui/material";
 import {useEffect, useState} from "react";
 import {Search} from "@mui/icons-material";
 import AllStopsComponent, {StopComponent} from "./StopsComponent";
@@ -58,17 +58,17 @@ export default function BusStopSearch({
         {code !== undefined && stops.length > 0 ? (
           <div className="flex mb-3 border-b-2">
             <div className="my-auto font-bold text-lg">Origen: </div>
-            <ul>
-              {StopComponent(
-                mapStopToStopLink(
+            <List>
+              <StopComponent
+                stop={mapStopToStopLink(
                   stops.find(
                     stop =>
                       stop.stopCode.toString() === code &&
                       stop.codMode === codMode,
                   )!,
-                ),
-              )}
-            </ul>
+                )}
+              />
+            </List>
           </div>
         ) : (
           <></>
@@ -85,7 +85,7 @@ export default function BusStopSearch({
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <DirectionsBusIcon color="primary" />
+                  <DirectionsBusIcon />
                 </InputAdornment>
               ),
               endAdornment: (
