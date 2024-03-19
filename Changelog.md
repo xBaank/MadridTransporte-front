@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.9.1
+
+- Remove theme color in manifest.
+
 ## 1.9.0
 
 - Theme rework.
