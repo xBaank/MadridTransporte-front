@@ -2,11 +2,11 @@
 
 ## 1.9.0
 
-- Reworked theme.
+- Theme rework.
 
 ## 1.8.4
 
-- bugfix.
+- Bugfix.
 
 ## 1.8.3
 
