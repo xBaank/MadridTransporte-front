@@ -7,7 +7,7 @@ import {getAllStops} from "./api/Stops";
 import {defaultPosition} from "../../hooks/hooks";
 import {StopsMarkers} from "./StopsMarkers";
 import ThemedMap from "./ThemedMap";
-import {Snackbar} from "@mui/material";
+import {Card, Snackbar} from "@mui/material";
 
 export default function BusStopMap() {
   return useMemo(() => <BusStopMapBase />, []);
@@ -80,9 +80,9 @@ function BusStopMapBase() {
         className="mt-16"
         anchorOrigin={{vertical: "top", horizontal: "center"}}
         open={showToolTip}>
-        <span className={`bg-blue-600 p-1 text-white font-semibold`}>
-          Haz zoom para ver las paradas
-        </span>
+        <Card className="p-2">
+          <span className={`font-semibold`}>Haz zoom para ver las paradas</span>
+        </Card>
       </Snackbar>
     </>
   );

@@ -8,7 +8,7 @@ import {
 } from "./api/Abono";
 import {useToken} from "../../notifications";
 import {fold} from "fp-ts/lib/Either";
-import {Skeleton, Snackbar} from "@mui/material";
+import {Card, Skeleton, Snackbar} from "@mui/material";
 import {getFavorite} from "./api/Utils";
 
 export default function AbonoSubscribe({
@@ -92,11 +92,13 @@ export default function AbonoSubscribe({
         open={showToolTip}
         onClose={() => setShowToolTip(false)}
         autoHideDuration={4000}>
-        <span className={`bg-blue-600 p-1 text-white font-semibold`}>
-          {isSubscribed
-            ? "Recibiras una notificacion cuando el abono vaya a caducar"
-            : "No recibiras notificaciones sobre este abono"}
-        </span>
+        <Card className="p-2">
+          <span className={`font-semibold`}>
+            {isSubscribed
+              ? "Recibiras una notificacion cuando el abono vaya a caducar"
+              : "No recibiras notificaciones sobre este abono"}
+          </span>
+        </Card>
       </Snackbar>
     </>
   );

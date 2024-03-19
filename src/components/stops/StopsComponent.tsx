@@ -1,7 +1,7 @@
 /* eslint-disable no-mixed-operators */
 import {useEffect, useState} from "react";
 import {type StopLink} from "./api/Types";
-import {Button} from "@mui/material";
+import {Button, Divider, List, ListItem} from "@mui/material";
 import NearMeIcon from "@mui/icons-material/NearMe";
 import {Link} from "react-router-dom";
 
@@ -71,18 +71,23 @@ export default function FilteredStopsComponent({
       );
     return (
       <>
-        <ul className="max-w-md divide-y rounded border border-blue-900">
-          {stopsLinks.map(StopComponent)}
-        </ul>
+        <List className="max-w-md">
+          {stopsLinks.map(stop => (
+            <>
+              <StopComponent stop={stop} />
+              <Divider />
+            </>
+          ))}
+        </List>
       </>
     );
   }
 }
 
-export function StopComponent(stop: StopLink) {
+export function StopComponent({stop}: {stop: StopLink}) {
   return (
-    <li key={stop.url} className="p-2 border-b-blue-900 border-blue-900">
-      <Link to={stop.url} className=" flex items-center space-x-4">
+    <ListItem key={stop.url} className="p-2 ">
+      <Link to={stop.url} className="flex items-center w-full  space-x-4">
         <div className="flex-shrink-0">
           <img className="w-8" src={stop.iconUrl} alt="Logo" />
         </div>
@@ -97,6 +102,6 @@ export function StopComponent(stop: StopLink) {
           </Link>
         </div>
       </Link>
-    </li>
+    </ListItem>
   );
 }

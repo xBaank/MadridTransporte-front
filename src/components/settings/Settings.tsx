@@ -63,7 +63,7 @@ export default function Settings() {
       className={`grid grid-cols-1 p-5 max-w-md mx-auto w-full justify-center`}>
       <div className=" text-2xl font-bold ">Ajustes</div>
       <div className="flex items-center space-x-4 mt-5">
-        <ul className="w-full border p-2 border-blue-900 rounded">
+        <ul className="w-full ">
           <li className="w-full ">
             <SwitchTheme />
           </li>

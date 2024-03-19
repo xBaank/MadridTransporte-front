@@ -59,9 +59,7 @@ export default function RenderAlerts({
           <ul className={`list-disc ${textColor}`}>
             {alerts.map(alert => {
               return (
-                <li
-                  key={`${alert.codLine} ${alert.codMode}`}
-                  className="p-2 border-b-blue-900 border-blue-900">
+                <li key={`${alert.codLine} ${alert.codMode}`} className="p-2 ">
                   {alert.description}
                 </li>
               );
@@ -69,16 +67,12 @@ export default function RenderAlerts({
 
             {incidents.map(incident => {
               return (
-                <li
-                  key={incident.title}
-                  className="p-2 border-b-blue-900 border-blue-900">
+                <li key={incident.title} className="p-2 ">
                   <div
                     dangerouslySetInnerHTML={{
                       __html: incident.description.replace(/(<([^>]+)>)/gi, ""),
                     }}></div>
-                  <Link
-                    className="text-sm text-blue-400 border-b mt-3"
-                    to={incident.url}>
+                  <Link className="text-sm  border-b mt-3" to={incident.url}>
                     Mas Informacion
                   </Link>
                   <div className="mt-3">

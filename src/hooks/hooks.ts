@@ -16,10 +16,6 @@ export function useRoseColor() {
   const theme = useTheme();
   return theme.palette.mode === "dark" ? "text-red-400" : "text-red-700";
 }
-export function useBorderColor() {
-  const theme = useTheme();
-  return theme.palette.mode === "dark" ? "border-white" : "border-black";
-}
 
 export function useBackgroundColor() {
   const theme = useTheme();

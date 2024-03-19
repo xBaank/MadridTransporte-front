@@ -1,8 +1,12 @@
 # Changelog
 
+## 1.9.0
+
+- Theme rework.
+
 ## 1.8.4
 
-- bugfix.
+- Bugfix.
 
 ## 1.8.3
 
