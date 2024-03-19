@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.9.2
+
+- Add Roboto as default font for MUI.
+
 ## 1.9.1
 
 - Remove theme color in manifest.

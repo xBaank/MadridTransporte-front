@@ -29,6 +29,10 @@ import AbonoInfo from "./components/abono/AbonoInfo";
 import {TokenContext, useToken} from "./notifications";
 import {registerSW} from "virtual:pwa-register";
 import {useSyncAbonoSubscriptions} from "./abonoSync";
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
 
 const updateSW = registerSW({
   onNeedRefresh() {
