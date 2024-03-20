@@ -15,8 +15,10 @@ import {
   DialogActions,
   DialogTitle,
   Divider,
+  IconButton,
   List,
   ListItem,
+  ListItemButton,
 } from "@mui/material";
 import {Link} from "react-router-dom";
 import {unsubscribeAbono} from "./api/Abono";
@@ -78,9 +80,17 @@ export default function AbonoFavorites() {
 
     return (
       <>
-        <ListItem className="flex py-2 pl-2">
-          <Link
-            className="flex items-center space-x-4 text-sm truncate "
+        <ListItem
+          disablePadding
+          className="h-14"
+          secondaryAction={
+            <IconButton edge="end" onClick={handleClickOpen}>
+              <DeleteIcon className="text-red-500" />
+            </IconButton>
+          }>
+          <ListItemButton
+            component={Link}
+            className="flex items-center space-x-4 text-sm truncate h-full"
             to={getAbonoRoute(abono.ttpNumber)}>
             <div className="flex-shrink-0">
               <img className="w-8 h-5 " src={AbonoIcon} alt="Logo" />
@@ -93,10 +103,7 @@ export default function AbonoFavorites() {
                 {formatTTPNumber(abono.ttpNumber)}
               </div>
             </div>
-          </Link>
-          <button className="ml-auto" onClick={handleClickOpen}>
-            <DeleteIcon className=" text-red-500" />
-          </button>
+          </ListItemButton>
         </ListItem>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Borrar {abono.name} de favoritos</DialogTitle>

@@ -29,7 +29,7 @@ export default function LocationMarker({
         circle.setLatLng(e.latlng);
       },
       null,
-      {enableHighAccuracy: true},
+      {enableHighAccuracy: true, maximumAge: 5000},
     );
 
     return () => {

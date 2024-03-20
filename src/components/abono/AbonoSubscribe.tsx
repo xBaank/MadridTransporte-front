@@ -8,7 +8,7 @@ import {
 } from "./api/Abono";
 import {useToken} from "../../notifications";
 import {fold} from "fp-ts/lib/Either";
-import {Card, Skeleton, Snackbar} from "@mui/material";
+import {Card, IconButton, Skeleton, Snackbar} from "@mui/material";
 import {getFavorite} from "./api/Utils";
 
 export default function AbonoSubscribe({
@@ -59,9 +59,9 @@ export default function AbonoSubscribe({
   function SkeletonNotification() {
     return (
       <div>
-        <button>
-          <Skeleton className="w-4 mr-1" />
-        </button>
+        <IconButton>
+          <Skeleton variant="rectangular" width={20} height={20} />
+        </IconButton>
       </div>
     );
   }
@@ -74,15 +74,15 @@ export default function AbonoSubscribe({
     <>
       {isSubscribed ? (
         <div>
-          <button onClick={handleUnsubscription}>
+          <IconButton onClick={handleUnsubscription}>
             <NotificationsIconOff className="text-red-500" />
-          </button>
+          </IconButton>
         </div>
       ) : (
         <div>
-          <button onClick={handleSubscription}>
+          <IconButton onClick={handleSubscription}>
             <NotificationsIcon className="text-green-500" />
-          </button>
+          </IconButton>
         </div>
       )}
       <Snackbar

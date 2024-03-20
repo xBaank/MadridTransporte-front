@@ -10,6 +10,7 @@ import NotificationsOffIcon from "@mui/icons-material/NotificationsOff";
 import {subscribe, unsubscribe} from "./api/Subscriptions";
 import {getCodModeByType} from "./api/Utils";
 import {TokenContext} from "../../notifications";
+import {IconButton} from "@mui/material";
 
 export default function StopTimesSubscribe({
   stopId,
@@ -74,14 +75,14 @@ export default function StopTimesSubscribe({
 
   if (isSubscribed)
     return (
-      <button onClick={handleUnsubscription}>
+      <IconButton onClick={handleUnsubscription}>
         <NotificationsOffIcon className="text-red-500" />
-      </button>
+      </IconButton>
     );
 
   return (
-    <button onClick={handleSubscription}>
+    <IconButton onClick={handleSubscription}>
       <NotificationsIcon className="text-green-500" />
-    </button>
+    </IconButton>
   );
 }

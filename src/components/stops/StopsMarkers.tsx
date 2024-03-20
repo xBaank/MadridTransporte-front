@@ -6,7 +6,7 @@ import {
   getStopTimesLinkByMode,
 } from "./api/Utils";
 import L from "leaflet";
-import {useTheme} from "@mui/material";
+import {Button, useTheme} from "@mui/material";
 import {Link} from "react-router-dom";
 import {renderToString} from "react-dom/server";
 
@@ -60,14 +60,16 @@ export function StopsMarkers({
             {stop.stopName}
             {` (${stop.stopCode})`}
           </div>
-          <div className="mt-3 p-1 bg-blue-900 text-center">
-            <Link
+          <div className="mt-3 p-1  text-center">
+            <Button
+              variant="outlined"
+              component={Link}
               to={getStopTimesLinkByMode(
                 stop.codMode,
                 stop.stopCode.toString(),
               )}>
-              <div className="text-white"> Consultar parada </div>
-            </Link>
+              <div> Consultar parada </div>
+            </Button>
           </div>
         </Popup>
       </Marker>

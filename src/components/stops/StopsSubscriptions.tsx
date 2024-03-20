@@ -17,7 +17,13 @@ import ErrorMessage from "../Error";
 import Line from "../Line";
 import {Link} from "react-router-dom";
 import {TokenContext} from "../../notifications";
-import {Divider, List, ListItem} from "@mui/material";
+import {
+  Divider,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+} from "@mui/material";
 
 export default function AllSubscriptions() {
   const [subscriptions, setSubscriptions] = useState<Subscriptions[] | null>(
@@ -91,9 +97,29 @@ export default function AllSubscriptions() {
                 {subscription.linesDestinations.map(
                   (lineDestination, index) => (
                     <>
-                      <ListItem key={index} className="flex">
-                        <Link
-                          className="flex items-center space-x-4 text-sm truncate w-[85%]"
+                      <ListItem
+                        disablePadding
+                        key={index}
+                        className="h-14 flex"
+                        secondaryAction={
+                          <IconButton
+                            edge="end"
+                            onClick={() => {
+                              handleUnsubscription(
+                                getTransportTypeByCodMode(subscription.codMode),
+                                {
+                                  stopCode: subscription.simpleStopCode ?? "",
+                                  codMode: subscription.codMode,
+                                  lineDestination,
+                                },
+                              );
+                            }}>
+                            <NotificationsOffIcon className=" text-red-600" />
+                          </IconButton>
+                        }>
+                        <ListItemButton
+                          component={Link}
+                          className="flex items-center space-x-4 text-sm truncate  h-full"
                           to={getStopTimesLinkByMode(
                             subscription.codMode,
                             subscription.simpleStopCode ?? "",
@@ -104,21 +130,7 @@ export default function AllSubscriptions() {
                               {lineDestination.destination}
                             </div>
                           </div>
-                        </Link>
-                        <button
-                          className="ml-auto"
-                          onClick={() => {
-                            handleUnsubscription(
-                              getTransportTypeByCodMode(subscription.codMode),
-                              {
-                                stopCode: subscription.simpleStopCode ?? "",
-                                codMode: subscription.codMode,
-                                lineDestination,
-                              },
-                            );
-                          }}>
-                          <NotificationsOffIcon className=" text-red-600" />
-                        </button>
+                        </ListItemButton>
                       </ListItem>
                       <Divider />
                     </>

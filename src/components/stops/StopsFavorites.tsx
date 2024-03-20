@@ -18,8 +18,10 @@ import {
   DialogActions,
   Button,
   List,
-  ListItem,
   Divider,
+  ListItemButton,
+  IconButton,
+  ListItem,
 } from "@mui/material";
 import {Link} from "react-router-dom";
 
@@ -82,10 +84,18 @@ export default function StopsFavorites() {
 
     return (
       <>
-        <ListItem className="py-2 pl-2 flex">
-          <Link
-            to={getStopTimesLinkByMode(stop.cod_mode, stop.code.toString())}
-            className="flex items-center w-[85%]">
+        <ListItem
+          className="h-14"
+          secondaryAction={
+            <IconButton edge="end" onClick={handleClickOpen}>
+              <DeleteIcon className=" text-red-500" />
+            </IconButton>
+          }
+          disablePadding>
+          <ListItemButton
+            component={Link}
+            className="pl-2 flex items-center h-full"
+            to={getStopTimesLinkByMode(stop.cod_mode, stop.code.toString())}>
             <div className="flex-shrink-0">
               <img
                 className="w-8"
@@ -99,10 +109,7 @@ export default function StopsFavorites() {
             <div className="flex font-bold min-w-0">
               <div className="text-sm truncate">{stop.code}</div>
             </div>
-          </Link>
-          <button className="ml-auto" onClick={handleClickOpen}>
-            <DeleteIcon className=" text-red-500" />
-          </button>
+          </ListItemButton>
         </ListItem>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Borrar {stop.name} de favoritos</DialogTitle>
@@ -131,14 +138,22 @@ export default function StopsFavorites() {
     };
     return (
       <>
-        <ListItem>
-          <Link
+        <ListItem
+          className="h-14"
+          secondaryAction={
+            <IconButton edge="end" onClick={handleClickOpen}>
+              <DeleteIcon className=" text-red-500" />
+            </IconButton>
+          }
+          disablePadding>
+          <ListItemButton
+            component={Link}
             to={getStopTimesLinkByMode(
               trainCodMode,
               stop.destinationCode,
               stop.originCode,
             )}
-            className="flex items-center w-[85%]">
+            className="pl-2 flex items-center h-full">
             <div className="flex-shrink-0">
               <img
                 className="w-8"
@@ -154,10 +169,7 @@ export default function StopsFavorites() {
                 {stop.originCode} - {stop.destinationCode}
               </div>
             </div>
-          </Link>
-          <button className="ml-auto" onClick={handleClickOpen}>
-            <DeleteIcon className=" text-red-500" />
-          </button>
+          </ListItemButton>
         </ListItem>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Borrar {stop.name} de favoritos</DialogTitle>

@@ -167,7 +167,7 @@ export default function LinesLocationsMap() {
       }}
       onLocateClick={() => {
         setFlyToLocation(true);
-        map?.locate();
+        map?.locate({enableHighAccuracy: false, maximumAge: 5000});
       }}>
       <Polyline
         color={getColor(lineLocations.codMode)}

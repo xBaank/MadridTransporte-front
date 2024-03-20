@@ -125,18 +125,18 @@ export default function BusStopsTimes() {
       <>
         <div
           className={`grid grid-cols-1 p-5 max-w-md mx-auto w-full justify-center`}>
-          <div className={`flex items-end justify-start mb-3 border-b  pb-2`}>
+          <div className={`flex items-end justify-start mb-3 border-b`}>
             <img
-              className="w-8 max-md:w-7 mr-2"
+              className="w-8 max-md:w-7 mr-2 mb-auto"
               src={getIconByCodMode(stop.codMode)}
               alt="Logo"
             />
             <div
-              className={`flex items-center gap-2 whitespace-nowrap overflow-scroll no-scrollbar`}>
+              className={`flex items-center gap-2 whitespace-nowrap overflow-scroll no-scrollbar my-auto`}>
               <div className="font-bold mx-1">{stop.stopCode}</div>
               <div>{stop.stopName}</div>
             </div>
-            <div className="ml-auto flex pl-3 items-baseline">
+            <div className="ml-auto flex pl-3">
               {type === "train" ? <TrainTimesDestIcon code={code!} /> : null}
               <RenderAffected alerts={alerts} stopId={code!} />
               <FavoriteSave
@@ -216,7 +216,7 @@ export default function BusStopsTimes() {
             </div>
           </div>
 
-          <div className="ml-auto flex gap-3 p-1 mb-auto ">
+          <div className="ml-auto flex p-1 mb-auto ">
             <StopTimesSubscribe
               stopId={code!}
               type={type!}

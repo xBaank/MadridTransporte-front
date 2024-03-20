@@ -3,7 +3,6 @@ import {useSearchParams} from "react-router-dom";
 import {fold} from "fp-ts/lib/Either";
 import {getTrainStopsTimes} from "../api/Times";
 import {type Alert, type TrainStopTimes} from "../api/Types";
-import {useTheme} from "@mui/material";
 import {
   addToTrainFavorites,
   getIconByCodMode,
@@ -30,10 +29,6 @@ export default function TrainStopTimesComponent() {
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [error, setError] = useState<string>();
   const [showAll, setShowAll] = useState<boolean>(false);
-  const theme = useTheme();
-  const textColor = theme.palette.mode === "dark" ? "text-white" : "text-black";
-  const borderColor =
-    theme.palette.mode === "dark" ? "border-white" : "border-black";
 
   useEffect(() => {
     if (origin === null || destination === null) {
@@ -69,19 +64,18 @@ export default function TrainStopTimesComponent() {
   return (
     <>
       <div
-        className={`grid grid-cols-1 p-5 max-w-md mx-auto w-full justify-center ${textColor}`}>
-        <div
-          className={`flex items-end justify-start mb-3 border-b ${borderColor} pb-2`}>
+        className={`grid grid-cols-1 p-5 max-w-md mx-auto w-full justify-center`}>
+        <div className={`flex items-end justify-start border-b  `}>
           <img
-            className="w-8 h-8 max-md:w-7 max-md:h-7 mr-2 rounded-full"
+            className="w-8 h-8 max-md:w-7 max-md:h-7 mb-2 mr-2 rounded-full"
             src={getIconByCodMode(trainCodMode)}
             alt="Logo"
           />
           <div
-            className={`flex items-center whitespace-nowrap overflow-scroll no-scrollbar`}>
+            className={`flex items-center whitespace-nowrap overflow-scroll no-scrollbar  my-auto`}>
             {times?.peticion?.descEstOrigen} - {times?.peticion?.descEstDestino}
           </div>
-          <div className="ml-auto flex pl-3 items-baseline">
+          <div className="ml-auto flex pl-3">
             <RenderAffected alerts={alerts} stopId={origin!} />
             <FavoriteSave
               comparator={() =>
@@ -189,7 +183,7 @@ export default function TrainStopTimesComponent() {
         {!showAll ? (
           <button
             onClick={() => setShowAll(true)}
-            className={` m-auto bg-transparent w-44 border-2 border-gray-500 hover:bg-gray-500 ${textColor} font-bold py-2 px-4 rounded mt-5`}>
+            className={` m-auto bg-transparent w-44 border-2 border-gray-500 hover:bg-gray-500 font-bold py-2 px-4 rounded mt-5`}>
             Mostrar todos
           </button>
         ) : (

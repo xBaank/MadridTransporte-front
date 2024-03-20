@@ -71,7 +71,9 @@ function BusStopMapBase() {
         setMap={setMap}
         flyToLocation={true}
         center={defaultPosition}
-        onLocateClick={() => map?.locate()}>
+        onLocateClick={() =>
+          map?.locate({enableHighAccuracy: false, maximumAge: 5000})
+        }>
         <DisplayOnMove />
         {markers}
       </ThemedMap>

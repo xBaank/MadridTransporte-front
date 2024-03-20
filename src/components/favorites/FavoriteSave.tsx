@@ -8,6 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import {useEffect, useRef, useState} from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import {IconButton} from "@mui/material";
 
 export default function FavoriteSave({
   comparator,
@@ -56,11 +57,13 @@ export default function FavoriteSave({
 
   return (
     <div>
-      <button
-        onClick={handleClickOpen}
-        className={`text-red-500 hover:text-red-700`}>
-        {isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-      </button>
+      <IconButton onClick={handleClickOpen}>
+        {isFavorite ? (
+          <FavoriteIcon className={`text-red-500 `} />
+        ) : (
+          <FavoriteBorderIcon className={`text-red-500 `} />
+        )}
+      </IconButton>
 
       {isFavorite ? (
         <Dialog open={open} onClose={handleClose}>

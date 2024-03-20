@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.9.3
+
+- UI improvements
+
 ## 1.9.2
 
 - Add Roboto as default font for MUI.

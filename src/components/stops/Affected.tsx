@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {type Alert} from "./api/Types";
 import ErrorIcon from "@mui/icons-material/Error";
-import {Tooltip} from "@mui/material";
+import {IconButton, Tooltip} from "@mui/material";
 
 export default function RenderAffected({
   alerts,
@@ -30,9 +30,9 @@ export default function RenderAffected({
         title={`Esta parada podria verse afectada. \n Mire los avisos para saber mas`}
         enterTouchDelay={0}
         leaveTouchDelay={4000}>
-        <button>
+        <IconButton>
           <ErrorIcon className=" text-red-500 mr-2" />
-        </button>
+        </IconButton>
       </Tooltip>
     );
 

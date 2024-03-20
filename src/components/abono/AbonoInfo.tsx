@@ -77,7 +77,7 @@ export default function AbonoInfo() {
       className={`max-w-sm w-[90%] px-6 py-4 my-10 mx-auto rounded-lg shadow-lg `}>
       <div className="flex">
         <CreditCard fontSize="large" className="text-blue-500" />
-        <div className="ml-auto -mr-4 flex gap-2">
+        <div className="ml-auto -mr-4 flex ">
           <AbonoSubscribe ttpNumber={abono.ttpNumber} isFavorite={isFavorite} />
           <FavoriteSave
             comparator={() => isFavoriteF(abono)}
