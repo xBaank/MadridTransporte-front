@@ -1,8 +1,12 @@
 # Changelog
 
+## 1.9.4
+
+- Fix icons positions.
+
 ## 1.9.3
 
-- UI improvements
+- UI improvements.
 
 ## 1.9.2
 
