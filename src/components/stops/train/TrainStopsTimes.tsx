@@ -67,7 +67,7 @@ export default function TrainStopTimesComponent() {
         className={`grid grid-cols-1 p-5 max-w-md mx-auto w-full justify-center`}>
         <div className={`flex items-end justify-start border-b  `}>
           <img
-            className="w-8 h-8 max-md:w-7 max-md:h-7 mb-2 mr-2 rounded-full"
+            className="w-8 h-8 max-md:w-7 max-md:h-7 my-auto mr-2 rounded-full"
             src={getIconByCodMode(trainCodMode)}
             alt="Logo"
           />

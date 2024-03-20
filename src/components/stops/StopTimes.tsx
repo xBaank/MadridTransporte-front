@@ -127,7 +127,7 @@ export default function BusStopsTimes() {
           className={`grid grid-cols-1 p-5 max-w-md mx-auto w-full justify-center`}>
           <div className={`flex items-end justify-start mb-3 border-b`}>
             <img
-              className="w-8 max-md:w-7 mr-2 mb-auto"
+              className="w-8 max-md:w-7 mr-2 my-auto"
               src={getIconByCodMode(stop.codMode)}
               alt="Logo"
             />
