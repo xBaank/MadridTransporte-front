@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.9.5
+
+- Make stop times errors less intrusive.
+
 ## 1.9.4
 
 - Fix icons positions.
