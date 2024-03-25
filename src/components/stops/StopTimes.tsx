@@ -41,7 +41,7 @@ import PullToRefresh from "react-simple-pull-to-refresh";
 export default function BusStopsTimes() {
   const {type, code} = useParams<{type: TransportType; code: string}>();
   const [stopTimes, setStopTimes] = useState<StopTimes>();
-  const [stop, setStop] = useState<Stop>();
+  const [stop, setStop] = useState<Stop | null>();
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [subscription, setSubscription] = useState<Subscriptions | null>(null);
   const token = useContext(TokenContext);
@@ -74,9 +74,7 @@ export default function BusStopsTimes() {
 
   const getStopInfo = useCallback(() => {
     if (type === undefined || code === undefined) return;
-    getStop(type, code).then(stop =>
-      stop !== null ? setStop(stop) : setStop(undefined),
-    );
+    getStop(type, code).then(stop => setStop(stop));
   }, [type, code]);
 
   const getAlerts = useCallback(() => {
@@ -100,8 +98,7 @@ export default function BusStopsTimes() {
     getSubscriptions();
   }, [type, code, getTimes, getAlerts, getStopInfo, getSubscriptions]);
 
-  if (error !== undefined) return <ErrorMessage message={error} />;
-
+  if (stop === null) return <ErrorMessage message="La parada no existe" />;
   if (stop === undefined) return <LoadingSpinner />;
 
   return (
@@ -172,6 +169,7 @@ export default function BusStopsTimes() {
   }
 
   function RenderTimesOrEmpty({times}: {times?: StopTimes}) {
+    if (error !== undefined) return <ErrorMessage message={error} />;
     if (times === undefined)
       return (
         <div className="w-full flex justify-center py-4">
