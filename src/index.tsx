@@ -21,7 +21,6 @@ import StaticMaps from "./components/maps/StaticMaps";
 import Settings from "./components/settings/Settings";
 import StopNearest from "./components/stops/StopNearest";
 import LinesLocationsMap from "./components/stops/lines/LinesLocationsMap";
-import {showStatusBar} from "./statusbar";
 import {setupBackButton} from "./backButtons";
 import {useSavedTheme} from "./hooks/hooks";
 import AbonoSearch from "./components/abono/AbonoSearch";
