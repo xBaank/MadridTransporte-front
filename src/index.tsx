@@ -156,7 +156,6 @@ export const router = createBrowserRouter([
   },
 ]);
 
-showStatusBar();
 setupBackButton();
 
 let container: HTMLElement | null = null;
