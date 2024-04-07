@@ -6,7 +6,7 @@ buildscript {
         google()
         mavenCentral()
     }
-    ext.kotlin_version = '1.8.20'
+    ext.kotlin_version = '1.9.23'
     dependencies {
         classpath 'com.android.tools.build:gradle:8.0.0'
         classpath 'com.google.gms:google-services:4.3.15'
