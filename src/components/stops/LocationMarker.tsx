@@ -7,7 +7,7 @@ export default function LocationMarker({
 }: {
   flyToLocation: boolean;
 }) {
-  const [circle] = useState<L.Circle>(L.circle({lat: 0, lng: 0}, 16));
+  const [circle] = useState<L.Circle>(L.circle({lat: 0, lng: 0}, {radius: 16}));
   const map = useMap();
 
   useEffect(() => {

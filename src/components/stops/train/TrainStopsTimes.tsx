@@ -13,7 +13,6 @@ import {
 } from "../api/Utils";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import RenderAlerts from "../Alerts";
-import {type} from "@testing-library/user-event/dist/type";
 import {getAlertsByTransportType} from "../api/Stops";
 import FavoriteSave from "../../favorites/FavoriteSave";
 import LoadingSpinner from "../../LoadingSpinner";
@@ -44,7 +43,6 @@ export default function TrainStopTimesComponent() {
   }, [origin, destination]);
 
   const getAlerts = useCallback(() => {
-    if (type === undefined) return;
     getAlertsByTransportType("train").then(alerts =>
       fold(
         () => setAlerts([]),
