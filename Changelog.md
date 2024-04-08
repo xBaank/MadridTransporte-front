@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.9.6
+
+- Update dependencies.
+- Remove status bar color.
+
 ## 1.9.5
 
 - Make stop times errors less intrusive.
