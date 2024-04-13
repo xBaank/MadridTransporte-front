@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.9.7
+- Update dependencies.
+- Fix infinite loading on abono error.
+
 ## 1.9.6
 
 - Update dependencies.

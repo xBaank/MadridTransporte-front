@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {getAbono, subscribeAbono, unsubscribeAbono} from "./api/Abono";
-import {fold} from "fp-ts/lib/Either";
+import {fold, left} from "fp-ts/lib/Either";
 import {type AbonoType} from "./api/Types";
 import {
   addToFavorites,
@@ -27,15 +27,17 @@ export default function AbonoInfo() {
     getFavorites().some(favorite => favorite.ttpNumber === abono.ttpNumber);
 
   useEffect(() => {
-    getAbono(code!).then(abono => {
-      fold(
-        (error: string) => setError(error),
-        (abono: AbonoType) => {
-          setAbono(abono);
-          setIsFavorite(isFavoriteF(abono));
-        },
-      )(abono);
-    });
+    getAbono(code!)
+      .catch(_i => left("Error del servidor"))
+      .then(abono => {
+        fold(
+          (error: string) => setError(error),
+          (abono: AbonoType) => {
+            setAbono(abono);
+            setIsFavorite(isFavoriteF(abono));
+          },
+        )(abono);
+      });
   }, [code]);
 
   const handleSaveFavorite = async (name: string) => {

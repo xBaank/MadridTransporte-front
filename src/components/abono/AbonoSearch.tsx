@@ -33,7 +33,7 @@ export default function AbonoSearch() {
   };
 
   const handleChange = (event: any) => {
-    const inputValue = event.target.value;
+    const inputValue = event.target.value as string;
     if (inputValue === "") {
       setFormattedValue(undefined);
       return;
