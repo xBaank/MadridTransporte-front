@@ -164,4 +164,14 @@ export type ItineraryWithStopsOrder = {
   stops: StopWithOrder[];
 };
 
+export type StopTimePlanned = {
+  lineCode: string;
+  fullLineCode: string;
+  codMode: number;
+  direction: number;
+  itineraryCode: string;
+  destination: string;
+  arrives: number[];
+};
+
 export type TransportType = "metro" | "train" | "emt" | "bus" | "tram";
