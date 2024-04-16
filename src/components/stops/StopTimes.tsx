@@ -38,6 +38,7 @@ import LinesLocationsButton from "./lines/LinesLocationsButton";
 import TrainTimesDestIcon from "./train/TrainTimesDestinationIcon";
 import {TokenContext} from "../../notifications";
 import PullToRefresh from "react-simple-pull-to-refresh";
+import {Button} from "@mui/material";
 
 export default function BusStopsTimes() {
   const {type, code} = useParams<{type: TransportType; code: string}>();
@@ -49,7 +50,7 @@ export default function BusStopsTimes() {
   const token = useContext(TokenContext);
   const [error, setError] = useState<string>();
   const [isPullable, setIsPullable] = useState(true);
-
+  const [showLive, setShowLive] = useState(true);
   const getTimesAsync = async () => {
     if (type === undefined || code === undefined) return;
     await getStopsTimes(type, code).then(stops =>
@@ -174,17 +175,31 @@ export default function BusStopsTimes() {
               />
             </div>
           </div>
-          <div className="font-bold">Tiempos en directo</div>
-          <ul className="rounded w-full border-b mb-1">
-            <RenderTimesOrEmpty times={stopTimes} />
-          </ul>
-          {type === "bus" ? (
+          {showLive ? (
             <>
-              <div className="font-bold mt-3">Tiempos planeados</div>
+              <ul className="rounded w-full border-b mb-1">
+                <RenderTimesOrEmpty times={stopTimes} />
+              </ul>
+            </>
+          ) : type === "bus" ? (
+            <>
               <ul className="rounded w-full border-b mb-1">
                 <RenderTimesPlannedOrEmpty times={stopTimesPlanned} />
               </ul>
             </>
+          ) : null}
+          {type === "bus" ? (
+            <div className="mt-2 w-full">
+              <Button
+                className="w-full"
+                variant="contained"
+                color="info"
+                onClick={() => setShowLive(!showLive)}>
+                {showLive
+                  ? "Ver tiempos planificados"
+                  : "Ver tiempos en directo"}
+              </Button>
+            </div>
           ) : null}
           <RenderAlerts
             alerts={alerts}

@@ -5,7 +5,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import {useEffect, useRef, useState} from "react";
+import {useRef, useState} from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import {IconButton} from "@mui/material";
@@ -22,12 +22,8 @@ export default function FavoriteSave({
   defaultName: string | null;
 }) {
   const [open, setOpen] = useState<boolean>(false);
-  const [isFavorite, setIsFavorite] = useState<boolean>(true);
+  const [isFavorite, setIsFavorite] = useState<boolean>(comparator());
   const name = useRef<TextFieldProps>();
-
-  useEffect(() => {
-    comparator() ? setIsFavorite(true) : setIsFavorite(false);
-  }, [comparator]);
 
   const handleClickOpen = () => {
     setOpen(true);
