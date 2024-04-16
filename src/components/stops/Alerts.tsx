@@ -1,4 +1,4 @@
-import {Modal, Box, Typography, useTheme} from "@mui/material";
+import {Modal, Box, Typography, useTheme, Button} from "@mui/material";
 import {type Alert, type Incident} from "./api/Types";
 import React from "react";
 import {Link} from "react-router-dom";
@@ -37,12 +37,14 @@ export default function RenderAlerts({
   if (alerts.length === 0 && incidents.length === 0) return <></>;
 
   return (
-    <>
-      <button
+    <div className="mt-2">
+      <Button
+        color="error"
+        variant="contained"
         onClick={handleOpen}
-        className={` m-auto bg-transparent w-44 border-2 border-red-500 hover:bg-red-500 ${textColor} font-bold py-2 px-4 rounded mt-5`}>
+        className={`w-full`}>
         Avisos
-      </button>
+      </Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -85,6 +87,6 @@ export default function RenderAlerts({
           </ul>
         </Box>
       </Modal>
-    </>
+    </div>
   );
 }

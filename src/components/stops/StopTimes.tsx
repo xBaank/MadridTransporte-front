@@ -1,6 +1,7 @@
 import {useCallback, useContext, useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {
+  type StopTimePlanned,
   type Alert,
   type Arrive,
   type Stop,
@@ -8,7 +9,7 @@ import {
   type Subscriptions,
   type TransportType,
 } from "./api/Types";
-import {getStopsTimes} from "./api/Times";
+import {getStopsTimes, getStopsTimesPlanned} from "./api/Times";
 import {fold} from "fp-ts/lib/Either";
 import {
   addToFavorites,
@@ -37,23 +38,36 @@ import LinesLocationsButton from "./lines/LinesLocationsButton";
 import TrainTimesDestIcon from "./train/TrainTimesDestinationIcon";
 import {TokenContext} from "../../notifications";
 import PullToRefresh from "react-simple-pull-to-refresh";
+import {Button} from "@mui/material";
 
 export default function BusStopsTimes() {
   const {type, code} = useParams<{type: TransportType; code: string}>();
   const [stopTimes, setStopTimes] = useState<StopTimes>();
+  const [stopTimesPlanned, setStopTimesPlanned] = useState<StopTimePlanned[]>();
   const [stop, setStop] = useState<Stop | null>();
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [subscription, setSubscription] = useState<Subscriptions | null>(null);
   const token = useContext(TokenContext);
   const [error, setError] = useState<string>();
   const [isPullable, setIsPullable] = useState(true);
-
+  const [showLive, setShowLive] = useState(true);
   const getTimesAsync = async () => {
     if (type === undefined || code === undefined) return;
     await getStopsTimes(type, code).then(stops =>
       fold(
         (error: string) => setError(error),
         (stops: StopTimes) => setStopTimes(stops),
+      )(stops),
+    );
+  };
+
+  const getTimesPlannedAsync = async () => {
+    if (type === undefined || code === undefined) return;
+    if (type !== "bus") return;
+    await getStopsTimesPlanned(type, code).then(stops =>
+      fold(
+        (_error: string) => setStopTimesPlanned(undefined),
+        (stops: StopTimePlanned[]) => setStopTimesPlanned(stops),
       )(stops),
     );
   };
@@ -70,6 +84,10 @@ export default function BusStopsTimes() {
 
   const getTimes = useCallback(() => {
     getTimesAsync();
+  }, [type, code]);
+
+  const getTimesPlanned = useCallback(() => {
+    getTimesPlannedAsync();
   }, [type, code]);
 
   const getStopInfo = useCallback(() => {
@@ -94,6 +112,7 @@ export default function BusStopsTimes() {
   useEffect(() => {
     getStopInfo();
     getTimes();
+    getTimesPlanned();
     getAlerts();
     getSubscriptions();
   }, [type, code, getTimes, getAlerts, getStopInfo, getSubscriptions]);
@@ -156,9 +175,32 @@ export default function BusStopsTimes() {
               />
             </div>
           </div>
-          <ul className="rounded w-full border-b mb-1">
-            <RenderTimesOrEmpty times={stopTimes} />
-          </ul>
+          {showLive ? (
+            <>
+              <ul className="rounded w-full border-b mb-1">
+                <RenderTimesOrEmpty times={stopTimes} />
+              </ul>
+            </>
+          ) : type === "bus" ? (
+            <>
+              <ul className="rounded w-full border-b mb-1">
+                <RenderTimesPlannedOrEmpty times={stopTimesPlanned} />
+              </ul>
+            </>
+          ) : null}
+          {type === "bus" ? (
+            <div className="mt-2 w-full">
+              <Button
+                className="w-full"
+                variant="contained"
+                color="info"
+                onClick={() => setShowLive(!showLive)}>
+                {showLive
+                  ? "Ver tiempos planificados"
+                  : "Ver tiempos en directo"}
+              </Button>
+            </div>
+          ) : null}
           <RenderAlerts
             alerts={alerts}
             incidents={stopTimes?.incidents ?? []}
@@ -187,6 +229,28 @@ export default function BusStopsTimes() {
         ) : null}
         {times.arrives.map((arrive, index) => (
           <RenderArrive key={index} arrive={arrive} />
+        ))}
+      </>
+    );
+  }
+
+  function RenderTimesPlannedOrEmpty({times}: {times?: StopTimePlanned[]}) {
+    if (error !== undefined) return <ErrorMessage message={error} />;
+    if (times === undefined)
+      return (
+        <div className="w-full flex justify-center py-4">
+          <LoadingSpinner />
+        </div>
+      );
+    if (times.length === 0)
+      return <div className="text-center">No hay tiempos planeados</div>;
+    return (
+      <>
+        {times.map((stopTimePlanned, index) => (
+          <RenderStopTimePlanned
+            key={index}
+            stopTimePlanned={stopTimePlanned}
+          />
         ))}
       </>
     );
@@ -236,6 +300,48 @@ export default function BusStopsTimes() {
                 codMode={getCodModeByType(type!)}
                 lineCode={arrive?.lineCode ?? ""}
                 direction={arrive?.direction ?? 0}
+                stopCode={code ?? ""}
+              />
+            ) : null}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  function RenderStopTimePlanned({
+    stopTimePlanned,
+  }: {
+    stopTimePlanned: StopTimePlanned;
+  }) {
+    const arrivesFormatted = stopTimePlanned.arrives.map(FormatTime);
+    return (
+      <div className="p-2">
+        <div className="flex items-center justify-between w-full">
+          <div className="flex-col flex-wrap  min-w-0 max-w-full">
+            <div className="flex">
+              <Line
+                info={{
+                  line: stopTimePlanned.lineCode,
+                  codMode: stopTimePlanned.codMode,
+                }}
+              />
+              <div className={`gap-5 flex grow-0 overflow-scroll no-scrollbar`}>
+                {arrivesFormatted}
+              </div>
+            </div>
+            <div className="flex-col text-xs font-bold min-w-0 overflow-hidden pt-1 w-full items-center mx-auto">
+              <pre className="overflow-scroll no-scrollbar ">
+                {` ${stopTimePlanned.destination} `}
+              </pre>
+            </div>
+          </div>
+          <div className="ml-auto flex p-1 mb-auto ">
+            {stopTimePlanned.direction != null ? (
+              <LinesLocationsButton
+                codMode={getCodModeByType(type!)}
+                lineCode={stopTimePlanned?.fullLineCode ?? ""}
+                direction={stopTimePlanned?.direction ?? 0}
                 stopCode={code ?? ""}
               />
             ) : null}

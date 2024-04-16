@@ -1,13 +1,17 @@
 # Changelog
 
+## 1.10.0
+- Updated dependencies.
+- Added planned times for bus stops.
+
 ## 1.9.7
-- Update dependencies.
-- Fix infinite loading on abono error.
+- Updated dependencies.
+- Fixed infinite loading on abono error.
 
 ## 1.9.6
 
-- Update dependencies.
-- Remove status bar color.
+- Updated dependencies.
+- Removed status bar color.
 
 ## 1.9.5
 
@@ -15,7 +19,7 @@
 
 ## 1.9.4
 
-- Fix icons positions.
+- Fixed icons positions.
 
 ## 1.9.3
 
@@ -23,11 +27,11 @@
 
 ## 1.9.2
 
-- Add Roboto as default font for MUI.
+- Added Roboto as default font for MUI.
 
 ## 1.9.1
 
-- Remove theme color in manifest.
+- Removed theme color in manifest.
 
 ## 1.9.0
 
@@ -39,7 +43,7 @@
 
 ## 1.8.3
 
-- Fix manifest.json
+- Fixed manifest.json
 
 ## 1.8.2
 
@@ -56,7 +60,7 @@
 
 ## 1.7.17
 
-- Revert kml as it does not represent all the route.
+- Reverted kml as it does not represent all the route.
 
 ## 1.7.16
 
@@ -64,15 +68,15 @@
 
 ## 1.7.15
 
-- Update dependencies.
+- Updated dependencies.
 
 ## 1.7.14
 
-- Fix locations map lag.
+- Fixed locations map lag.
 
 ## 1.7.13
 
-- Adapt to new endpoints.
+- Adapted to new endpoints.
 
 ## 1.7.12
 
@@ -98,24 +102,24 @@
 
 ## 1.7.8
 
-- Add more information for abono.
+- Added more information for abono.
 - UI improvements.
 
 ## 1.7.7
 
-- Fix notification bug that caused subscriptions to not load.
+- Fixed notification bug that caused subscriptions to not load.
 
 ## 1.7.6
 
-- Add notifications on android.
+- Added notifications on android.
 
 ## 1.7.5
 
-- Fix abono favorite name.
+- Fixed abono favorite name.
 
 ## 1.7.4
 
-- Update stops.
+- Updated stops.
 
 ## 1.7.3
 
@@ -123,11 +127,11 @@
 
 ## 1.7.2
 
-- Improve UI.
+- Improved UI.
 
 ## 1.7.1
 
-- Fix notification bug.
+- Fixed notification bug.
 
 ## 1.7.0
 
@@ -135,12 +139,12 @@
 
 ## 1.6.9
 
-- Remove scrolls on edge.
+- Removed scrolls on edge.
 
 ## 1.6.8
 
-- Improve searching.
-- Improve stop clicking.
+- Improved searching.
+- Improved stop clicking.
 
 
 ## 1.6.7
@@ -149,7 +153,7 @@
 
 ## 1.6.6
 
-- Improve shapes.
+- Improved shapes.
 
 ## 1.6.5
 
@@ -157,52 +161,52 @@
 
 ## 1.6.4
 
-- Fix shapes routes by using OSRM `match` endpoint.
+- Fixed shapes routes by using OSRM `match` endpoint.
 
 ## 1.6.3
 
-- Fix theme loading delay.
+- Fixed theme loading delay.
 
 ## 1.6.2
 
-- Fix theme not being saved.
+- Fixed theme not being saved.
 
 ## 1.6.1
 
-- Fix maps on native.
+- Fixed maps on native.
 
 ## 1.6.0
 
-- Replace TTP card check by using NFC.
+- Replaced TTP card check by using NFC.
 
 > [!NOTE]\
 > This means it's not posible to check TTP card via web.
 
 ## 1.5.4
 
-- Update types according to the api.
+- Updated types according to the api.
 
 ## 1.5.3
 
-- Add emt locations.
+- Added emt locations.
 
 ## 1.5.2
 
-- Remove PC version.
+- Removed PC version.
 
 
 ## 1.5.1
 
-- Change map background to black on dark mode.
-- Fix bug that caused the stops to not be rendered on the map until the user moved the camera.
+- Changed map background to black on dark mode.
+- Fixed bug that caused the stops to not be rendered on the map until the user moved the camera.
 
 ## 1.5.0
 
-- Add dark theme to map.
+- Added dark theme to map.
 
 ## 1.4.10
 
-- Fix requests being sent twice.
+- Fixed requests being sent twice.
 
 ## 1.4.9
 
@@ -210,11 +214,11 @@
 
 ## 1.4.8
 
-- Update stops data.
+- Updated stops data.
 
 ## 1.4.7
 
-- Optimize locations fetch.
+- Optimized locations fetch.
 
 ## 1.4.6
 
@@ -222,11 +226,11 @@
 
 ## 1.4.5
 
-- Fix favorite icon.
+- Fixed favorite icon.
 
 ## 1.4.4
 
-- Add stop code to map stop markers and stop times.
+- Added stop code to map stop markers and stop times.
 
 ## 1.4.3
 
@@ -238,20 +242,20 @@
 
 ## 1.4.1
 
-- Fix a bug that caused the map to not center the stop when looking for a line .
+- Fixed a bug that caused the map to not center the stop when looking for a line .
 
 ## 1.4.0
 
-- Add a button to see the locations of a bus line in the map (Only available for urban and interurban buses).
+- Added a button to see the locations of a bus line in the map (Only available for urban and interurban buses).
 
 ## 1.3.11
 
-- Fix bug that did't open the stop when clicking the notification.
+- Fixed bug that did't open the stop when clicking the notification.
 
 ## 1.3.10
 
-- Remove usage of `v1/stops/all`.
-- Improve performance when searching for stops.
+- Removed usage of `v1/stops/all`.
+- Improved performance when searching for stops.
 
 ## 1.3.9
 
@@ -259,12 +263,12 @@
 
 ## 1.3.8
 
-- Add nearest stop button.
-- Update location marker when user moves.
+- Added nearest stop button.
+- Updated location marker when user moves.
 
 ## 1.3.7
 
-- Fix filter.
+- Fixed filter.
 
 ## 1.3.6
 
@@ -285,25 +289,25 @@
 
 ## 1.3.2
 
-- Add service worker.
-- Fix typo.
+- Added service worker.
+- Fixed typo.
 
 ## 1.3.1
 
-- Improve performance when searching for stops.
+- Improved performance when searching for stops.
 
 ## 1.3.0
 
 - Use colors depending on the time left.
-- Fix problem that caused the mobile navigation bar to be displayed incorrectly.
+- Fixed problem that caused the mobile navigation bar to be displayed incorrectly.
 
 ## 1.2.2
 
-- Fix bug that crashed the app when the browser didn't support Notification API.
+- Fixed bug that crashed the app when the browser didn't support Notification API.
 
 ## 1.2.1
 
-- Fix text too large in settings page.
+- Fixed text too large in settings page.
 
 ## 1.2.0
 
@@ -316,11 +320,11 @@
 
 ## 1.1.1
 
-- Fix an issue that caused the map location marker to be created every time the location was found.
+- Fixed an issue that caused the map location marker to be created every time the location was found.
 
 ## 1.1.0
 
-- Add message to say if times are not available and cache is being used.
+- Added message to say if times are not available and cache is being used.
 
 ## 1.0.4
 
@@ -328,7 +332,7 @@
 
 ## 1.0.3
 
-- Fix an issue that caused the app to be unusable if Firebase messaging was not supported.
+- Fixed an issue that caused the app to be unusable if Firebase messaging was not supported.
 - Use system theme by default.
 
 ## 1.0.2
@@ -337,7 +341,7 @@
 
 ## 1.0.1
 
-- Disable zoom on mobile
+- Disabled zoom on mobile
 
 ## 1.0.0
 
@@ -349,7 +353,7 @@
 
 ## 1.0.0-RC13
 
-- Fix map problems.
+- Fixed map problems.
 
 ## 1.0.0-RC12
 
@@ -357,11 +361,11 @@
 
 ## 1.0.0-RC11
 
-- Fix an issue that caused times to not be loaded when alerts were not retreived.
+- Fixed an issue that caused times to not be loaded when alerts were not retreived.
 
 ## 1.0.0-RC10
 
-- Fix abono save favorite button for mobile.
+- Fixed abono save favorite button for mobile.
 
 ## 1.0.0-RC9
 
@@ -373,7 +377,7 @@
 
 ## 1.0.0-RC7
 
-- Disable service worker
+- Disabled service worker
 
 ## 1.0.0-RC6
 
