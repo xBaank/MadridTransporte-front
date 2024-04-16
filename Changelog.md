@@ -1,8 +1,8 @@
 # Changelog
 
 ## 1.10.0
-- Updated dependencies
-- Added 
+- Updated dependencies.
+- Added planned times for bus stops.
 
 ## 1.9.7
 - Updated dependencies.
