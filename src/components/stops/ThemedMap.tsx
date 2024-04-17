@@ -10,12 +10,14 @@ export default function ThemedMap({
   children,
   setMap,
   center,
+  zoom,
   onLocateClick,
   whenReady,
 }: {
   children: JSX.Element[];
   setMap: React.Dispatch<React.SetStateAction<Map | null>>;
   center: LatLngExpression;
+  zoom: number;
   onLocateClick: () => void;
   whenReady?: () => void;
 }) {
@@ -31,7 +33,7 @@ export default function ThemedMap({
         className={`h-full ${useBackgroundColor()}`}
         center={center}
         preferCanvas={false}
-        zoom={16}
+        zoom={zoom}
         maxZoom={18}
         scrollWheelZoom={true}>
         <LocationMarker />

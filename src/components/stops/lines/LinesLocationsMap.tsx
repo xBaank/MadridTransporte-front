@@ -163,6 +163,7 @@ export default function LinesLocationsMap() {
         lat: currentStop?.stopLat ?? defaultPosition.lat,
         lng: currentStop?.stopLon ?? defaultPosition.lng,
       }}
+      zoom={16}
       onLocateClick={() => {
         map?.locate({enableHighAccuracy: false, maximumAge: 5000});
       }}>

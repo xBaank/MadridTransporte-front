@@ -21,7 +21,14 @@ function BusStopMapBase() {
   const [showToolTip, setShowToolTip] = useState<boolean>(false);
 
   useEffect(() => {
-    map?.panTo(mapContext.position);
+    if (map == null) return;
+    if (map.getZoom() < 16) {
+      setShowToolTip(true);
+    }
+  }, [map]);
+
+  useEffect(() => {
+    map?.panTo(mapContext.mapData.pos);
   }, [map, allStops]);
 
   useEffect(() => {
@@ -63,7 +70,10 @@ function BusStopMapBase() {
       moveend: () => {
         if (map == null) return;
         displayMarkers();
-        mapContext.setPosition(map.getCenter());
+        mapContext.setMapData({
+          pos: map.getCenter(),
+          zoom: map.getZoom(),
+        });
       },
       zoomend: zoomEnd,
     });
@@ -74,7 +84,8 @@ function BusStopMapBase() {
     <>
       <ThemedMap
         setMap={setMap}
-        center={mapContext.position}
+        center={mapContext.mapData.pos}
+        zoom={mapContext.mapData.zoom}
         onLocateClick={() =>
           map?.locate({enableHighAccuracy: false, maximumAge: 5000})
         }>

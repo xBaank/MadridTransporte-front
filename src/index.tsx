@@ -33,7 +33,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import {ColorModeContext} from "./contexts/colorModeContext";
-import {MapContext} from "./contexts/mapContext";
+import {MapContext, type MapData} from "./contexts/mapContext";
 
 const updateSW = registerSW({
   onNeedRefresh() {
@@ -51,7 +51,10 @@ export const getDesignTokens = (mode: PaletteMode) => ({
 
 export default function App() {
   const [mode, setMode] = useSavedTheme();
-  const [mapPos, setMapPos] = useState(defaultPosition);
+  const [mapData, setMapData] = useState<MapData>({
+    pos: defaultPosition,
+    zoom: 16,
+  });
 
   const colorMode = useMemo(
     () => ({
@@ -62,14 +65,14 @@ export default function App() {
     [mode],
   );
 
-  const mapPosition = useMemo(() => {
+  const mapDataContext = useMemo(() => {
     return {
-      setPosition: (pos: {lat: number; lng: number}) => {
-        setMapPos(pos);
+      setMapData: (data: MapData) => {
+        setMapData(data);
       },
-      position: mapPos,
+      mapData,
     };
-  }, [mapPos]);
+  }, [mapData]);
 
   const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
   const token = useToken();
@@ -77,7 +80,7 @@ export default function App() {
 
   return (
     <>
-      <MapContext.Provider value={mapPosition}>
+      <MapContext.Provider value={mapDataContext}>
         <TokenContext.Provider value={token}>
           <ColorModeContext.Provider value={colorMode}>
             <ThemeProvider theme={theme}>
