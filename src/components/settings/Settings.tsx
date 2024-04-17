@@ -1,10 +1,10 @@
 import {Button, FormControlLabel, Switch, useTheme} from "@mui/material";
 import React, {useState} from "react";
-import {ColorModeContext} from "../..";
 import {Brightness7} from "@mui/icons-material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import {changeMinutesDisplay, getMinutesDisplay} from "../../hooks/hooks";
 import {Link} from "react-router-dom";
+import {ColorModeContext} from "../../contexts/colorModeContext";
 
 export default function Settings() {
   const theme = useTheme();

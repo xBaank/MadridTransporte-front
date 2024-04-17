@@ -1,4 +1,4 @@
-import React from "react";
+import {useMemo, useState} from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
@@ -22,7 +22,7 @@ import Settings from "./components/settings/Settings";
 import StopNearest from "./components/stops/StopNearest";
 import LinesLocationsMap from "./components/stops/lines/LinesLocationsMap";
 import {setupBackButton} from "./backButtons";
-import {useSavedTheme} from "./hooks/hooks";
+import {defaultPosition, useSavedTheme} from "./hooks/hooks";
 import AbonoSearch from "./components/abono/AbonoSearch";
 import AbonoInfo from "./components/abono/AbonoInfo";
 import {TokenContext, useToken} from "./notifications";
@@ -32,6 +32,8 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import {ColorModeContext} from "./contexts/colorModeContext";
+import {MapContext} from "./contexts/mapContext";
 
 const updateSW = registerSW({
   onNeedRefresh() {
@@ -41,9 +43,6 @@ const updateSW = registerSW({
   onOfflineReady() {},
 });
 
-export const ColorModeContext = React.createContext({
-  toggleColorMode: () => {},
-});
 export const getDesignTokens = (mode: PaletteMode) => ({
   palette: {
     mode,
@@ -52,8 +51,9 @@ export const getDesignTokens = (mode: PaletteMode) => ({
 
 export default function App() {
   const [mode, setMode] = useSavedTheme();
+  const [mapPos, setMapPos] = useState(defaultPosition);
 
-  const colorMode = React.useMemo(
+  const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
         setMode(mode === "light" ? "dark" : "light");
@@ -62,20 +62,31 @@ export default function App() {
     [mode],
   );
 
-  const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+  const mapPosition = useMemo(() => {
+    return {
+      setPosition: (pos: {lat: number; lng: number}) => {
+        setMapPos(pos);
+      },
+      position: mapPos,
+    };
+  }, [mapPos]);
+
+  const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
   const token = useToken();
   useSyncAbonoSubscriptions();
 
   return (
     <>
-      <TokenContext.Provider value={token}>
-        <ColorModeContext.Provider value={colorMode}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <RouterProvider router={router} />
-          </ThemeProvider>
-        </ColorModeContext.Provider>
-      </TokenContext.Provider>
+      <MapContext.Provider value={mapPosition}>
+        <TokenContext.Provider value={token}>
+          <ColorModeContext.Provider value={colorMode}>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <RouterProvider router={router} />
+            </ThemeProvider>
+          </ColorModeContext.Provider>
+        </TokenContext.Provider>
+      </MapContext.Provider>
     </>
   );
 }
@@ -161,7 +172,7 @@ let container: HTMLElement | null = null;
 
 document.addEventListener("DOMContentLoaded", function () {
   if (container == null) {
-    container = document.getElementById("root") as HTMLElement;
+    container = document.getElementById("root")!;
     const root = ReactDOM.createRoot(container);
     root.render(<App />);
   }

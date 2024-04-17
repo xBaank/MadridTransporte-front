@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.10.1
+- Persist map position between pages.
+
 ## 1.10.0
 - Updated dependencies.
 - Added planned times for bus stops.

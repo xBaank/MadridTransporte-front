@@ -39,7 +39,6 @@ export default function LinesLocationsMap() {
   const [error, setError] = useState<string>();
   const [isOnInterval, setIsOnInterval] = useState(false);
   const abortControllerRef = useRef<AbortController | null>(null);
-  const [flyToLocation, setFlyToLocation] = useState(false);
 
   const getLocations = useCallback(() => {
     if (
@@ -160,13 +159,11 @@ export default function LinesLocationsMap() {
   return (
     <ThemedMap
       setMap={setMap}
-      flyToLocation={currentStop === undefined || flyToLocation}
       center={{
         lat: currentStop?.stopLat ?? defaultPosition.lat,
         lng: currentStop?.stopLon ?? defaultPosition.lng,
       }}
       onLocateClick={() => {
-        setFlyToLocation(true);
         map?.locate({enableHighAccuracy: false, maximumAge: 5000});
       }}>
       <Polyline

@@ -1,13 +1,13 @@
-import {useEffect, useMemo, useState} from "react";
+import {useContext, useEffect, useMemo, useState} from "react";
 import {useMapEvents} from "react-leaflet";
 import {type Stop} from "./api/Types";
 import * as E from "fp-ts/Either";
 import {type Map} from "leaflet";
 import {getAllStops} from "./api/Stops";
-import {defaultPosition} from "../../hooks/hooks";
 import {StopsMarkers} from "./StopsMarkers";
 import ThemedMap from "./ThemedMap";
 import {Card, Snackbar} from "@mui/material";
+import {MapContext} from "../../contexts/mapContext";
 
 export default function BusStopMap() {
   return useMemo(() => <BusStopMapBase />, []);
@@ -17,10 +17,11 @@ function BusStopMapBase() {
   const [allStops, setAllStops] = useState<Stop[]>([]);
   const [stops, setStops] = useState<Stop[]>([]);
   const [map, setMap] = useState<Map | null>(null);
+  const mapContext = useContext(MapContext);
   const [showToolTip, setShowToolTip] = useState<boolean>(false);
 
   useEffect(() => {
-    map?.panTo(defaultPosition);
+    map?.panTo(mapContext.position);
   }, [map, allStops]);
 
   useEffect(() => {
@@ -59,7 +60,11 @@ function BusStopMapBase() {
     useMapEvents({
       locationfound: displayMarkers,
       locationerror: displayMarkers,
-      moveend: displayMarkers,
+      moveend: () => {
+        if (map == null) return;
+        displayMarkers();
+        mapContext.setPosition(map.getCenter());
+      },
       zoomend: zoomEnd,
     });
     return null;
@@ -69,8 +74,7 @@ function BusStopMapBase() {
     <>
       <ThemedMap
         setMap={setMap}
-        flyToLocation={true}
-        center={defaultPosition}
+        center={mapContext.position}
         onLocateClick={() =>
           map?.locate({enableHighAccuracy: false, maximumAge: 5000})
         }>

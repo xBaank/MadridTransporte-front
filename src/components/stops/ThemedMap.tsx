@@ -8,14 +8,12 @@ import {type LatLngExpression, type Map} from "leaflet";
 
 export default function ThemedMap({
   children,
-  flyToLocation,
   setMap,
   center,
   onLocateClick,
   whenReady,
 }: {
   children: JSX.Element[];
-  flyToLocation: boolean;
   setMap: React.Dispatch<React.SetStateAction<Map | null>>;
   center: LatLngExpression;
   onLocateClick: () => void;
@@ -36,7 +34,7 @@ export default function ThemedMap({
         zoom={16}
         maxZoom={18}
         scrollWheelZoom={true}>
-        <LocationMarker flyToLocation={flyToLocation} />
+        <LocationMarker />
         <TileLayer
           className={theme.palette.mode === "dark" ? "map-tiles" : ""}
           attribution='<a href="https://www.google.es/maps">Google Maps</a>'
