@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.11.0
+- Add accessibility data to stops.
+
 ## 1.10.2
 - Persist map zoom between pages.
 
