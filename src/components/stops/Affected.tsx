@@ -31,7 +31,7 @@ export default function RenderAffected({
         enterTouchDelay={0}
         leaveTouchDelay={4000}>
         <IconButton>
-          <ErrorIcon className=" text-red-500 mr-2" />
+          <ErrorIcon className=" text-red-500 " />
         </IconButton>
       </Tooltip>
     );

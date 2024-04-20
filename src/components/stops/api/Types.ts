@@ -7,6 +7,8 @@ export type Stop = {
   stopName: string;
   stopLat: number;
   stopLon: number;
+  wheelchair: number;
+  zone: string;
 };
 
 export type StopLink = {

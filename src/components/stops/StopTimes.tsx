@@ -38,7 +38,8 @@ import LinesLocationsButton from "./lines/LinesLocationsButton";
 import TrainTimesDestIcon from "./train/TrainTimesDestinationIcon";
 import {TokenContext} from "../../notifications";
 import PullToRefresh from "react-simple-pull-to-refresh";
-import {Button} from "@mui/material";
+import {Button, Chip} from "@mui/material";
+import AccessibleIcon from "@mui/icons-material/Accessible";
 
 export default function BusStopsTimes() {
   const {type, code} = useParams<{type: TransportType; code: string}>();
@@ -136,12 +137,46 @@ export default function BusStopsTimes() {
     </>
   );
 
+  function RenderWheelchairIcon({value}: {value: number}) {
+    if (value === 0) return null;
+    if (value === 1 || value === 2) {
+      return (
+        <div className="my-auto font-bold">
+          <Chip
+            color="primary"
+            icon={<AccessibleIcon />}
+            label="Parada accesible"
+          />
+        </div>
+      );
+    }
+  }
+
+  function RenderZone({value}: {value: string}) {
+    const upperValue = value.toUpperCase();
+    if (upperValue.trim().length === 0) return null;
+    return (
+      <div className="my-auto font-bold">
+        <Chip color="primary" label={`Zona ${upperValue}`} />
+      </div>
+    );
+  }
+
+  function RenderAccessibility({stop}: {stop: Stop}) {
+    return (
+      <div className="py-2 px-1 flex space-x-1">
+        <RenderWheelchairIcon value={stop.wheelchair} />
+        <RenderZone value={stop.zone} />
+      </div>
+    );
+  }
+
   function RenderTimes({stop, stopTimes}: {stop: Stop; stopTimes?: StopTimes}) {
     return (
       <>
         <div
           className={`grid grid-cols-1 p-5 max-w-md mx-auto w-full justify-center`}>
-          <div className={`flex items-end justify-start mb-3 border-b`}>
+          <div className={`flex items-end justify-start border-b`}>
             <img
               className="w-8 max-md:w-7 mr-2 my-auto"
               src={getIconByCodMode(stop.codMode)}
@@ -175,6 +210,7 @@ export default function BusStopsTimes() {
               />
             </div>
           </div>
+          <RenderAccessibility stop={stop} />
           {showLive ? (
             <>
               <ul className="rounded w-full border-b mb-1">

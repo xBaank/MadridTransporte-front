@@ -10,8 +10,9 @@
 
 @media (prefers-color-scheme: dark) {
     .map-tiles {
-        filter:var(--map-tiles-filter, none);
-	}
+        -webkit-filter: var(--map-tiles-filter, none); /* WebKit filter */
+        filter: var(--map-tiles-filter, none);
+    }
 }
 
 :root {
@@ -20,9 +21,11 @@
 
 @media (prefers-color-scheme: dark) {
     .leaflet-popup-content-wrapper-dark {
-        filter:var(--leaflet-popup-content-wrapper-filter, none);
-	}
+        -webkit-filter: var(--leaflet-popup-content-wrapper-filter, none); /* WebKit filter */
+        filter: var(--leaflet-popup-content-wrapper-filter, none);
+    }
 }
+
 
 /** The non-dark mode map will be untouched since it's not styled. **/
 /**
