@@ -1,8 +1,8 @@
-import {useCallback, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {useSearchParams} from "react-router-dom";
 import {fold} from "fp-ts/lib/Either";
 import {getTrainStopsTimes} from "../api/Times";
-import {type Alert, type TrainStopTimes} from "../api/Types";
+import {type TrainStopTimes} from "../api/Types";
 import {
   addToTrainFavorites,
   getIconByCodMode,
@@ -12,11 +12,8 @@ import {
   trainCodMode,
 } from "../api/Utils";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
-import RenderAlerts from "../Alerts";
-import {getAlertsByTransportType} from "../api/Stops";
 import FavoriteSave from "../../favorites/FavoriteSave";
 import LoadingSpinner from "../../LoadingSpinner";
-import RenderAffected from "../Affected";
 import ErrorMessage from "../../Error";
 import StaledMessage from "../../Staled";
 
@@ -25,7 +22,6 @@ export default function TrainStopTimesComponent() {
   const origin = searchParams.get("origin");
   const destination = searchParams.get("destination");
   const [times, setTimes] = useState<TrainStopTimes>();
-  const [alerts, setAlerts] = useState<Alert[]>([]);
   const [error, setError] = useState<string>();
   const [showAll, setShowAll] = useState<boolean>(false);
 
@@ -41,19 +37,6 @@ export default function TrainStopTimesComponent() {
       )(response);
     });
   }, [origin, destination]);
-
-  const getAlerts = useCallback(() => {
-    getAlertsByTransportType("train").then(alerts =>
-      fold(
-        () => setAlerts([]),
-        (alerts: Alert[]) => setAlerts(alerts),
-      )(alerts),
-    );
-  }, []);
-
-  useEffect(() => {
-    getAlerts();
-  }, [getAlerts]);
 
   if (error !== undefined) return <ErrorMessage message={error} />;
   if (times === undefined) return <LoadingSpinner />;
@@ -74,7 +57,6 @@ export default function TrainStopTimesComponent() {
             {times?.peticion?.descEstOrigen} - {times?.peticion?.descEstDestino}
           </div>
           <div className="ml-auto flex pl-3">
-            <RenderAffected alerts={alerts} stopId={origin!} />
             <FavoriteSave
               comparator={() =>
                 getTrainFavorites().some(
@@ -187,7 +169,6 @@ export default function TrainStopTimesComponent() {
         ) : (
           <></>
         )}
-        <RenderAlerts alerts={alerts} incidents={[]} />
       </div>
     </>
   );

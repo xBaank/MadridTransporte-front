@@ -34,7 +34,7 @@ export default function BusStopSearch({
   }, []);
 
   const search = (e: {target: {value: any}; preventDefault: () => void}) => {
-    const value = e.target.value;
+    const value = e.target.value as string;
     if (value === undefined) return;
     setQuery(value);
     e.preventDefault();

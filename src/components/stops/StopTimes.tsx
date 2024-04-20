@@ -142,11 +142,7 @@ export default function BusStopsTimes() {
     if (value === 1 || value === 2) {
       return (
         <div className="my-auto font-bold">
-          <Chip
-            color="primary"
-            icon={<AccessibleIcon />}
-            label="Parada accesible"
-          />
+          <Chip color="primary" icon={<AccessibleIcon />} label="Accesible" />
         </div>
       );
     }
@@ -167,6 +163,7 @@ export default function BusStopsTimes() {
       <div className="py-2 px-1 flex space-x-1">
         <RenderWheelchairIcon value={stop.wheelchair} />
         <RenderZone value={stop.zone} />
+        <RenderAffected alerts={alerts} stopId={code!} />
       </div>
     );
   }
@@ -189,7 +186,6 @@ export default function BusStopsTimes() {
             </div>
             <div className="ml-auto flex pl-3">
               {type === "train" ? <TrainTimesDestIcon code={code!} /> : null}
-              <RenderAffected alerts={alerts} stopId={code!} />
               <FavoriteSave
                 comparator={() =>
                   getFavorites().some(
