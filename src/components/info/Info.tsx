@@ -5,6 +5,8 @@ import ErrorIcon from "@mui/icons-material/Error";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import DeleteIcon from "@mui/icons-material/Delete";
+import MapIcon from "@mui/icons-material/Map";
+import AccessibleIcon from "@mui/icons-material/Accessible";
 
 export default function Info() {
   return (
@@ -50,6 +52,14 @@ export default function Info() {
             <span className="text-sm ml-1">
               Notificacion con el tiempo restante cada minuto.
             </span>
+          </li>
+          <li>
+            <MapIcon color="primary" />
+            <span className="text-sm ml-1">Ver parada en el mapa</span>
+          </li>
+          <li>
+            <AccessibleIcon color="primary" />
+            <span className="text-sm ml-1">Parada accesible</span>
           </li>
           <li>
             <MyLocationIcon className="text-blue-600" />

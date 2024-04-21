@@ -8,15 +8,18 @@ import {StopsMarkers} from "./StopsMarkers";
 import ThemedMap from "./ThemedMap";
 import {Card, Snackbar} from "@mui/material";
 import {MapContext} from "../../contexts/mapContext";
+import {useParams} from "react-router-dom";
 
 export default function BusStopMap() {
   return useMemo(() => <BusStopMapBase />, []);
 }
 
 function BusStopMapBase() {
+  const {fullStopCode} = useParams<{fullStopCode: string}>();
   const [allStops, setAllStops] = useState<Stop[]>([]);
   const [stops, setStops] = useState<Stop[]>([]);
   const [map, setMap] = useState<Map | null>(null);
+  const [selected, setSelected] = useState<Stop>();
   const mapContext = useContext(MapContext);
   const [showToolTip, setShowToolTip] = useState<boolean>(false);
 
@@ -28,8 +31,14 @@ function BusStopMapBase() {
   }, [map]);
 
   useEffect(() => {
-    map?.panTo(mapContext.mapData.pos);
-  }, [map, allStops]);
+    const stop = allStops.find(i => i.fullStopCode === fullStopCode);
+    if (stop === undefined) {
+      map?.panTo(mapContext.mapData.pos);
+    } else {
+      map?.panTo({lat: stop.stopLat, lng: stop.stopLon});
+      setSelected(stop);
+    }
+  }, [fullStopCode, allStops, map]);
 
   useEffect(() => {
     getAllStops().then(i =>
@@ -39,7 +48,7 @@ function BusStopMapBase() {
 
   const markers = useMemo(() => {
     if (map === null) return <></>;
-    return <StopsMarkers stops={stops} map={map} />;
+    return <StopsMarkers selected={selected} stops={stops} map={map} />;
   }, [map, stops]);
 
   function displayMarkers() {

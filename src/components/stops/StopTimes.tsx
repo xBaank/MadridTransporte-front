@@ -1,5 +1,5 @@
 import {useCallback, useContext, useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {
   type StopTimePlanned,
   type Alert,
@@ -16,6 +16,7 @@ import {
   getCodModeByType,
   getFavorites,
   getIconByCodMode,
+  getMapLocationLink,
   removeFromFavorites,
 } from "./api/Utils";
 import {getAlertsByTransportType, getStop} from "./api/Stops";
@@ -32,14 +33,15 @@ import StopTimesSubscribe from "./StopTimesSubscribe";
 import {getSubscription} from "./api/Subscriptions";
 import ErrorMessage from "../Error";
 import Line from "../Line";
-import RenderAffected from "./Affected";
 import StaledMessage from "../Staled";
 import LinesLocationsButton from "./lines/LinesLocationsButton";
 import TrainTimesDestIcon from "./train/TrainTimesDestinationIcon";
 import {TokenContext} from "../../notifications";
 import PullToRefresh from "react-simple-pull-to-refresh";
-import {Button, Chip} from "@mui/material";
+import {Button, Chip, IconButton} from "@mui/material";
 import AccessibleIcon from "@mui/icons-material/Accessible";
+import ErrorIcon from "@mui/icons-material/Error";
+import MapIcon from "@mui/icons-material/Map";
 
 export default function BusStopsTimes() {
   const {type, code} = useParams<{type: TransportType; code: string}>();
@@ -148,6 +150,31 @@ export default function BusStopsTimes() {
     }
   }
 
+  function RenderAffected({alerts, stopId}: {alerts: Alert[]; stopId: string}) {
+    const [isAffected, setIsAffected] = useState<boolean | null>(null);
+
+    useEffect(() => {
+      if (alerts.length === 0) return setIsAffected(null);
+      setIsAffected(
+        alerts
+          .flatMap(i => i.stops)
+          .map(i => i.split("_")[1])
+          .includes(stopId),
+      );
+    }, [alerts, stopId]);
+
+    if (isAffected === null) return <></>;
+
+    if (isAffected)
+      return (
+        <div className="my-auto font-bold">
+          <Chip color="error" icon={<ErrorIcon />} label="Afectada" />
+        </div>
+      );
+
+    return null;
+  }
+
   function RenderZone({value}: {value: string}) {
     const upperValue = value.toUpperCase();
     if (upperValue.trim().length === 0) return null;
@@ -186,6 +213,11 @@ export default function BusStopsTimes() {
             </div>
             <div className="ml-auto flex pl-3">
               {type === "train" ? <TrainTimesDestIcon code={code!} /> : null}
+              <IconButton
+                component={Link}
+                to={getMapLocationLink(stop.fullStopCode)}>
+                <MapIcon color="primary" />
+              </IconButton>
               <FavoriteSave
                 comparator={() =>
                   getFavorites().some(

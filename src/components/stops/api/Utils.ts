@@ -25,6 +25,10 @@ export function getLocationLink(
   return "#";
 }
 
+export function getMapLocationLink(fullStopCode: string) {
+  return `/stops/map/${fullStopCode}`;
+}
+
 export function getIconByCodMode(codMode: number): string {
   if (codMode === metroCodMode) return "/icons/metro.png";
   if (codMode === trainCodMode) return "/icons/train.png";

@@ -132,6 +132,10 @@ export const router = createBrowserRouter([
     element: <DefaultElement element={<TrainStopTimesComponent />} />,
   },
   {
+    path: "/stops/map/:fullStopCode",
+    element: <DefaultElement element={<BusStopMap />} />,
+  },
+  {
     path: "/stops/map",
     element: <DefaultElement element={<BusStopMap />} />,
   },

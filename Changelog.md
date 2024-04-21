@@ -1,5 +1,9 @@
 # Changelog
 
+
+## 1.12.0
+- Add button to see stop in map.
+
 ## 1.11.0
 - Add accessibility data to stops.
 
