@@ -23,11 +23,8 @@ import StopNearest from "./components/stops/StopNearest";
 import LinesLocationsMap from "./components/stops/lines/LinesLocationsMap";
 import {setupBackButton} from "./backButtons";
 import {defaultPosition, useSavedTheme} from "./hooks/hooks";
-import AbonoSearch from "./components/abono/AbonoSearch";
-import AbonoInfo from "./components/abono/AbonoInfo";
 import {TokenContext, useToken} from "./notifications";
 import {registerSW} from "virtual:pwa-register";
-import {useSyncAbonoSubscriptions} from "./abonoSync";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
@@ -76,7 +73,6 @@ export default function App() {
 
   const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
   const token = useToken();
-  useSyncAbonoSubscriptions();
 
   return (
     <>
@@ -150,14 +146,6 @@ export const router = createBrowserRouter([
   {
     path: "/settings",
     element: <DefaultElement element={<Settings />} />,
-  },
-  {
-    path: "/abono",
-    element: <DefaultElement element={<AbonoSearch />} />,
-  },
-  {
-    path: "/abono/:code",
-    element: <DefaultElement element={<AbonoInfo />} />,
   },
   {
     path: "/abonoNFC",

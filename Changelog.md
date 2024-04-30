@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.12.1
+- Remove not working abono menu. Now only available on apk version
 
 ## 1.12.0
 - Add button to see stop in map.
