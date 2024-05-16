@@ -2,13 +2,13 @@ import {type Stop} from "./api/Types";
 import {Marker, Popup} from "react-leaflet";
 import {
   currentStop,
+  getIconAnchor,
   getIconByCodMode,
   getStopTimesLinkByMode,
 } from "./api/Utils";
 import L from "leaflet";
 import {Button, useTheme} from "@mui/material";
 import {Link} from "react-router-dom";
-import {renderToString} from "react-dom/server";
 import {useEffect, useState} from "react";
 
 export function StopsMarkers({
@@ -35,16 +35,10 @@ export function StopsMarkers({
     const isCurrent = stop.fullStopCode === current?.fullStopCode;
     const codMode = isCurrent ? currentStop : stop.codMode;
 
-    const icon = L.divIcon({
-      html: renderToString(
-        <img
-          className="h-8 max-md:h-7"
-          src={getIconByCodMode(codMode)}
-          alt="Logo"
-        />,
-      ),
-      className: "dummy",
-      iconAnchor: [16, 32],
+    const icon = L.icon({
+      iconUrl: getIconByCodMode(codMode),
+      className: "h-8",
+      iconAnchor: getIconAnchor(codMode),
     });
 
     return (

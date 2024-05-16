@@ -39,6 +39,11 @@ export function getIconByCodMode(codMode: number): string {
   return "/icons/interurban.png";
 }
 
+export function getIconAnchor(codMode: number): [number, number] {
+  if (codMode === metroCodMode) return [24, 32];
+  return [16, 32];
+}
+
 export function getUrlByCodMode(codMode: number): string {
   if (codMode === metroCodMode) return "/maps/metro.png";
   if (codMode === trainCodMode) return "/maps/cercanias.png";
