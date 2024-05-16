@@ -1,13 +1,18 @@
 # Changelog
 
+## 1.12.2
+- Updated dependencies.
+- Added `leaflet` as a node dependency (This will improve loading time and caching).
+- Improved map performance.
+
 ## 1.12.1
-- Remove not working abono menu. Now only available on apk version
+- Removed not working abono menu. Now only available on apk version.
 
 ## 1.12.0
-- Add button to see stop in map.
+- Added button to see stop in map.
 
 ## 1.11.0
-- Add accessibility data to stops.
+- Added accessibility data to stops.
 
 ## 1.10.2
 - Persist map zoom between pages.
