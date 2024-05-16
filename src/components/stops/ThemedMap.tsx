@@ -5,6 +5,7 @@ import {useBackgroundColor} from "../../hooks/hooks";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import {type RefObject} from "react";
 import {type LatLngExpression, type Map} from "leaflet";
+import "leaflet/dist/leaflet.css";
 
 export default function ThemedMap({
   children,
@@ -22,6 +23,7 @@ export default function ThemedMap({
   whenReady?: () => void;
 }) {
   const theme = useTheme();
+
   return (
     <div className="h-full w-full z-0 pb-2 ">
       <MapContainer
