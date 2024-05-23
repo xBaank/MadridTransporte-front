@@ -1,8 +1,11 @@
 # Changelog
 
+## 1.12.3
+- Remove theme meta tag.
+
 ## 1.12.2
 - Updated dependencies.
-- Added `leaflet` as a node dependency (This will improve loading time and caching).
+- Added `leaflet` as a npm dependency (This will improve loading time and caching).
 - Improved map performance.
 
 ## 1.12.1
