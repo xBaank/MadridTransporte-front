@@ -18,6 +18,14 @@ export default function Settings() {
     changeMinutesDisplay();
   };
 
+  function ReloadStops() {
+    return (
+      <Button className="w-full" variant="contained">
+        Recargar paradas
+      </Button>
+    );
+  }
+
   function SwitchMinutes() {
     return (
       <>
@@ -71,6 +79,9 @@ export default function Settings() {
             <SwitchMinutes />
           </li>
           <li className="w-full mt-3">
+            <ReloadStops />
+          </li>
+          <li className="w-full mt-3 ">
             <Button
               component={Link}
               to="/info"

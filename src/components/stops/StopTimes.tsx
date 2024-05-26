@@ -251,7 +251,7 @@ export default function BusStopsTimes() {
             <>
               <ul className="rounded w-full border-b mb-1">
                 <AlertMui severity="warning">
-                  Estos tiempos son estimados y pueden no corresponder con la
+                  Estos tiempos son planificados y pueden no corresponder con la
                   hora de llegada real.
                 </AlertMui>
                 <RenderTimesPlannedOrEmpty times={stopTimesPlanned} />
