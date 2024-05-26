@@ -38,7 +38,7 @@ import LinesLocationsButton from "./lines/LinesLocationsButton";
 import TrainTimesDestIcon from "./train/TrainTimesDestinationIcon";
 import {TokenContext} from "../../notifications";
 import PullToRefresh from "react-simple-pull-to-refresh";
-import {Button, Chip, IconButton} from "@mui/material";
+import {Alert as AlertMui, Button, Chip, IconButton} from "@mui/material";
 import AccessibleIcon from "@mui/icons-material/Accessible";
 import ErrorIcon from "@mui/icons-material/Error";
 import MapIcon from "@mui/icons-material/Map";
@@ -129,8 +129,10 @@ export default function BusStopsTimes() {
         isPullable={isPullable}
         onRefresh={async () => {
           setIsPullable(false);
+          setError(undefined);
           await getSubscriptionsAsync();
           await getTimesAsync();
+          await getTimesPlannedAsync();
           setIsPullable(true);
         }}
         pullingContent={""}>
@@ -248,6 +250,10 @@ export default function BusStopsTimes() {
           ) : type === "bus" ? (
             <>
               <ul className="rounded w-full border-b mb-1">
+                <AlertMui severity="warning">
+                  Estos tiempos son estimados y pueden no corresponder con la
+                  hora de llegada real.
+                </AlertMui>
                 <RenderTimesPlannedOrEmpty times={stopTimesPlanned} />
               </ul>
             </>
