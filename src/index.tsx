@@ -31,6 +31,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import {ColorModeContext} from "./contexts/colorModeContext";
 import {MapContext, type MapData} from "./contexts/mapContext";
+import {initDB} from "./components/stops/api/Db";
 
 const updateSW = registerSW({
   onNeedRefresh() {
@@ -162,6 +163,9 @@ export const router = createBrowserRouter([
 ]);
 
 setupBackButton();
+initDB("stops").then(i => {
+  if (!i) alert("La base de datos no ha podido ser inicializada");
+});
 
 let container: HTMLElement | null = null;
 

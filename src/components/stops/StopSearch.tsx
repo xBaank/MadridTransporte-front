@@ -4,8 +4,7 @@ import {Search} from "@mui/icons-material";
 import AllStopsComponent, {StopComponent} from "./StopsComponent";
 import StopsFavorites from "./StopsFavorites";
 import {type Stop, type StopLink} from "./api/Types";
-import {fold} from "fp-ts/lib/Either";
-import {getAllStops} from "./api/Stops";
+import {getStops} from "./api/Stops";
 import {getIconByCodMode, getStopTimesLinkByMode} from "./api/Utils";
 import {useParams} from "react-router-dom";
 import AllSubscriptions from "./StopsSubscriptions";
@@ -25,12 +24,9 @@ export default function BusStopSearch({
   // the times are by origin and destination, so we need to know the origin to show
 
   useEffect(() => {
-    getAllStops().then(allStops =>
-      fold(
-        () => {},
-        (stops: Stop[]) => setStops(stops),
-      )(allStops),
-    );
+    getStops()
+      .then(allStops => setStops(allStops))
+      .catch(() => console.error("Error getting stops"));
   }, []);
 
   const search = (e: {target: {value: any}; preventDefault: () => void}) => {

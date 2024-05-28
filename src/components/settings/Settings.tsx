@@ -5,9 +5,12 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import {changeMinutesDisplay, getMinutesDisplay} from "../../hooks/hooks";
 import {Link} from "react-router-dom";
 import {ColorModeContext} from "../../contexts/colorModeContext";
+import {addStops, getAllApiStops} from "../stops/api/Stops";
+import RenderLoadStops from "./LoadStops";
 
 export default function Settings() {
   const theme = useTheme();
+  const [progress, setProgress] = useState(0);
   const colorMode = React.useContext(ColorModeContext);
   const [minutesToDisplay, setMinutesToDisplay] =
     useState<boolean>(getMinutesDisplay());
@@ -20,9 +23,26 @@ export default function Settings() {
 
   function ReloadStops() {
     return (
-      <Button className="w-full" variant="contained">
-        Recargar paradas
-      </Button>
+      <>
+        <Button
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
+          onClick={async () => {
+            setProgress(10);
+            const stops = await getAllApiStops();
+            if (stops._tag === "Left") {
+              setProgress(0);
+              return;
+            }
+            await addStops(stops.right, (current, total) => {
+              setProgress((current / total) * 100);
+            });
+            console.log("Finished loading");
+          }}
+          className="w-full"
+          variant="contained">
+          Recargar paradas
+        </Button>
+      </>
     );
   }
 
@@ -67,31 +87,36 @@ export default function Settings() {
   }
 
   return (
-    <div
-      className={`grid grid-cols-1 p-5 max-w-md mx-auto w-full justify-center`}>
-      <div className=" text-2xl font-bold ">Ajustes</div>
-      <div className="flex items-center space-x-4 mt-5">
-        <ul className="w-full ">
-          <li className="w-full ">
-            <SwitchTheme />
-          </li>
-          <li className="w-full">
-            <SwitchMinutes />
-          </li>
-          <li className="w-full mt-3">
-            <ReloadStops />
-          </li>
-          <li className="w-full mt-3 ">
-            <Button
-              component={Link}
-              to="/info"
-              className="w-full"
-              variant="contained">
-              Mas Informacion
-            </Button>
-          </li>
-        </ul>
+    <>
+      <div
+        className={`grid grid-cols-1 p-5 max-w-md mx-auto w-full justify-center`}>
+        <div className=" text-2xl font-bold ">Ajustes</div>
+        <div className="flex items-center space-x-4 mt-5">
+          <ul className="w-full ">
+            <li className="w-full ">
+              <RenderLoadStops progress={progress} />
+            </li>
+            <li className="w-full ">
+              <SwitchTheme />
+            </li>
+            <li className="w-full">
+              <SwitchMinutes />
+            </li>
+            <li className="w-full mt-3">
+              <ReloadStops />
+            </li>
+            <li className="w-full mt-3 ">
+              <Button
+                component={Link}
+                to="/info"
+                className="w-full"
+                variant="contained">
+                Mas Informacion
+              </Button>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -95,7 +95,9 @@ export default function BusStopsTimes() {
 
   const getStopInfo = useCallback(() => {
     if (type === undefined || code === undefined) return;
-    getStop(type, code).then(stop => setStop(stop));
+    getStop(type, code)
+      .then(stop => setStop(stop))
+      .catch(() => setError("Error al cargar la parada"));
   }, [type, code]);
 
   const getAlerts = useCallback(() => {

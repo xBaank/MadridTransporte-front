@@ -1,11 +1,10 @@
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {type Stop} from "./api/Types";
-import {getAllStops} from "./api/Stops";
-import {fold} from "fp-ts/lib/Either";
 import {getStopTimesLinkByMode} from "./api/Utils";
 import LoadingSpinner from "../LoadingSpinner";
 import ErrorMessage from "../Error";
+import {getStops} from "./api/Stops";
 
 export default function StopNearest() {
   const navigate = useNavigate();
@@ -22,12 +21,7 @@ export default function StopNearest() {
   }, []);
 
   useEffect(() => {
-    getAllStops().then(allStops =>
-      fold(
-        () => {},
-        (stops: Stop[]) => setAllStops(stops),
-      )(allStops),
-    );
+    getStops().then(stops => setAllStops(stops));
   }, []);
 
   useEffect(() => {
