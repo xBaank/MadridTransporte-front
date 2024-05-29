@@ -17,7 +17,7 @@ export const initDB = async (collectionName: string): Promise<boolean> => {
       if (event.target == null) return;
       const db = request.result;
       if (!db.objectStoreNames.contains(collectionName)) {
-        console.log("Creating users store");
+        console.log("Creating stops");
         db.createObjectStore(collectionName);
       }
     };

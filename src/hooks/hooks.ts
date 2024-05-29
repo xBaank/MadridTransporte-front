@@ -1,5 +1,11 @@
 import {type PaletteMode, useTheme} from "@mui/material";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {initDB} from "../components/stops/api/Db";
+import {
+  getStops,
+  getAllApiStops,
+  addStops,
+} from "../components/stops/api/Stops";
 
 export const defaultPosition = {lat: 40.4165, lng: -3.70256};
 
@@ -63,4 +69,67 @@ export function getMinutesDisplay() {
   } else {
     return false;
   }
+}
+
+export function useLoadStops(
+  onLoad?: () => void,
+): [boolean, boolean, boolean, boolean] {
+  const [open, setOpen] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
+  const [ready, setReady] = useState(false);
+
+  async function loadStops() {
+    const initialized = await initDB("stops");
+
+    if (!initialized) {
+      alert("La base de datos no ha podido ser inicializada");
+      return;
+    }
+
+    const stops = await getStops();
+
+    if (stops?.length === 0) {
+      console.log("Loading");
+      setOpen(true);
+
+      try {
+        getAllApiStops().then(async stops => {
+          if (stops._tag !== "Left") {
+            await addStops(stops.right, (current, total) => {
+              if (current === total) setSuccess(true);
+            });
+
+            setTimeout(() => {
+              setSuccess(false);
+              setOpen(false);
+              setReady(true);
+              if (onLoad !== undefined) onLoad();
+            }, 2000);
+
+            console.log("Finished loading");
+          }
+        });
+      } catch {
+        console.error("Error updating stops");
+        setError(true);
+        setTimeout(() => {
+          setError(false);
+          setSuccess(false);
+          setOpen(false);
+          setReady(false);
+          if (onLoad !== undefined) onLoad();
+        }, 2000);
+      }
+    }
+    if (stops?.length > 0) {
+      setReady(true);
+    }
+  }
+
+  useEffect(() => {
+    loadStops();
+  }, []);
+
+  return [ready, open, success, error];
 }

@@ -14,11 +14,10 @@ export const addStops = async (
   data: Stop[],
   progressReport: (current: number, total: number) => void,
 ): Promise<Stop[] | string | null> => {
-  return await new Promise(resolve => {
+  return await new Promise((resolve, reject) => {
     const request = indexedDB.open("MadridTransporte");
 
     request.onsuccess = () => {
-      console.log("request.onsuccess - addData", data);
       const db = request.result;
       const tx = db.transaction("stops", "readwrite");
       const store = tx.objectStore("stops");
@@ -32,9 +31,9 @@ export const addStops = async (
     request.onerror = () => {
       const error = request.error?.message;
       if (error != null) {
-        resolve(error);
+        reject(error);
       } else {
-        resolve("Unknown error");
+        reject(new Error("Error adding stops"));
       }
     };
   });
@@ -91,6 +90,29 @@ export async function getStops(): Promise<Stop[]> {
         } else {
           reject(new Error("Error getting stops"));
         }
+      };
+    };
+
+    request.onerror = () => {
+      if (request.error != null) reject(request.error);
+    };
+  });
+}
+
+export async function deleteStops(): Promise<void> {
+  return await new Promise((resolve, reject) => {
+    const request = indexedDB.open("MadridTransporte");
+
+    request.onsuccess = () => {
+      const db = request.result;
+      const cursorRequest = db
+        .transaction("stops", "readwrite")
+        .objectStore("stops")
+        .clear();
+
+      cursorRequest.onsuccess = () => {
+        console.log("Deleted stops");
+        resolve(undefined);
       };
     };
 

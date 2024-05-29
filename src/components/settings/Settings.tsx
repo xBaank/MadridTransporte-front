@@ -2,15 +2,19 @@ import {Button, FormControlLabel, Switch, useTheme} from "@mui/material";
 import React, {useState} from "react";
 import {Brightness7} from "@mui/icons-material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import {changeMinutesDisplay, getMinutesDisplay} from "../../hooks/hooks";
+import {
+  changeMinutesDisplay,
+  getMinutesDisplay,
+  useLoadStops,
+} from "../../hooks/hooks";
 import {Link} from "react-router-dom";
 import {ColorModeContext} from "../../contexts/colorModeContext";
-import {addStops, getAllApiStops} from "../stops/api/Stops";
+import {deleteStops} from "../stops/api/Stops";
 import RenderLoadStops from "./LoadStops";
 
 export default function Settings() {
   const theme = useTheme();
-  const [progress, setProgress] = useState(0);
+  const [showLoading, setShowLoading] = useState(false);
   const colorMode = React.useContext(ColorModeContext);
   const [minutesToDisplay, setMinutesToDisplay] =
     useState<boolean>(getMinutesDisplay());
@@ -27,20 +31,12 @@ export default function Settings() {
         <Button
           // eslint-disable-next-line @typescript-eslint/no-misused-promises
           onClick={async () => {
-            setProgress(10);
-            const stops = await getAllApiStops();
-            if (stops._tag === "Left") {
-              setProgress(0);
-              return;
-            }
-            await addStops(stops.right, (current, total) => {
-              setProgress((current / total) * 100);
-            });
-            console.log("Finished loading");
+            await deleteStops();
+            setShowLoading(true);
           }}
           className="w-full"
           variant="contained">
-          Recargar paradas
+          Actualizar paradas
         </Button>
       </>
     );
@@ -86,6 +82,14 @@ export default function Settings() {
     );
   }
 
+  function RenderStopsUpdate() {
+    const [, open, success, error] = useLoadStops(() => {
+      setShowLoading(false);
+    });
+
+    return <RenderLoadStops open={open} success={success} error={error} />;
+  }
+
   return (
     <>
       <div
@@ -94,7 +98,7 @@ export default function Settings() {
         <div className="flex items-center space-x-4 mt-5">
           <ul className="w-full ">
             <li className="w-full ">
-              <RenderLoadStops progress={progress} />
+              {showLoading ? <RenderStopsUpdate /> : null}
             </li>
             <li className="w-full ">
               <SwitchTheme />
