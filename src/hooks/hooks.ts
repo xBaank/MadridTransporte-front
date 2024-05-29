@@ -1,7 +1,7 @@
 import {type PaletteMode, useTheme} from "@mui/material";
 import {useEffect, useState} from "react";
-import {initDB} from "../components/stops/api/Db";
 import {
+  initDB,
   getStops,
   getAllApiStops,
   addStops,
