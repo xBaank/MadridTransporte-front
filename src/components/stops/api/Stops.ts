@@ -65,20 +65,16 @@ export const addStops = async (
   });
 };
 
-export async function getStop(
-  type: TransportType,
-  code: string,
-): Promise<Stop | null> {
+export async function getStop(fullStopCode: string): Promise<Stop | null> {
   return await new Promise((resolve, reject) => {
     const request = indexedDB.open("MadridTransporte");
-    const key = `${getCodModeByType(type)}_${code}`;
 
     request.onsuccess = () => {
       const db = request.result;
       const cursorRequest = db
         .transaction("stops")
         .objectStore("stops")
-        .get(key);
+        .get(fullStopCode);
 
       cursorRequest.onsuccess = () => {
         const stop = cursorRequest.result;
@@ -95,6 +91,13 @@ export async function getStop(
       if (request.error != null) reject(request.error);
     };
   });
+}
+
+export async function getStopByType(
+  type: TransportType,
+  code: string,
+): Promise<Stop | null> {
+  return await getStop(`${getCodModeByType(type)}_${code}`);
 }
 
 export async function getStops(): Promise<Stop[]> {

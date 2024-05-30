@@ -19,7 +19,7 @@ import {
   getMapLocationLink,
   removeFromFavorites,
 } from "./api/Utils";
-import {getAlertsByTransportType, getStop} from "./api/Stops";
+import {getAlertsByTransportType, getStopByType} from "./api/Stops";
 import FavoriteSave from "../favorites/FavoriteSave";
 import RenderAlerts from "./Alerts";
 import LoadingSpinner from "../LoadingSpinner";
@@ -95,7 +95,7 @@ export default function BusStopsTimes() {
 
   const getStopInfo = useCallback(() => {
     if (type === undefined || code === undefined) return;
-    getStop(type, code)
+    getStopByType(type, code)
       .then(stop => setStop(stop))
       .catch(() => setError("Error al cargar la parada"));
   }, [type, code]);
