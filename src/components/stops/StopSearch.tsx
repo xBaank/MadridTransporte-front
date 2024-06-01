@@ -7,7 +7,7 @@ import {mapStopToStopLink} from "./api/Utils";
 import {useParams} from "react-router-dom";
 import AllSubscriptions from "./StopsSubscriptions";
 import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
-import {db} from "./api/Dba";
+import {db} from "./api/Db";
 import {useLiveQuery} from "dexie-react-hooks";
 export default function BusStopSearch({
   title,
