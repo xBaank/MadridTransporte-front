@@ -5,26 +5,34 @@ import NearMeIcon from "@mui/icons-material/NearMe";
 import {Link} from "react-router-dom";
 import {useLiveQuery} from "dexie-react-hooks";
 import {db} from "./api/db";
-import {mapStopToStopLink} from "./api/Utils";
+import {mapStopToStopLink, trainCodMode} from "./api/Utils";
 export default function FilteredStopsComponent({
   query,
   codMode,
+  code,
 }: {
   query: string;
   codMode: number | null;
+  code?: string;
 }) {
   const stops =
     useLiveQuery(async () => {
       if (query.trim() === "") return undefined;
-      return await db.stops
+
+      const stops = await db.stops
         .where("stopName")
         .startsWithIgnoreCase(query)
         .or("stopCode")
         .equals(query)
         .sortBy("codMode");
+
+      if (code !== undefined)
+        return stops.filter(i => i.codMode === trainCodMode);
+
+      return stops;
     }, [query])
       ?.slice(0, 25)
-      ?.map(i => mapStopToStopLink(i)) ?? [];
+      ?.map(i => mapStopToStopLink(i, code)) ?? [];
 
   return StopsElement(stops);
 

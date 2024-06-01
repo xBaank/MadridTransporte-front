@@ -68,7 +68,7 @@ export default function BusStopSearch({
             }}
           />
         </div>
-        <AllStopsComponent query={query} codMode={codMode} />
+        <AllStopsComponent query={query} codMode={codMode} code={code} />
         {codMode !== null ? <></> : <StopsFavorites />}
         <AllSubscriptions />
       </div>

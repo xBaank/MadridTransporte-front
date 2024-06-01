@@ -43,18 +43,32 @@ import AccessibleIcon from "@mui/icons-material/Accessible";
 import ErrorIcon from "@mui/icons-material/Error";
 import MapIcon from "@mui/icons-material/Map";
 import {db} from "./api/db";
+import {useLiveQuery} from "dexie-react-hooks";
 
 export default function BusStopsTimes() {
   const {type, code} = useParams<{type: TransportType; code: string}>();
   const [stopTimes, setStopTimes] = useState<StopTimes>();
   const [stopTimesPlanned, setStopTimesPlanned] = useState<StopTimePlanned[]>();
-  const [stop, setStop] = useState<Stop | null>();
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [subscription, setSubscription] = useState<Subscriptions | null>(null);
   const token = useContext(TokenContext);
   const [error, setError] = useState<string>();
   const [isPullable, setIsPullable] = useState(true);
   const [showLive, setShowLive] = useState(true);
+
+  const stop = useLiveQuery(async () => {
+    if (type === undefined) return null;
+    return (
+      (await db.stops
+        .where({codMode: getCodModeByType(type), stopCode: code})
+        .first()
+        .catch(() => {
+          setError("Error al cargar la parada");
+          return null;
+        })) ?? null
+    );
+  }, [type, code]);
+
   const getTimesAsync = async () => {
     if (type === undefined || code === undefined) return;
     await getStopsTimes(type, code).then(stops =>
@@ -94,15 +108,6 @@ export default function BusStopsTimes() {
     getTimesPlannedAsync();
   }, [type, code]);
 
-  const getStopInfo = useCallback(() => {
-    if (type === undefined || code === undefined) return;
-    db.stops
-      .where({codMode: getCodModeByType(type), stopCode: code})
-      .first()
-      .then(stop => setStop(stop))
-      .catch(() => setError("Error al cargar la parada"));
-  }, [type, code]);
-
   const getAlerts = useCallback(() => {
     if (type === undefined || code === undefined) return;
     getAlertsByTransportType(type).then(alerts =>
@@ -118,12 +123,11 @@ export default function BusStopsTimes() {
   }, [type, code, token]);
 
   useEffect(() => {
-    getStopInfo();
     getTimes();
     getTimesPlanned();
     getAlerts();
     getSubscriptions();
-  }, [type, code, getTimes, getAlerts, getStopInfo, getSubscriptions]);
+  }, [type, code, getTimes, getAlerts, getSubscriptions]);
 
   if (stop === null) return <ErrorMessage message="La parada no existe" />;
   if (stop === undefined) return <LoadingSpinner />;
