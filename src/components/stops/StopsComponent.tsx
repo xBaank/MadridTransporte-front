@@ -4,7 +4,7 @@ import {Button, Divider, List, ListItemButton} from "@mui/material";
 import NearMeIcon from "@mui/icons-material/NearMe";
 import {Link} from "react-router-dom";
 import {useLiveQuery} from "dexie-react-hooks";
-import {db} from "./api/db";
+import {db} from "./api/Db";
 import {mapStopToStopLink, trainCodMode} from "./api/Utils";
 export default function FilteredStopsComponent({
   query,

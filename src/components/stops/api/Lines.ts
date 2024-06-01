@@ -8,7 +8,7 @@ import {
   type LineLocations,
 } from "./Types";
 import {apiUrl} from "../../Urls";
-import {db} from "./db";
+import {db} from "./Db";
 
 const NotFound = "No se ha encontrado la linea especificada";
 const BadRequest = "Error al obtener la localizacion";

@@ -6,7 +6,7 @@ import {changeMinutesDisplay, getMinutesDisplay} from "../../hooks/hooks";
 import {Link} from "react-router-dom";
 import {ColorModeContext} from "../../contexts/colorModeContext";
 import {DataLoadContext} from "../../contexts/dataLoadContext";
-import {db} from "../stops/api/db";
+import {db} from "../stops/api/Db";
 
 export default function Settings() {
   const theme = useTheme();

@@ -42,7 +42,7 @@ import {Alert as AlertMui, Button, Chip, IconButton} from "@mui/material";
 import AccessibleIcon from "@mui/icons-material/Accessible";
 import ErrorIcon from "@mui/icons-material/Error";
 import MapIcon from "@mui/icons-material/Map";
-import {db} from "./api/db";
+import {db} from "./api/Db";
 import {useLiveQuery} from "dexie-react-hooks";
 
 export default function BusStopsTimes() {

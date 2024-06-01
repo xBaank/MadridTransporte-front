@@ -7,7 +7,7 @@ import ThemedMap from "./ThemedMap";
 import {Card, Snackbar} from "@mui/material";
 import {MapContext} from "../../contexts/mapContext";
 import {useParams} from "react-router-dom";
-import {db} from "./api/db";
+import {db} from "./api/Db";
 
 export default function BusStopMap() {
   return useMemo(() => <BusStopMapBase />, []);
