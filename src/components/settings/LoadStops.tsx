@@ -21,7 +21,16 @@ export default function RenderLoadStops() {
       try {
         getAllApiStops().then(async stops => {
           if (stops._tag !== "Left") {
-            await db.stops.bulkPut(stops.right);
+            const mapped = stops.right.map(i => {
+              return {
+                ...i,
+                stopName: i.stopName
+                  .normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g, ""),
+              };
+            });
+
+            await db.stops.bulkPut(mapped);
             setSuccess(true);
 
             setTimeout(() => {

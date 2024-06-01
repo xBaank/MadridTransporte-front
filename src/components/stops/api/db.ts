@@ -9,5 +9,5 @@ export const db = new Dexie("MadridTransporte") as Dexie & {
 };
 
 db.version(1).stores({
-  stops: "fullStopCode, stopName, codMode, stopCode", // Primary key and indexed props
+  stops: "fullStopCode, stopName, codMode, stopCode, stopLat, stopLon", // Primary key and indexed props
 });

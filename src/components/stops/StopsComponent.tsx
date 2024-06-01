@@ -1,41 +1,30 @@
 /* eslint-disable no-mixed-operators */
-import {useEffect, useState} from "react";
 import {type StopLink} from "./api/Types";
 import {Button, Divider, List, ListItemButton} from "@mui/material";
 import NearMeIcon from "@mui/icons-material/NearMe";
 import {Link} from "react-router-dom";
-
+import {useLiveQuery} from "dexie-react-hooks";
+import {db} from "./api/db";
+import {mapStopToStopLink} from "./api/Utils";
 export default function FilteredStopsComponent({
   query,
-  stopLinks,
   codMode,
 }: {
   query: string;
-  stopLinks: StopLink[];
   codMode: number | null;
 }) {
-  const [stops, setStops] = useState<StopLink[]>([]);
-
-  useEffect(() => {
-    if (query === "") return setStops([]);
-
-    const filteredStops = stopLinks
-      .sort((a, b) => a.stop.codMode - b.stop.codMode)
-      .filter(
-        stopLink =>
-          ((codMode === null || stopLink.stop.codMode === codMode) &&
-            stopLink.stop.stopName
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-              .toLowerCase()
-              .includes(query.toLowerCase())) ||
-          stopLink.stop.stopCode.toString().toLowerCase() ===
-            query.toLowerCase(),
-      )
-      .slice(0, 25);
-
-    setStops(filteredStops);
-  }, [codMode, query, stopLinks]);
+  const stops =
+    useLiveQuery(async () => {
+      if (query.trim() === "") return undefined;
+      return await db.stops
+        .where("stopName")
+        .startsWithIgnoreCase(query)
+        .or("stopCode")
+        .equals(query)
+        .sortBy("codMode");
+    }, [query])
+      ?.slice(0, 25)
+      ?.map(i => mapStopToStopLink(i)) ?? [];
 
   return StopsElement(stops);
 

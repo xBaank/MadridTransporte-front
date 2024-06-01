@@ -15,7 +15,6 @@ export default function BusStopMap() {
 
 function BusStopMapBase() {
   const {fullStopCode} = useParams<{fullStopCode: string}>();
-  const [allStops, setAllStops] = useState<Stop[]>([]);
   const [stops, setStops] = useState<Stop[]>([]);
   const [map, setMap] = useState<Map | null>(null);
   const [selected, setSelected] = useState<Stop>();
@@ -30,18 +29,16 @@ function BusStopMapBase() {
   }, [map]);
 
   useEffect(() => {
-    const stop = allStops.find(i => i.fullStopCode === fullStopCode);
-    if (stop === undefined) {
-      map?.panTo(mapContext.mapData.pos);
-    } else {
-      map?.panTo({lat: stop.stopLat, lng: stop.stopLon});
-      setSelected(stop);
-    }
-  }, [fullStopCode, allStops, map]);
-
-  useEffect(() => {
-    db.stops.toArray().then(stops => setAllStops(stops));
-  }, []);
+    if (fullStopCode === undefined) return;
+    db.stops.get(fullStopCode).then(stop => {
+      if (stop === undefined) {
+        map?.panTo(mapContext.mapData.pos);
+      } else {
+        map?.panTo({lat: stop.stopLat, lng: stop.stopLon});
+        setSelected(stop);
+      }
+    });
+  }, [fullStopCode, map]);
 
   const markers = useMemo(() => {
     if (map === null) return <></>;
@@ -53,11 +50,23 @@ function BusStopMapBase() {
       setStops([]);
       return;
     }
-    const markers = allStops.filter(m => {
-      const pos = {lat: m.stopLat, lng: m.stopLon};
-      return map?.getBounds().contains(pos);
-    });
-    setStops(markers);
+
+    const bounds = map.getBounds();
+    const ne = bounds.getNorthEast();
+    const sw = bounds.getSouthWest();
+
+    db.stops
+      .where("stopLat")
+      .between(sw.lat, ne.lat)
+      .and(stop => stop.stopLon >= sw.lng && stop.stopLon <= ne.lng)
+      .toArray()
+      .then(stops => {
+        const filteredStops = stops.filter(stop => {
+          const pos = {lat: stop.stopLat, lng: stop.stopLon};
+          return bounds.contains(pos);
+        });
+        setStops(filteredStops);
+      });
   }
 
   function zoomEnd() {

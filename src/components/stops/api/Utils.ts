@@ -1,4 +1,6 @@
 import {
+  type Stop,
+  type StopLink,
   type FavoriteStop,
   type TrainFavoriteStop,
   type TransportType,
@@ -172,3 +174,15 @@ export function getColor(codMode: number) {
   if (codMode === emtCodMode) return "#1c73ff";
   return "#00cc07";
 }
+
+export const mapStopToStopLink = (stop: Stop, code?: string): StopLink => {
+  return {
+    stop,
+    url: getStopTimesLinkByMode(
+      stop.codMode,
+      stop.stopCode.toString(),
+      code ?? null,
+    ),
+    iconUrl: getIconByCodMode(stop.codMode),
+  };
+};
