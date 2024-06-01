@@ -2,12 +2,12 @@ import {useContext, useEffect, useMemo, useState} from "react";
 import {useMapEvents} from "react-leaflet";
 import {type Stop} from "./api/Types";
 import {type Map} from "leaflet";
-import {getStops} from "./api/Stops";
 import {StopsMarkers} from "./StopsMarkers";
 import ThemedMap from "./ThemedMap";
 import {Card, Snackbar} from "@mui/material";
 import {MapContext} from "../../contexts/mapContext";
 import {useParams} from "react-router-dom";
+import {db} from "./api/db";
 
 export default function BusStopMap() {
   return useMemo(() => <BusStopMapBase />, []);
@@ -40,7 +40,7 @@ function BusStopMapBase() {
   }, [fullStopCode, allStops, map]);
 
   useEffect(() => {
-    getStops().then(stops => setAllStops(stops));
+    db.stops.toArray().then(stops => setAllStops(stops));
   }, []);
 
   const markers = useMemo(() => {

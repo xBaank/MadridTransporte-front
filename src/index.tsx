@@ -22,7 +22,7 @@ import Settings from "./components/settings/Settings";
 import StopNearest from "./components/stops/StopNearest";
 import LinesLocationsMap from "./components/stops/lines/LinesLocationsMap";
 import {setupBackButton} from "./backButtons";
-import {defaultPosition, useLoadStops, useSavedTheme} from "./hooks/hooks";
+import {defaultPosition, useSavedTheme} from "./hooks/hooks";
 import {TokenContext, useToken} from "./notifications";
 import {registerSW} from "virtual:pwa-register";
 import "@fontsource/roboto/300.css";
@@ -32,6 +32,7 @@ import "@fontsource/roboto/700.css";
 import {ColorModeContext} from "./contexts/colorModeContext";
 import {MapContext, type MapData} from "./contexts/mapContext";
 import RenderLoadStops from "./components/settings/LoadStops";
+import {DataLoadContext, type DataLoaded} from "./contexts/dataLoadContext";
 
 const updateSW = registerSW({
   onNeedRefresh() {
@@ -53,6 +54,7 @@ export default function App() {
     pos: defaultPosition,
     zoom: 16,
   });
+  const [loadedData, setLoadedData] = useState(false);
 
   const colorMode = useMemo(
     () => ({
@@ -72,27 +74,37 @@ export default function App() {
     };
   }, [mapData]);
 
+  const dataLoadContext = useMemo(() => {
+    return {
+      setDataLoaded: (data: DataLoaded) => {
+        setLoadedData(data.loaded);
+      },
+      dataLoaded: {loaded: loadedData},
+    };
+  }, [loadedData]);
+
   const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
   const token = useToken();
 
-  const [ready, open, success, error] = useLoadStops();
-
+  // This is getting out of hands
   return (
     <>
-      <MapContext.Provider value={mapDataContext}>
-        <TokenContext.Provider value={token}>
-          <ColorModeContext.Provider value={colorMode}>
-            <ThemeProvider theme={theme}>
-              <CssBaseline />
-              {!ready ? (
-                <RenderLoadStops open={open} success={success} error={error} />
-              ) : (
-                <RouterProvider router={router} />
-              )}
-            </ThemeProvider>
-          </ColorModeContext.Provider>
-        </TokenContext.Provider>
-      </MapContext.Provider>
+      <DataLoadContext.Provider value={dataLoadContext}>
+        <MapContext.Provider value={mapDataContext}>
+          <TokenContext.Provider value={token}>
+            <ColorModeContext.Provider value={colorMode}>
+              <ThemeProvider theme={theme}>
+                <CssBaseline />
+                {!loadedData ? (
+                  <RenderLoadStops />
+                ) : (
+                  <RouterProvider router={router} />
+                )}
+              </ThemeProvider>
+            </ColorModeContext.Provider>
+          </TokenContext.Provider>
+        </MapContext.Provider>
+      </DataLoadContext.Provider>
     </>
   );
 }

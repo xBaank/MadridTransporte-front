@@ -1,15 +1,54 @@
 import LinearProgress from "@mui/material/LinearProgress";
 import {Alert, Box, Modal, Typography} from "@mui/material";
+import {useContext, useEffect, useState} from "react";
+import {getAllApiStops} from "../stops/api/Stops";
+import {DataLoadContext} from "../../contexts/dataLoadContext";
+import {db} from "../stops/api/db";
 
-export default function RenderLoadStops({
-  open,
-  success,
-  error,
-}: {
-  open: boolean;
-  success: boolean;
-  error: boolean;
-}) {
+export default function RenderLoadStops() {
+  const [open, setOpen] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
+  const loadDataContext = useContext(DataLoadContext);
+
+  async function loadStops() {
+    const stopsCount = await db.stops.count();
+
+    if (stopsCount === 0) {
+      console.log("Loading");
+      setOpen(true);
+
+      try {
+        getAllApiStops().then(async stops => {
+          if (stops._tag !== "Left") {
+            await db.stops.bulkPut(stops.right);
+            setSuccess(true);
+
+            setTimeout(() => {
+              setSuccess(false);
+              setOpen(false);
+              loadDataContext.setDataLoaded({loaded: true});
+            }, 2000);
+
+            console.log("Finished loading");
+          }
+        });
+      } catch {
+        console.error("Error updating stops");
+        setError(true);
+        setSuccess(false);
+        loadDataContext.setDataLoaded({loaded: false});
+      }
+    }
+    if (stopsCount > 0) {
+      loadDataContext.setDataLoaded({loaded: true});
+    }
+  }
+
+  useEffect(() => {
+    loadStops();
+  }, []);
+
   const style = {
     position: "absolute" as "absolute",
     display: "block",
@@ -38,7 +77,7 @@ export default function RenderLoadStops({
     if (error) {
       return (
         <Alert className="mb-2" variant="outlined" severity="error">
-          Ha habido un error al actualizar las paradas.
+          Ha habido un error al actualizar las paradas. Reinicia la aplicacion.
         </Alert>
       );
     }
@@ -60,6 +99,9 @@ export default function RenderLoadStops({
             className="text-center">
             Actualizando paradas
           </Typography>
+          <div className="text-center font-bold text-sm">
+            No cierres la aplicacion
+          </div>
           <div className=" mt-4">
             <InfoMessage />
           </div>

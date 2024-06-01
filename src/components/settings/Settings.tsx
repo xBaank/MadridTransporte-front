@@ -1,21 +1,17 @@
 import {Button, FormControlLabel, Switch, useTheme} from "@mui/material";
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {Brightness7} from "@mui/icons-material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import {
-  changeMinutesDisplay,
-  getMinutesDisplay,
-  useLoadStops,
-} from "../../hooks/hooks";
+import {changeMinutesDisplay, getMinutesDisplay} from "../../hooks/hooks";
 import {Link} from "react-router-dom";
 import {ColorModeContext} from "../../contexts/colorModeContext";
-import {deleteStops} from "../stops/api/Stops";
-import RenderLoadStops from "./LoadStops";
+import {DataLoadContext} from "../../contexts/dataLoadContext";
+import {db} from "../stops/api/db";
 
 export default function Settings() {
   const theme = useTheme();
-  const [showLoading, setShowLoading] = useState(false);
-  const colorMode = React.useContext(ColorModeContext);
+  const colorMode = useContext(ColorModeContext);
+  const dataLoaded = useContext(DataLoadContext);
   const [minutesToDisplay, setMinutesToDisplay] =
     useState<boolean>(getMinutesDisplay());
 
@@ -29,10 +25,15 @@ export default function Settings() {
     return (
       <>
         <Button
-          // eslint-disable-next-line @typescript-eslint/no-misused-promises
-          onClick={async () => {
-            await deleteStops();
-            setShowLoading(true);
+          onClick={() => {
+            db.stops
+              .clear()
+              .then(() => {
+                dataLoaded.setDataLoaded({
+                  loaded: false,
+                });
+              })
+              .catch(() => console.error("Error deleting stops"));
           }}
           className="w-full"
           variant="contained">
@@ -82,14 +83,6 @@ export default function Settings() {
     );
   }
 
-  function RenderStopsUpdate() {
-    const [, open, success, error] = useLoadStops(() => {
-      setShowLoading(false);
-    });
-
-    return <RenderLoadStops open={open} success={success} error={error} />;
-  }
-
   return (
     <>
       <div
@@ -97,9 +90,6 @@ export default function Settings() {
         <div className=" text-2xl font-bold ">Ajustes</div>
         <div className="flex items-center space-x-4 mt-5">
           <ul className="w-full ">
-            <li className="w-full ">
-              {showLoading ? <RenderStopsUpdate /> : null}
-            </li>
             <li className="w-full ">
               <SwitchTheme />
             </li>

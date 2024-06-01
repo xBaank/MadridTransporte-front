@@ -8,7 +8,7 @@ import {
   type LineLocations,
 } from "./Types";
 import {apiUrl} from "../../Urls";
-import {getStop} from "./Stops";
+import {db} from "./db";
 
 const NotFound = "No se ha encontrado la linea especificada";
 const BadRequest = "Error al obtener la localizacion";
@@ -45,7 +45,7 @@ export async function getItinerary(
 
   const stopsPromise = data.stops
     .map(async i => {
-      const stop = await getStop(i.fullStopCode);
+      const stop = await db.stops.get(i.fullStopCode);
       if (stop == null) return null;
       return {...stop, order: i.order};
     })

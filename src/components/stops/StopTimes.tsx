@@ -19,7 +19,7 @@ import {
   getMapLocationLink,
   removeFromFavorites,
 } from "./api/Utils";
-import {getAlertsByTransportType, getStopByType} from "./api/Stops";
+import {getAlertsByTransportType} from "./api/Stops";
 import FavoriteSave from "../favorites/FavoriteSave";
 import RenderAlerts from "./Alerts";
 import LoadingSpinner from "../LoadingSpinner";
@@ -42,6 +42,7 @@ import {Alert as AlertMui, Button, Chip, IconButton} from "@mui/material";
 import AccessibleIcon from "@mui/icons-material/Accessible";
 import ErrorIcon from "@mui/icons-material/Error";
 import MapIcon from "@mui/icons-material/Map";
+import {db} from "./api/db";
 
 export default function BusStopsTimes() {
   const {type, code} = useParams<{type: TransportType; code: string}>();
@@ -95,7 +96,9 @@ export default function BusStopsTimes() {
 
   const getStopInfo = useCallback(() => {
     if (type === undefined || code === undefined) return;
-    getStopByType(type, code)
+    db.stops
+      .where({codMode: getCodModeByType(type), stopCode: code})
+      .first()
       .then(stop => setStop(stop))
       .catch(() => setError("Error al cargar la parada"));
   }, [type, code]);

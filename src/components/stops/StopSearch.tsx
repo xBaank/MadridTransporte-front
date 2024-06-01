@@ -4,11 +4,11 @@ import {Search} from "@mui/icons-material";
 import AllStopsComponent, {StopComponent} from "./StopsComponent";
 import StopsFavorites from "./StopsFavorites";
 import {type Stop, type StopLink} from "./api/Types";
-import {getStops} from "./api/Stops";
 import {getIconByCodMode, getStopTimesLinkByMode} from "./api/Utils";
 import {useParams} from "react-router-dom";
 import AllSubscriptions from "./StopsSubscriptions";
 import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
+import {db} from "./api/db";
 
 export default function BusStopSearch({
   title,
@@ -24,7 +24,8 @@ export default function BusStopSearch({
   // the times are by origin and destination, so we need to know the origin to show
 
   useEffect(() => {
-    getStops()
+    db.stops
+      .toArray()
       .then(allStops => setStops(allStops))
       .catch(() => console.error("Error getting stops"));
   }, []);

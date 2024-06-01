@@ -4,7 +4,7 @@ import {type Stop} from "./api/Types";
 import {getStopTimesLinkByMode} from "./api/Utils";
 import LoadingSpinner from "../LoadingSpinner";
 import ErrorMessage from "../Error";
-import {getStops} from "./api/Stops";
+import {db} from "./api/db";
 
 export default function StopNearest() {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ export default function StopNearest() {
   }, []);
 
   useEffect(() => {
-    getStops().then(stops => setAllStops(stops));
+    db.stops.toArray().then(stops => setAllStops(stops));
   }, []);
 
   useEffect(() => {
