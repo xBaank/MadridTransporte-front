@@ -25,6 +25,8 @@ function BusStopMapBase() {
     if (map == null) return;
     if (map.getZoom() < 16) {
       setShowToolTip(true);
+    } else {
+      displayMarkers();
     }
   }, [map]);
 
