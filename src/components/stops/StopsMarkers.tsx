@@ -1,11 +1,11 @@
-import {type Stop} from "./api/Types";
+import {type Stop} from "./api/types";
 import {Marker, Popup} from "react-leaflet";
 import {
   currentStop,
   getIconAnchor,
   getIconByCodMode,
   getStopTimesLinkByMode,
-} from "./api/Utils";
+} from "./api/utils";
 import L from "leaflet";
 import {Button, useTheme} from "@mui/material";
 import {Link} from "react-router-dom";

@@ -1,5 +1,5 @@
 import Dexie, {type EntityTable} from "dexie";
-import {type Stop} from "./Types";
+import {type Stop} from "./types";
 
 export const db = new Dexie("MadridTransporte") as Dexie & {
   stops: EntityTable<

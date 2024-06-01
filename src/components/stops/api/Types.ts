@@ -1,4 +1,4 @@
-import {type Coordinates} from "./RouteTypes";
+import {type Coordinates} from "./routeTypes";
 
 export type Stop = {
   fullStopCode: string;

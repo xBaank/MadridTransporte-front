@@ -1,5 +1,5 @@
 import {Modal, Box, Typography, Button} from "@mui/material";
-import {type Alert, type Incident} from "./api/Types";
+import {type Alert, type Incident} from "./api/types";
 import React from "react";
 import {Link} from "react-router-dom";
 

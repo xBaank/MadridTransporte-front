@@ -4,7 +4,7 @@ import {
   getUrlByCodMode,
   metroCodMode,
   trainCodMode,
-} from "../stops/api/Utils";
+} from "../stops/api/utils";
 import {Browser} from "@capacitor/browser";
 import {PhotoViewer} from "@capacitor-community/photoviewer";
 

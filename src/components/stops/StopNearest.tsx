@@ -1,10 +1,10 @@
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {getStopTimesLinkByMode} from "./api/Utils";
+import {getStopTimesLinkByMode} from "./api/utils";
 import LoadingSpinner from "../LoadingSpinner";
 import ErrorMessage from "../Error";
 import {db} from "./api/db";
-import {type Stop} from "./api/Types";
+import {type Stop} from "./api/types";
 
 export default function StopNearest() {
   const navigate = useNavigate();

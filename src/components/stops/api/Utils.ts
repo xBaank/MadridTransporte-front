@@ -4,7 +4,7 @@ import {
   type FavoriteStop,
   type TrainFavoriteStop,
   type TransportType,
-} from "./Types";
+} from "./types";
 
 export const metroCodMode = 4;
 export const trainCodMode = 5;

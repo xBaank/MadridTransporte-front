@@ -1,4 +1,4 @@
-import {getLineColorByCodMode} from "./stops/api/Utils";
+import {getLineColorByCodMode} from "./stops/api/utils";
 
 export default function Line({info}: {info: {line: string; codMode: number}}) {
   return (

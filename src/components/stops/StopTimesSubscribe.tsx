@@ -3,12 +3,12 @@ import {
   type LineDestination,
   type Subscriptions,
   type TransportType,
-} from "./api/Types";
+} from "./api/types";
 import {fold} from "fp-ts/lib/Either";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import NotificationsOffIcon from "@mui/icons-material/NotificationsOff";
-import {subscribe, unsubscribe} from "./api/Subscriptions";
-import {getCodModeByType} from "./api/Utils";
+import {subscribe, unsubscribe} from "./api/subscriptions";
+import {getCodModeByType} from "./api/utils";
 import {TokenContext} from "../../notifications";
 import {IconButton} from "@mui/material";
 

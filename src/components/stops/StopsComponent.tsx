@@ -1,11 +1,11 @@
 /* eslint-disable no-mixed-operators */
-import {type StopLink} from "./api/Types";
+import {type StopLink} from "./api/types";
 import {Button, Divider, List, ListItemButton} from "@mui/material";
 import NearMeIcon from "@mui/icons-material/NearMe";
 import {Link} from "react-router-dom";
 import {useLiveQuery} from "dexie-react-hooks";
 import {db} from "./api/db";
-import {mapStopToStopLink, trainCodMode} from "./api/Utils";
+import {mapStopToStopLink, trainCodMode} from "./api/utils";
 export default function FilteredStopsComponent({
   query,
   codMode,

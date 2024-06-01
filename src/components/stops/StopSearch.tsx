@@ -3,7 +3,7 @@ import {useState} from "react";
 import {Search} from "@mui/icons-material";
 import AllStopsComponent, {StopComponent} from "./StopsComponent";
 import StopsFavorites from "./StopsFavorites";
-import {mapStopToStopLink} from "./api/Utils";
+import {mapStopToStopLink} from "./api/utils";
 import {useParams} from "react-router-dom";
 import AllSubscriptions from "./StopsSubscriptions";
 import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";

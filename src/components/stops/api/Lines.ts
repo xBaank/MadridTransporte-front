@@ -6,7 +6,7 @@ import {
   type Shape,
   type ItineraryWithStopsOrder,
   type LineLocations,
-} from "./Types";
+} from "./types";
 import {apiUrl} from "../../Urls";
 import {db} from "./db";
 
