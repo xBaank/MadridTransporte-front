@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {getStopTimesLinkByMode} from "./api/Utils";
 import LoadingSpinner from "../LoadingSpinner";
 import ErrorMessage from "../Error";
-import {db} from "./api/Db";
+import {db} from "./api/Dba";
 import {type Stop} from "./api/Types";
 
 export default function StopNearest() {
