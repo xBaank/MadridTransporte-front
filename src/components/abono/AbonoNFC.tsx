@@ -1,9 +1,9 @@
 import {CreditCard} from "@mui/icons-material";
 import {useEffect, useState} from "react";
-import {ttpInfo} from "./api/abono";
+import {ttpInfo} from "./api/Abono";
 import LoadingSpinner from "../LoadingSpinner";
 import ErrorMessage from "../Error";
-import {type TitTemp, type TitMV, type TtpResponse} from "./api/types";
+import {type TitTemp, type TitMV, type TtpResponse} from "./api/Types";
 import {Card} from "@mui/material";
 
 export default function AbonoNFC() {

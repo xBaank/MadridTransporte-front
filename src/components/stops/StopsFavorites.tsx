@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {type FavoriteStop, type TrainFavoriteStop} from "./api/types";
+import {type FavoriteStop, type TrainFavoriteStop} from "./api/Types";
 import {
   getFavorites,
   getIconByCodMode,
@@ -9,7 +9,7 @@ import {
   removeFromFavorites,
   removeFromTrainFavorites,
   trainCodMode,
-} from "./api/utils";
+} from "./api/Utils";
 import GradeIcon from "@mui/icons-material/Grade";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {

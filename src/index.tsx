@@ -14,7 +14,7 @@ import DefaultElement from "./components/DefaultElement";
 import BusStopMap from "./components/stops/StopMap";
 import Info from "./components/info/Info";
 import AbonoNFC from "./components/abono/AbonoNFC";
-import {trainCodMode} from "./components/stops/api/utils";
+import {trainCodMode} from "./components/stops/api/Utils";
 import {uniqueId} from "lodash";
 import TrainStopTimesComponent from "./components/stops/train/TrainStopsTimes";
 import StaticMaps from "./components/maps/StaticMaps";

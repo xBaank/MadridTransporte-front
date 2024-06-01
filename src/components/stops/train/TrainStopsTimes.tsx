@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
 import {useSearchParams} from "react-router-dom";
 import {fold} from "fp-ts/lib/Either";
-import {getTrainStopsTimes} from "../api/times";
-import {type TrainStopTimes} from "../api/types";
+import {getTrainStopsTimes} from "../api/Times";
+import {type TrainStopTimes} from "../api/Types";
 import {
   addToTrainFavorites,
   getIconByCodMode,
@@ -10,7 +10,7 @@ import {
   getTrainFavorites,
   removeFromTrainFavorites,
   trainCodMode,
-} from "../api/utils";
+} from "../api/Utils";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import FavoriteSave from "../../favorites/FavoriteSave";
 import LoadingSpinner from "../../LoadingSpinner";

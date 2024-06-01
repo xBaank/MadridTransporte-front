@@ -3,7 +3,7 @@ import {
   type Subscription,
   type Subscriptions,
   type TransportType,
-} from "./types";
+} from "./Types";
 import {apiUrl} from "../../Urls";
 
 const ErrorSubscription = "Error al obtener las suscripciones";

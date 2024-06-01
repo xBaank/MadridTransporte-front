@@ -1,5 +1,5 @@
 import {type Either, left, right} from "fp-ts/lib/Either";
-import {type Alert, type Stop, type TransportType} from "./types";
+import {type Alert, type Stop, type TransportType} from "./Types";
 import {apiUrl} from "../../Urls";
 
 export async function getAllApiStops(): Promise<Either<string, Stop[]>> {

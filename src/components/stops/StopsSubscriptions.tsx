@@ -3,8 +3,8 @@ import {
   type Subscription,
   type Subscriptions,
   type TransportType,
-} from "./api/types";
-import {getAllSubscriptions, unsubscribe} from "./api/subscriptions";
+} from "./api/Types";
+import {getAllSubscriptions, unsubscribe} from "./api/Subscriptions";
 import {fold} from "fp-ts/lib/Either";
 import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
 import NotificationsOffIcon from "@mui/icons-material/NotificationsOff";
@@ -12,7 +12,7 @@ import {
   getIconByCodMode,
   getStopTimesLinkByMode,
   getTransportTypeByCodMode,
-} from "./api/utils";
+} from "./api/Utils";
 import ErrorMessage from "../Error";
 import Line from "../Line";
 import {Link} from "react-router-dom";

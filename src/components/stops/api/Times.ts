@@ -4,7 +4,7 @@ import {
   type StopTimes,
   type TrainStopTimes,
   type TransportType,
-} from "./types";
+} from "./Types";
 import {apiUrl} from "../../Urls";
 
 const NotFound = "No se ha encontrado la parada seleccionada";

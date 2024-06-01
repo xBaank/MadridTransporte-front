@@ -1,6 +1,6 @@
 import {useContext, useEffect, useMemo, useState} from "react";
 import {useMapEvents} from "react-leaflet";
-import {type Stop} from "./api/types";
+import {type Stop} from "./api/Types";
 import {type Map} from "leaflet";
 import {StopsMarkers} from "./StopsMarkers";
 import ThemedMap from "./ThemedMap";

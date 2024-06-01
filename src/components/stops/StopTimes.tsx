@@ -8,8 +8,8 @@ import {
   type StopTimes,
   type Subscriptions,
   type TransportType,
-} from "./api/types";
-import {getStopsTimes, getStopsTimesPlanned} from "./api/times";
+} from "./api/Types";
+import {getStopsTimes, getStopsTimesPlanned} from "./api/Times";
 import {fold} from "fp-ts/lib/Either";
 import {
   addToFavorites,
@@ -18,8 +18,8 @@ import {
   getIconByCodMode,
   getMapLocationLink,
   removeFromFavorites,
-} from "./api/utils";
-import {getAlertsByTransportType} from "./api/stops";
+} from "./api/Utils";
+import {getAlertsByTransportType} from "./api/Stops";
 import FavoriteSave from "../favorites/FavoriteSave";
 import RenderAlerts from "./Alerts";
 import LoadingSpinner from "../LoadingSpinner";
@@ -30,7 +30,7 @@ import {
   useAmberColor,
 } from "../../hooks/hooks";
 import StopTimesSubscribe from "./StopTimesSubscribe";
-import {getSubscription} from "./api/subscriptions";
+import {getSubscription} from "./api/Subscriptions";
 import ErrorMessage from "../Error";
 import Line from "../Line";
 import StaledMessage from "../Staled";

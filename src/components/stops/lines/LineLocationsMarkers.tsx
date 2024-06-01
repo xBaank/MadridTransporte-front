@@ -1,5 +1,5 @@
 import L from "leaflet";
-import {type LineLocation} from "../api/types";
+import {type LineLocation} from "../api/Types";
 import {Marker} from "react-leaflet";
 
 export function LineLocationsMarkers({

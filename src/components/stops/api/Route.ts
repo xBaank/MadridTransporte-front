@@ -1,4 +1,4 @@
-import {type Nearest, type Coordinates, type Route} from "./routeTypes";
+import {type Nearest, type Coordinates, type Route} from "./RouteTypes";
 import _ from "lodash";
 
 export async function routeTimeFoot(from: Coordinates, to: Coordinates) {

@@ -1,7 +1,7 @@
 import LinearProgress from "@mui/material/LinearProgress";
 import {Alert, Box, Modal, Typography} from "@mui/material";
 import {useContext, useEffect, useState} from "react";
-import {getAllApiStops} from "../stops/api/stops";
+import {getAllApiStops} from "../stops/api/Stops";
 import {DataLoadContext} from "../../contexts/dataLoadContext";
 import {db} from "../stops/api/db";
 

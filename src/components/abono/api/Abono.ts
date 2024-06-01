@@ -1,5 +1,5 @@
 import {CapacitorCookies, CapacitorHttp} from "@capacitor/core";
-import {type TtpResponse} from "./types";
+import {type TtpResponse} from "./Types";
 import {v4 as uuidv4} from "uuid";
 
 const middlelat = "https://latsecu.comunidad.madrid";

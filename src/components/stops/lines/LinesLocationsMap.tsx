@@ -7,19 +7,19 @@ import {
   type ItineraryWithStopsOrder,
   type Shape,
   type LineLocations,
-} from "../api/types";
-import {getLineLocations, getItinerary, getShapes} from "../api/lines";
+} from "../api/Types";
+import {getLineLocations, getItinerary, getShapes} from "../api/Lines";
 import {fold} from "fp-ts/lib/Either";
 import ErrorMessage from "../../Error";
 import {useInterval} from "usehooks-ts";
-import {routeToCoordinates, fixRouteShapes, routeTimeCar} from "../api/route";
+import {routeToCoordinates, fixRouteShapes, routeTimeCar} from "../api/Route";
 import LoadingSpinner from "../../LoadingSpinner";
 import {StopsMarkers} from "../StopsMarkers";
 import {LineLocationsMarkers} from "./LineLocationsMarkers";
 import ThemedMap from "../ThemedMap";
 import {Polyline} from "react-leaflet";
 import Line from "../../Line";
-import {getColor} from "../api/utils";
+import {getColor} from "../api/Utils";
 import {defaultPosition} from "../../../hooks/hooks";
 
 export default function LinesLocationsMap() {
