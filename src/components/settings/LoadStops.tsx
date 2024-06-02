@@ -28,7 +28,7 @@ export default function LoadStops() {
       setOpen(true);
 
       try {
-        getAllApiStops().then(async stops => {
+        await getAllApiStops().then(async stops => {
           if (stops._tag !== "Left") {
             const mapped = stops.right.map(i => {
               return {
@@ -79,11 +79,11 @@ export default function LoadStops() {
       deleteAllFavoritesFromLocalStorage();
 
       migrationContext.setDataMigrated(true);
-    } catch (e: any) {
+    } catch {
       console.error("Error migrating favorites");
-      console.error(e);
+      setSuccess(false);
+      setError(false);
       migrationContext.setDataMigrated(false);
-      setError(true);
     }
   }
 
