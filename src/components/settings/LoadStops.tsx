@@ -76,9 +76,9 @@ export default function LoadStops() {
         await db.trainFavorites.bulkPut(trainFavorites);
       }
 
-      migrationContext.setDataMigrated(true);
-
       deleteAllFavoritesFromLocalStorage();
+
+      migrationContext.setDataMigrated(true);
     } catch (e: any) {
       console.error("Error migrating favorites");
       console.error(e);
@@ -142,9 +142,6 @@ export default function LoadStops() {
             className="text-center">
             Actualizando paradas
           </Typography>
-          <div className="text-center font-bold text-sm">
-            No cierres la aplicacion
-          </div>
           <div className=" mt-4">
             <InfoMessage />
           </div>

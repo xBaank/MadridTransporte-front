@@ -23,11 +23,8 @@ function BusStopMapBase() {
 
   useEffect(() => {
     if (map == null) return;
-    if (map.getZoom() < 16) {
-      setShowToolTip(true);
-    } else {
-      displayMarkers();
-    }
+    if (map.getZoom() < 16) setShowToolTip(true);
+    displayMarkers();
   }, [map]);
 
   useEffect(() => {
@@ -36,8 +33,10 @@ function BusStopMapBase() {
       if (stop === undefined) {
         map?.panTo(mapContext.mapData.pos);
       } else {
-        map?.panTo({lat: stop.stopLat, lng: stop.stopLon});
-        setSelected(stop);
+        displayMarkers().then(() => {
+          map?.panTo({lat: stop.stopLat, lng: stop.stopLon});
+          setSelected(stop);
+        });
       }
     });
   }, [fullStopCode, map]);
@@ -47,28 +46,27 @@ function BusStopMapBase() {
     return <StopsMarkers selected={selected} stops={stops} map={map} />;
   }, [map, stops]);
 
-  function displayMarkers() {
+  async function displayMarkers() {
     if (map == null || map.getZoom() < 16) {
       setStops([]);
       return;
     }
 
-    const bounds = map.getBounds();
-    const ne = bounds.getNorthEast();
-    const sw = bounds.getSouthWest();
+    const ne = map.getBounds().getNorthEast();
+    const sw = map.getBounds().getSouthWest();
 
-    db.stops
+    const stops = await db.stops
       .where("stopLat")
       .between(sw.lat, ne.lat)
       .and(stop => stop.stopLon >= sw.lng && stop.stopLon <= ne.lng)
-      .toArray()
-      .then(stops => {
-        const filteredStops = stops.filter(stop => {
-          const pos = {lat: stop.stopLat, lng: stop.stopLon};
-          return bounds.contains(pos);
-        });
-        setStops(filteredStops);
-      });
+      .toArray();
+
+    const filteredStops = stops.filter(stop => {
+      const pos = {lat: stop.stopLat, lng: stop.stopLon};
+      return map.getBounds().contains(pos);
+    });
+
+    setStops(filteredStops);
   }
 
   function zoomEnd() {
@@ -82,8 +80,12 @@ function BusStopMapBase() {
 
   function DisplayOnMove() {
     useMapEvents({
-      locationfound: displayMarkers,
-      locationerror: displayMarkers,
+      locationfound: () => {
+        displayMarkers();
+      },
+      locationerror: () => {
+        displayMarkers();
+      },
       moveend: () => {
         if (map == null) return;
         displayMarkers();
