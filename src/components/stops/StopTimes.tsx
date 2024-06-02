@@ -17,7 +17,6 @@ import {
   getMapLocationLink,
 } from "./api/Utils";
 import {getAlertsByTransportType} from "./api/Stops";
-import FavoriteSave from "../favorites/FavoriteSave";
 import RenderAlerts from "./Alerts";
 import LoadingSpinner from "../LoadingSpinner";
 import {
@@ -41,6 +40,7 @@ import ErrorIcon from "@mui/icons-material/Error";
 import MapIcon from "@mui/icons-material/Map";
 import {db} from "./api/Db";
 import {useLiveQuery} from "dexie-react-hooks";
+import {FavoriteSave} from "../favorites/FavoriteSave";
 
 export default function BusStopsTimes() {
   const {type, code} = useParams<{type: TransportType; code: string}>();
@@ -52,6 +52,10 @@ export default function BusStopsTimes() {
   const [error, setError] = useState<string>();
   const [isPullable, setIsPullable] = useState(true);
   const [showLive, setShowLive] = useState(true);
+  const isFavorite =
+    useLiveQuery(
+      async () => (await db.favorites.where({type, code}).first()) != null,
+    ) ?? false;
 
   const stop = useLiveQuery(async () => {
     if (type === undefined) return null;
@@ -227,9 +231,7 @@ export default function BusStopsTimes() {
                 <MapIcon color="primary" />
               </IconButton>
               <FavoriteSave
-                comparator={async () =>
-                  (await db.favorites.where({type, code}).first()) != null
-                }
+                isFavorite={isFavorite}
                 saveF={async (name: string) =>
                   await db.favorites.add({
                     type: type!,
