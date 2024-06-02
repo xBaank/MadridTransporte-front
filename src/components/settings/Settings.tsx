@@ -29,9 +29,7 @@ export default function Settings() {
             db.stops
               .clear()
               .then(() => {
-                dataLoaded.setDataLoaded({
-                  loaded: false,
-                });
+                dataLoaded.setDataLoaded(false);
               })
               .catch(() => console.error("Error deleting stops"));
           }}

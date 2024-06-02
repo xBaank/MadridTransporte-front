@@ -103,63 +103,15 @@ export function getFavorites(): FavoriteStop[] {
   return JSON.parse(favorites);
 }
 
-export function addToFavorites(stop: FavoriteStop) {
-  const favorites = JSON.parse(localStorage.getItem("stopsFavorites") ?? "[]");
-  localStorage.setItem("stopsFavorites", JSON.stringify([...favorites, stop]));
-}
-
-export function removeFromFavorites({
-  type,
-  code,
-}: {
-  type: TransportType;
-  code: string;
-}) {
-  const favorites = JSON.parse(localStorage.getItem("stopsFavorites") ?? "[]");
-  localStorage.setItem(
-    "stopsFavorites",
-    JSON.stringify(
-      favorites.filter(
-        (favorite: FavoriteStop) =>
-          favorite.code !== code || favorite.type !== type,
-      ),
-    ),
-  );
-}
-
 export function getTrainFavorites(): TrainFavoriteStop[] {
   const favorites = localStorage.getItem("trainStopsFavorites");
   if (favorites === null) return [];
   return JSON.parse(favorites);
 }
 
-export function addToTrainFavorites(stop: TrainFavoriteStop) {
-  const favorites = JSON.parse(
-    localStorage.getItem("trainStopsFavorites") ?? "[]",
-  );
-  localStorage.setItem(
-    "trainStopsFavorites",
-    JSON.stringify([...favorites, stop]),
-  );
-}
-
-export function removeFromTrainFavorites(stop: {
-  originCode: string;
-  destinationCode: string;
-}) {
-  const favorites = JSON.parse(
-    localStorage.getItem("trainStopsFavorites") ?? "[]",
-  );
-  localStorage.setItem(
-    "trainStopsFavorites",
-    JSON.stringify(
-      favorites.filter(
-        (favorite: TrainFavoriteStop) =>
-          favorite.originCode !== stop.originCode ||
-          favorite.destinationCode !== stop.destinationCode,
-      ),
-    ),
-  );
+export function deleteAllFavoritesFromLocalStorage() {
+  localStorage.removeItem("trainStopsFavorites");
+  localStorage.removeItem("stopsFavorites");
 }
 
 export function isFavoriteStop(

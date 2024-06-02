@@ -12,12 +12,9 @@ import {
 import {getStopsTimes, getStopsTimesPlanned} from "./api/Times";
 import {fold} from "fp-ts/lib/Either";
 import {
-  addToFavorites,
   getCodModeByType,
-  getFavorites,
   getIconByCodMode,
   getMapLocationLink,
-  removeFromFavorites,
 } from "./api/Utils";
 import {getAlertsByTransportType} from "./api/Stops";
 import FavoriteSave from "../favorites/FavoriteSave";
@@ -230,21 +227,20 @@ export default function BusStopsTimes() {
                 <MapIcon color="primary" />
               </IconButton>
               <FavoriteSave
-                comparator={() =>
-                  getFavorites().some(
-                    (favorite: {type: TransportType; code: string}) =>
-                      favorite.type === type && favorite.code === code,
-                  )
+                comparator={async () =>
+                  (await db.favorites.where({type, code}).first()) != null
                 }
-                saveF={(name: string) =>
-                  addToFavorites({
+                saveF={async (name: string) =>
+                  await db.favorites.add({
                     type: type!,
                     code: code!,
                     name,
                     cod_mode: getCodModeByType(type!),
                   })
                 }
-                deleteF={() => removeFromFavorites({type: type!, code: code!})}
+                deleteF={async () => {
+                  await db.favorites.where({type: type!, code: code!}).delete();
+                }}
                 defaultName={stop.stopName}
               />
             </div>

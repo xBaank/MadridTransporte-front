@@ -2,14 +2,23 @@ import LinearProgress from "@mui/material/LinearProgress";
 import {Alert, Box, Modal, Typography} from "@mui/material";
 import {useContext, useEffect, useState} from "react";
 import {getAllApiStops} from "../stops/api/Stops";
-import {DataLoadContext} from "../../contexts/dataLoadContext";
+import {
+  DataLoadContext,
+  MigrationContext,
+} from "../../contexts/dataLoadContext";
 import {db} from "../stops/api/Db";
+import {
+  getFavorites,
+  getTrainFavorites,
+  deleteAllFavoritesFromLocalStorage,
+} from "../stops/api/Utils";
 
-export default function RenderLoadStops() {
+export default function LoadStops() {
   const [open, setOpen] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const loadDataContext = useContext(DataLoadContext);
+  const migrationContext = useContext(MigrationContext);
 
   async function loadStops() {
     const stopsCount = await db.stops.count();
@@ -36,7 +45,7 @@ export default function RenderLoadStops() {
             setTimeout(() => {
               setSuccess(false);
               setOpen(false);
-              loadDataContext.setDataLoaded({loaded: true});
+              loadDataContext.setDataLoaded(true);
             }, 2000);
 
             console.log("Finished loading");
@@ -46,16 +55,41 @@ export default function RenderLoadStops() {
         console.error("Error updating stops");
         setError(true);
         setSuccess(false);
-        loadDataContext.setDataLoaded({loaded: false});
+        loadDataContext.setDataLoaded(false);
       }
     }
     if (stopsCount > 0) {
-      loadDataContext.setDataLoaded({loaded: true});
+      loadDataContext.setDataLoaded(true);
+    }
+  }
+
+  async function migrate() {
+    const favorites = getFavorites();
+    const trainFavorites = getTrainFavorites();
+
+    try {
+      if (favorites.length > 0) {
+        await db.favorites.bulkPut(favorites);
+      }
+
+      if (trainFavorites.length > 0) {
+        await db.trainFavorites.bulkPut(trainFavorites);
+      }
+
+      migrationContext.setDataMigrated(true);
+
+      deleteAllFavoritesFromLocalStorage();
+    } catch (e: any) {
+      console.error("Error migrating favorites");
+      console.error(e);
+      migrationContext.setDataMigrated(false);
+      setError(true);
     }
   }
 
   useEffect(() => {
     loadStops();
+    migrate();
   }, []);
 
   const style = {
@@ -86,7 +120,7 @@ export default function RenderLoadStops() {
     if (error) {
       return (
         <Alert className="mb-2" variant="outlined" severity="error">
-          Ha habido un error al actualizar las paradas. Reinicia la aplicacion.
+          Ha habido un error. Reinicia la aplicacion.
         </Alert>
       );
     }
