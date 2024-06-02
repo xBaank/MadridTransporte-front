@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.12.4
+
+- Added option to update stops.
+- Improved performance by using IndexedDB async api.
+
 ## 1.12.3
 - Remove theme meta tag.
 

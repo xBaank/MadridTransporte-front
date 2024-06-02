@@ -2,7 +2,7 @@
   "type": "module",
   "name": "madrid-transporte",
   "homepage": "https://www.madridtransporte.com",
-  "version": "1.12.3",
+  "version": "1.12.4",
   "private": true,
   "dependencies": {
     "@capacitor-community/photoviewer": "^3.0.6",
