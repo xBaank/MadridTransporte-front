@@ -69,7 +69,7 @@ export default function FilteredStopsComponent({
     return (
       <>
         <List className="max-w-md">
-          {stopsLinks.map((stop,index) => (
+          {stopsLinks.map((stop, index) => (
             <div key={index}>
               <StopComponent stop={stop} />
               <Divider />

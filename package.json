@@ -63,7 +63,7 @@
     "build": "tsc && vite build",
     "serve": "vite preview --host",
     "lint": "oxlint",
-    "prettier": "prettier src/* --write "
+    "prettier": "cd src && prettier . --write "
   },
   "browserslist": {
     "production": [

@@ -96,8 +96,7 @@ export default function TrainStopTimesComponent() {
             <div className="w-[33%]">Hora llegada</div>
           </li>
           {times?.horario?.map((time, index) =>
-            !showAll && index >= 5 ? null
-             : (
+            !showAll && index >= 5 ? null : (
               <div key={index} className=" border-b-2 pb-3">
                 <li className="flex justify-between pt-3">
                   <div className="w-[33%]">
