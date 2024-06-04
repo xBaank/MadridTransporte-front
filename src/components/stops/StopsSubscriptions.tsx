@@ -96,7 +96,7 @@ export default function AllSubscriptions() {
               <List className="max-w-md">
                 {subscription.linesDestinations.map(
                   (lineDestination, index) => (
-                    <>
+                    <div key={index}>
                       <ListItem
                         disablePadding
                         key={index}
@@ -133,7 +133,7 @@ export default function AllSubscriptions() {
                         </ListItemButton>
                       </ListItem>
                       <Divider />
-                    </>
+                    </div>
                   ),
                 )}
               </List>

@@ -5,27 +5,31 @@
 /* Only the necessary CSS shown */
 
 :root {
-    --map-tiles-filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
+  --map-tiles-filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg)
+    saturate(0.3) brightness(0.7);
 }
 
 @media (prefers-color-scheme: dark) {
-    .map-tiles {
-        -webkit-filter: var(--map-tiles-filter, none); /* WebKit filter */
-        filter: var(--map-tiles-filter, none);
-    }
+  .map-tiles {
+    -webkit-filter: var(--map-tiles-filter, none); /* WebKit filter */
+    filter: var(--map-tiles-filter, none);
+  }
 }
 
 :root {
-    --leaflet-popup-content-wrapper-filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
+  --leaflet-popup-content-wrapper-filter: brightness(0.6) invert(1) contrast(3)
+    hue-rotate(200deg) saturate(0.3) brightness(0.7);
 }
 
 @media (prefers-color-scheme: dark) {
-    .leaflet-popup-content-wrapper-dark {
-        -webkit-filter: var(--leaflet-popup-content-wrapper-filter, none); /* WebKit filter */
-        filter: var(--leaflet-popup-content-wrapper-filter, none);
-    }
+  .leaflet-popup-content-wrapper-dark {
+    -webkit-filter: var(
+      --leaflet-popup-content-wrapper-filter,
+      none
+    ); /* WebKit filter */
+    filter: var(--leaflet-popup-content-wrapper-filter, none);
+  }
 }
-
 
 /** The non-dark mode map will be untouched since it's not styled. **/
 /**
@@ -35,11 +39,11 @@
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 .no-scrollbar::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }

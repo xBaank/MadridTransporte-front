@@ -15,7 +15,7 @@ export default function RenderAlerts({
   const handleClose = () => setOpen(false);
 
   const style = {
-    position: "absolute" as "absolute",
+    position: "absolute" as const,
     display: "block",
     height: "80%",
     margin: "auto",

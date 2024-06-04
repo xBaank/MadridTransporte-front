@@ -96,9 +96,8 @@ export default function TrainStopTimesComponent() {
             <div className="w-[33%]">Hora llegada</div>
           </li>
           {times?.horario?.map((time, index) =>
-            !showAll && index >= 5 ? (
-              <></>
-            ) : (
+            !showAll && index >= 5 ? null
+             : (
               <div key={index} className=" border-b-2 pb-3">
                 <li className="flex justify-between pt-3">
                   <div className="w-[33%]">
@@ -125,7 +124,7 @@ export default function TrainStopTimesComponent() {
                 ) : (
                   <>
                     {time.trans.map((tran, index) => (
-                      <>
+                      <div key={index}>
                         <li className="flex justify-between py-2">
                           <div className="flex justify-center w-16">
                             <CompareArrowsIcon />
@@ -154,7 +153,7 @@ export default function TrainStopTimesComponent() {
                             <div className="w-[33%]"></div>
                           )}
                         </li>
-                      </>
+                      </div>
                     ))}
                   </>
                 )}
