@@ -4,18 +4,17 @@ import {fold} from "fp-ts/lib/Either";
 import {getTrainStopsTimes} from "../api/Times";
 import {type TrainStopTimes} from "../api/Types";
 import {
-  addToTrainFavorites,
   getIconByCodMode,
   getLineColorByCodMode,
-  getTrainFavorites,
-  removeFromTrainFavorites,
   trainCodMode,
 } from "../api/Utils";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
-import FavoriteSave from "../../favorites/FavoriteSave";
+import {FavoriteSave} from "../../favorites/FavoriteSave";
 import LoadingSpinner from "../../LoadingSpinner";
 import ErrorMessage from "../../Error";
 import StaledMessage from "../../Staled";
+import {db} from "../api/Db";
+import {useLiveQuery} from "dexie-react-hooks";
 
 export default function TrainStopTimesComponent() {
   const [searchParams] = useSearchParams();
@@ -24,6 +23,13 @@ export default function TrainStopTimesComponent() {
   const [times, setTimes] = useState<TrainStopTimes>();
   const [error, setError] = useState<string>();
   const [showAll, setShowAll] = useState<boolean>(false);
+  const isFavorite =
+    useLiveQuery(
+      async () =>
+        (await db.trainFavorites
+          .where({originCode: origin, destinationCode: destination})
+          .first()) != null,
+    ) ?? false;
 
   useEffect(() => {
     if (origin === null || destination === null) {
@@ -58,25 +64,21 @@ export default function TrainStopTimesComponent() {
           </div>
           <div className="ml-auto flex pl-3">
             <FavoriteSave
-              comparator={() =>
-                getTrainFavorites().some(
-                  favorite =>
-                    favorite.originCode === origin &&
-                    favorite.destinationCode === destination,
-                )
-              }
-              saveF={(name: string) =>
-                addToTrainFavorites({
+              isFavorite={isFavorite}
+              saveF={async (name: string) =>
+                await db.trainFavorites.add({
                   name,
                   originCode: origin!,
                   destinationCode: destination!,
                 })
               }
-              deleteF={() => {
-                removeFromTrainFavorites({
-                  originCode: origin!,
-                  destinationCode: destination!,
-                });
+              deleteF={async () => {
+                await db.trainFavorites
+                  .where({
+                    originCode: origin,
+                    destinationCode: destination,
+                  })
+                  .delete();
               }}
               defaultName={`${times.peticion.descEstOrigen} - ${times.peticion.descEstDestino}`}
             />

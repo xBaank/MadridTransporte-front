@@ -1,4 +1,4 @@
-import {Modal, Box, Typography, useTheme, Button} from "@mui/material";
+import {Modal, Box, Typography, Button} from "@mui/material";
 import {type Alert, type Incident} from "./api/Types";
 import React from "react";
 import {Link} from "react-router-dom";
@@ -14,9 +14,6 @@ export default function RenderAlerts({
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const theme = useTheme();
-  const textColor = theme.palette.mode === "dark" ? "text-white" : "text-black";
-
   const style = {
     position: "absolute" as "absolute",
     display: "block",
@@ -29,7 +26,7 @@ export default function RenderAlerts({
     bgcolor: "background.paper",
     border: "2px",
     overflow: "scroll",
-    "border-radius": "25px",
+    borderRadius: "25px",
     boxShadow: 24,
     p: 4,
   };
@@ -58,7 +55,7 @@ export default function RenderAlerts({
             className="border-b">
             Avisos
           </Typography>
-          <ul className={`list-disc ${textColor}`}>
+          <ul className={`list-disc`}>
             {alerts.map(alert => {
               return (
                 <li key={`${alert.codLine} ${alert.codMode}`} className="p-2 ">

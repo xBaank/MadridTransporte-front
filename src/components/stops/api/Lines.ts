@@ -8,7 +8,7 @@ import {
   type LineLocations,
 } from "./Types";
 import {apiUrl} from "../../Urls";
-import {getAllStops} from "./Stops";
+import {db} from "./Db";
 
 const NotFound = "No se ha encontrado la linea especificada";
 const BadRequest = "Error al obtener la localizacion";
@@ -41,17 +41,18 @@ export async function getItinerary(
     `${apiUrl}/lines/${type}/${lineCode}/itineraries/${direction}?stopCode=${stopCode}`,
   );
   if (response.status === 404) return left(NotFound);
-  const stops = await getAllStops();
-  if (stops._tag === "Left") return left(stops.left);
   const data = (await response.json()) as Itinerary;
+
+  const stopsPromise = data.stops
+    .map(async i => {
+      const stop = await db.stops.get(i.fullStopCode);
+      if (stop == null) return null;
+      return {...stop, order: i.order};
+    })
+    .filter(i => i != null) as unknown as Array<Promise<StopWithOrder>>;
+
   const mapped: ItineraryWithStopsOrder = {
-    stops: data.stops
-      .map(i => {
-        const stop = stops.right.find(x => x.fullStopCode === i.fullStopCode);
-        if (stop === undefined) return null;
-        return {...stop, order: i.order};
-      })
-      .filter(i => i != null) as StopWithOrder[],
+    stops: await Promise.all(stopsPromise),
     codItinerary: data.codItinerary,
   };
   return right(mapped);

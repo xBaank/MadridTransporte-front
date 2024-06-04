@@ -12,15 +12,11 @@ import {
 import {getStopsTimes, getStopsTimesPlanned} from "./api/Times";
 import {fold} from "fp-ts/lib/Either";
 import {
-  addToFavorites,
   getCodModeByType,
-  getFavorites,
   getIconByCodMode,
   getMapLocationLink,
-  removeFromFavorites,
 } from "./api/Utils";
-import {getAlertsByTransportType, getStop} from "./api/Stops";
-import FavoriteSave from "../favorites/FavoriteSave";
+import {getAlertsByTransportType} from "./api/Stops";
 import RenderAlerts from "./Alerts";
 import LoadingSpinner from "../LoadingSpinner";
 import {
@@ -42,18 +38,38 @@ import {Alert as AlertMui, Button, Chip, IconButton} from "@mui/material";
 import AccessibleIcon from "@mui/icons-material/Accessible";
 import ErrorIcon from "@mui/icons-material/Error";
 import MapIcon from "@mui/icons-material/Map";
+import {db} from "./api/Db";
+import {useLiveQuery} from "dexie-react-hooks";
+import {FavoriteSave} from "../favorites/FavoriteSave";
 
 export default function BusStopsTimes() {
   const {type, code} = useParams<{type: TransportType; code: string}>();
   const [stopTimes, setStopTimes] = useState<StopTimes>();
   const [stopTimesPlanned, setStopTimesPlanned] = useState<StopTimePlanned[]>();
-  const [stop, setStop] = useState<Stop | null>();
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [subscription, setSubscription] = useState<Subscriptions | null>(null);
   const token = useContext(TokenContext);
   const [error, setError] = useState<string>();
   const [isPullable, setIsPullable] = useState(true);
   const [showLive, setShowLive] = useState(true);
+  const isFavorite =
+    useLiveQuery(
+      async () => (await db.favorites.where({type, code}).first()) != null,
+    ) ?? false;
+
+  const stop = useLiveQuery(async () => {
+    if (type === undefined) return null;
+    return (
+      (await db.stops
+        .where({codMode: getCodModeByType(type), stopCode: code})
+        .first()
+        .catch(() => {
+          setError("Error al cargar la parada");
+          return null;
+        })) ?? null
+    );
+  }, [type, code]);
+
   const getTimesAsync = async () => {
     if (type === undefined || code === undefined) return;
     await getStopsTimes(type, code).then(stops =>
@@ -93,11 +109,6 @@ export default function BusStopsTimes() {
     getTimesPlannedAsync();
   }, [type, code]);
 
-  const getStopInfo = useCallback(() => {
-    if (type === undefined || code === undefined) return;
-    getStop(type, code).then(stop => setStop(stop));
-  }, [type, code]);
-
   const getAlerts = useCallback(() => {
     if (type === undefined || code === undefined) return;
     getAlertsByTransportType(type).then(alerts =>
@@ -113,12 +124,11 @@ export default function BusStopsTimes() {
   }, [type, code, token]);
 
   useEffect(() => {
-    getStopInfo();
     getTimes();
     getTimesPlanned();
     getAlerts();
     getSubscriptions();
-  }, [type, code, getTimes, getAlerts, getStopInfo, getSubscriptions]);
+  }, [type, code, getTimes, getAlerts, getSubscriptions]);
 
   if (stop === null) return <ErrorMessage message="La parada no existe" />;
   if (stop === undefined) return <LoadingSpinner />;
@@ -221,21 +231,18 @@ export default function BusStopsTimes() {
                 <MapIcon color="primary" />
               </IconButton>
               <FavoriteSave
-                comparator={() =>
-                  getFavorites().some(
-                    (favorite: {type: TransportType; code: string}) =>
-                      favorite.type === type && favorite.code === code,
-                  )
-                }
-                saveF={(name: string) =>
-                  addToFavorites({
+                isFavorite={isFavorite}
+                saveF={async (name: string) =>
+                  await db.favorites.add({
                     type: type!,
                     code: code!,
                     name,
                     cod_mode: getCodModeByType(type!),
                   })
                 }
-                deleteF={() => removeFromFavorites({type: type!, code: code!})}
+                deleteF={async () => {
+                  await db.favorites.where({type: type!, code: code!}).delete();
+                }}
                 defaultName={stop.stopName}
               />
             </div>
@@ -251,7 +258,7 @@ export default function BusStopsTimes() {
             <>
               <ul className="rounded w-full border-b mb-1">
                 <AlertMui severity="warning">
-                  Estos tiempos son estimados y pueden no corresponder con la
+                  Estos tiempos son planificados y pueden no corresponder con la
                   hora de llegada real.
                 </AlertMui>
                 <RenderTimesPlannedOrEmpty times={stopTimesPlanned} />

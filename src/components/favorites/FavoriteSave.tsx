@@ -10,19 +10,18 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import {IconButton} from "@mui/material";
 
-export default function FavoriteSave({
-  comparator,
+export function FavoriteSave({
+  isFavorite,
   saveF,
   deleteF,
   defaultName,
 }: {
-  comparator: () => boolean;
-  saveF: (name: string) => void;
-  deleteF: () => void;
+  isFavorite: boolean;
+  saveF: (name: string) => Promise<void>;
+  deleteF: () => Promise<void>;
   defaultName: string | null;
 }) {
   const [open, setOpen] = useState<boolean>(false);
-  const [isFavorite, setIsFavorite] = useState<boolean>(comparator());
   const name = useRef<TextFieldProps>();
 
   const handleClickOpen = () => {
@@ -38,17 +37,11 @@ export default function FavoriteSave({
     if (value.trim() === "") return;
     setOpen(false);
     saveF(value);
-    setTimeout(() => {
-      setIsFavorite(true);
-    }, 500);
   };
 
   const handleDelete = () => {
     setOpen(false);
     deleteF();
-    setTimeout(() => {
-      setIsFavorite(false);
-    }, 500);
   };
 
   return (

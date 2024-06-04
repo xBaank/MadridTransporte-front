@@ -31,6 +31,8 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import {ColorModeContext} from "./contexts/colorModeContext";
 import {MapContext, type MapData} from "./contexts/mapContext";
+import LoadStops from "./components/settings/LoadStops";
+import {DataLoadContext, MigrationContext} from "./contexts/dataLoadContext";
 
 const updateSW = registerSW({
   onNeedRefresh() {
@@ -48,6 +50,8 @@ export const getDesignTokens = (mode: PaletteMode) => ({
 
 export default function App() {
   const [mode, setMode] = useSavedTheme();
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const [migrated, setMigrated] = useState(false);
   const [mapData, setMapData] = useState<MapData>({
     pos: defaultPosition,
     zoom: 16,
@@ -71,21 +75,48 @@ export default function App() {
     };
   }, [mapData]);
 
+  const dataLoadContext = useMemo(() => {
+    return {
+      setDataLoaded: (data: boolean) => {
+        setDataLoaded(data);
+      },
+      dataLoaded,
+    };
+  }, [dataLoaded]);
+
+  const migratedContext = useMemo(() => {
+    return {
+      setDataMigrated: (data: boolean) => {
+        setMigrated(data);
+      },
+      dataMigrated: migrated,
+    };
+  }, [migrated]);
+
   const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
   const token = useToken();
 
+  // This is getting out of hands
   return (
     <>
-      <MapContext.Provider value={mapDataContext}>
-        <TokenContext.Provider value={token}>
-          <ColorModeContext.Provider value={colorMode}>
-            <ThemeProvider theme={theme}>
-              <CssBaseline />
-              <RouterProvider router={router} />
-            </ThemeProvider>
-          </ColorModeContext.Provider>
-        </TokenContext.Provider>
-      </MapContext.Provider>
+      <DataLoadContext.Provider value={dataLoadContext}>
+        <MigrationContext.Provider value={migratedContext}>
+          <MapContext.Provider value={mapDataContext}>
+            <TokenContext.Provider value={token}>
+              <ColorModeContext.Provider value={colorMode}>
+                <ThemeProvider theme={theme}>
+                  <CssBaseline />
+                  {dataLoaded && migrated ? (
+                    <RouterProvider router={router} />
+                  ) : (
+                    <LoadStops />
+                  )}
+                </ThemeProvider>
+              </ColorModeContext.Provider>
+            </TokenContext.Provider>
+          </MapContext.Provider>
+        </MigrationContext.Provider>
+      </DataLoadContext.Provider>
     </>
   );
 }

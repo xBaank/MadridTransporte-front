@@ -1,14 +1,13 @@
 import {useContext, useEffect, useMemo, useState} from "react";
 import {useMapEvents} from "react-leaflet";
 import {type Stop} from "./api/Types";
-import * as E from "fp-ts/Either";
 import {type Map} from "leaflet";
-import {getAllStops} from "./api/Stops";
 import {StopsMarkers} from "./StopsMarkers";
 import ThemedMap from "./ThemedMap";
 import {Card, Snackbar} from "@mui/material";
 import {MapContext} from "../../contexts/mapContext";
 import {useParams} from "react-router-dom";
+import {db} from "./api/Db";
 
 export default function BusStopMap() {
   return useMemo(() => <BusStopMapBase />, []);
@@ -16,7 +15,6 @@ export default function BusStopMap() {
 
 function BusStopMapBase() {
   const {fullStopCode} = useParams<{fullStopCode: string}>();
-  const [allStops, setAllStops] = useState<Stop[]>([]);
   const [stops, setStops] = useState<Stop[]>([]);
   const [map, setMap] = useState<Map | null>(null);
   const [selected, setSelected] = useState<Stop>();
@@ -25,42 +23,50 @@ function BusStopMapBase() {
 
   useEffect(() => {
     if (map == null) return;
-    if (map.getZoom() < 16) {
-      setShowToolTip(true);
-    }
+    if (map.getZoom() < 16) setShowToolTip(true);
+    displayMarkers();
   }, [map]);
 
   useEffect(() => {
-    const stop = allStops.find(i => i.fullStopCode === fullStopCode);
-    if (stop === undefined) {
-      map?.panTo(mapContext.mapData.pos);
-    } else {
-      map?.panTo({lat: stop.stopLat, lng: stop.stopLon});
-      setSelected(stop);
-    }
-  }, [fullStopCode, allStops, map]);
-
-  useEffect(() => {
-    getAllStops().then(i =>
-      setAllStops(E.getOrElse<string, Stop[]>(() => [])(i)),
-    );
-  }, []);
+    if (fullStopCode === undefined) return;
+    db.stops.get(fullStopCode).then(stop => {
+      if (stop === undefined) {
+        map?.panTo(mapContext.mapData.pos);
+      } else {
+        displayMarkers().then(() => {
+          map?.panTo({lat: stop.stopLat, lng: stop.stopLon});
+          setSelected(stop);
+        });
+      }
+    });
+  }, [fullStopCode, map]);
 
   const markers = useMemo(() => {
     if (map === null) return <></>;
     return <StopsMarkers selected={selected} stops={stops} map={map} />;
   }, [map, stops]);
 
-  function displayMarkers() {
+  async function displayMarkers() {
     if (map == null || map.getZoom() < 16) {
       setStops([]);
       return;
     }
-    const markers = allStops.filter(m => {
-      const pos = {lat: m.stopLat, lng: m.stopLon};
-      return map?.getBounds().contains(pos);
+
+    const ne = map.getBounds().getNorthEast();
+    const sw = map.getBounds().getSouthWest();
+
+    const stops = await db.stops
+      .where("stopLat")
+      .between(sw.lat, ne.lat)
+      .and(stop => stop.stopLon >= sw.lng && stop.stopLon <= ne.lng)
+      .toArray();
+
+    const filteredStops = stops.filter(stop => {
+      const pos = {lat: stop.stopLat, lng: stop.stopLon};
+      return map.getBounds().contains(pos);
     });
-    setStops(markers);
+
+    setStops(filteredStops);
   }
 
   function zoomEnd() {
@@ -74,8 +80,12 @@ function BusStopMapBase() {
 
   function DisplayOnMove() {
     useMapEvents({
-      locationfound: displayMarkers,
-      locationerror: displayMarkers,
+      locationfound: () => {
+        displayMarkers();
+      },
+      locationerror: () => {
+        displayMarkers();
+      },
       moveend: () => {
         if (map == null) return;
         displayMarkers();

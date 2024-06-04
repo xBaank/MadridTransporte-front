@@ -1,13 +1,9 @@
-import React, {useEffect, useState} from "react";
+import {useState} from "react";
 import {type FavoriteStop, type TrainFavoriteStop} from "./api/Types";
 import {
-  getFavorites,
   getIconByCodMode,
   getStopTimesLinkByMode,
-  getTrainFavorites,
   isFavoriteStop,
-  removeFromFavorites,
-  removeFromTrainFavorites,
   trainCodMode,
 } from "./api/Utils";
 import GradeIcon from "@mui/icons-material/Grade";
@@ -24,29 +20,33 @@ import {
   ListItem,
 } from "@mui/material";
 import {Link} from "react-router-dom";
+import {useLiveQuery} from "dexie-react-hooks";
+import {db} from "./api/Db";
 
 export default function StopsFavorites() {
-  const [favorites, setFavorites] = useState<
-    Array<FavoriteStop | TrainFavoriteStop>
-  >([]);
-
-  useEffect(() => {
-    reloadFavorites();
-  }, []);
+  const favorites = useLiveQuery(async () => {
+    const [favorites, trainFavorites] = await Promise.all([
+      db.favorites.toArray(),
+      db.trainFavorites.toArray(),
+    ]);
+    return [...favorites, ...trainFavorites];
+  });
 
   return StopsElement();
 
-  function reloadFavorites() {
-    const favorites = getFavorites();
-    const trainFavorites = getTrainFavorites();
-    setFavorites([...favorites, ...trainFavorites]);
-  }
-
-  function handleDeleteFavorite(favorite: FavoriteStop | TrainFavoriteStop) {
+  async function handleDeleteFavorite(
+    favorite: FavoriteStop | TrainFavoriteStop,
+  ) {
     isFavoriteStop(favorite)
-      ? removeFromFavorites(favorite)
-      : removeFromTrainFavorites(favorite);
-    reloadFavorites();
+      ? await db.favorites
+          .where({type: favorite.type, code: favorite.code})
+          .delete()
+      : await db.trainFavorites
+          .where({
+            originCode: favorite.originCode,
+            destinationCode: favorite.destinationCode,
+          })
+          .delete();
   }
 
   function StopsElement() {
@@ -57,7 +57,7 @@ export default function StopsFavorites() {
           <GradeIcon className="p-1 text-yellow-500" />
         </div>
         <List className="max-w-md">
-          {favorites.map((stop, index) => (
+          {favorites?.map((stop, index) => (
             <>
               {isFavoriteStop(stop) ? (
                 <FavoriteStop key={index} stop={stop} />
