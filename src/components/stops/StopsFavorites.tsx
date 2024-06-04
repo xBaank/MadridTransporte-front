@@ -58,14 +58,14 @@ export default function StopsFavorites() {
         </div>
         <List className="max-w-md">
           {favorites?.map((stop, index) => (
-            <>
+            <div key={index}>
               {isFavoriteStop(stop) ? (
                 <FavoriteStop key={index} stop={stop} />
               ) : (
                 <TrainFavoriteStop key={index} stop={stop} />
               )}
               <Divider />
-            </>
+            </div>
           ))}
         </List>
       </>
