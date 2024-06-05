@@ -1,6 +1,6 @@
 import {Modal, Box, Typography, Button} from "@mui/material";
 import {type Alert, type Incident} from "./api/Types";
-import React from "react";
+import {useState} from "react";
 import {Link} from "react-router-dom";
 
 export default function RenderAlerts({
@@ -10,7 +10,7 @@ export default function RenderAlerts({
   alerts: Alert[];
   incidents: Incident[];
 }) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 

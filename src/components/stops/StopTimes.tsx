@@ -101,15 +101,7 @@ export default function BusStopsTimes() {
     );
   };
 
-  const getTimes = useCallback(() => {
-    getTimesAsync();
-  }, [type, code]);
-
-  const getTimesPlanned = useCallback(() => {
-    getTimesPlannedAsync();
-  }, [type, code]);
-
-  const getAlerts = useCallback(() => {
+  const getAlertsAsync = async () => {
     if (type === undefined || code === undefined) return;
     getAlertsByTransportType(type).then(alerts =>
       fold(
@@ -117,18 +109,23 @@ export default function BusStopsTimes() {
         (alerts: Alert[]) => setAlerts(alerts),
       )(alerts),
     );
-  }, [type, code]);
-
-  const getSubscriptions = useCallback(() => {
-    getSubscriptionsAsync();
-  }, [type, code, token]);
+  };
 
   useEffect(() => {
-    getTimes();
-    getTimesPlanned();
-    getAlerts();
-    getSubscriptions();
-  }, [type, code, getTimes, getAlerts, getSubscriptions]);
+    getTimesAsync();
+  }, [type, code]);
+
+  useEffect(() => {
+    getTimesPlannedAsync();
+  }, [type, code]);
+
+  useEffect(() => {
+    getAlertsAsync();
+  }, [type, code]);
+
+  useEffect(() => {
+    getSubscriptionsAsync();
+  }, [type, code, token]);
 
   if (stop === null) return <ErrorMessage message="La parada no existe" />;
   if (stop === undefined) return <LoadingSpinner />;
@@ -146,7 +143,7 @@ export default function BusStopsTimes() {
           setIsPullable(true);
         }}
         pullingContent={""}>
-        <RenderTimes stop={stop} stopTimes={stopTimes} />
+        {RenderTimes({stop, stopTimes})}
       </PullToRefresh>
     </>
   );
