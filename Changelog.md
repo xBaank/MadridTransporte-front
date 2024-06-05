@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.12.5
+
+- Fixed issue that caused favorite modal to close when data was loaded.
+
 ## 1.12.4
 
 - Added option to update stops.
