@@ -1,11 +1,11 @@
 /* eslint-disable no-mixed-operators */
-import {type StopLink} from "./api/Types";
+import {Stop, type StopLink} from "./api/Types";
 import {Button, Divider, List, ListItemButton} from "@mui/material";
 import NearMeIcon from "@mui/icons-material/NearMe";
 import {Link} from "react-router-dom";
-import {useLiveQuery} from "dexie-react-hooks";
 import {db} from "./api/Db";
 import {mapStopToStopLink, trainCodMode} from "./api/Utils";
+import {useEffect, useState} from "react";
 export default function FilteredStopsComponent({
   query,
   codMode,
@@ -15,24 +15,34 @@ export default function FilteredStopsComponent({
   codMode: number | null;
   code?: string;
 }) {
-  const stops =
-    useLiveQuery(async () => {
-      if (query.trim() === "") return undefined;
+  const [stops, setStops] = useState<StopLink[]>([]);
 
-      const stops = await db.stops
-        .where("stopName")
-        .startsWithIgnoreCase(query)
-        .or("stopCode")
-        .equals(query)
+  useEffect(() => {
+    const getData = setTimeout(async () => {
+      if (query.trim() === "") {
+        setStops([]);
+        return;
+      }
+
+      const stopsDb = await db.stops
+        .filter(
+          i =>
+            i.stopName
+              .toLocaleLowerCase()
+              .includes(query.toLocaleLowerCase()) || i.stopCode === query,
+        )
         .sortBy("codMode");
 
-      if (code !== undefined)
-        return stops.filter(i => i.codMode === trainCodMode);
+      const stopsFiltered =
+        code !== undefined
+          ? stopsDb.filter(i => i.codMode === trainCodMode)
+          : stopsDb;
 
-      return stops;
-    }, [query])
-      ?.slice(0, 25)
-      ?.map(i => mapStopToStopLink(i, code)) ?? [];
+      setStops(stopsFiltered.slice(0, 25).map(i => mapStopToStopLink(i, code)));
+    }, 150);
+
+    return () => clearTimeout(getData);
+  }, [query]);
 
   return StopsElement(stops);
 
