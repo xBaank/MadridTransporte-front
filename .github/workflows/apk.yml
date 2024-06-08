@@ -64,9 +64,7 @@ jobs:
           run: cd ./android && ./gradlew assembleRelease --stacktrace
 
         - name: Rename APK
-          run: >
-            mv android/app/build/outputs/apk/release/app-release-unsigned.apk android/app/build/outputs/apk/release/MadridTransporte.apk
-            && rm android/app/build/outputs/apk/release/app-release-unsigned.apk
+          run: mv android/app/build/outputs/apk/release/app-release-unsigned.apk android/app/build/outputs/apk/release/MadridTransporte.apk
 
         - uses: r0adkll/sign-android-release@v1
           name: Sign app APK
