@@ -1,7 +1,7 @@
 import {InputAdornment, List, TextField} from "@mui/material";
 import {useState} from "react";
 import {Search} from "@mui/icons-material";
-import AllStopsComponent, {StopComponent} from "./StopsComponent";
+import FilteredStopsComponent, {StopComponent} from "./StopsComponent";
 import StopsFavorites from "./StopsFavorites";
 import {mapStopToStopLink} from "./api/Utils";
 import {useParams} from "react-router-dom";
@@ -9,6 +9,7 @@ import AllSubscriptions from "./StopsSubscriptions";
 import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
 import {db} from "./api/Db";
 import {useLiveQuery} from "dexie-react-hooks";
+
 export default function BusStopSearch({
   title,
   codMode,
@@ -68,7 +69,7 @@ export default function BusStopSearch({
             }}
           />
         </div>
-        <AllStopsComponent query={query} codMode={codMode} code={code} />
+        <FilteredStopsComponent query={query} codMode={codMode} code={code} />
         {codMode !== null ? <></> : <StopsFavorites />}
         <AllSubscriptions />
       </div>

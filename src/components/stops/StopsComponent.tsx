@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-operators */
-import {Stop, type StopLink} from "./api/Types";
+import {type StopLink} from "./api/Types";
 import {
   Button,
   Divider,
@@ -12,6 +12,7 @@ import {Link} from "react-router-dom";
 import {db} from "./api/Db";
 import {mapStopToStopLink, trainCodMode} from "./api/Utils";
 import {useEffect, useState} from "react";
+
 export default function FilteredStopsComponent({
   query,
   codMode,

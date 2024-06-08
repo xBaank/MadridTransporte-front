@@ -410,16 +410,6 @@ export default function BusStopsTimes() {
               </pre>
             </div>
           </div>
-          <div className="ml-auto flex p-1 mb-auto ">
-            {stopTimePlanned.direction != null ? (
-              <LinesLocationsButton
-                codMode={getCodModeByType(type!)}
-                lineCode={stopTimePlanned?.fullLineCode ?? ""}
-                direction={stopTimePlanned?.direction ?? 0}
-                stopCode={code ?? ""}
-              />
-            ) : null}
-          </div>
         </div>
       </div>
     );
