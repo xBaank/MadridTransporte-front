@@ -1,6 +1,12 @@
 /* eslint-disable no-mixed-operators */
 import {Stop, type StopLink} from "./api/Types";
-import {Button, Divider, List, ListItemButton} from "@mui/material";
+import {
+  Button,
+  Divider,
+  LinearProgress,
+  List,
+  ListItemButton,
+} from "@mui/material";
 import NearMeIcon from "@mui/icons-material/NearMe";
 import {Link} from "react-router-dom";
 import {db} from "./api/Db";
@@ -15,15 +21,19 @@ export default function FilteredStopsComponent({
   codMode: number | null;
   code?: string;
 }) {
-  const [stops, setStops] = useState<StopLink[]>([]);
+  const [stops, setStops] = useState<StopLink[] | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    const getData = setTimeout(async () => {
-      if (query.trim() === "") {
-        setStops([]);
-        return;
-      }
+    if (query.trim() === "") {
+      setLoading(false);
+      setStops(null);
+      return;
+    }
 
+    setLoading(true);
+
+    const getData = setTimeout(async () => {
       const stopsDb = await db.stops
         .filter(
           i =>
@@ -39,16 +49,25 @@ export default function FilteredStopsComponent({
           : stopsDb;
 
       setStops(stopsFiltered.slice(0, 25).map(i => mapStopToStopLink(i, code)));
-    }, 150);
+      setLoading(false);
+    }, 350);
 
     return () => clearTimeout(getData);
   }, [query]);
 
   return StopsElement(stops);
 
-  function StopsElement(stopsLinks: StopLink[]) {
+  function StopsElement(stopsLinks: StopLink[] | null) {
+    if (loading) return <LinearProgress />;
     if (codMode !== null && query.length === 0) return <></>;
-    if (stopsLinks.length === 0)
+    if (stopsLinks?.length === 0)
+      return (
+        <div className="text-center">
+          No hay paradas con nombre o codigo{" "}
+          <span className="font-bold">{query}</span>
+        </div>
+      );
+    if (stopsLinks === null)
       return (
         <>
           <div className="flex justify-between gap-1">
