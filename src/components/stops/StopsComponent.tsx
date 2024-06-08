@@ -41,14 +41,15 @@ export default function FilteredStopsComponent({
               .toLocaleLowerCase()
               .includes(query.toLocaleLowerCase()) || i.stopCode === query,
         )
-        .sortBy("codMode");
+        .limit(25)
+        .toArray();
 
       const stopsFiltered =
         code !== undefined
           ? stopsDb.filter(i => i.codMode === trainCodMode)
           : stopsDb;
 
-      setStops(stopsFiltered.slice(0, 25).map(i => mapStopToStopLink(i, code)));
+      setStops(stopsFiltered.map(i => mapStopToStopLink(i, code)));
       setLoading(false);
     }, 350);
 
