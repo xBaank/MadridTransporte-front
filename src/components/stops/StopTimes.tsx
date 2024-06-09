@@ -1,4 +1,4 @@
-import {useCallback, useContext, useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
 import {
   type StopTimePlanned,

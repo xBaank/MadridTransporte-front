@@ -31,6 +31,10 @@ export function getMapLocationLink(fullStopCode: string) {
   return `/stops/map/${fullStopCode}`;
 }
 
+export function getLineUrl(fullLineCode: string, codMode: number) {
+  return `/lines/${getTransportTypeByCodMode(codMode)}/${fullLineCode}`;
+}
+
 export function getIconByCodMode(codMode: number): string {
   if (codMode === metroCodMode) return "/icons/metro.png";
   if (codMode === trainCodMode) return "/icons/train.png";

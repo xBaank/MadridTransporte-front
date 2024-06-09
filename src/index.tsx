@@ -126,7 +126,6 @@ export const router = createBrowserRouter([
     path: "/",
     element: (
       <DefaultElement
-        key={uniqueId()}
         element={<BusStopSearch title={"Buscar parada"} codMode={null} />}
       />
     ),
