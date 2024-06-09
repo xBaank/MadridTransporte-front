@@ -137,7 +137,7 @@ export default function FilteredStopsComponent({
             variant={showLines ? "filled" : "outlined"}
           />
         </div>
-        {showStops ? (
+        {showStops && stops?.length !== 0 ? (
           <List className="max-w-md">
             {stops?.map((stop, index) => (
               <div key={index}>
@@ -147,7 +147,7 @@ export default function FilteredStopsComponent({
             ))}
           </List>
         ) : null}
-        {showLines ? (
+        {showLines && lines?.length !== 0 ? (
           <List className="max-w-md">
             {lines?.map((line, index) => (
               <div key={index}>

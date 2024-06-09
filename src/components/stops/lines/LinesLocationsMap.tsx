@@ -24,9 +24,9 @@ import {defaultPosition} from "../../../hooks/hooks";
 
 export default function LinesLocationsMap() {
   const interval = 1000 * 15;
-  const {type, lineCode, direction} = useParams<{
+  const {type, fullLineCode, direction} = useParams<{
     type: TransportType;
-    lineCode: string;
+    fullLineCode: string;
     direction: string;
   }>();
   const [searchParam] = useSearchParams();
@@ -43,7 +43,7 @@ export default function LinesLocationsMap() {
   const getLocations = useCallback(() => {
     if (
       type === undefined ||
-      lineCode === undefined ||
+      fullLineCode === undefined ||
       direction === undefined ||
       stopCode === undefined
     )
@@ -54,7 +54,7 @@ export default function LinesLocationsMap() {
 
     getLineLocations(
       type,
-      lineCode,
+      fullLineCode,
       Number.parseInt(direction),
       stopCode,
       abortControllerRef.current.signal,
@@ -69,24 +69,24 @@ export default function LinesLocationsMap() {
         if (ex instanceof DOMException) return;
         throw ex;
       });
-  }, [type, lineCode, direction, stopCode]);
+  }, [type, fullLineCode, direction, stopCode]);
 
   const getStops = useCallback(() => {
     if (
       type === undefined ||
-      lineCode === undefined ||
+      fullLineCode === undefined ||
       direction === undefined ||
       stopCode === undefined
     )
       return;
-    getItinerary(type, lineCode, Number.parseInt(direction), stopCode).then(
+    getItinerary(type, fullLineCode, Number.parseInt(direction), stopCode).then(
       result =>
         fold(
           (error: string) => setError(error),
           (stops: ItineraryWithStopsOrder) => setItinerary(stops),
         )(result),
     );
-  }, [type, lineCode, direction, stopCode]);
+  }, [type, fullLineCode, direction, stopCode]);
 
   useEffect(() => {
     setStopCode(searchParam.get("stopCode") ?? undefined);

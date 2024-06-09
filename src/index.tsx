@@ -33,6 +33,7 @@ import {ColorModeContext} from "./contexts/colorModeContext";
 import {MapContext, type MapData} from "./contexts/mapContext";
 import LoadStops from "./components/settings/LoadStops";
 import {DataLoadContext, MigrationContext} from "./contexts/dataLoadContext";
+import {LineInfo} from "./components/stops/lines/LineInfo";
 
 const updateSW = registerSW({
   onNeedRefresh() {
@@ -139,10 +140,6 @@ export const router = createBrowserRouter([
     element: <DefaultElement element={<BusStopsTimes />} />,
   },
   {
-    path: "/lines/:type/:lineCode/locations/:direction",
-    element: <DefaultElement element={<LinesLocationsMap />} />,
-  },
-  {
     path: "/stops/train/:code/destination",
     element: (
       <DefaultElement
@@ -164,6 +161,14 @@ export const router = createBrowserRouter([
   {
     path: "/stops/map",
     element: <DefaultElement element={<BusStopMap />} />,
+  },
+  {
+    path: "/lines/:type/:fullLineCode/locations/:direction",
+    element: <DefaultElement element={<LinesLocationsMap />} />,
+  },
+  {
+    path: "/lines/:type/:fullLineCode",
+    element: <DefaultElement element={<LineInfo />} />,
   },
   {
     path: "/maps",
