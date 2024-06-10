@@ -38,14 +38,16 @@ export default function FilteredStopsComponent({
       return;
     }
 
+    const normalizedQuery = query.toLocaleLowerCase();
+
     setLoading(true);
 
     const getData = setTimeout(async () => {
       const stopsDbPromise = db.stops
         .filter(
           i =>
-            i.stopCode === query ||
-            i.stopName.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
+            i.stopCode === normalizedQuery ||
+            i.stopName.toLocaleLowerCase().includes(normalizedQuery),
         )
         .limit(25)
         .toArray();
@@ -53,8 +55,8 @@ export default function FilteredStopsComponent({
       const linesDbPromise = db.lines
         .filter(
           i =>
-            i.simpleLineCode === query ||
-            i.routeName.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
+            i.simpleLineCode.toLocaleLowerCase().includes(normalizedQuery) ||
+            i.routeName.toLocaleLowerCase().includes(normalizedQuery),
         )
         .limit(25)
         .toArray();

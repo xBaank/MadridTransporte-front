@@ -33,12 +33,37 @@ export async function getLineLocations(
 
 export async function getItinerary(
   type: TransportType,
-  lineCode: string,
+  fullLineCode: string,
   direction: number,
   stopCode: string,
 ): Promise<Either<string, ItineraryWithStopsOrder>> {
   const response = await fetch(
-    `${apiUrl}/lines/${type}/${lineCode}/itineraries/${direction}?stopCode=${stopCode}`,
+    `${apiUrl}/lines/${type}/${fullLineCode}/itineraries/${direction}?stopCode=${stopCode}`,
+  );
+  if (response.status === 404) return left(NotFound);
+  const data = (await response.json()) as Itinerary;
+
+  const stopsPromise = data.stops
+    .map(async i => {
+      const stop = await db.stops.get(i.fullStopCode);
+      if (stop == null) return null;
+      return {...stop, order: i.order};
+    })
+    .filter(i => i != null) as unknown as Array<Promise<StopWithOrder>>;
+
+  const mapped: ItineraryWithStopsOrder = {
+    stops: await Promise.all(stopsPromise),
+    codItinerary: data.codItinerary,
+  };
+  return right(mapped);
+}
+
+export async function getItineraryByCode(
+  type: TransportType,
+  itineraryCode: string,
+): Promise<Either<string, ItineraryWithStopsOrder>> {
+  const response = await fetch(
+    `${apiUrl}/lines/${type}/itineraries/${itineraryCode}`,
   );
   if (response.status === 404) return left(NotFound);
   const data = (await response.json()) as Itinerary;

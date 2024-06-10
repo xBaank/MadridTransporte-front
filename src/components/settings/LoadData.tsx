@@ -13,7 +13,7 @@ import {
   deleteAllFavoritesFromLocalStorage,
 } from "../stops/api/Utils";
 
-export default function LoadStops() {
+export default function LoadData() {
   const [open, setOpen] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
@@ -133,7 +133,7 @@ export default function LoadStops() {
     if (success) {
       return (
         <Alert className="mb-2" variant="outlined" severity="success">
-          Las paradas han sido actualizadas correctamente.
+          Los datos han sido actualizadas correctamente.
         </Alert>
       );
     }
@@ -160,7 +160,7 @@ export default function LoadStops() {
             variant="h6"
             component="h2"
             className="text-center">
-            Actualizando paradas
+            Actualizando paradas y lineas
           </Typography>
           <div className=" mt-4">
             <InfoMessage />

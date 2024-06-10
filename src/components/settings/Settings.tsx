@@ -35,7 +35,7 @@ export default function Settings() {
           }}
           className="w-full"
           variant="contained">
-          Actualizar paradas
+          Actualizar Datos
         </Button>
       </>
     );

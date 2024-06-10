@@ -31,7 +31,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import {ColorModeContext} from "./contexts/colorModeContext";
 import {MapContext, type MapData} from "./contexts/mapContext";
-import LoadStops from "./components/settings/LoadStops";
+import LoadData from "./components/settings/LoadData";
 import {DataLoadContext, MigrationContext} from "./contexts/dataLoadContext";
 import {LineInfo} from "./components/stops/lines/LineInfo";
 
@@ -110,7 +110,7 @@ export default function App() {
                   {dataLoaded && migrated ? (
                     <RouterProvider router={router} />
                   ) : (
-                    <LoadStops />
+                    <LoadData />
                   )}
                 </ThemeProvider>
               </ColorModeContext.Provider>
