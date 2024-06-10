@@ -1,13 +1,17 @@
 import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {ItineraryWithStopsOrder, Line as LineType} from "../api/Types";
 import {useLiveQuery} from "dexie-react-hooks";
 import {db} from "../api/Db";
 import Line from "../../Line";
 import LoadingSpinner from "../../LoadingSpinner";
-import {FormControl, InputLabel, Select, MenuItem} from "@mui/material";
+import {FormControl, InputLabel, Select, MenuItem, Button} from "@mui/material";
 import {getItineraryByCode} from "../api/Lines";
-import {getTransportTypeByCodMode, mapStopToStopLink} from "../api/Utils";
+import {
+  getLineColorByCodMode,
+  getTransportTypeByCodMode,
+  mapStopToStopLink,
+} from "../api/Utils";
 import {StopComponent} from "../StopsComponent";
 
 export function LineInfo() {
@@ -75,7 +79,13 @@ export function LineInfo() {
         </FormControl>
       </div>
 
-      <div className="mt-2">
+      <div className="my-2">
+        <Button component={Link} fullWidth to="" variant="contained">
+          Ver en el mapa
+        </Button>
+      </div>
+
+      <div className="mt-2 w-full">
         {line.itinerariesWithStops
           .find(i => i.codItinerary === currentItineraryCode)
           ?.stops.sort((a, b) => a.order - b.order)

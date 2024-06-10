@@ -68,16 +68,16 @@ export async function getItineraryByCode(
   if (response.status === 404) return left(NotFound);
   const data = (await response.json()) as Itinerary;
 
-  const stopsPromise = data.stops
-    .map(async i => {
-      const stop = await db.stops.get(i.fullStopCode);
-      if (stop == null) return null;
-      return {...stop, order: i.order};
-    })
-    .filter(i => i != null) as unknown as Array<Promise<StopWithOrder>>;
+  const stopsPromise = data.stops.map(async i => {
+    const stop = await db.stops.get(i.fullStopCode);
+    if (stop == null) return null;
+    return {...stop, order: i.order};
+  });
 
   const mapped: ItineraryWithStopsOrder = {
-    stops: await Promise.all(stopsPromise),
+    stops: (await Promise.all(stopsPromise))
+      .filter(i => i !== null)
+      .map(i => i!),
     codItinerary: data.codItinerary,
   };
   return right(mapped);
