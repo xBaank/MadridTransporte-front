@@ -1,49 +1,15 @@
-import {useEffect, useState} from "react";
-import {Link, useParams} from "react-router-dom";
-import {ItineraryWithStopsOrder, Line as LineType} from "../api/Types";
-import {useLiveQuery} from "dexie-react-hooks";
-import {db} from "../api/Db";
+import {useState} from "react";
+import {Link} from "react-router-dom";
 import Line from "../../Line";
 import LoadingSpinner from "../../LoadingSpinner";
 import {FormControl, InputLabel, Select, MenuItem, Button} from "@mui/material";
-import {getItineraryByCode} from "../api/Lines";
-import {
-  getLineColorByCodMode,
-  getTransportTypeByCodMode,
-  mapStopToStopLink,
-} from "../api/Utils";
+import {getLineUrl, mapStopToStopLink} from "../api/Utils";
 import {StopComponent} from "../StopsComponent";
+import {useLine} from "../../../hooks/hooks";
 
 export function LineInfo() {
-  const {fullLineCode} = useParams<{fullLineCode: string}>();
-  const [currentItineraryCode, setCurrentItineraryCode] = useState<string>();
-  const line = useLiveQuery(async () => {
-    if (fullLineCode === undefined) return;
-    const line = await db.lines.get(fullLineCode);
-    if (line === undefined) return;
-
-    const itinerariesPromises = line.itineraries.map(async i => {
-      const result = await getItineraryByCode(
-        getTransportTypeByCodMode(line.codMode),
-        i.itineraryCode,
-      );
-      if (result._tag === "Left") return null;
-      return {...result.right, tripName: i.tripName, direction: i.direction};
-    });
-
-    const itineraries = (await Promise.all(itinerariesPromises))
-      .filter(i => i !== null)
-      .map(i => i!);
-
-    setCurrentItineraryCode(line.itineraries.at(0)?.itineraryCode);
-
-    return {...line, itinerariesWithStops: itineraries};
-  });
-
-  useEffect(() => {
-    if (line === undefined) return;
-    console.log("asd");
-  }, [line]);
+  const [currentItineraryCode, setCurrentItineraryCode] = useState<string>("");
+  const line = useLine();
 
   if (line === undefined) return <LoadingSpinner />;
 
@@ -72,7 +38,7 @@ export function LineInfo() {
             onChange={event => setCurrentItineraryCode(event.target.value)}>
             {line.itinerariesWithStops.map((itinerary, index) => (
               <MenuItem key={index} value={itinerary.codItinerary}>
-                Hacia {itinerary.stops.at(-1)?.stopName}
+                {itinerary.tripName}
               </MenuItem>
             ))}
           </Select>
@@ -80,7 +46,11 @@ export function LineInfo() {
       </div>
 
       <div className="my-2">
-        <Button component={Link} fullWidth to="" variant="contained">
+        <Button
+          component={Link}
+          fullWidth
+          to={`${getLineUrl(line.fullLineCode, line.codMode)}/map`}
+          variant="contained">
           Ver en el mapa
         </Button>
       </div>

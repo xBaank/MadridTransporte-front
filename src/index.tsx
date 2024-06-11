@@ -34,6 +34,7 @@ import {MapContext, type MapData} from "./contexts/mapContext";
 import LoadData from "./components/settings/LoadData";
 import {DataLoadContext, MigrationContext} from "./contexts/dataLoadContext";
 import {LineInfo} from "./components/stops/lines/LineInfo";
+import {LineRouteMap} from "./components/stops/lines/LineRouteMap";
 
 const updateSW = registerSW({
   onNeedRefresh() {
@@ -169,6 +170,10 @@ export const router = createBrowserRouter([
   {
     path: "/lines/:type/:fullLineCode",
     element: <DefaultElement element={<LineInfo />} />,
+  },
+  {
+    path: "/lines/:type/:fullLineCode/map",
+    element: <DefaultElement element={<LineRouteMap />} />,
   },
   {
     path: "/maps",
