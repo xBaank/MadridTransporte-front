@@ -46,7 +46,7 @@ export default function FilteredStopsComponent({
       const stopsDbPromise = db.stops
         .filter(
           i =>
-            i.stopCode === normalizedQuery ||
+            i.stopCode.toLocaleLowerCase() === normalizedQuery ||
             i.stopName.toLocaleLowerCase().includes(normalizedQuery),
         )
         .limit(25)
@@ -55,7 +55,7 @@ export default function FilteredStopsComponent({
       const linesDbPromise = db.lines
         .filter(
           i =>
-            i.simpleLineCode.toLocaleLowerCase().includes(normalizedQuery) ||
+            i.simpleLineCode.toLocaleLowerCase() === normalizedQuery ||
             i.routeName.toLocaleLowerCase().includes(normalizedQuery),
         )
         .limit(25)
