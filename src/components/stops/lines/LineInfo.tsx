@@ -49,7 +49,7 @@ export function LineInfo() {
         <Button
           component={Link}
           fullWidth
-          to={`${getLineUrl(line.fullLineCode, line.codMode)}/map`}
+          to={`${getLineUrl(line.fullLineCode, line.codMode)}/map?current=${currentItineraryCode}`}
           variant="contained">
           Ver en el mapa
         </Button>

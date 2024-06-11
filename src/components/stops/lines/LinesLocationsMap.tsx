@@ -120,7 +120,6 @@ export default function LinesLocationsMap() {
                 return {latitude: i.stopLat, longitude: i.stopLon};
               }) ?? [],
             );
-
             mapped.then(i => setAllRoute(routeToCoordinates(i)));
             return;
           }
@@ -176,7 +175,7 @@ export default function LinesLocationsMap() {
       <StopsMarkersMemo />
       <div
         style={{zIndex: 500}}
-        className={`absolute top-4 w-20 h-5 right-0 left-0 mr-auto ml-auto rounded-sm`}>
+        className={`absolute top-4 w-20 h-5 right-0 left-0 mx-auto rounded-sm`}>
         <Line
           info={{
             line: lineLocations.lineCode,

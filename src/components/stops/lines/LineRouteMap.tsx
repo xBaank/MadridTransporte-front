@@ -1,20 +1,70 @@
-import {Map, map} from "leaflet";
+import {LatLngExpression, Map} from "leaflet";
 import {defaultPosition, useLine} from "../../../hooks/hooks";
 import ThemedMap from "../ThemedMap";
-import {currentStop} from "../api/Utils";
-import {useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {FormControl, InputLabel, Select, MenuItem, Paper} from "@mui/material";
 import LoadingSpinner from "../../LoadingSpinner";
 import {StopsMarkers} from "../StopsMarkers";
+import {useSearchParams} from "react-router-dom";
+import {getShapes} from "../api/Lines";
+import {routeTimeCar, routeToCoordinates, fixRouteShapes} from "../api/Route";
+import {StopWithOrder} from "../api/Types";
+import {getColor, getTransportTypeByCodMode} from "../api/Utils";
+import {Polyline} from "react-leaflet";
+import Line from "../../Line";
 
 export function LineRouteMap() {
-  const [currentItineraryCode, setCurrentItineraryCode] = useState<string>("");
+  const [searchParam] = useSearchParams();
+  const [currentItineraryCode, setCurrentItineraryCode] = useState<string>(
+    searchParam.get("current") ?? "",
+  );
   const [map, setMap] = useState<Map | null>(null);
   const line = useLine();
+  const [itinerary, setItinerary] = useState<{
+    tripName: string;
+    direction: number;
+    codItinerary: string;
+    stops: StopWithOrder[];
+  }>();
+  const [allRoute, setAllRoute] = useState<LatLngExpression[]>([]);
+
+  useEffect(() => {
+    if (line === undefined) return;
+    const itinerary = line.itinerariesWithStops.find(
+      i => i.codItinerary === currentItineraryCode,
+    );
+    setItinerary(itinerary);
+
+    const middle = itinerary?.stops.at(itinerary.stops.length / 2);
+    if (middle != undefined)
+      map?.panTo({
+        lat: middle?.stopLat,
+        lng: middle?.stopLon,
+      });
+  }, [line, currentItineraryCode, map]);
+
+  useEffect(() => {
+    if (itinerary === undefined || line === undefined) return;
+
+    getShapes(
+      getTransportTypeByCodMode(line.codMode),
+      itinerary.codItinerary,
+    ).then(shapes => {
+      if (shapes._tag === "Left") return;
+      const value = shapes.right.map(i => {
+        return {
+          lat: i.latitude,
+          lng: i.longitude,
+        };
+      });
+      setAllRoute(value);
+
+      return;
+    });
+  }, [itinerary]);
 
   const markers = useMemo(() => {
     if (map === null || line === undefined) return <></>;
-    console.log("asd");
     return (
       <StopsMarkers
         stops={
@@ -32,18 +82,16 @@ export function LineRouteMap() {
   return (
     <ThemedMap
       setMap={setMap}
-      center={{
-        lat: defaultPosition.lat,
-        lng: defaultPosition.lng,
-      }}
-      zoom={16}
+      center={{lat: defaultPosition.lat, lng: defaultPosition.lng}}
+      zoom={11}
       onLocateClick={() => {
         map?.locate({enableHighAccuracy: false, maximumAge: 5000});
       }}>
-      <div
-        style={{zIndex: 500}}
-        className="absolute top-2  w-full rounded-full">
+      <div style={{zIndex: 500}} className="absolute top-2 w-full rounded-full">
         <div className="mx-auto w-72">
+          <div className="mb-2 flex justify-center">
+            <Line info={{codMode: line.codMode, line: line.simpleLineCode}} />
+          </div>
           <Paper>
             <FormControl fullWidth>
               <InputLabel id="itinerary">Ruta</InputLabel>
@@ -63,6 +111,11 @@ export function LineRouteMap() {
           </Paper>
         </div>
       </div>
+      <Polyline
+        color={getColor(line.codMode)}
+        weight={6}
+        positions={allRoute}
+      />
       {markers}
     </ThemedMap>
   );
