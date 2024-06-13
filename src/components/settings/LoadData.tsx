@@ -40,7 +40,9 @@ export default function LoadData() {
               };
             });
 
+            await db.stops.clear();
             await db.stops.bulkPut(mapped);
+
             setSuccess(true);
 
             setTimeout(() => {
@@ -57,6 +59,7 @@ export default function LoadData() {
           if (lines._tag !== "Left") {
             const mapped = lines.right;
 
+            await db.lines.clear();
             await db.lines.bulkPut(mapped);
             setSuccess(true);
 
