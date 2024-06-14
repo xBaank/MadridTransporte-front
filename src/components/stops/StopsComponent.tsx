@@ -153,7 +153,7 @@ export default function FilteredStopsComponent({
             variant={showLines ? "filled" : "outlined"}
           />
         </div>
-        <div className="mt-2 h-72">
+        <div className="mt-2 h-72 block">
           <AutoSizer>
             {({height, width}) => {
               return stops?.length !== 0 || lines?.length !== 0 ? (
