@@ -1,6 +1,6 @@
-import {InputAdornment, List, TextField} from "@mui/material";
-import {useState} from "react";
-import {Search} from "@mui/icons-material";
+import {IconButton, InputAdornment, List, TextField} from "@mui/material";
+import {useRef, useState} from "react";
+import {Clear, Search} from "@mui/icons-material";
 import FilteredStopsComponent, {StopComponent} from "./StopsComponent";
 import StopsFavorites from "./StopsFavorites";
 import {mapStopToStopLink} from "./api/Utils";
@@ -33,6 +33,15 @@ export default function BusStopSearch({
     e.preventDefault();
   };
 
+  function FavoritesAndSubs() {
+    return (
+      <>
+        {codMode !== null ? <></> : <StopsFavorites />}
+        <AllSubscriptions />{" "}
+      </>
+    );
+  }
+
   return (
     <div>
       <div className="grid grid-cols-1 p-5 max-w-md mx-auto justify-center">
@@ -50,6 +59,7 @@ export default function BusStopSearch({
         <div className="mb-4 grid">
           <TextField
             fullWidth
+            value={query}
             id="StopCode"
             label="Codigo o nombre de la parada"
             placeholder="Por ejemplo: Atocha"
@@ -61,17 +71,25 @@ export default function BusStopSearch({
                   <DirectionsBusIcon />
                 </InputAdornment>
               ),
-              endAdornment: (
-                <InputAdornment position="end">
-                  <Search />
-                </InputAdornment>
-              ),
+              endAdornment:
+                query.trim() === "" ? (
+                  <InputAdornment position="end">
+                    <IconButton>
+                      <Search />
+                    </IconButton>
+                  </InputAdornment>
+                ) : (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => setQuery("")}>
+                      <Clear />
+                    </IconButton>
+                  </InputAdornment>
+                ),
             }}
           />
         </div>
         <FilteredStopsComponent query={query} codMode={codMode} code={code} />
-        {codMode !== null ? <></> : <StopsFavorites />}
-        <AllSubscriptions />
+        {query.trim() === "" ? <FavoritesAndSubs /> : null}
       </div>
     </div>
   );
