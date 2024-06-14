@@ -39,7 +39,6 @@ export default function FilteredStopsComponent({
     }
 
     const normalizedQuery = query.toLocaleLowerCase();
-
     setLoading(true);
 
     const getData = setTimeout(async () => {
@@ -55,7 +54,7 @@ export default function FilteredStopsComponent({
       const linesDbPromise = db.lines
         .filter(
           i =>
-            i.simpleLineCode.toLocaleLowerCase().includes(normalizedQuery) ||
+            i.simpleLineCode.toLocaleLowerCase() === normalizedQuery ||
             i.routeName.toLocaleLowerCase().includes(normalizedQuery),
         )
         .limit(25)

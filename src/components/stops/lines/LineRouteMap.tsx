@@ -102,8 +102,11 @@ export function LineRouteMap() {
                 label="Itinerario"
                 onChange={event => setCurrentItineraryCode(event.target.value)}>
                 {line.itinerariesWithStops.map((itinerary, index) => (
-                  <MenuItem key={index} value={itinerary.codItinerary}>
-                    {`${itinerary.stops.at(0)?.stopName} -> ${itinerary.stops.at(-1)?.stopName}`}
+                  <MenuItem
+                    className="text-wrap overflow-auto"
+                    key={index}
+                    value={itinerary.codItinerary}>
+                    {`${itinerary.stops.at(-1)?.stopName}`}
                   </MenuItem>
                 ))}
               </Select>
