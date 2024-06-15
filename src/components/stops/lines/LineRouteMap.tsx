@@ -106,7 +106,7 @@ export function LineRouteMap() {
                     className="text-wrap overflow-auto"
                     key={index}
                     value={itinerary.codItinerary}>
-                    {`${itinerary.stops.at(-1)?.stopName}`}
+                    {`Hacia ${itinerary.stops.at(-1)?.stopName}`}
                   </MenuItem>
                 ))}
               </Select>
