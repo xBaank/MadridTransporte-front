@@ -72,23 +72,27 @@ export default function BusStopsTimes() {
 
   const getTimesAsync = async () => {
     if (type === undefined || code === undefined) return;
-    await getStopsTimes(type, code).then(stops =>
-      fold(
-        (error: string) => setError(error),
-        (stops: StopTimes) => setStopTimes(stops),
-      )(stops),
-    );
+    await getStopsTimes(type, code)
+      .then(stops =>
+        fold(
+          (error: string) => setError(error),
+          (stops: StopTimes) => setStopTimes(stops),
+        )(stops),
+      )
+      .catch(() => setError("Error al obtener los tiempos"));
   };
 
   const getTimesPlannedAsync = async () => {
     if (type === undefined || code === undefined) return;
     if (type !== "bus") return;
-    await getStopsTimesPlanned(type, code).then(stops =>
-      fold(
-        (_error: string) => setStopTimesPlanned(undefined),
-        (stops: StopTimePlanned[]) => setStopTimesPlanned(stops),
-      )(stops),
-    );
+    await getStopsTimesPlanned(type, code)
+      .then(stops =>
+        fold(
+          (_error: string) => setStopTimesPlanned(undefined),
+          (stops: StopTimePlanned[]) => setStopTimesPlanned(stops),
+        )(stops),
+      )
+      .catch(() => setError("Error al obtener los tiempos"));
   };
 
   const getSubscriptionsAsync = async () => {

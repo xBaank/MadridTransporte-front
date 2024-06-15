@@ -82,7 +82,10 @@ export function useLine() {
       const result = await getItineraryByCode(
         getTransportTypeByCodMode(line.codMode),
         i.itineraryCode,
+      ).catch(() =>
+        console.error(`Error al obtener el itinerario ${i.itineraryCode}`),
       );
+      if (result === undefined) return null;
       if (result._tag === "Left") return null;
       return {...result.right, tripName: i.tripName, direction: i.direction};
     });
