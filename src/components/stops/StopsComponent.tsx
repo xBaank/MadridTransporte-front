@@ -30,12 +30,14 @@ export default function FilteredStopsComponent({
   const [loading, setLoading] = useState<boolean>(false);
   const [showLines, setShowLines] = useState<boolean>(true);
   const [showStops, setShowStops] = useState<boolean>(true);
+  const [isQueryProcessed, setIsQueryProcessed] = useState(false);
 
   useEffect(() => {
     if (query.trim() === "") {
       setLoading(false);
       setStops(undefined);
       setLines(undefined);
+      setIsQueryProcessed(false);
       return;
     }
 
@@ -84,10 +86,20 @@ export default function FilteredStopsComponent({
         }),
       );
       setLoading(false);
+      setIsQueryProcessed(true);
     }, 350);
 
     return () => clearTimeout(getData);
   }, [query]);
+
+  useEffect(() => {
+    if (isQueryProcessed && query.trim() === "") {
+      setStops(undefined);
+      setLines(undefined);
+      setLoading(false);
+      setIsQueryProcessed(false);
+    }
+  }, [query, isQueryProcessed]);
 
   return StopsElement();
 
