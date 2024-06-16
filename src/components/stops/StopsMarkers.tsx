@@ -31,7 +31,7 @@ export function StopsMarkers({
     map.openPopup(popup);
   }, [popup, map, selected]);
 
-  return stops.map((stop, index) => {
+  return stops.map(stop => {
     const isCurrent = stop.fullStopCode === current?.fullStopCode;
     const codMode = isCurrent ? currentStop : stop.codMode;
 
@@ -51,7 +51,7 @@ export function StopsMarkers({
             );
           },
         }}
-        key={index}
+        key={`${stop.codMode}_${stop.stopCode}`}
         icon={icon}
         title={stop.stopName}
         position={{lat: stop.stopLat, lng: stop.stopLon}}>
