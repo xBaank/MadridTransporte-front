@@ -46,21 +46,11 @@ export function LineRouteMap() {
   useEffect(() => {
     if (itinerary === undefined || line === undefined) return;
 
-    getShapes(
-      getTransportTypeByCodMode(line.codMode),
-      itinerary.codItinerary,
-    ).then(shapes => {
-      if (shapes._tag === "Left") return;
-      const value = shapes.right.map(i => {
-        return {
-          lat: i.latitude,
-          lng: i.longitude,
-        };
-      });
-      setAllRoute(value);
-
-      return;
-    });
+    setAllRoute(
+      itinerary.stops.map(i => {
+        return {lat: i.stopLat, lng: i.stopLon};
+      }),
+    );
   }, [itinerary]);
 
   const markers = useMemo(() => {
