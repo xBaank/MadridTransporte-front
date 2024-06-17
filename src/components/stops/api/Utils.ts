@@ -31,6 +31,10 @@ export function getMapLocationLink(fullStopCode: string) {
   return `/stops/map/${fullStopCode}`;
 }
 
+export function getLineUrl(fullLineCode: string, codMode: number) {
+  return `/lines/${getTransportTypeByCodMode(codMode)}/${fullLineCode}`;
+}
+
 export function getIconByCodMode(codMode: number): string {
   if (codMode === metroCodMode) return "/icons/metro.png";
   if (codMode === trainCodMode) return "/icons/train.png";
@@ -124,6 +128,9 @@ export function getColor(codMode: number) {
   if (codMode === busCodMode) return "#00cc07";
   if (codMode === urbanCodMode) return "#e0000b";
   if (codMode === emtCodMode) return "#1c73ff";
+  if (codMode === metroCodMode) return "#f5cb42";
+  if (codMode === trainCodMode) return "#f54263";
+  if (codMode === metroLigeroCodMode) return "#f54263";
   return "#00cc07";
 }
 

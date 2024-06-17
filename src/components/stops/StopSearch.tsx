@@ -1,7 +1,7 @@
-import {InputAdornment, List, TextField} from "@mui/material";
-import {useState} from "react";
-import {Search} from "@mui/icons-material";
-import AllStopsComponent, {StopComponent} from "./StopsComponent";
+import {IconButton, InputAdornment, List, TextField} from "@mui/material";
+import {memo, useEffect, useRef, useState} from "react";
+import {Clear, Search} from "@mui/icons-material";
+import FilteredStopsComponent, {StopComponent} from "./StopsComponent";
 import StopsFavorites from "./StopsFavorites";
 import {mapStopToStopLink} from "./api/Utils";
 import {useParams} from "react-router-dom";
@@ -9,6 +9,7 @@ import AllSubscriptions from "./StopsSubscriptions";
 import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
 import {db} from "./api/Db";
 import {useLiveQuery} from "dexie-react-hooks";
+
 export default function BusStopSearch({
   title,
   codMode,
@@ -22,8 +23,6 @@ export default function BusStopSearch({
     if (code === undefined || codMode === undefined) return undefined;
     return await db.stops.where({stopCode: code, codMode}).first();
   }, [code, codMode]);
-  // code here refers to origin, this is only use in trains as the only way to show
-  // the times are by origin and destination, so we need to know the origin to show
 
   const search = (e: {target: {value: any}; preventDefault: () => void}) => {
     const value = e.target.value as string;
@@ -49,6 +48,7 @@ export default function BusStopSearch({
         <div className="mb-4 grid">
           <TextField
             fullWidth
+            value={query}
             id="StopCode"
             label="Codigo o nombre de la parada"
             placeholder="Por ejemplo: Atocha"
@@ -60,17 +60,28 @@ export default function BusStopSearch({
                   <DirectionsBusIcon />
                 </InputAdornment>
               ),
-              endAdornment: (
-                <InputAdornment position="end">
-                  <Search />
-                </InputAdornment>
-              ),
+              endAdornment:
+                query.trim() === "" ? (
+                  <InputAdornment position="end">
+                    <IconButton>
+                      <Search />
+                    </IconButton>
+                  </InputAdornment>
+                ) : (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => setQuery("")}>
+                      <Clear />
+                    </IconButton>
+                  </InputAdornment>
+                ),
             }}
           />
         </div>
-        <AllStopsComponent query={query} codMode={codMode} code={code} />
-        {codMode !== null ? <></> : <StopsFavorites />}
-        <AllSubscriptions />
+        <FilteredStopsComponent query={query} codMode={codMode} code={code} />
+        <div className={query.trim() !== "" ? "hidden" : ""}>
+          {codMode !== null ? null : <StopsFavorites />}
+          <AllSubscriptions />
+        </div>
       </div>
     </div>
   );

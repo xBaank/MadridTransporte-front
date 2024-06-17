@@ -1,4 +1,4 @@
-import {useCallback, useContext, useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
 import {
   type StopTimePlanned,
@@ -72,23 +72,27 @@ export default function BusStopsTimes() {
 
   const getTimesAsync = async () => {
     if (type === undefined || code === undefined) return;
-    await getStopsTimes(type, code).then(stops =>
-      fold(
-        (error: string) => setError(error),
-        (stops: StopTimes) => setStopTimes(stops),
-      )(stops),
-    );
+    await getStopsTimes(type, code)
+      .then(stops =>
+        fold(
+          (error: string) => setError(error),
+          (stops: StopTimes) => setStopTimes(stops),
+        )(stops),
+      )
+      .catch(() => setError("Error al obtener los tiempos"));
   };
 
   const getTimesPlannedAsync = async () => {
     if (type === undefined || code === undefined) return;
     if (type !== "bus") return;
-    await getStopsTimesPlanned(type, code).then(stops =>
-      fold(
-        (_error: string) => setStopTimesPlanned(undefined),
-        (stops: StopTimePlanned[]) => setStopTimesPlanned(stops),
-      )(stops),
-    );
+    await getStopsTimesPlanned(type, code)
+      .then(stops =>
+        fold(
+          (_error: string) => setStopTimesPlanned(undefined),
+          (stops: StopTimePlanned[]) => setStopTimesPlanned(stops),
+        )(stops),
+      )
+      .catch(() => setError("Error al obtener los tiempos"));
   };
 
   const getSubscriptionsAsync = async () => {
@@ -409,16 +413,6 @@ export default function BusStopsTimes() {
                 {` ${stopTimePlanned.destination} `}
               </pre>
             </div>
-          </div>
-          <div className="ml-auto flex p-1 mb-auto ">
-            {stopTimePlanned.direction != null ? (
-              <LinesLocationsButton
-                codMode={getCodModeByType(type!)}
-                lineCode={stopTimePlanned?.fullLineCode ?? ""}
-                direction={stopTimePlanned?.direction ?? 0}
-                stopCode={code ?? ""}
-              />
-            ) : null}
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import LinearProgress from "@mui/material/LinearProgress";
 import {Alert, Box, Modal, Typography} from "@mui/material";
 import {useContext, useEffect, useState} from "react";
-import {getAllApiStops} from "../stops/api/Stops";
+import {getAllApiLines, getAllApiStops} from "../stops/api/Stops";
 import {
   DataLoadContext,
   MigrationContext,
@@ -13,7 +13,7 @@ import {
   deleteAllFavoritesFromLocalStorage,
 } from "../stops/api/Utils";
 
-export default function LoadStops() {
+export default function LoadData() {
   const [open, setOpen] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
@@ -22,13 +22,14 @@ export default function LoadStops() {
 
   async function loadStops() {
     const stopsCount = await db.stops.count();
+    const linesCount = await db.lines.count();
 
-    if (stopsCount === 0) {
+    if (stopsCount === 0 || linesCount === 0) {
       console.log("Loading");
       setOpen(true);
 
       try {
-        await getAllApiStops().then(async stops => {
+        const stopsPromise = getAllApiStops().then(async stops => {
           if (stops._tag !== "Left") {
             const mapped = stops.right.map(i => {
               return {
@@ -39,7 +40,9 @@ export default function LoadStops() {
               };
             });
 
+            await db.stops.clear();
             await db.stops.bulkPut(mapped);
+
             setSuccess(true);
 
             setTimeout(() => {
@@ -48,11 +51,31 @@ export default function LoadStops() {
               loadDataContext.setDataLoaded(true);
             }, 2000);
 
-            console.log("Finished loading");
+            console.log("Finished loading stops");
           }
         });
+
+        const linesPromise = getAllApiLines().then(async lines => {
+          if (lines._tag !== "Left") {
+            const mapped = lines.right;
+
+            await db.lines.clear();
+            await db.lines.bulkPut(mapped);
+            setSuccess(true);
+
+            setTimeout(() => {
+              setSuccess(false);
+              setOpen(false);
+              loadDataContext.setDataLoaded(true);
+            }, 2000);
+
+            console.log("Finished loading lines");
+          }
+        });
+
+        await Promise.all([stopsPromise, linesPromise]);
       } catch {
-        console.error("Error updating stops");
+        console.error("Error updating stops and lines");
         setError(true);
         setSuccess(false);
         loadDataContext.setDataLoaded(false);
@@ -113,7 +136,7 @@ export default function LoadStops() {
     if (success) {
       return (
         <Alert className="mb-2" variant="outlined" severity="success">
-          Las paradas han sido actualizadas correctamente.
+          Los datos han sido actualizadas correctamente.
         </Alert>
       );
     }
@@ -140,7 +163,7 @@ export default function LoadStops() {
             variant="h6"
             component="h2"
             className="text-center">
-            Actualizando paradas
+            Actualizando paradas y lineas
           </Typography>
           <div className=" mt-4">
             <InfoMessage />

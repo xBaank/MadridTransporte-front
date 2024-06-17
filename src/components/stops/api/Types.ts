@@ -153,6 +153,18 @@ export type ItineraryStop = {
   order: number;
 };
 
+export type Line = {
+  fullLineCode: string;
+  simpleLineCode: string;
+  codMode: number;
+  routeName: string;
+  itineraries: Array<{
+    itineraryCode: string;
+    direction: number;
+    tripName: string;
+  }>;
+};
+
 export type Shape = {
   sequence: number;
   longitude: number;

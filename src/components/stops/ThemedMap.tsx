@@ -15,7 +15,7 @@ export default function ThemedMap({
   onLocateClick,
   whenReady,
 }: {
-  children: JSX.Element[];
+  children: JSX.Element[] | JSX.Element;
   setMap: React.Dispatch<React.SetStateAction<Map | null>>;
   center: LatLngExpression;
   zoom: number;

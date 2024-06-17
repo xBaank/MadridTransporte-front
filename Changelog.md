@@ -1,8 +1,12 @@
 # Changelog
 
+## 1.13.0
+
+- Added lines info.
+
 ## 1.12.6
 
-- Improve stops search.
+- Improved stops search.
 
 ## 1.12.5
 

@@ -1,5 +1,10 @@
 import {type PaletteMode, useTheme} from "@mui/material";
+import {useLiveQuery} from "dexie-react-hooks";
 import {useState} from "react";
+import {useParams} from "react-router-dom";
+import {db} from "../components/stops/api/Db";
+import {getItineraryByCode} from "../components/stops/api/Lines";
+import {getTransportTypeByCodMode} from "../components/stops/api/Utils";
 
 export const defaultPosition = {lat: 40.4165, lng: -3.70256};
 
@@ -63,4 +68,32 @@ export function getMinutesDisplay() {
   } else {
     return false;
   }
+}
+
+export function useLine() {
+  const {fullLineCode} = useParams<{fullLineCode: string}>();
+
+  return useLiveQuery(async () => {
+    if (fullLineCode === undefined) return;
+    const line = await db.lines.get(fullLineCode);
+    if (line === undefined) return;
+
+    const itinerariesPromises = line.itineraries.map(async i => {
+      const result = await getItineraryByCode(
+        getTransportTypeByCodMode(line.codMode),
+        i.itineraryCode,
+      ).catch(() =>
+        console.error(`Error al obtener el itinerario ${i.itineraryCode}`),
+      );
+      if (result === undefined) return null;
+      if (result._tag === "Left") return null;
+      return {...result.right, tripName: i.tripName, direction: i.direction};
+    });
+
+    const itineraries = (await Promise.all(itinerariesPromises))
+      .filter(i => i !== null)
+      .map(i => i!);
+
+    return {...line, itinerariesWithStops: itineraries};
+  });
 }

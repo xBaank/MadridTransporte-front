@@ -31,8 +31,10 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import {ColorModeContext} from "./contexts/colorModeContext";
 import {MapContext, type MapData} from "./contexts/mapContext";
-import LoadStops from "./components/settings/LoadStops";
+import LoadData from "./components/settings/LoadData";
 import {DataLoadContext, MigrationContext} from "./contexts/dataLoadContext";
+import {LineInfo} from "./components/stops/lines/LineInfo";
+import {LineRouteMap} from "./components/stops/lines/LineRouteMap";
 
 const updateSW = registerSW({
   onNeedRefresh() {
@@ -109,7 +111,7 @@ export default function App() {
                   {dataLoaded && migrated ? (
                     <RouterProvider router={router} />
                   ) : (
-                    <LoadStops />
+                    <LoadData />
                   )}
                 </ThemeProvider>
               </ColorModeContext.Provider>
@@ -126,7 +128,6 @@ export const router = createBrowserRouter([
     path: "/",
     element: (
       <DefaultElement
-        key={uniqueId()}
         element={<BusStopSearch title={"Buscar parada"} codMode={null} />}
       />
     ),
@@ -138,10 +139,6 @@ export const router = createBrowserRouter([
   {
     path: "/stops/:type/:code/times",
     element: <DefaultElement element={<BusStopsTimes />} />,
-  },
-  {
-    path: "/lines/:type/:lineCode/locations/:direction",
-    element: <DefaultElement element={<LinesLocationsMap />} />,
   },
   {
     path: "/stops/train/:code/destination",
@@ -165,6 +162,18 @@ export const router = createBrowserRouter([
   {
     path: "/stops/map",
     element: <DefaultElement element={<BusStopMap />} />,
+  },
+  {
+    path: "/lines/:type/:fullLineCode/locations/:direction",
+    element: <DefaultElement element={<LinesLocationsMap />} />,
+  },
+  {
+    path: "/lines/:type/:fullLineCode",
+    element: <DefaultElement element={<LineInfo />} />,
+  },
+  {
+    path: "/lines/:type/:fullLineCode/map",
+    element: <DefaultElement element={<LineRouteMap />} />,
   },
   {
     path: "/maps",
