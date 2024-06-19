@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import Line from "../../Line";
 import LoadingSpinner from "../../LoadingSpinner";
 import {FormControl, InputLabel, Select, MenuItem, Button} from "@mui/material";
@@ -8,8 +8,9 @@ import {StopComponent} from "../StopsComponent";
 import {useLine} from "../hooks/Lines";
 
 export function LineInfo() {
+  const {fullLineCode} = useParams<{fullLineCode: string}>();
   const [currentItineraryCode, setCurrentItineraryCode] = useState<string>("");
-  const line = useLine();
+  const line = useLine(fullLineCode);
 
   if (line === undefined) return <LoadingSpinner />;
 

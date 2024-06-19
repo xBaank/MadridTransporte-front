@@ -14,13 +14,32 @@ import {
   useItineraryByDirection,
   useLineLocations,
 } from "../hooks/Lines";
+import {useParams, useSearchParams} from "react-router-dom";
+import {TransportType} from "../api/Types";
 
 export default function LinesLocationsMap() {
   const interval = 1000 * 15;
+  const {type, fullLineCode, direction} = useParams<{
+    type: TransportType;
+    fullLineCode: string;
+    direction: string;
+  }>();
+  const [searchParam] = useSearchParams();
   const [map, setMap] = useState<Map | null>(null);
-  const [itinerary, currentStop, itineraryError] = useItineraryByDirection();
-  const [lineLocations, locationsError] = useLineLocations(interval);
-  const [allRoute, routeError] = useFixedShapes(itinerary);
+  const [itinerary, currentStop, itineraryError] = useItineraryByDirection(
+    type,
+    fullLineCode,
+    direction,
+    searchParam.get("stopCode") ?? undefined,
+  );
+  const [lineLocations, locationsError] = useLineLocations(
+    interval,
+    type,
+    fullLineCode,
+    direction,
+    searchParam.get("stopCode") ?? undefined,
+  );
+  const [allRoute, routeError] = useFixedShapes(itinerary, type);
 
   function StopsMarkersMemo() {
     return useMemo(() => {

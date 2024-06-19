@@ -5,7 +5,7 @@ import {useEffect, useMemo, useState} from "react";
 import {FormControl, InputLabel, Select, MenuItem, Paper} from "@mui/material";
 import LoadingSpinner from "../../LoadingSpinner";
 import {StopsMarkers} from "../StopsMarkers";
-import {useSearchParams} from "react-router-dom";
+import {useParams, useSearchParams} from "react-router-dom";
 import {StopWithOrder} from "../api/Types";
 import {getColor} from "../api/Utils";
 import {Polyline} from "react-leaflet";
@@ -14,11 +14,12 @@ import {useLine} from "../hooks/Lines";
 
 export function LineRouteMap() {
   const [searchParam] = useSearchParams();
+  const {fullLineCode} = useParams<{fullLineCode: string}>();
   const [currentItineraryCode, setCurrentItineraryCode] = useState<string>(
     searchParam.get("current") ?? "",
   );
   const [map, setMap] = useState<Map | null>(null);
-  const line = useLine();
+  const line = useLine(fullLineCode);
   const [itinerary, setItinerary] = useState<{
     tripName: string;
     direction: number;

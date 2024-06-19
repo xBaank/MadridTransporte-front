@@ -1,4 +1,3 @@
-import {useParams, useSearchParams} from "react-router-dom";
 import {apiUrl} from "../../Urls";
 import {
   TransportType,
@@ -24,19 +23,16 @@ const BadRequest = "Error al obtener la localizacion";
 
 export function useLineLocations(
   interval: number | null = null,
+  type: TransportType | undefined,
+  fullLineCode: string | undefined,
+  direction: string | undefined,
+  stopCode: string | undefined,
 ): [LineLocations?, string?] {
-  const {type, fullLineCode, direction} = useParams<{
-    type: TransportType;
-    fullLineCode: string;
-    direction: string;
-  }>();
-  const [searchParam] = useSearchParams();
   const abortControllerRef = useRef<AbortController | null>(null);
   const [lineLocations, setLineLocations] = useState<LineLocations>();
   const [error, setError] = useState<string>();
 
   const getLocations = useCallback(() => {
-    const stopCode = searchParam.get("stopCode");
     if (type === undefined) return;
     if (fullLineCode === undefined) return;
     if (direction === undefined) return;
@@ -69,7 +65,7 @@ export function useLineLocations(
       .catch(i => setError("Error al obtener las localizaciones"));
 
     return () => abortControllerRef.current?.abort();
-  }, [searchParam, type, fullLineCode, direction]);
+  }, [type, fullLineCode, direction, stopCode]);
 
   useEffect(getLocations, [getLocations]);
 
@@ -80,23 +76,17 @@ export function useLineLocations(
   return [lineLocations, error];
 }
 
-export function useItineraryByDirection(): [
-  ItineraryWithStopsOrder?,
-  StopWithOrder?,
-  string?,
-] {
-  const {type, fullLineCode, direction} = useParams<{
-    type: TransportType;
-    fullLineCode: string;
-    direction: string;
-  }>();
-  const [searchParam] = useSearchParams();
+export function useItineraryByDirection(
+  type: TransportType | undefined,
+  fullLineCode: string | undefined,
+  direction: string | undefined,
+  stopCode: string | undefined,
+): [ItineraryWithStopsOrder?, StopWithOrder?, string?] {
   const [itinerary, setItinerary] = useState<ItineraryWithStopsOrder>();
   const [currentStop, setCurrentStop] = useState<StopWithOrder>();
   const [error, setError] = useState<string>();
 
   useEffect(() => {
-    const stopCode = searchParam.get("stopCode");
     if (type === undefined) return;
     if (fullLineCode === undefined) return;
     if (direction === undefined) return;
@@ -130,15 +120,17 @@ export function useItineraryByDirection(): [
         });
       })
       .catch(i => setError("Error al obtener los itinerarios"));
-  }, [searchParam, type, fullLineCode, direction]);
+  }, [stopCode, type, fullLineCode, direction]);
 
   return [itinerary, currentStop, error];
 }
 
-function useShapes(itineraryCode?: string): [Shape[]?, string?] {
+function useShapes(
+  itineraryCode: string | undefined,
+  type: TransportType | undefined,
+): [Shape[]?, string?] {
   const [shapes, setShapes] = useState<Shape[]>();
   const [error, setError] = useState<string>();
-  const {type} = useParams<{type: TransportType}>();
 
   useEffect(() => {
     if (itineraryCode === undefined) return;
@@ -160,9 +152,10 @@ function useShapes(itineraryCode?: string): [Shape[]?, string?] {
 }
 
 export function useFixedShapes(
-  itinerary?: ItineraryWithStopsOrder,
+  itinerary: ItineraryWithStopsOrder | undefined,
+  type: TransportType | undefined,
 ): [LatLngLiteral[]?, string?] {
-  const [shapes, error] = useShapes(itinerary?.codItinerary);
+  const [shapes, error] = useShapes(itinerary?.codItinerary, type);
   const [allRoute, setAllRoute] = useState<LatLngLiteral[]>();
   const [routeError, setRouteError] = useState<string>();
 
@@ -180,7 +173,10 @@ export function useFixedShapes(
           return {latitude: i.stopLat, longitude: i.stopLon};
         }) ?? [],
       )
-        .then(i => setAllRoute(routeToCoordinates(i)))
+        .then(i => {
+          setAllRoute(routeToCoordinates(i));
+          setRouteError(undefined);
+        })
         .catch(i => setRouteError("Error al obtener la rutas"));
 
       return;
@@ -221,8 +217,9 @@ async function getItineraryByCode(
   return right(mapped);
 }
 
-export function useLine(): LineWithItinerariesWithStops | undefined {
-  const {fullLineCode} = useParams<{fullLineCode: string}>();
+export function useLine(
+  fullLineCode: string | undefined,
+): LineWithItinerariesWithStops | undefined {
   const line = useLiveQuery(() => db.lines.get(fullLineCode), [fullLineCode]);
   const [itineraries, setItineraries] =
     useState<LineWithItinerariesWithStops>();
