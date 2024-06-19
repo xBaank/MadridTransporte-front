@@ -1,12 +1,7 @@
 import {type PaletteMode, useTheme} from "@mui/material";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 export const defaultPosition = {lat: 40.4165, lng: -3.70256};
-
-export function useColor() {
-  const theme = useTheme();
-  return theme.palette.mode === "dark" ? "text-white" : "text-black";
-}
 
 export function useAmberColor() {
   const theme = useTheme();
@@ -47,20 +42,14 @@ export function useSavedTheme(): [PaletteMode, (value: PaletteMode) => void] {
   ];
 }
 
-export function changeMinutesDisplay() {
-  const showInMinutes = localStorage.getItem("showInMinutes");
-  if (showInMinutes === "true") {
-    localStorage.setItem("showInMinutes", "false");
-  } else {
-    localStorage.setItem("showInMinutes", "true");
-  }
-}
+export function useMinutesDisplay(): [boolean, (value: boolean) => void] {
+  const [display, setDisplay] = useState(
+    localStorage.getItem("showInMinutes") === "true",
+  );
 
-export function getMinutesDisplay() {
-  const showInMinutes = localStorage.getItem("showInMinutes");
-  if (showInMinutes === "true") {
-    return true;
-  } else {
-    return false;
-  }
+  useEffect(() => {
+    localStorage.setItem("showInMinutes", JSON.stringify(display));
+  }, [display]);
+
+  return [display, setDisplay];
 }

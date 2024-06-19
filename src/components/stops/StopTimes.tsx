@@ -20,10 +20,9 @@ import {getAlertsByTransportType} from "./api/Stops";
 import RenderAlerts from "./Alerts";
 import LoadingSpinner from "../LoadingSpinner";
 import {
-  useColor,
-  getMinutesDisplay,
   useRoseColor,
   useAmberColor,
+  useMinutesDisplay,
 } from "../../hooks/hooks";
 import StopTimesSubscribe from "./StopTimesSubscribe";
 import {getSubscription} from "./api/Subscriptions";
@@ -421,17 +420,18 @@ export default function BusStopsTimes() {
 
   function FormatTime(time: number, index: number): JSX.Element {
     const minutes = Math.floor((time - Date.now()) / 60000);
+    const [minutesDisplay] = useMinutesDisplay();
 
     let color: string;
     if (minutes < 5) color = `${useRoseColor()} font-bold`;
     else if (minutes < 10) color = `${useAmberColor()} font-bold`;
-    else color = `${useColor()} font-bold`;
+    else color = `font-bold`;
 
     const timeFormatted = new Date(time).toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",
     });
-    if (!getMinutesDisplay())
+    if (!minutesDisplay)
       return (
         <pre key={index} className={color}>
           {timeFormatted}

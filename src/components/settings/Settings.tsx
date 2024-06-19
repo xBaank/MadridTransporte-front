@@ -2,23 +2,21 @@ import {Button, FormControlLabel, Switch, useTheme} from "@mui/material";
 import React, {useContext, useState} from "react";
 import {Brightness7} from "@mui/icons-material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import {changeMinutesDisplay, getMinutesDisplay} from "../../hooks/hooks";
 import {Link} from "react-router-dom";
 import {ColorModeContext} from "../../contexts/colorModeContext";
 import {DataLoadContext} from "../../contexts/dataLoadContext";
 import {db} from "../stops/api/Db";
+import {useMinutesDisplay} from "../../hooks/hooks";
 
 export default function Settings() {
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
   const dataLoaded = useContext(DataLoadContext);
-  const [minutesToDisplay, setMinutesToDisplay] =
-    useState<boolean>(getMinutesDisplay());
+  const [minutesToDisplay, setMinutesToDisplay] = useMinutesDisplay();
 
   const handleMinutesDisplayChange = () => {
     if (minutesToDisplay === undefined) return;
     setMinutesToDisplay(!minutesToDisplay);
-    changeMinutesDisplay();
   };
 
   function ReloadStops() {
