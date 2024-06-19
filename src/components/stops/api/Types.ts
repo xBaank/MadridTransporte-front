@@ -178,6 +178,19 @@ export type ItineraryWithStopsOrder = {
   stops: StopWithOrder[];
 };
 
+export type LineWithItinerariesWithStops = {
+  itinerariesWithStops: {
+    tripName: string;
+    direction: number;
+    codItinerary: string;
+    stops: StopWithOrder[];
+  }[];
+  fullLineCode: string;
+  simpleLineCode: string;
+  codMode: number;
+  routeName: string;
+};
+
 export type StopTimePlanned = {
   lineCode: string;
   fullLineCode: string;

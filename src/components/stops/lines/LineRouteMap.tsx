@@ -1,17 +1,16 @@
 import {LatLngExpression, Map} from "leaflet";
-import {defaultPosition, useLine} from "../../../hooks/hooks";
+import {defaultPosition} from "../../../hooks/hooks";
 import ThemedMap from "../ThemedMap";
 import {useEffect, useMemo, useState} from "react";
 import {FormControl, InputLabel, Select, MenuItem, Paper} from "@mui/material";
 import LoadingSpinner from "../../LoadingSpinner";
 import {StopsMarkers} from "../StopsMarkers";
 import {useSearchParams} from "react-router-dom";
-import {getShapes} from "../api/Lines";
-import {routeTimeCar, routeToCoordinates, fixRouteShapes} from "../api/Route";
 import {StopWithOrder} from "../api/Types";
-import {getColor, getTransportTypeByCodMode} from "../api/Utils";
+import {getColor} from "../api/Utils";
 import {Polyline} from "react-leaflet";
 import Line from "../../Line";
+import {useLine} from "../hooks/Lines";
 
 export function LineRouteMap() {
   const [searchParam] = useSearchParams();

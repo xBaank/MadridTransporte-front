@@ -5,7 +5,7 @@ import LoadingSpinner from "../../LoadingSpinner";
 import {FormControl, InputLabel, Select, MenuItem, Button} from "@mui/material";
 import {getLineUrl, mapStopToStopLink} from "../api/Utils";
 import {StopComponent} from "../StopsComponent";
-import {useLine} from "../../../hooks/hooks";
+import {useLine} from "../hooks/Lines";
 
 export function LineInfo() {
   const [currentItineraryCode, setCurrentItineraryCode] = useState<string>("");
