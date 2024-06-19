@@ -1,5 +1,6 @@
 import {type Nearest, type Coordinates, type Route} from "./RouteTypes";
 import _ from "lodash";
+import {Shape} from "./Types";
 
 export async function routeTimeFoot(from: Coordinates, to: Coordinates) {
   const result = await fetch(
@@ -26,16 +27,18 @@ export async function routeTimeCar(coordinates: Coordinates[]) {
   return data;
 }
 
-export async function fixRouteShapes(coordinates: Coordinates[]) {
+export async function fixRouteShapes(coordinates: Shape[]) {
   if (coordinates.length === 0) return [];
 
-  const percentage = (coordinates.length * 0.008) | 0;
+  const sorted = _.sortBy(coordinates, i => i.sequence);
+
+  const percentage = (sorted.length * 0.008) | 0;
 
   const chunks: Coordinates[][] = _.chunk(
     [
-      coordinates[0],
-      ...coordinates.filter((_, index) => index % percentage === 0),
-      coordinates[coordinates.length - 1],
+      sorted[0],
+      ...sorted.filter((_, index) => index % percentage === 0),
+      sorted[coordinates.length - 1],
     ],
     100,
   );
