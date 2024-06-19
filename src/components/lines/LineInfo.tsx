@@ -1,11 +1,11 @@
 import {useState} from "react";
 import {Link, useParams} from "react-router-dom";
-import Line from "../../Line";
-import LoadingSpinner from "../../LoadingSpinner";
+import Line from "../Line";
+import LoadingSpinner from "../LoadingSpinner";
 import {FormControl, InputLabel, Select, MenuItem, Button} from "@mui/material";
-import {getLineUrl, mapStopToStopLink} from "../api/Utils";
-import {StopComponent} from "../StopsComponent";
-import {useLine} from "../hooks/Lines";
+import {getLineUrl, mapStopToStopLink} from "../stops/api/Utils";
+import {StopComponent} from "../stops/StopsComponent";
+import {useLine} from "./hooks/Lines";
 
 export function LineInfo() {
   const {fullLineCode} = useParams<{fullLineCode: string}>();

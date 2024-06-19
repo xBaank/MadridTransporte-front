@@ -1,21 +1,21 @@
 import {type Map} from "leaflet";
 import {useMemo, useState} from "react";
-import ErrorMessage from "../../Error";
-import LoadingSpinner from "../../LoadingSpinner";
-import {StopsMarkers} from "../StopsMarkers";
+import ErrorMessage from "../Error";
+import LoadingSpinner from "../LoadingSpinner";
+import {StopsMarkers} from "../stops/StopsMarkers";
 import {LineLocationsMarkers} from "./LineLocationsMarkers";
-import ThemedMap from "../ThemedMap";
+import ThemedMap from "../stops/ThemedMap";
 import {Polyline} from "react-leaflet";
-import Line from "../../Line";
-import {getColor} from "../api/Utils";
-import {defaultPosition} from "../../../hooks/hooks";
+import Line from "../Line";
+import {getColor} from "../stops/api/Utils";
+import {defaultPosition} from "../../hooks/hooks";
 import {
   useFixedShapes,
   useItineraryByDirection,
   useLineLocations,
-} from "../hooks/Lines";
+} from "./hooks/Lines";
 import {useParams, useSearchParams} from "react-router-dom";
-import {TransportType} from "../api/Types";
+import {TransportType} from "../stops/api/Types";
 
 export default function LinesLocationsMap() {
   const interval = 1000 * 15;

@@ -20,7 +20,7 @@ import TrainStopTimesComponent from "./components/stops/train/TrainStopsTimes";
 import StaticMaps from "./components/maps/StaticMaps";
 import Settings from "./components/settings/Settings";
 import StopNearest from "./components/stops/StopNearest";
-import LinesLocationsMap from "./components/stops/lines/LinesLocationsMap";
+import LinesLocationsMap from "./components/lines/LinesLocationsMap";
 import {setupBackButton} from "./backButtons";
 import {defaultPosition, useSavedTheme} from "./hooks/hooks";
 import {TokenContext, useToken} from "./notifications";
@@ -33,8 +33,8 @@ import {ColorModeContext} from "./contexts/colorModeContext";
 import {MapContext, type MapData} from "./contexts/mapContext";
 import LoadData from "./components/settings/LoadData";
 import {DataLoadContext, MigrationContext} from "./contexts/dataLoadContext";
-import {LineInfo} from "./components/stops/lines/LineInfo";
-import {LineRouteMap} from "./components/stops/lines/LineRouteMap";
+import {LineInfo} from "./components/lines/LineInfo";
+import {LineRouteMap} from "./components/lines/LineRouteMap";
 
 const updateSW = registerSW({
   onNeedRefresh() {

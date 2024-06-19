@@ -1,5 +1,5 @@
 import MyLocationIcon from "@mui/icons-material/MyLocation";
-import {busCodMode, emtCodMode, getLocationLink} from "../api/Utils";
+import {busCodMode, emtCodMode, getLocationLink} from "../stops/api/Utils";
 import {Link} from "react-router-dom";
 import {IconButton} from "@mui/material";
 

@@ -7,14 +7,18 @@ import {
   StopWithOrder,
   Shape,
   LineWithItinerariesWithStops,
-} from "../api/Types";
+} from "../../stops/api/Types";
 import {useCallback, useEffect, useRef, useState} from "react";
 import {useInterval} from "usehooks-ts";
-import {db} from "../api/Db";
-import {routeTimeCar, routeToCoordinates, fixRouteShapes} from "../api/Route";
+import {db} from "../../stops/api/Db";
+import {
+  routeTimeCar,
+  routeToCoordinates,
+  fixRouteShapes,
+} from "../../stops/api/Route";
 import {LatLngLiteral} from "leaflet";
 import {useLiveQuery} from "dexie-react-hooks";
-import {getTransportTypeByCodMode} from "../api/Utils";
+import {getTransportTypeByCodMode} from "../../stops/api/Utils";
 import {Either} from "fp-ts/lib/Either";
 import {left, right} from "fp-ts/lib/Either";
 

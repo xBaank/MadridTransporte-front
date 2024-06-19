@@ -29,7 +29,7 @@ import {getSubscription} from "./api/Subscriptions";
 import ErrorMessage from "../Error";
 import Line from "../Line";
 import StaledMessage from "../Staled";
-import LinesLocationsButton from "./lines/LinesLocationsButton";
+import LinesLocationsButton from "../lines/LinesLocationsButton";
 import TrainTimesDestIcon from "./train/TrainTimesDestinationIcon";
 import {TokenContext} from "../../notifications";
 import PullToRefresh from "react-simple-pull-to-refresh";
