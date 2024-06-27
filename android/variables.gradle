@@ -11,7 +11,7 @@ ext {
     androidxWebkitVersion = '1.6.1'
     junitVersion = '4.13.2'
     androidxJunitVersion = '1.2.0'
-    androidxEspressoCoreVersion = '3.6.0'
+    androidxEspressoCoreVersion = '3.6.1'
     cordovaAndroidVersion = '10.1.1'
     firebaseMessagingVersion = '23.1.2'
 }
