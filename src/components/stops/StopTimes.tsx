@@ -41,6 +41,7 @@ import MapIcon from "@mui/icons-material/Map";
 import {db} from "./api/Db";
 import {useLiveQuery} from "dexie-react-hooks";
 import {FavoriteSave} from "../favorites/FavoriteSave";
+import {useTranslation} from "react-i18next";
 
 export default function BusStopsTimes() {
   const {type, code} = useParams<{type: TransportType; code: string}>();
@@ -56,6 +57,7 @@ export default function BusStopsTimes() {
     useLiveQuery(
       async () => (await db.favorites.where({type, code}).first()) != null,
     ) ?? false;
+  const {t, i18n} = useTranslation();
 
   const stop = useLiveQuery(async () => {
     if (type === undefined) return null;
@@ -157,7 +159,11 @@ export default function BusStopsTimes() {
     if (value === 1 || value === 2) {
       return (
         <div className="my-auto font-bold">
-          <Chip color="primary" icon={<AccessibleIcon />} label="Accesible" />
+          <Chip
+            color="primary"
+            icon={<AccessibleIcon />}
+            label={t("times.accessibility")}
+          />
         </div>
       );
     }
@@ -181,7 +187,11 @@ export default function BusStopsTimes() {
     if (isAffected)
       return (
         <div className="my-auto font-bold">
-          <Chip color="error" icon={<ErrorIcon />} label="Afectada" />
+          <Chip
+            color="error"
+            icon={<ErrorIcon />}
+            label={t("times.affected")}
+          />
         </div>
       );
 
@@ -193,7 +203,7 @@ export default function BusStopsTimes() {
     if (upperValue.trim().length === 0) return null;
     return (
       <div className="my-auto font-bold">
-        <Chip color="primary" label={`Zona ${upperValue}`} />
+        <Chip color="primary" label={`${t("times.zone")} ${upperValue}`} />
       </div>
     );
   }
@@ -351,7 +361,9 @@ export default function BusStopsTimes() {
                 {` ${arrive.destination} `}
               </pre>
               {arrive.anden !== null ? (
-                <pre className={` text-gray-500`}> Anden {arrive.anden} </pre>
+                <pre className={` text-gray-500`}>
+                  {` ${t("times.platform")} ${arrive.anden}`}
+                </pre>
               ) : null}
             </div>
           </div>

@@ -35,6 +35,7 @@ import LoadData from "./components/settings/LoadData";
 import {DataLoadContext, MigrationContext} from "./contexts/dataLoadContext";
 import {LineInfo} from "./components/stops/lines/LineInfo";
 import {LineRouteMap} from "./components/stops/lines/LineRouteMap";
+import "./components/i18n";
 
 const updateSW = registerSW({
   onNeedRefresh() {

@@ -1,7 +1,8 @@
 import {Modal, Box, Typography, Button} from "@mui/material";
 import {type Alert, type Incident} from "./api/Types";
-import {useState} from "react";
+import {useState, useTransition} from "react";
 import {Link} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 export default function RenderAlerts({
   alerts,
@@ -13,6 +14,7 @@ export default function RenderAlerts({
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const {t} = useTranslation();
 
   const style = {
     position: "absolute" as const,
@@ -40,7 +42,7 @@ export default function RenderAlerts({
         variant="contained"
         onClick={handleOpen}
         className={`w-full`}>
-        Avisos
+        {t("times.alerts")}
       </Button>
       <Modal
         open={open}
@@ -53,7 +55,7 @@ export default function RenderAlerts({
             variant="h6"
             component="h2"
             className="border-b">
-            Avisos
+            {t("times.alerts")}
           </Typography>
           <ul className={`list-disc`}>
             {alerts.map(alert => {
