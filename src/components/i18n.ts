@@ -29,13 +29,41 @@ i18n
     resources: {
       en: {
         translation: {
+          moreInfo: {
+            about: {
+              title: "About this project",
+              body: "This project is not affiliated with any public transport company or any software development company.",
+            },
+            extraction: {
+              title: "Data extraction",
+              body: "All data is extracted from Metro de Madrid, EMT Madrid, Renfe, and CRTM.",
+            },
+            problems: {
+              title: "Problems",
+              button: "Report",
+            },
+            sourceCode: {
+              title: "Source Code",
+              button: "View source code",
+            },
+            icons: {
+              title: "Icons",
+              notification: "Notification with the remaining time every minute",
+              map: "View stop on the map",
+              accessibility: "Accessible stop",
+              location: "Bus location on the map",
+              incident: "Stop affected by an incident",
+              favorites: "Add to favorites",
+              delete: "Remove from favorites",
+            },
+          },
           settings: {
             name: "Settings",
             language: "Language",
-            theme: "Light theme",
-            timesDisplay: "Time in minutes",
+            theme: "Light Theme",
+            timesDisplay: "Times in minutes",
             updateData: "Update data",
-            moreInfo: "More info",
+            moreInfo: "More information",
           },
           times: {
             affected: "Affected",
@@ -48,6 +76,34 @@ i18n
       },
       es: {
         translation: {
+          moreInfo: {
+            about: {
+              title: "Sobre este proyecto",
+              body: "Este proyecto no esta afiliado a ninguna empresa de transporte publico, ni a ninguna empresa de desarrollo de software.",
+            },
+            extraction: {
+              title: "Extraccion de datos",
+              body: "Todos los datos se extraen de Metro de Madrid, EMT Madrid, Renfe y CRTM.",
+            },
+            problems: {
+              title: "Problemas",
+              button: "Reportar",
+            },
+            sourceCode: {
+              title: "Codigo Fuente",
+              button: "Ver codigo fuente",
+            },
+            icons: {
+              title: "Iconos",
+              notification: "Notificacion con el tiempo restante cada minuto",
+              map: "Ver parada en el mapa",
+              accessibility: "Parada accesible",
+              location: "Ubicacion del autobus en el mapa",
+              incident: "Parada afectada por incidencia",
+              favorites: "Añadir a favoritos",
+              delete: "Borrar de favoritos",
+            },
+          },
           settings: {
             name: "Ajustes",
             language: "Idioma",
