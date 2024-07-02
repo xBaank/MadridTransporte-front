@@ -9,6 +9,7 @@ import AllSubscriptions from "./StopsSubscriptions";
 import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
 import {db} from "./api/Db";
 import {useLiveQuery} from "dexie-react-hooks";
+import {useTranslation} from "react-i18next";
 
 export default function BusStopSearch({
   title,
@@ -17,6 +18,7 @@ export default function BusStopSearch({
   title: string;
   codMode: number | null;
 }) {
+  const {t} = useTranslation();
   const [query, setQuery] = useState<string>("");
   const {code} = useParams();
   const stop = useLiveQuery(async () => {
@@ -50,8 +52,8 @@ export default function BusStopSearch({
             fullWidth
             value={query}
             id="StopCode"
-            label="Codigo o nombre de la parada"
-            placeholder="Por ejemplo: Atocha"
+            label={t("stops.search.label")}
+            placeholder={t("stops.search.placeholder")}
             onChange={search}
             key={code}
             InputProps={{

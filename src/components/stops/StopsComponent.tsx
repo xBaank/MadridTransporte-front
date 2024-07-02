@@ -15,6 +15,7 @@ import {useEffect, useState} from "react";
 import Line from "../Line";
 import {FixedSizeList, ListChildComponentProps} from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
+import {useTranslation} from "react-i18next";
 
 export default function FilteredStopsComponent({
   query,
@@ -25,6 +26,7 @@ export default function FilteredStopsComponent({
   codMode: number | null;
   code?: string;
 }) {
+  const {t} = useTranslation();
   const [stops, setStops] = useState<(StopLink & {type: string})[]>();
   const [lines, setLines] = useState<(LineType & {type: string})[]>();
   const [loading, setLoading] = useState<boolean>(false);
@@ -120,14 +122,14 @@ export default function FilteredStopsComponent({
         <>
           <div className="flex justify-between gap-1">
             <Button component={Link} fullWidth to="/maps" variant="contained">
-              Planos
+              {t("stops.buttons.staticMap")}
             </Button>
             <Button
               component={Link}
               fullWidth
               to="/stops/map"
               variant="contained">
-              Mapa
+              {t("stops.buttons.map")}
             </Button>
           </div>
           <div className="flex justify-center mt-2">
@@ -138,7 +140,7 @@ export default function FilteredStopsComponent({
               className="w-full"
               variant="contained">
               <NearMeIcon />
-              Parada mas cercana
+              {t("stops.buttons.nearest")}
             </Button>
           </div>
         </>

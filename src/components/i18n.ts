@@ -65,12 +65,61 @@ i18n
             updateData: "Update data",
             moreInfo: "More information",
           },
+          map: {
+            check: "Check stop",
+          },
+          stops: {
+            search: {
+              label: "Code, stop name, or line",
+              placeholder: "For example: Atocha",
+            },
+            buttons: {
+              staticMap: "Plans",
+              map: "Map",
+              nearest: "Nearest stop",
+            },
+          },
+          lines: {
+            rute: "Rute",
+            to: "To",
+            see: "See in map",
+            errors: {
+              notFound: "The specified line was not found",
+              lines: "Error getting the location",
+            },
+          },
+          other: {
+            errors: {
+              allStops: "Error getting the stops",
+              allLines: "Error getting the lines",
+              alerts: "Error getting the alerts",
+            },
+          },
+          subscriptions: {
+            errors: {
+              subscription: "Error getting the subscriptions",
+              unsubscription: "Error unsubscribing",
+              limit: "You cannot subscribe to more stops",
+            },
+          },
           times: {
             affected: "Affected",
             accessibility: "Accessible",
             zone: "Zone",
             alerts: "Alerts",
             platform: "Platform",
+            plannedAlert:
+              "These times are planned and may not match the actual arrival time.",
+            seePlanned: "See planned times",
+            seeLive: "See live times",
+            noTimes: "No waiting times",
+            noPlannedTimes: "No planned times",
+            errors: {
+              notFound: "The stop does not exist",
+              times: "Error getting the times",
+              loading: "Error loading the stop",
+              down: "Cannot retrieve the times",
+            },
           },
         },
       },
@@ -112,12 +161,61 @@ i18n
             updateData: "Actualizar datos",
             moreInfo: "Mas informacion",
           },
+          map: {
+            check: "Consultar parada",
+          },
+          stops: {
+            search: {
+              label: "Codigo, nombre de la parada o linea",
+              placeholder: "Por ejemplo: Atocha",
+            },
+            buttons: {
+              staticMap: "Planos",
+              map: "Mapa",
+              nearest: "Parada mas cercana",
+            },
+          },
+          lines: {
+            rute: "Ruta",
+            to: "Hacia",
+            see: "Ver en el mapa",
+            errors: {
+              notFound: "No se ha encontrado la linea especificada",
+              lines: "Error al obtener la localizacion",
+            },
+          },
+          other: {
+            errors: {
+              allStops: "Error al obtener las paradas",
+              allLines: "Error al obtener las lineas",
+              alerts: "Error al obtener las alertas",
+            },
+          },
+          subscriptions: {
+            errors: {
+              subscription: "Error al obtener las suscripciones",
+              unsubscription: "Error al desuscribirse",
+              limit: "No puede suscribirse a más paradas",
+            },
+          },
           times: {
             affected: "Afectada",
             accessibility: "Accesible",
             zone: "Zona",
             alerts: "Avisos",
             platform: "Anden",
+            plannedAlert:
+              "Estos tiempos son planificados y pueden no corresponder con la hora de llegada real.",
+            seePlanned: "Ver tiempos planificados",
+            seeLive: "Ver tiempos en directo",
+            noTimes: "No hay tiempos de espera",
+            noPlannedTimes: "No hay tiempos planeados",
+            errors: {
+              notFound: "La parada no existe",
+              times: "Error al obtener los tiempos",
+              loading: "Error al cargar la parada",
+              down: "No se pueden recuperar los tiempos",
+            },
           },
         },
       },
