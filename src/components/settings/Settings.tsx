@@ -17,7 +17,6 @@ import {ColorModeContext} from "../../contexts/colorModeContext";
 import {DataLoadContext} from "../../contexts/dataLoadContext";
 import {db} from "../stops/api/Db";
 import {useTranslation} from "react-i18next";
-import {saveLanguage} from "../i18n";
 
 export default function Settings() {
   const theme = useTheme();
@@ -105,7 +104,7 @@ export default function Settings() {
             id="demo-simple-select"
             value={i18n.language}
             label="Language"
-            onChange={i => saveLanguage(i.target.value)}>
+            onChange={i => i18n.changeLanguage(i.target.value)}>
             <MenuItem value={"es"}>Español</MenuItem>
             <MenuItem value={"en"}>English</MenuItem>
           </Select>

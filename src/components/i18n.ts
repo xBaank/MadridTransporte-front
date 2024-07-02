@@ -3,18 +3,6 @@ import {initReactI18next} from "react-i18next";
 
 import LanguageDetector from "i18next-browser-languagedetector";
 
-export const savedLanguage = () => {
-  let lan = localStorage.getItem("language");
-  if (lan === null) lan = saveLanguage("es");
-  return lan;
-};
-
-export const saveLanguage = (lan: string) => {
-  localStorage.setItem("language", lan);
-  i18n.changeLanguage(lan);
-  return lan;
-};
-
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
@@ -22,7 +10,6 @@ i18n
     fallbackLng: "es",
     debug: true,
     supportedLngs: ["en", "es"],
-    lng: savedLanguage(),
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
     },
@@ -70,7 +57,7 @@ i18n
           },
           stops: {
             search: {
-              label: "Code, stop name, or line",
+              label: "Code, stop name or line",
               placeholder: "For example: Atocha",
             },
             buttons: {
