@@ -44,6 +44,18 @@ i18n
               delete: "Remove from favorites",
             },
           },
+          favorites: {
+            title: "Favorite Stops",
+            delete: "Delete _name_ from favorites",
+            delete2: "Delete from favorites",
+            cancel: "Cancel",
+            confirm: "Confirm",
+            save: {
+              title: "Add to favorites",
+              subtitle: "Enter a name to save it.",
+              label: "Name",
+            },
+          },
           settings: {
             name: "Settings",
             language: "Language",
@@ -83,6 +95,7 @@ i18n
             },
           },
           subscriptions: {
+            title: "Subscriptions",
             errors: {
               subscription: "Error getting the subscriptions",
               unsubscription: "Error unsubscribing",
@@ -140,6 +153,18 @@ i18n
               delete: "Borrar de favoritos",
             },
           },
+          favorites: {
+            title: "Paradas Favoritas",
+            delete: "Borrar _name_ de favoritos",
+            delete2: "Borrar de favoritos",
+            cancel: "Cancelar",
+            confirm: "Confirmar",
+            save: {
+              title: "Añadir a favoritos",
+              subtitle: "Pon un nombre para guardarlo.",
+              label: "Nombre",
+            },
+          },
           settings: {
             name: "Ajustes",
             language: "Idioma",
@@ -179,6 +204,7 @@ i18n
             },
           },
           subscriptions: {
+            title: "Suscripciones",
             errors: {
               subscription: "Error al obtener las suscripciones",
               unsubscription: "Error al desuscribirse",
