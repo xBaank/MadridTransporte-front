@@ -111,7 +111,7 @@ export default function FilteredStopsComponent({
     if (stops?.length === 0 && lines?.length === 0) {
       return (
         <div className="text-center">
-          No hay paradas o lineas con nombre o codigo{" "}
+          {t("stops.search.notFound")}
           <span className="font-bold">{query}</span>
         </div>
       );
@@ -156,13 +156,13 @@ export default function FilteredStopsComponent({
         <div className="my-auto font-bold space-x-1">
           <Chip
             color="primary"
-            label={`Paradas`}
+            label={t("stops.search.stops")}
             onClick={() => setShowStops(!showStops)}
             variant={showStops ? "filled" : "outlined"}
           />
           <Chip
             color="primary"
-            label={`Lineas`}
+            label={t("stops.search.lines")}
             onClick={() => setShowLines(!showLines)}
             variant={showLines ? "filled" : "outlined"}
           />

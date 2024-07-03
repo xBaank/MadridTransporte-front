@@ -15,7 +15,7 @@ export default function BusStopSearch({
   title,
   codMode,
 }: {
-  title: string;
+  title?: string;
   codMode: number | null;
 }) {
   const {t} = useTranslation();
@@ -38,7 +38,9 @@ export default function BusStopSearch({
       <div className="grid grid-cols-1 p-5 max-w-md mx-auto justify-center">
         {code !== undefined && stop !== undefined ? (
           <div className="flex mb-3 border-b-2">
-            <div className="my-auto font-bold text-lg">Origen: </div>
+            <div className="my-auto font-bold text-lg">
+              {t("stops.search.trains.origin")}
+            </div>
             <List>
               <StopComponent stop={mapStopToStopLink(stop, code)} />
             </List>

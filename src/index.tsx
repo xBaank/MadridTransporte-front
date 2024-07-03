@@ -146,9 +146,7 @@ export const router = createBrowserRouter([
     element: (
       <DefaultElement
         key={uniqueId()}
-        element={
-          <BusStopSearch title={"Parada destino"} codMode={trainCodMode} />
-        }
+        element={<BusStopSearch codMode={trainCodMode} />}
       />
     ),
   },

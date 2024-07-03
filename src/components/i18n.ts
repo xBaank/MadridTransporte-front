@@ -69,8 +69,15 @@ i18n
           },
           stops: {
             search: {
+              title: "Search Stops",
               label: "Code, stop name or line",
               placeholder: "For example: Atocha",
+              stops: "Stops",
+              lines: "Lines",
+              notFound: "There are no stops or lines with code or name ",
+              trains: {
+                origin: "Origin: ",
+              },
             },
             buttons: {
               staticMap: "Plans",
@@ -178,8 +185,15 @@ i18n
           },
           stops: {
             search: {
+              title: "Buscar Paradas",
               label: "Codigo, nombre de la parada o linea",
               placeholder: "Por ejemplo: Atocha",
+              stops: "Paradas",
+              lines: "Lineas",
+              notFound: "No hay paradas o lineas con nombre o codigo ",
+              trains: {
+                origin: "Origen: ",
+              },
             },
             buttons: {
               staticMap: "Planos",
