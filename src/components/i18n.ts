@@ -29,6 +29,10 @@ i18n
               title: "Problems",
               button: "Report",
             },
+            download: {
+              title: "Android App",
+              button: "Download APK",
+            },
             sourceCode: {
               title: "Source Code",
               button: "View source code",
@@ -155,6 +159,10 @@ i18n
             extraction: {
               title: "Extraccion de datos",
               body: "Todos los datos se extraen de Metro de Madrid, EMT Madrid, Renfe y CRTM.",
+            },
+            download: {
+              title: "Aplicacion Android",
+              button: "Descargar APK",
             },
             problems: {
               title: "Problemas",

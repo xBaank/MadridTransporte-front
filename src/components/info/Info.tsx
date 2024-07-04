@@ -53,6 +53,21 @@ export default function Info() {
         </div>
         <br />
         <div className="font-bold text-xl mb-2">
+          - {t("moreInfo.download.title")}
+        </div>
+        <div className="w-full flex justify-center mt-2">
+          <Button
+            variant="outlined"
+            component={Link}
+            className=" w-full"
+            to={
+              "https://github.com/xBaank/MadridTransporte-front/releases/latest"
+            }>
+            {t("moreInfo.download.button")}
+          </Button>
+        </div>
+        <br />
+        <div className="font-bold text-xl mb-2">
           - {t("moreInfo.icons.title")}
         </div>
         <ul className="mt-3">

@@ -36,6 +36,8 @@ import {DataLoadContext, MigrationContext} from "./contexts/dataLoadContext";
 import {LineInfo} from "./components/stops/lines/LineInfo";
 import {LineRouteMap} from "./components/stops/lines/LineRouteMap";
 import "./components/i18n";
+import i18n from "./components/i18n";
+import {useTranslation} from "react-i18next";
 
 const updateSW = registerSW({
   onNeedRefresh() {
@@ -124,14 +126,15 @@ export default function App() {
   );
 }
 
+const BusStopSearchTranslated = () => {
+  const {t} = useTranslation();
+  return <BusStopSearch title={t("stops.search.title")} codMode={null} />;
+};
+
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <DefaultElement
-        element={<BusStopSearch title={"Buscar parada"} codMode={null} />}
-      />
-    ),
+    element: <DefaultElement element={<BusStopSearchTranslated />} />,
   },
   {
     path: "/stops/nearest",
