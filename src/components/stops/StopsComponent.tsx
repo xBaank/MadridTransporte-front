@@ -117,7 +117,7 @@ export default function FilteredStopsComponent({
       );
     }
 
-    if (stops === undefined && lines === undefined) {
+    if (stops === undefined && lines === undefined && codMode === null) {
       return (
         <>
           <div className="flex justify-between gap-1">
@@ -148,7 +148,7 @@ export default function FilteredStopsComponent({
     }
 
     const stopsToShow = showStops ? stops ?? [] : [];
-    const linesToShow = showLines ? lines ?? [] : [];
+    const linesToShow = showLines && codMode == null ? lines ?? [] : [];
     const allData = [...stopsToShow, ...linesToShow];
 
     return (

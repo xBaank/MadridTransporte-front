@@ -83,8 +83,12 @@ export default function BusStopSearch({
         </div>
         <FilteredStopsComponent query={query} codMode={codMode} code={code} />
         <div className={query.trim() !== "" ? "hidden" : ""}>
-          {codMode !== null ? null : <StopsFavorites />}
-          <AllSubscriptions />
+          {codMode !== null ? null : (
+            <>
+              <StopsFavorites />
+              <AllSubscriptions />
+            </>
+          )}
         </div>
       </div>
     </div>

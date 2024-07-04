@@ -6,6 +6,7 @@ import MyLocationIcon from "@mui/icons-material/MyLocation";
 import {type RefObject} from "react";
 import {type LatLngExpression, type Map} from "leaflet";
 import "leaflet/dist/leaflet.css";
+import {useTranslation} from "react-i18next";
 
 export default function ThemedMap({
   children,
@@ -22,6 +23,7 @@ export default function ThemedMap({
   onLocateClick: () => void;
   whenReady?: () => void;
 }) {
+  const {i18n} = useTranslation();
   const theme = useTheme();
 
   return (
@@ -41,8 +43,8 @@ export default function ThemedMap({
         <LocationMarker />
         <TileLayer
           className={theme.palette.mode === "dark" ? "map-tiles" : ""}
-          attribution='<a href="https://www.google.es/maps">Google Maps</a>'
-          url="https://{s}.google.com/vt/lyrs=m&hl=es&src=app&x={x}&y={y}&z={z}&s=Ga&apistyle=s.t%3A2|s.e%3Al|p.v%3Aoff,s.t%3A4|s.e%3Al|p.v%3Aoff"
+          attribution='<a href="https://www.google.com/maps">Google Maps</a>'
+          url={`https://{s}.google.com/vt/lyrs=m&hl=${i18n.language}&src=app&x={x}&y={y}&z={z}&s=Ga&apistyle=s.t%3A2|s.e%3Al|p.v%3Aoff,s.t%3A4|s.e%3Al|p.v%3Aoff`}
           subdomains={["mt0", "mt1", "mt2", "mt3"]}
         />
         {children}

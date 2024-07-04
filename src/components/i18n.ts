@@ -80,7 +80,7 @@ i18n
               },
             },
             buttons: {
-              staticMap: "Plans",
+              staticMap: "Network maps",
               map: "Map",
               nearest: "Nearest stop",
             },
@@ -99,6 +99,8 @@ i18n
               allStops: "Error getting the stops",
               allLines: "Error getting the lines",
               alerts: "Error getting the alerts",
+              alertsNotTranslated:
+                "The CRTM doesn't provide a translation for alerts, sorry for the inconvenience.",
             },
           },
           subscriptions: {
@@ -121,12 +123,25 @@ i18n
             seeLive: "See live times",
             noTimes: "No waiting times",
             noPlannedTimes: "No planned times",
+            trainsPlanned: {
+              line: "Line",
+              arrive: "Arrival Time",
+              departure: "Departure Time",
+              transfer: "Transfer at",
+              show: "Show all",
+            },
             errors: {
               notFound: "The stop does not exist",
               times: "Error getting the times",
               loading: "Error loading the stop",
               down: "Cannot retrieve the times",
             },
+          },
+          navbar: {
+            search: "Search",
+            map: "Map",
+            settings: "Settings",
+            travelPass: "Travel pass",
           },
         },
       },
@@ -237,12 +252,24 @@ i18n
             seeLive: "Ver tiempos en directo",
             noTimes: "No hay tiempos de espera",
             noPlannedTimes: "No hay tiempos planeados",
+            trainsPlanned: {
+              line: "Linea",
+              arrive: "Hora de llegada",
+              departure: "Hora de salida",
+              transfer: "Transbordo en",
+              show: "Mostrar todos",
+            },
             errors: {
               notFound: "La parada no existe",
               times: "Error al obtener los tiempos",
               loading: "Error al cargar la parada",
               down: "No se pueden recuperar los tiempos",
             },
+          },
+          navbar: {
+            search: "Buscar",
+            map: "Mapa",
+            settings: "Ajustes",
           },
         },
       },
