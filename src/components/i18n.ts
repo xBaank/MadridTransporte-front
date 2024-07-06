@@ -16,6 +16,25 @@ i18n
     resources: {
       en: {
         translation: {
+          abono: {
+            title: "Transport Card",
+            subtitle: "Pass",
+            zone: "Zone",
+            recharge: "Recharge Date",
+            expire: "Expiration Date",
+            left: "Remaining Trips",
+            firstUseLimit: "First Use Limit Date",
+            number: "Card Number",
+            activation: "Activation",
+            finish: "Expiration",
+            locked: "This card is locked",
+            unlocked: "This card is not locked",
+            hint: "Place your transport card near the phone to check the data",
+            errors: {
+              read: "There was an error reading the card",
+              unsupported: "This card is not supported",
+            },
+          },
           moreInfo: {
             about: {
               title: "About this project",
@@ -157,6 +176,25 @@ i18n
       },
       es: {
         translation: {
+          abono: {
+            title: "Tarjeta Transporte",
+            subtitle: "Abono",
+            zone: "Zona",
+            recharge: "Fecha recarga",
+            expire: "Fecha expiración",
+            left: "Viajes restantes",
+            firstUseLimit: "Fecha limite primer uso",
+            number: "Numero tarjeta",
+            activation: "Alta",
+            finish: "Vencimiento",
+            locked: "Esta tarjeta esta bloqueada",
+            unlocked: "Esta tarjeta no esta bloqueada",
+            hint: "Acerca tu tarjeta transporte al telefono para consultar los datos",
+            errors: {
+              read: "Ha habido un error al leer la tarjeta",
+              unsuppported: "Esta tarjeta no es soportada",
+            },
+          },
           moreInfo: {
             about: {
               title: "Sobre este proyecto",
