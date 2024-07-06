@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.14.0
+
+- Added English translation
+- Updated dependencies
+
 ## 1.13.0
 
 - Added lines info.
