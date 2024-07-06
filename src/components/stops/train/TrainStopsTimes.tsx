@@ -15,8 +15,10 @@ import ErrorMessage from "../../Error";
 import StaledMessage from "../../Staled";
 import {db} from "../api/Db";
 import {useLiveQuery} from "dexie-react-hooks";
+import {useTranslation} from "react-i18next";
 
 export default function TrainStopTimesComponent() {
+  const {t} = useTranslation();
   const [searchParams] = useSearchParams();
   const origin = searchParams.get("origin");
   const destination = searchParams.get("destination");
@@ -47,7 +49,7 @@ export default function TrainStopTimesComponent() {
   if (error !== undefined) return <ErrorMessage message={error} />;
   if (times === undefined) return <LoadingSpinner />;
   if (times === null)
-    return <div className="text-center">No hay tiempos para esta ruta</div>;
+    return <div className="text-center">{t("times.noTimes")}</div>;
   return (
     <>
       <div
@@ -91,9 +93,9 @@ export default function TrainStopTimesComponent() {
         )}
         <ul>
           <li className="flex justify-between font-bold">
-            <div className="w-[33%]">Linea</div>
-            <div className="w-[33%]">Hora salida</div>
-            <div className="w-[33%]">Hora llegada</div>
+            <div className="w-[33%]">{t("times.trainsPlanned.line")}</div>
+            <div className="w-[33%]">{t("times.trainsPlanned.departure")}</div>
+            <div className="w-[33%]">{t("times.trainsPlanned.arrive")}</div>
           </li>
           {times?.horario?.map((time, index) =>
             !showAll && index >= 5 ? null : (
@@ -129,7 +131,7 @@ export default function TrainStopTimesComponent() {
                             <CompareArrowsIcon />
                           </div>
                           <pre className="text-center w-full text-sm">
-                            Transbordo en {tran.descEstacion}
+                            {`${t("times.trainsPlanned.transfer")} ${tran.descEstacion}`}
                           </pre>
                         </li>
                         <li className="flex justify-between pt-1">
@@ -164,7 +166,7 @@ export default function TrainStopTimesComponent() {
           <button
             onClick={() => setShowAll(true)}
             className={` m-auto bg-transparent w-44 border-2 border-gray-500 hover:bg-gray-500 font-bold py-2 px-4 rounded mt-5`}>
-            Mostrar todos
+            {t("times.trainsPlanned.show")}
           </button>
         ) : (
           <></>

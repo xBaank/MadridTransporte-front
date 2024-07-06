@@ -29,7 +29,6 @@ import StopTimesSubscribe from "./StopTimesSubscribe";
 import {getSubscription} from "./api/Subscriptions";
 import ErrorMessage from "../Error";
 import Line from "../Line";
-import StaledMessage from "../Staled";
 import LinesLocationsButton from "./lines/LinesLocationsButton";
 import TrainTimesDestIcon from "./train/TrainTimesDestinationIcon";
 import {TokenContext} from "../../notifications";
@@ -41,6 +40,7 @@ import MapIcon from "@mui/icons-material/Map";
 import {db} from "./api/Db";
 import {useLiveQuery} from "dexie-react-hooks";
 import {FavoriteSave} from "../favorites/FavoriteSave";
+import {useTranslation} from "react-i18next";
 
 export default function BusStopsTimes() {
   const {type, code} = useParams<{type: TransportType; code: string}>();
@@ -56,6 +56,7 @@ export default function BusStopsTimes() {
     useLiveQuery(
       async () => (await db.favorites.where({type, code}).first()) != null,
     ) ?? false;
+  const {t, i18n} = useTranslation();
 
   const stop = useLiveQuery(async () => {
     if (type === undefined) return null;
@@ -64,7 +65,7 @@ export default function BusStopsTimes() {
         .where({codMode: getCodModeByType(type), stopCode: code})
         .first()
         .catch(() => {
-          setError("Error al cargar la parada");
+          setError(t("times.errors.loading"));
           return null;
         })) ?? null
     );
@@ -72,27 +73,23 @@ export default function BusStopsTimes() {
 
   const getTimesAsync = async () => {
     if (type === undefined || code === undefined) return;
-    await getStopsTimes(type, code)
-      .then(stops =>
-        fold(
-          (error: string) => setError(error),
-          (stops: StopTimes) => setStopTimes(stops),
-        )(stops),
-      )
-      .catch(() => setError("Error al obtener los tiempos"));
+    await getStopsTimes(type, code).then(stops =>
+      fold(
+        (error: string) => setError(error),
+        (stops: StopTimes) => setStopTimes(stops),
+      )(stops),
+    );
   };
 
   const getTimesPlannedAsync = async () => {
     if (type === undefined || code === undefined) return;
     if (type !== "bus") return;
-    await getStopsTimesPlanned(type, code)
-      .then(stops =>
-        fold(
-          (_error: string) => setStopTimesPlanned(undefined),
-          (stops: StopTimePlanned[]) => setStopTimesPlanned(stops),
-        )(stops),
-      )
-      .catch(() => setError("Error al obtener los tiempos"));
+    await getStopsTimesPlanned(type, code).then(stops =>
+      fold(
+        (_error: string) => setStopTimesPlanned(undefined),
+        (stops: StopTimePlanned[]) => setStopTimesPlanned(stops),
+      )(stops),
+    );
   };
 
   const getSubscriptionsAsync = async () => {
@@ -131,7 +128,8 @@ export default function BusStopsTimes() {
     getSubscriptionsAsync();
   }, [type, code, token]);
 
-  if (stop === null) return <ErrorMessage message="La parada no existe" />;
+  if (stop === null)
+    return <ErrorMessage message={t("times.errors.notFound")} />;
   if (stop === undefined) return <LoadingSpinner />;
 
   return (
@@ -157,7 +155,11 @@ export default function BusStopsTimes() {
     if (value === 1 || value === 2) {
       return (
         <div className="my-auto font-bold">
-          <Chip color="primary" icon={<AccessibleIcon />} label="Accesible" />
+          <Chip
+            color="primary"
+            icon={<AccessibleIcon />}
+            label={t("times.accessibility")}
+          />
         </div>
       );
     }
@@ -181,7 +183,11 @@ export default function BusStopsTimes() {
     if (isAffected)
       return (
         <div className="my-auto font-bold">
-          <Chip color="error" icon={<ErrorIcon />} label="Afectada" />
+          <Chip
+            color="error"
+            icon={<ErrorIcon />}
+            label={t("times.affected")}
+          />
         </div>
       );
 
@@ -193,7 +199,7 @@ export default function BusStopsTimes() {
     if (upperValue.trim().length === 0) return null;
     return (
       <div className="my-auto font-bold">
-        <Chip color="primary" label={`Zona ${upperValue}`} />
+        <Chip color="primary" label={`${t("times.zone")} ${upperValue}`} />
       </div>
     );
   }
@@ -259,8 +265,7 @@ export default function BusStopsTimes() {
             <>
               <ul className="rounded w-full border-b mb-1">
                 <AlertMui severity="warning">
-                  Estos tiempos son planificados y pueden no corresponder con la
-                  hora de llegada real.
+                  {t("times.plannedAlert")}
                 </AlertMui>
                 <RenderTimesPlannedOrEmpty times={stopTimesPlanned} />
               </ul>
@@ -273,9 +278,7 @@ export default function BusStopsTimes() {
                 variant="contained"
                 color="info"
                 onClick={() => setShowLive(!showLive)}>
-                {showLive
-                  ? "Ver tiempos planificados"
-                  : "Ver tiempos en directo"}
+                {showLive ? t("times.seePlanned") : t("times.seeLive")}
               </Button>
             </div>
           ) : null}
@@ -297,14 +300,11 @@ export default function BusStopsTimes() {
         </div>
       );
     if (times.arrives === null)
-      return <ErrorMessage message="No se pueden recuperar los tiempos" />;
+      return <ErrorMessage message={t("times.errors.down")} />;
     if (times.arrives.length === 0)
-      return <div className="text-center">No hay tiempos de espera</div>;
+      return <div className="text-center">{t("times.noTimes")}</div>;
     return (
       <>
-        {times?.staled === true ? (
-          <StaledMessage message="Los tiempos de espera podrian estar desactualizados ya que el servidor no responde" />
-        ) : null}
         {times.arrives.map((arrive, index) => (
           <RenderArrive key={index} arrive={arrive} />
         ))}
@@ -321,7 +321,7 @@ export default function BusStopsTimes() {
         </div>
       );
     if (times.length === 0)
-      return <div className="text-center">No hay tiempos planeados</div>;
+      return <div className="text-center">{t("times.noPlannedTimes")}</div>;
     return (
       <>
         {times.map((stopTimePlanned, index) => (
@@ -351,7 +351,9 @@ export default function BusStopsTimes() {
                 {` ${arrive.destination} `}
               </pre>
               {arrive.anden !== null ? (
-                <pre className={` text-gray-500`}> Anden {arrive.anden} </pre>
+                <pre className={` text-gray-500`}>
+                  {` ${t("times.platform")} ${arrive.anden}`}
+                </pre>
               ) : null}
             </div>
           </div>

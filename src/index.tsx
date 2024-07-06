@@ -35,6 +35,9 @@ import LoadData from "./components/settings/LoadData";
 import {DataLoadContext, MigrationContext} from "./contexts/dataLoadContext";
 import {LineInfo} from "./components/stops/lines/LineInfo";
 import {LineRouteMap} from "./components/stops/lines/LineRouteMap";
+import "./components/i18n";
+import i18n from "./components/i18n";
+import {useTranslation} from "react-i18next";
 
 const updateSW = registerSW({
   onNeedRefresh() {
@@ -123,14 +126,20 @@ export default function App() {
   );
 }
 
+const BusStopSearchTranslated = () => {
+  const {t} = useTranslation();
+  return <BusStopSearch title={t("stops.search.title")} codMode={null} />;
+};
+
+const NotFound = () => {
+  const {t} = useTranslation();
+  return <div className="text-center">{t("other.pageNotFound")}</div>;
+};
+
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <DefaultElement
-        element={<BusStopSearch title={"Buscar parada"} codMode={null} />}
-      />
-    ),
+    element: <DefaultElement element={<BusStopSearchTranslated />} />,
   },
   {
     path: "/stops/nearest",
@@ -145,9 +154,7 @@ export const router = createBrowserRouter([
     element: (
       <DefaultElement
         key={uniqueId()}
-        element={
-          <BusStopSearch title={"Parada destino"} codMode={trainCodMode} />
-        }
+        element={<BusStopSearch codMode={trainCodMode} />}
       />
     ),
   },
@@ -193,11 +200,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: (
-      <DefaultElement
-        element={<div className="text-center">Pagina no encontrada</div>}
-      />
-    ),
+    element: <DefaultElement element={<NotFound />} />,
   },
 ]);
 

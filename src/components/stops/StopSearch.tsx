@@ -9,14 +9,16 @@ import AllSubscriptions from "./StopsSubscriptions";
 import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
 import {db} from "./api/Db";
 import {useLiveQuery} from "dexie-react-hooks";
+import {useTranslation} from "react-i18next";
 
 export default function BusStopSearch({
   title,
   codMode,
 }: {
-  title: string;
+  title?: string;
   codMode: number | null;
 }) {
+  const {t} = useTranslation();
   const [query, setQuery] = useState<string>("");
   const {code} = useParams();
   const stop = useLiveQuery(async () => {
@@ -36,7 +38,9 @@ export default function BusStopSearch({
       <div className="grid grid-cols-1 p-5 max-w-md mx-auto justify-center">
         {code !== undefined && stop !== undefined ? (
           <div className="flex mb-3 border-b-2">
-            <div className="my-auto font-bold text-lg">Origen: </div>
+            <div className="my-auto font-bold text-lg">
+              {t("stops.search.trains.origin")}
+            </div>
             <List>
               <StopComponent stop={mapStopToStopLink(stop, code)} />
             </List>
@@ -50,8 +54,8 @@ export default function BusStopSearch({
             fullWidth
             value={query}
             id="StopCode"
-            label="Codigo o nombre de la parada"
-            placeholder="Por ejemplo: Atocha"
+            label={t("stops.search.label")}
+            placeholder={t("stops.search.placeholder")}
             onChange={search}
             key={code}
             InputProps={{
@@ -79,8 +83,12 @@ export default function BusStopSearch({
         </div>
         <FilteredStopsComponent query={query} codMode={codMode} code={code} />
         <div className={query.trim() !== "" ? "hidden" : ""}>
-          {codMode !== null ? null : <StopsFavorites />}
-          <AllSubscriptions />
+          {codMode !== null ? null : (
+            <>
+              <StopsFavorites />
+              <AllSubscriptions />
+            </>
+          )}
         </div>
       </div>
     </div>

@@ -6,11 +6,28 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import {Link, useLocation} from "react-router-dom";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import {Capacitor} from "@capacitor/core";
+import {useTranslation} from "react-i18next";
 
 export default function MobileNavBar() {
+  const getLocation = () => {
+    const path = location.pathname;
+    if (path.startsWith("/stops/map")) {
+      return "Mapa";
+    } else if (path.startsWith("/abono")) {
+      return "Abono";
+    } else if (path.startsWith("/settings")) {
+      return "Ajustes";
+    } else if (path.startsWith("/info")) {
+      return "Ajustes";
+    } else {
+      return "Buscar";
+    }
+  };
+
+  const {t} = useTranslation();
   const location = useLocation();
   const [value, setValue] = useState<"Mapa" | "Abono" | "Ajustes" | "Buscar">(
-    "Buscar",
+    getLocation(),
   );
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -24,20 +41,7 @@ export default function MobileNavBar() {
     setValue(newValue);
   };
 
-  useEffect(() => {
-    const path = location.pathname;
-    if (path.startsWith("/stops/map")) {
-      setValue("Mapa");
-    } else if (path.startsWith("/abono")) {
-      setValue("Abono");
-    } else if (path.startsWith("/settings")) {
-      setValue("Ajustes");
-    } else if (path.startsWith("/info")) {
-      setValue("Ajustes");
-    } else {
-      setValue("Buscar");
-    }
-  }, [location]);
+  useEffect(() => setValue(getLocation()), [location]);
 
   return (
     <Paper sx={{position: "fixed", bottom: 0, left: 0, right: 0}} elevation={3}>
@@ -49,14 +53,14 @@ export default function MobileNavBar() {
         <BottomNavigationAction
           component={Link}
           to={"/"}
-          label="Buscar"
+          label={t("navbar.search")}
           value="Buscar"
           icon={<DirectionsBusIcon />}
         />
         <BottomNavigationAction
           component={Link}
           to={"/stops/map"}
-          label="Mapa"
+          label={t("navbar.map")}
           value="Mapa"
           icon={<MapIcon />}
         />
@@ -64,7 +68,7 @@ export default function MobileNavBar() {
           <BottomNavigationAction
             component={Link}
             to={"/abonoNFC"}
-            label="Abono"
+            label={t("navbar.travelPass")}
             value="Abono"
             icon={<CreditCardIcon />}
           />
@@ -73,7 +77,7 @@ export default function MobileNavBar() {
         <BottomNavigationAction
           component={Link}
           to={"/settings"}
-          label="Ajustes"
+          label={t("navbar.settings")}
           value="Ajustes"
           icon={<SettingsIcon />}
         />

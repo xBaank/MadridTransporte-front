@@ -24,8 +24,10 @@ import {
   ListItem,
   ListItemButton,
 } from "@mui/material";
+import {useTranslation} from "react-i18next";
 
 export default function AllSubscriptions() {
+  const {t} = useTranslation();
   const [subscriptions, setSubscriptions] = useState<Subscriptions[] | null>(
     [],
   );
@@ -71,7 +73,7 @@ export default function AllSubscriptions() {
     return (
       <>
         <div className="p-3 pl-0 justify-start align-baseline font-bold flex">
-          <div>Suscripciones</div>
+          <div>{t("subscriptions.title")}</div>
           <CircleNotificationsIcon className="p-1 text-yellow-500" />
         </div>
         <div>

@@ -10,6 +10,7 @@ import L from "leaflet";
 import {Button, useTheme} from "@mui/material";
 import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
+import {useTranslation} from "react-i18next";
 
 export function StopsMarkers({
   stops,
@@ -22,6 +23,7 @@ export function StopsMarkers({
   selected?: Stop;
   current?: Stop;
 }) {
+  const {t} = useTranslation();
   const theme = useTheme();
   const [popup, setPopup] = useState<L.Popup>();
 
@@ -80,7 +82,7 @@ export function StopsMarkers({
                 stop.codMode,
                 stop.stopCode.toString(),
               )}>
-              <div> Consultar parada </div>
+              <div> {t("map.check")} </div>
             </Button>
           </div>
         </Popup>

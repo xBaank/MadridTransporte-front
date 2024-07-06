@@ -9,6 +9,7 @@ import {useRef, useState} from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import {IconButton} from "@mui/material";
+import {useTranslation} from "react-i18next";
 
 export function FavoriteSave({
   isFavorite,
@@ -21,6 +22,7 @@ export function FavoriteSave({
   deleteF: () => Promise<void>;
   defaultName: string | null;
 }) {
+  const {t} = useTranslation();
   const [open, setOpen] = useState<boolean>(false);
   const name = useRef<TextFieldProps>();
 
@@ -56,22 +58,24 @@ export function FavoriteSave({
 
       {isFavorite ? (
         <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>Borrar de favoritos</DialogTitle>
+          <DialogTitle>{t("favorites.delete2")}</DialogTitle>
           <DialogActions>
-            <Button onClick={handleClose}>Cancelar</Button>
-            <Button onClick={handleDelete}>Confirmar</Button>
+            <Button onClick={handleClose}>{t("favorites.cancel")}</Button>
+            <Button onClick={handleDelete}>{t("favorites.confirm")}</Button>
           </DialogActions>
         </Dialog>
       ) : (
         <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>Añadir a favoritos</DialogTitle>
+          <DialogTitle>{t("favorites.save.title")}</DialogTitle>
           <DialogContent>
-            <DialogContentText>Pon un nombre para guardarlo.</DialogContentText>
+            <DialogContentText>
+              {t("favorites.save.subtitle")}
+            </DialogContentText>
             <TextField
               autoFocus
               margin="dense"
               id="name"
-              label="Nombre"
+              label={t("favorites.save.label")}
               type="text"
               defaultValue={defaultName}
               inputProps={{maxLength: 35}}
@@ -81,8 +85,8 @@ export function FavoriteSave({
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose}>Cancelar</Button>
-            <Button onClick={handleSave}>Guardar</Button>
+            <Button onClick={handleClose}>{t("favorites.cancel")}</Button>
+            <Button onClick={handleSave}>{t("favorites.confirm")}</Button>
           </DialogActions>
         </Dialog>
       )}

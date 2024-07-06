@@ -6,8 +6,10 @@ import {FormControl, InputLabel, Select, MenuItem, Button} from "@mui/material";
 import {getLineUrl, mapStopToStopLink} from "../api/Utils";
 import {StopComponent} from "../StopsComponent";
 import {useLine} from "../../../hooks/hooks";
+import {useTranslation} from "react-i18next";
 
 export function LineInfo() {
+  const {t} = useTranslation();
   const [currentItineraryCode, setCurrentItineraryCode] = useState<string>("");
   const line = useLine();
 
@@ -29,7 +31,7 @@ export function LineInfo() {
       </div>
       <div className="mt-4">
         <FormControl fullWidth>
-          <InputLabel id="itinerary">Ruta</InputLabel>
+          <InputLabel id="itinerary">{t("lines.rute")}</InputLabel>
           <Select
             labelId="itinerary"
             id="itinerary"
@@ -41,7 +43,7 @@ export function LineInfo() {
                 className="text-wrap overflow-auto"
                 key={index}
                 value={itinerary.codItinerary}>
-                {`Hacia ${itinerary.stops.at(-1)?.stopName}`}
+                {`${t("lines.to")} ${itinerary.stops.at(-1)?.stopName}`}
               </MenuItem>
             ))}
           </Select>
@@ -54,7 +56,7 @@ export function LineInfo() {
           fullWidth
           to={`${getLineUrl(line.fullLineCode, line.codMode)}/map?current=${currentItineraryCode}`}
           variant="contained">
-          Ver en el mapa
+          {t("lines.see")}
         </Button>
       </div>
 

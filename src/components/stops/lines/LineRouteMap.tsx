@@ -6,14 +6,14 @@ import {FormControl, InputLabel, Select, MenuItem, Paper} from "@mui/material";
 import LoadingSpinner from "../../LoadingSpinner";
 import {StopsMarkers} from "../StopsMarkers";
 import {useSearchParams} from "react-router-dom";
-import {getShapes} from "../api/Lines";
-import {routeTimeCar, routeToCoordinates, fixRouteShapes} from "../api/Route";
 import {StopWithOrder} from "../api/Types";
-import {getColor, getTransportTypeByCodMode} from "../api/Utils";
+import {getColor} from "../api/Utils";
 import {Polyline} from "react-leaflet";
 import Line from "../../Line";
+import {useTranslation} from "react-i18next";
 
 export function LineRouteMap() {
+  const {t} = useTranslation();
   const [searchParam] = useSearchParams();
   const [currentItineraryCode, setCurrentItineraryCode] = useState<string>(
     searchParam.get("current") ?? "",
@@ -84,7 +84,7 @@ export function LineRouteMap() {
           </div>
           <Paper>
             <FormControl fullWidth>
-              <InputLabel id="itinerary">Ruta</InputLabel>
+              <InputLabel id="itinerary">{t("lines.rute")}</InputLabel>
               <Select
                 labelId="itinerary"
                 id="itinerary"
@@ -96,7 +96,7 @@ export function LineRouteMap() {
                     className="text-wrap overflow-auto"
                     key={index}
                     value={itinerary.codItinerary}>
-                    {`Hacia ${itinerary.stops.at(-1)?.stopName}`}
+                    {`${t("lines.to")} ${itinerary.stops.at(-1)?.stopName}`}
                   </MenuItem>
                 ))}
               </Select>

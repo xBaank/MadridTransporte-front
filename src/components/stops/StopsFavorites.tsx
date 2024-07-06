@@ -22,8 +22,10 @@ import {
 import {Link} from "react-router-dom";
 import {useLiveQuery} from "dexie-react-hooks";
 import {db} from "./api/Db";
+import {useTranslation} from "react-i18next";
 
 export default function StopsFavorites() {
+  const {t} = useTranslation();
   const favorites = useLiveQuery(async () => {
     const [favorites, trainFavorites] = await Promise.all([
       db.favorites.toArray(),
@@ -53,7 +55,7 @@ export default function StopsFavorites() {
     return (
       <>
         <div className="p-3 pl-0 justify-start align-baseline font-bold flex">
-          <div>Paradas Favoritas</div>
+          <div>{t("favorites.title")}</div>
           <GradeIcon className="p-1 text-yellow-500" />
         </div>
         <List className="max-w-md">
@@ -112,14 +114,16 @@ export default function StopsFavorites() {
           </ListItemButton>
         </ListItem>
         <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>Borrar {stop.name} de favoritos</DialogTitle>
+          <DialogTitle>
+            {t("favorites.delete").replace("_name_", stop.name)}
+          </DialogTitle>
           <DialogActions>
-            <Button onClick={handleClose}>Cancelar</Button>
+            <Button onClick={handleClose}>{t("favorites.cancel")}</Button>
             <Button
               onClick={() => {
                 handleDeleteFavorite(stop);
               }}>
-              Confirmar
+              {t("favorites.confirm")}
             </Button>
           </DialogActions>
         </Dialog>
@@ -172,14 +176,16 @@ export default function StopsFavorites() {
           </ListItemButton>
         </ListItem>
         <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>Borrar {stop.name} de favoritos</DialogTitle>
+          <DialogTitle>
+            {t("favorites.delete").replace("_name_", stop.name)}
+          </DialogTitle>
           <DialogActions>
-            <Button onClick={handleClose}>Cancelar</Button>
+            <Button onClick={handleClose}>{t("favorites.cancel")}</Button>
             <Button
               onClick={() => {
                 handleDeleteFavorite(stop);
               }}>
-              Confirmar
+              {t("favorites.confirm")}
             </Button>
           </DialogActions>
         </Dialog>

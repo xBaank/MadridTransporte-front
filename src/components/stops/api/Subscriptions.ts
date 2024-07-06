@@ -5,35 +5,40 @@ import {
   type TransportType,
 } from "./Types";
 import {apiUrl} from "../../Urls";
-
-const ErrorSubscription = "Error al obtener las suscripciones";
-const ErrorUnsubscription = "Error al desuscribirse";
-const ErrorLimit = "No puede suscribirse a más paradas";
+import i18n from "../../i18n";
 
 export async function getSubscription(
   type: TransportType,
   deviceToken: string,
   stopCode: string,
 ) {
-  const result = await fetch(`${apiUrl}/stops/${type}/times/subscription`, {
-    method: "POST",
-    body: JSON.stringify({deviceToken, stopCode}),
-  });
-  if (result.status === 404) return right(null);
-  if (!result.ok) return left(ErrorSubscription);
-  const data = (await result.json()) as Subscriptions;
-  return right(data);
+  try {
+    const result = await fetch(`${apiUrl}/stops/${type}/times/subscription`, {
+      method: "POST",
+      body: JSON.stringify({deviceToken, stopCode}),
+    });
+    if (result.status === 404) return right(null);
+    if (!result.ok) return left(i18n.t("subscriptions.errors.subscription"));
+    const data = (await result.json()) as Subscriptions;
+    return right(data);
+  } catch {
+    return left(i18n.t("subscriptions.errors.subscription"));
+  }
 }
 
 export async function getAllSubscriptions(deviceToken: string) {
-  const result = await fetch(`${apiUrl}/stops/times/subscriptions`, {
-    method: "POST",
-    body: JSON.stringify({deviceToken}),
-  });
-  if (result.status === 404) return right(null);
-  if (!result.ok) return left(ErrorSubscription);
-  const data = (await result.json()) as Subscriptions[];
-  return right(data);
+  try {
+    const result = await fetch(`${apiUrl}/stops/times/subscriptions`, {
+      method: "POST",
+      body: JSON.stringify({deviceToken}),
+    });
+    if (result.status === 404) return right(null);
+    if (!result.ok) return left(i18n.t("subscriptions.errors.subscription"));
+    const data = (await result.json()) as Subscriptions[];
+    return right(data);
+  } catch {
+    return left(i18n.t("subscriptions.errors.subscription"));
+  }
 }
 
 export async function subscribe(
@@ -41,13 +46,18 @@ export async function subscribe(
   deviceToken: string,
   subscription: Subscription,
 ) {
-  const result = await fetch(`${apiUrl}/stops/${type}/times/subscribe`, {
-    method: "POST",
-    body: JSON.stringify({deviceToken, subscription}),
-  });
-  if (result.status === 403) return left(ErrorLimit);
-  if (!result.ok) return left(ErrorUnsubscription);
-  return right(undefined);
+  try {
+    const result = await fetch(`${apiUrl}/stops/${type}/times/subscribe`, {
+      method: "POST",
+      body: JSON.stringify({deviceToken, subscription}),
+    });
+    if (result.status === 403)
+      return left(i18n.t("subscriptions.errors.limit"));
+    if (!result.ok) return left(i18n.t("subscriptions.errors.unsubscription"));
+    return right(undefined);
+  } catch {
+    return left(i18n.t("subscriptions.errors.unsubscription"));
+  }
 }
 
 export async function unsubscribe(
@@ -55,10 +65,14 @@ export async function unsubscribe(
   deviceToken: string,
   subscription: Subscription,
 ) {
-  const result = await fetch(`${apiUrl}/stops/${type}/times/unsubscribe`, {
-    method: "POST",
-    body: JSON.stringify({deviceToken, subscription}),
-  });
-  if (!result.ok) return left(ErrorUnsubscription);
-  return right(undefined);
+  try {
+    const result = await fetch(`${apiUrl}/stops/${type}/times/unsubscribe`, {
+      method: "POST",
+      body: JSON.stringify({deviceToken, subscription}),
+    });
+    if (!result.ok) return left(i18n.t("subscriptions.errors.unsubscription"));
+    return right(undefined);
+  } catch {
+    return left(i18n.t("subscriptions.errors.unsubscription"));
+  }
 }

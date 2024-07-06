@@ -9,9 +9,7 @@ import {
 } from "./Types";
 import {apiUrl} from "../../Urls";
 import {db} from "./Db";
-
-const NotFound = "No se ha encontrado la linea especificada";
-const BadRequest = "Error al obtener la localizacion";
+import i18n from "../../i18n";
 
 export async function getLineLocations(
   type: TransportType,
@@ -24,8 +22,8 @@ export async function getLineLocations(
     `${apiUrl}/lines/${type}/${lineCode}/locations/${direction}?stopCode=${stopCode}`,
     {signal},
   );
-  if (response.status === 404) return left(NotFound);
-  if (response.status === 400) return left(BadRequest);
+  if (response.status === 404) return left(i18n.t("lines.errors.notFound"));
+  if (response.status === 400) return left(i18n.t("lines.errors.lines"));
 
   const data = (await response.json()) as LineLocations;
   return right(data);
@@ -40,7 +38,7 @@ export async function getItinerary(
   const response = await fetch(
     `${apiUrl}/lines/${type}/${fullLineCode}/itineraries/${direction}?stopCode=${stopCode}`,
   );
-  if (response.status === 404) return left(NotFound);
+  if (response.status === 404) return left(i18n.t("lines.errors.notFound"));
   const data = (await response.json()) as Itinerary;
 
   const stopsPromise = data.stops
@@ -65,7 +63,7 @@ export async function getItineraryByCode(
   const response = await fetch(
     `${apiUrl}/lines/${type}/itineraries/${itineraryCode}`,
   );
-  if (response.status === 404) return left(NotFound);
+  if (response.status === 404) return left(i18n.t("lines.errors.notFound"));
   const data = (await response.json()) as Itinerary;
 
   const stopsPromise = data.stops.map(async i => {
@@ -90,7 +88,7 @@ export async function getShapes(
   const response = await fetch(
     `${apiUrl}/lines/${type}/shapes/${itineraryCode}`,
   );
-  if (response.status === 404) return left(NotFound);
+  if (response.status === 404) return left(i18n.t("lines.errors.notFound"));
   const data = (await response.json()) as Shape[];
   return right(data.sort((a, b) => a.sequence - b.sequence));
 }

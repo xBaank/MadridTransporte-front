@@ -1,18 +1,21 @@
 import {Modal, Box, Typography, Button} from "@mui/material";
-import {type Alert, type Incident} from "./api/Types";
+import {type Alert as AlertType, type Incident} from "./api/Types";
 import {useState} from "react";
 import {Link} from "react-router-dom";
+import {useTranslation} from "react-i18next";
+import Alert from "@mui/material/Alert";
 
 export default function RenderAlerts({
   alerts,
   incidents,
 }: {
-  alerts: Alert[];
+  alerts: AlertType[];
   incidents: Incident[];
 }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const {t, i18n} = useTranslation();
 
   const style = {
     position: "absolute" as const,
@@ -31,6 +34,8 @@ export default function RenderAlerts({
     p: 4,
   };
 
+  const isSpanish = i18n.language === "es";
+
   if (alerts.length === 0 && incidents.length === 0) return <></>;
 
   return (
@@ -40,7 +45,7 @@ export default function RenderAlerts({
         variant="contained"
         onClick={handleOpen}
         className={`w-full`}>
-        Avisos
+        {t("times.alerts")}
       </Button>
       <Modal
         open={open}
@@ -53,8 +58,13 @@ export default function RenderAlerts({
             variant="h6"
             component="h2"
             className="border-b">
-            Avisos
+            {t("times.alerts")}
           </Typography>
+          {!isSpanish ? (
+            <Alert severity="error" className="mt-2">
+              {t("other.errors.alertsNotTranslated")}
+            </Alert>
+          ) : null}
           <ul className={`list-disc`}>
             {alerts.map(alert => {
               return (

@@ -1,4 +1,13 @@
-import {Button, FormControlLabel, Switch, useTheme} from "@mui/material";
+import {
+  Button,
+  FormControl,
+  FormControlLabel,
+  InputLabel,
+  MenuItem,
+  Select,
+  Switch,
+  useTheme,
+} from "@mui/material";
 import React, {useContext, useState} from "react";
 import {Brightness7} from "@mui/icons-material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -7,9 +16,11 @@ import {Link} from "react-router-dom";
 import {ColorModeContext} from "../../contexts/colorModeContext";
 import {DataLoadContext} from "../../contexts/dataLoadContext";
 import {db} from "../stops/api/Db";
+import {useTranslation} from "react-i18next";
 
 export default function Settings() {
   const theme = useTheme();
+  const {t, i18n} = useTranslation();
   const colorMode = useContext(ColorModeContext);
   const dataLoaded = useContext(DataLoadContext);
   const [minutesToDisplay, setMinutesToDisplay] =
@@ -35,7 +46,7 @@ export default function Settings() {
           }}
           className="w-full"
           variant="contained">
-          Actualizar Datos
+          {t("settings.updateData")}
         </Button>
       </>
     );
@@ -54,7 +65,7 @@ export default function Settings() {
               name="gilad"
             />
           }
-          label="Tiempo en minutos"
+          label={t("settings.timesDisplay")}
         />
       </>
     );
@@ -75,8 +86,29 @@ export default function Settings() {
               name="gilad"
             />
           }
-          label="Modo claro"
+          label={t("settings.theme")}
         />
+      </div>
+    );
+  }
+
+  function SelectLanguage() {
+    return (
+      <div className="flex items-center">
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">
+            {t("settings.language")}
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={i18n.language}
+            label="Language"
+            onChange={i => i18n.changeLanguage(i.target.value)}>
+            <MenuItem value={"es"}>Español</MenuItem>
+            <MenuItem value={"en"}>English</MenuItem>
+          </Select>
+        </FormControl>
       </div>
     );
   }
@@ -85,7 +117,7 @@ export default function Settings() {
     <>
       <div
         className={`grid grid-cols-1 p-5 max-w-md mx-auto w-full justify-center`}>
-        <div className=" text-2xl font-bold ">Ajustes</div>
+        <div className=" text-2xl font-bold ">{t("settings.name")}</div>
         <div className="flex items-center space-x-4 mt-5">
           <ul className="w-full ">
             <li className="w-full ">
@@ -93,6 +125,9 @@ export default function Settings() {
             </li>
             <li className="w-full">
               <SwitchMinutes />
+            </li>
+            <li className="w-full mt-3">
+              <SelectLanguage />
             </li>
             <li className="w-full mt-3">
               <ReloadStops />
@@ -103,7 +138,7 @@ export default function Settings() {
                 to="/info"
                 className="w-full"
                 variant="contained">
-                Mas Informacion
+                {t("settings.moreInfo")}
               </Button>
             </li>
           </ul>

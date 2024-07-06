@@ -15,6 +15,7 @@ import {useEffect, useState} from "react";
 import Line from "../Line";
 import {FixedSizeList, ListChildComponentProps} from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
+import {useTranslation} from "react-i18next";
 
 export default function FilteredStopsComponent({
   query,
@@ -25,6 +26,7 @@ export default function FilteredStopsComponent({
   codMode: number | null;
   code?: string;
 }) {
+  const {t} = useTranslation();
   const [stops, setStops] = useState<(StopLink & {type: string})[]>();
   const [lines, setLines] = useState<(LineType & {type: string})[]>();
   const [loading, setLoading] = useState<boolean>(false);
@@ -109,25 +111,25 @@ export default function FilteredStopsComponent({
     if (stops?.length === 0 && lines?.length === 0) {
       return (
         <div className="text-center">
-          No hay paradas o lineas con nombre o codigo{" "}
+          {t("stops.search.notFound")}
           <span className="font-bold">{query}</span>
         </div>
       );
     }
 
-    if (stops === undefined && lines === undefined) {
+    if (stops === undefined && lines === undefined && codMode === null) {
       return (
         <>
           <div className="flex justify-between gap-1">
             <Button component={Link} fullWidth to="/maps" variant="contained">
-              Planos
+              {t("stops.buttons.staticMap")}
             </Button>
             <Button
               component={Link}
               fullWidth
               to="/stops/map"
               variant="contained">
-              Mapa
+              {t("stops.buttons.map")}
             </Button>
           </div>
           <div className="flex justify-center mt-2">
@@ -138,7 +140,7 @@ export default function FilteredStopsComponent({
               className="w-full"
               variant="contained">
               <NearMeIcon />
-              Parada mas cercana
+              {t("stops.buttons.nearest")}
             </Button>
           </div>
         </>
@@ -146,7 +148,7 @@ export default function FilteredStopsComponent({
     }
 
     const stopsToShow = showStops ? stops ?? [] : [];
-    const linesToShow = showLines ? lines ?? [] : [];
+    const linesToShow = showLines && codMode == null ? lines ?? [] : [];
     const allData = [...stopsToShow, ...linesToShow];
 
     return (
@@ -154,13 +156,13 @@ export default function FilteredStopsComponent({
         <div className="my-auto font-bold space-x-1">
           <Chip
             color="primary"
-            label={`Paradas`}
+            label={t("stops.search.stops")}
             onClick={() => setShowStops(!showStops)}
             variant={showStops ? "filled" : "outlined"}
           />
           <Chip
             color="primary"
-            label={`Lineas`}
+            label={t("stops.search.lines")}
             onClick={() => setShowLines(!showLines)}
             variant={showLines ? "filled" : "outlined"}
           />

@@ -5,11 +5,13 @@ import LoadingSpinner from "../LoadingSpinner";
 import ErrorMessage from "../Error";
 import {type TitTemp, type TitMV, type TtpResponse} from "./api/Types";
 import {Card} from "@mui/material";
+import {useTranslation} from "react-i18next";
 
 export default function AbonoNFC() {
   const [data, setData] = useState<TtpResponse>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>();
+  const {t} = useTranslation();
 
   const options: Intl.DateTimeFormatOptions = {
     year: "numeric",
@@ -26,11 +28,11 @@ export default function AbonoNFC() {
           setError(undefined);
           ttpInfo()
             .then(i => setData(i))
-            .catch(() => setError("Ha habido un error al leer la tarjeta"))
+            .catch(() => setError(t("abono.errors.read")))
             .then(() => setLoading(false));
         },
         (_error: string) => {
-          setError("Esta tarjeta no es soportada");
+          setError(t("abono.errors.unsupported"));
         },
       );
     };
@@ -44,17 +46,15 @@ export default function AbonoNFC() {
     return tit === null ? null : (
       <>
         <div className={`mt-3 pb-2`}>
-          <h2 className=" text-lg font-semibold mb-1">Abono {tit.name}</h2>
+          <h2 className=" text-lg font-semibold mb-1">{`${t("abono.subtitle")} ${tit.name}`}</h2>
           <div className=" text-sm">
-            <div>Zona: {tit.validityZones}</div>
+            <div>{`${t("abono.zone")} ${tit.validityZones}`}</div>
             <div>
-              Fecha recarga:{" "}
-              {new Date(tit.purchaseChargeDate).toLocaleDateString(
-                "es-ES",
-                options,
-              )}
+              {`${t("abono.recharge")}: ${new Date(
+                tit.purchaseChargeDate,
+              ).toLocaleDateString(t("locale"), options)}`}
             </div>
-            <div>Viajes restantes: {tit.trips}</div>
+            <div>{`${t("abono.left")}: ${tit.trips}`}</div>
           </div>
         </div>
       </>
@@ -65,38 +65,30 @@ export default function AbonoNFC() {
     return tit === null ? null : (
       <>
         <div className={` mt-3 pb-2`}>
-          <h2 className=" text-lg font-semibold mb-1">Abono {tit.name}</h2>
+          <h2 className=" text-lg font-semibold mb-1">{`${t("abono.subtitle")} ${tit.name}`}</h2>
           <div className=" text-sm">
-            <div>Zona: {tit.validityZones}</div>
+            <div>{`${t("abono.zone")} ${tit.validityZones}`}</div>
             <div>
-              Fecha recarga:{" "}
-              {new Date(tit.initChargeDate).toLocaleDateString(
-                "es-ES",
-                options,
-              )}
+              {`${t("abono.recharge")}: ${new Date(
+                tit.initChargeDate,
+              ).toLocaleDateString(t("locale"), options)}`}
             </div>
             <div>
-              Fecha expiración:{" "}
-              {new Date(tit.finishChargeDate).toLocaleDateString(
-                "es-ES",
-                options,
-              )}
+              {`${t("abono.expire")}: ${new Date(
+                tit.finishChargeDate,
+              ).toLocaleDateString(t("locale"), options)}`}
             </div>
             {tit.finalDateValCharge !== null ? (
               <div>
-                Fecha limite primer uso:{" "}
-                {new Date(tit.finalDateValCharge).toLocaleDateString(
-                  "es-ES",
-                  options,
-                )}
+                {`${t("abono.expire")}: ${new Date(
+                  tit.finalDateValCharge,
+                ).toLocaleDateString(t("locale"), options)}`}
               </div>
             ) : (
               <div>
-                Fecha primer uso:{" "}
-                {new Date(tit.firstDateValCharge).toLocaleDateString(
-                  "es-ES",
-                  options,
-                )}
+                {`${t("abono.expire")}: ${new Date(
+                  tit.firstDateValCharge,
+                ).toLocaleDateString(t("locale"), options)}`}
               </div>
             )}
           </div>
@@ -112,14 +104,16 @@ export default function AbonoNFC() {
         {data !== undefined ? (
           <>
             <p>
-              Numero tarjeta:{" "}
-              {data.balance.cardNumber ?? data.balance.desfireSerial}
+              {`${t("abono.number")}: ${data.balance.cardNumber ?? data.balance.desfireSerial}`}
             </p>
-            <p>Alta: {data.balance.initAppDate.toString()}</p>
-            <p>Vencimiento: {data.balance.finishAppDate.toString()}</p>
+            <p>{`${t("abono.activation")}: ${data.balance.initAppDate.toString()}`}</p>
             <p>
-              Esta tarjeta{" "}
-              {data.balance.blockedApp ? "esta bloqueada" : "no esta bloqueada"}
+              {`${t("abono.finish")}: ${data.balance.finishAppDate.toString()}`}
+            </p>
+            <p>
+              {data.balance.blockedApp
+                ? t("abono.locked")
+                : t("abono.unlocked")}
             </p>
             <div className={`mt-3`}></div>
             <br></br>
@@ -129,7 +123,7 @@ export default function AbonoNFC() {
             <RenderTitMV tit={data.balance.titMV3} />
           </>
         ) : (
-          "Acerca tu tarjeta transporte al telefono para consultar los datos"
+          t("abono.hint")
         )}
       </p>
     );
@@ -140,7 +134,7 @@ export default function AbonoNFC() {
       className={`max-w-sm w-[90%] px-6 py-4 my-10 mx-auto rounded-lg shadow-lg `}>
       <CreditCard fontSize="large" />
       <h5 className={`mb-2 text-2xl font-semibold tracking-tight`}>
-        Tarjeta Transporte
+        {t("abono.title")}
       </h5>
       <div className={`pt-4`}>
         {loading ? (
