@@ -12,6 +12,7 @@ import {
   getTrainFavorites,
   deleteAllFavoritesFromLocalStorage,
 } from "../stops/api/Utils";
+import {useTranslation} from "react-i18next";
 
 export default function LoadData() {
   const [open, setOpen] = useState(false);
@@ -19,6 +20,7 @@ export default function LoadData() {
   const [error, setError] = useState(false);
   const loadDataContext = useContext(DataLoadContext);
   const migrationContext = useContext(MigrationContext);
+  const {t} = useTranslation();
 
   async function loadStops() {
     const stopsCount = await db.stops.count();
@@ -136,14 +138,14 @@ export default function LoadData() {
     if (success) {
       return (
         <Alert className="mb-2" variant="outlined" severity="success">
-          Los datos han sido actualizadas correctamente.
+          {t("settings.loadData.success")}
         </Alert>
       );
     }
     if (error) {
       return (
         <Alert className="mb-2" variant="outlined" severity="error">
-          Ha habido un error. Reinicia la aplicacion.
+          {t("settings.loadData.error")}
         </Alert>
       );
     }
@@ -163,7 +165,7 @@ export default function LoadData() {
             variant="h6"
             component="h2"
             className="text-center">
-            Actualizando paradas y lineas
+            {t("settings.loadData.updating")}
           </Typography>
           <div className=" mt-4">
             <InfoMessage />

@@ -131,6 +131,11 @@ const BusStopSearchTranslated = () => {
   return <BusStopSearch title={t("stops.search.title")} codMode={null} />;
 };
 
+const NotFound = () => {
+  const {t} = useTranslation();
+  return <div className="text-center">{t("other.pageNotFound")}</div>;
+};
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -195,11 +200,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: (
-      <DefaultElement
-        element={<div className="text-center">Pagina no encontrada</div>}
-      />
-    ),
+    element: <DefaultElement element={<NotFound />} />,
   },
 ]);
 

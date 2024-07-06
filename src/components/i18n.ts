@@ -61,6 +61,11 @@ i18n
             },
           },
           settings: {
+            loadData: {
+              updating: "Updating stops and lines",
+              success: "The data has been successfully updated.",
+              error: "There has been an error. Restart the application.",
+            },
             name: "Settings",
             language: "Language",
             theme: "Light Theme",
@@ -99,6 +104,7 @@ i18n
             },
           },
           other: {
+            pageNotFound: "Page not found",
             errors: {
               allStops: "Error getting the stops",
               allLines: "Error getting the lines",
@@ -196,6 +202,11 @@ i18n
             },
           },
           settings: {
+            loadData: {
+              updating: "Actualizando paradas y lineas",
+              success: "Los datos han sido actualizadas correctamente.",
+              error: "Ha habido un error. Reinicia la aplicacion.",
+            },
             name: "Ajustes",
             language: "Idioma",
             theme: "Modo claro",
@@ -234,6 +245,7 @@ i18n
             },
           },
           other: {
+            pageNotFound: "Pagina no encontrada",
             errors: {
               allStops: "Error al obtener las paradas",
               allLines: "Error al obtener las lineas",
