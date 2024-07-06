@@ -155,8 +155,8 @@ i18n
             noPlannedTimes: "No planned times",
             trainsPlanned: {
               line: "Line",
-              arrive: "Arrival Time",
-              departure: "Departure Time",
+              arrive: "Arrival",
+              departure: "Departure",
               transfer: "Transfer at",
               show: "Show all",
             },
