@@ -52,7 +52,7 @@ export default function AbonoNFC() {
             <div>
               {`${t("abono.recharge")}: ${new Date(
                 tit.purchaseChargeDate,
-              ).toLocaleDateString("es-ES", options)}`}
+              ).toLocaleDateString(t("locale"), options)}`}
             </div>
             <div>{`${t("abono.left")}: ${tit.trips}`}</div>
           </div>
@@ -71,24 +71,24 @@ export default function AbonoNFC() {
             <div>
               {`${t("abono.recharge")}: ${new Date(
                 tit.initChargeDate,
-              ).toLocaleDateString("es-ES", options)}`}
+              ).toLocaleDateString(t("locale"), options)}`}
             </div>
             <div>
               {`${t("abono.expire")}: ${new Date(
                 tit.finishChargeDate,
-              ).toLocaleDateString("es-ES", options)}`}
+              ).toLocaleDateString(t("locale"), options)}`}
             </div>
             {tit.finalDateValCharge !== null ? (
               <div>
                 {`${t("abono.expire")}: ${new Date(
                   tit.finalDateValCharge,
-                ).toLocaleDateString("es-ES", options)}`}
+                ).toLocaleDateString(t("locale"), options)}`}
               </div>
             ) : (
               <div>
                 {`${t("abono.expire")}: ${new Date(
                   tit.firstDateValCharge,
-                ).toLocaleDateString("es-ES", options)}`}
+                ).toLocaleDateString(t("locale"), options)}`}
               </div>
             )}
           </div>

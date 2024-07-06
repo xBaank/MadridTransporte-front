@@ -16,6 +16,7 @@ i18n
     resources: {
       en: {
         translation: {
+          locale: "en-GB",
           abono: {
             title: "Transport Card",
             subtitle: "Pass",
@@ -176,6 +177,7 @@ i18n
       },
       es: {
         translation: {
+          locale: "es-ES",
           abono: {
             title: "Tarjeta Transporte",
             subtitle: "Abono",
