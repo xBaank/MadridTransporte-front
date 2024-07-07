@@ -330,6 +330,7 @@ i18n
             search: "Buscar",
             map: "Mapa",
             settings: "Ajustes",
+            travelPass: "Abono",
           },
         },
       },
