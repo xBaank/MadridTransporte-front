@@ -4,6 +4,7 @@ import {useState} from "react";
 import {Link} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import Alert from "@mui/material/Alert";
+import _ from "lodash";
 
 export default function RenderAlerts({
   alerts,
@@ -66,7 +67,7 @@ export default function RenderAlerts({
             </Alert>
           ) : null}
           <ul className={`list-disc`}>
-            {alerts.map(alert => {
+            {_.uniqBy(alerts, i => i.description).map(alert => {
               return (
                 <li key={`${alert.codLine} ${alert.codMode}`} className="p-2 ">
                   {alert.description}

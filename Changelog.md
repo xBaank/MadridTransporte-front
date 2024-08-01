@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.14.1
+
+- Fixed repeated alerts
+- Updated dependencies
+
 ## 1.14.0
 
 - Added English translation
