@@ -4,7 +4,7 @@ apply plugin: 'kotlin-kapt'
 
 android {
     namespace "com.madridtransporte"
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdk rootProject.ext.compileSdkVersion
     buildFeatures {
         dataBinding = true
     }
