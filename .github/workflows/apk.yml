@@ -23,16 +23,22 @@ jobs:
         - name: Checkout source
           uses: actions/checkout@v4
 
+        - name: Install pnpm
+          uses: pnpm/action-setup@v4
+          with:
+            version: 9
+
         - name: Setup Node.js
           uses: actions/setup-node@v4
           with:
             node-version: 20.x
+            cache: 'pnpm'
             
         - name: install dependencies
-          run: npm ci
+          run: pnpm install
 
         - name: Create Build Folder
-          run: npm run build
+          run: pnpm run build
 
         - name: Add android folder if not present
           run: if [ ! -d "./android" ]; then npx cap add android; fi
@@ -51,7 +57,7 @@ jobs:
         
         # TODO: Check for folder structure in README for generating splash screen 
         - name: Generate icons and splash screen to android folder 
-          run:  if [ -d "./resources" ]; then npm install @capacitor/assets --save-dev && npx capacitor-assets generate --android; fi
+          run:  if [ -d "./resources" ]; then pnpm install @capacitor/assets --save-dev && npx capacitor-assets generate --android; fi
 
         - name: Setup java
           uses: actions/setup-java@v4
