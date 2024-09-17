@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.14.2
+
+- Updated to capacitor 6
+- Replaced npm with pnpm
+- Updated other dependencies
+
 ## 1.14.1
 
 - Fixed repeated alerts
