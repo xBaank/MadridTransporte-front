@@ -99,6 +99,6 @@
     "workbox-window": "^7.1.0"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.21.3"
+    "@rollup/rollup-linux-x64-gnu": "4.22.0"
   }
 }
