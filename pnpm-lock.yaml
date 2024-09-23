@@ -76,7 +76,7 @@ importers:
         version: 29.5.13
       '@types/lodash':
         specifier: ^4.17.7
-        version: 4.17.7
+        version: 4.17.8
       '@types/node':
         specifier: ^20.16.5
         version: 20.16.5
@@ -1590,8 +1590,8 @@ packages:
       '@types/babel__core':
         optional: true
 
-  '@rollup/plugin-node-resolve@15.2.4':
-    resolution: {integrity: sha512-wnKAGisav1m2vgVK2/2mNowK5DCqff7kpz76cY1pECVE0qRQTCAIcWP5xmdGDi8X8K9SYeeC98i6cD3fk6qkDg==}
+  '@rollup/plugin-node-resolve@15.3.0':
+    resolution: {integrity: sha512-9eO5McEICxMzJpDW9OnMYSv4Sta3hmt7VtBFz5zR9273suNOydOyq/FrGeGy+KsTRFm8w0SLVhzig2ILFT63Ag==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       rollup: ^2.78.0||^3.0.0||^4.0.0
@@ -1959,8 +1959,8 @@ packages:
   '@types/leaflet@1.9.12':
     resolution: {integrity: sha512-BK7XS+NyRI291HIo0HCfE18Lp8oA30H1gpi1tf0mF3TgiCEzanQjOqNZ4x126SXzzi2oNSZhZ5axJp1k0iM6jg==}
 
-  '@types/lodash@4.17.7':
-    resolution: {integrity: sha512-8wTvZawATi/lsmNu10/j2hk1KEP0IvjubqPE3cu1Xz7xfXXt5oCq3SNUz4fMIP4XGF9Ky+Ue2tBA3hcS7LSBlA==}
+  '@types/lodash@4.17.8':
+    resolution: {integrity: sha512-4FqegKZALpA1NvUMkVbA033lzR9wQh7GcSj458jv+SU9VKhbNEV/n+N9r6nshwB+SHUH8M7PCPQLS3nWZTl3nQ==}
 
   '@types/minimist@1.2.5':
     resolution: {integrity: sha512-hov8bUuiLiyFPGyFPE1lwWhmzYbirOXQNNo40+y3zow8aFVTeyn3VWL0VFFfdNddA8S4Vf0Tc062rzyNr7Paag==}
@@ -6558,7 +6558,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@rollup/plugin-node-resolve@15.2.4(rollup@2.79.1)':
+  '@rollup/plugin-node-resolve@15.3.0(rollup@2.79.1)':
     dependencies:
       '@rollup/pluginutils': 5.1.1(rollup@2.79.1)
       '@types/resolve': 1.20.2
@@ -6906,7 +6906,7 @@ snapshots:
     dependencies:
       '@types/geojson': 7946.0.14
 
-  '@types/lodash@4.17.7': {}
+  '@types/lodash@4.17.8': {}
 
   '@types/minimist@1.2.5': {}
 
@@ -9784,7 +9784,7 @@ snapshots:
       '@babel/preset-env': 7.25.4(@babel/core@7.25.2)
       '@babel/runtime': 7.25.6
       '@rollup/plugin-babel': 5.3.1(@babel/core@7.25.2)(rollup@2.79.1)
-      '@rollup/plugin-node-resolve': 15.2.4(rollup@2.79.1)
+      '@rollup/plugin-node-resolve': 15.3.0(rollup@2.79.1)
       '@rollup/plugin-replace': 2.4.2(rollup@2.79.1)
       '@rollup/plugin-terser': 0.4.4(rollup@2.79.1)
       '@surma/rollup-plugin-off-main-thread': 2.2.3
