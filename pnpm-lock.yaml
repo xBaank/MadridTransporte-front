@@ -79,7 +79,7 @@ importers:
         version: 4.17.8
       '@types/node':
         specifier: ^20.16.5
-        version: 20.16.6
+        version: 20.16.7
       '@types/phonegap-nfc':
         specifier: ^0.0.36
         version: 0.0.36
@@ -100,7 +100,7 @@ importers:
         version: 10.0.0
       '@vitejs/plugin-react-swc':
         specifier: ^3.7.0
-        version: 3.7.0(vite@5.4.7(@types/node@20.16.6)(terser@5.32.0))
+        version: 3.7.0(vite@5.4.7(@types/node@20.16.7)(terser@5.32.0))
       community-cordova-plugin-nfc:
         specifier: ^1.4.0
         version: 1.4.0
@@ -163,13 +163,13 @@ importers:
         version: 10.0.0
       vite:
         specifier: ^5.4.6
-        version: 5.4.7(@types/node@20.16.6)(terser@5.32.0)
+        version: 5.4.7(@types/node@20.16.7)(terser@5.32.0)
       vite-plugin-svgr:
         specifier: ^4.2.0
-        version: 4.2.0(rollup@2.79.1)(typescript@5.6.2)(vite@5.4.7(@types/node@20.16.6)(terser@5.32.0))
+        version: 4.2.0(rollup@2.79.1)(typescript@5.6.2)(vite@5.4.7(@types/node@20.16.7)(terser@5.32.0))
       vite-tsconfig-paths:
         specifier: ^5.0.1
-        version: 5.0.1(typescript@5.6.2)(vite@5.4.7(@types/node@20.16.6)(terser@5.32.0))
+        version: 5.0.1(typescript@5.6.2)(vite@5.4.7(@types/node@20.16.7)(terser@5.32.0))
       web-vitals:
         specifier: ^4.2.3
         version: 4.2.3
@@ -180,7 +180,7 @@ importers:
     devDependencies:
       '@capacitor/assets':
         specifier: ^3.0.5
-        version: 3.0.5(@swc/core@1.7.26)(@types/node@20.16.6)(typescript@5.6.2)
+        version: 3.0.5(@swc/core@1.7.26)(@types/node@20.16.7)(typescript@5.6.2)
       '@capacitor/cli':
         specifier: ^6.1.2
         version: 6.1.2
@@ -210,13 +210,13 @@ importers:
         version: 3.3.3
       tailwindcss:
         specifier: ^3.4.11
-        version: 3.4.13(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.6)(typescript@5.6.2))
+        version: 3.4.13(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.7)(typescript@5.6.2))
       typescript:
         specifier: ^5.6.2
         version: 5.6.2
       vite-plugin-pwa:
         specifier: ^0.20.5
-        version: 0.20.5(vite@5.4.7(@types/node@20.16.6)(terser@5.32.0))(workbox-build@7.1.1)(workbox-window@7.1.0)
+        version: 0.20.5(vite@5.4.7(@types/node@20.16.7)(terser@5.32.0))(workbox-build@7.1.1)(workbox-window@7.1.0)
       workbox-window:
         specifier: ^7.1.0
         version: 7.1.0
@@ -1965,8 +1965,8 @@ packages:
   '@types/minimist@1.2.5':
     resolution: {integrity: sha512-hov8bUuiLiyFPGyFPE1lwWhmzYbirOXQNNo40+y3zow8aFVTeyn3VWL0VFFfdNddA8S4Vf0Tc062rzyNr7Paag==}
 
-  '@types/node@20.16.6':
-    resolution: {integrity: sha512-T7PpxM/6yeDE+AdlVysT62BX6/bECZOmQAgiFg5NoBd5MQheZ3tzal7f1wvzfiEcmrcJNRi2zRr2nY2zF+0uqw==}
+  '@types/node@20.16.7':
+    resolution: {integrity: sha512-QkDQjAY3gkvJNcZOWwzy3BN34RweT0OQ9zJyvLCU0kSK22dO2QYh/NHGfbEAYylPYzRB1/iXcojS79wOg5gFSw==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -5586,12 +5586,12 @@ snapshots:
     dependencies:
       '@capacitor/core': 6.1.2
 
-  '@capacitor/assets@3.0.5(@swc/core@1.7.26)(@types/node@20.16.6)(typescript@5.6.2)':
+  '@capacitor/assets@3.0.5(@swc/core@1.7.26)(@types/node@20.16.7)(typescript@5.6.2)':
     dependencies:
       '@capacitor/cli': 5.7.8
       '@ionic/utils-array': 2.1.6
       '@ionic/utils-fs': 3.1.7
-      '@trapezedev/project': 7.0.10(@swc/core@1.7.26)(@types/node@20.16.6)(typescript@5.6.2)
+      '@trapezedev/project': 7.0.10(@swc/core@1.7.26)(@types/node@20.16.7)(typescript@5.6.2)
       commander: 8.3.0
       debug: 4.3.4
       fs-extra: 10.1.0
@@ -6155,7 +6155,7 @@ snapshots:
   '@grpc/grpc-js@1.9.15':
     dependencies:
       '@grpc/proto-loader': 0.7.13
-      '@types/node': 20.16.6
+      '@types/node': 20.16.7
 
   '@grpc/proto-loader@0.7.13':
     dependencies:
@@ -6357,7 +6357,7 @@ snapshots:
       '@jest/schemas': 29.6.3
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
-      '@types/node': 20.16.6
+      '@types/node': 20.16.7
       '@types/yargs': 17.0.33
       chalk: 4.1.2
 
@@ -6826,7 +6826,7 @@ snapshots:
 
   '@trapezedev/gradle-parse@7.0.10': {}
 
-  '@trapezedev/project@7.0.10(@swc/core@1.7.26)(@types/node@20.16.6)(typescript@5.6.2)':
+  '@trapezedev/project@7.0.10(@swc/core@1.7.26)(@types/node@20.16.7)(typescript@5.6.2)':
     dependencies:
       '@ionic/utils-fs': 3.1.7
       '@ionic/utils-subprocess': 2.1.14
@@ -6850,7 +6850,7 @@ snapshots:
       replace: 1.2.2
       tempy: 1.0.1
       tmp: 0.2.3
-      ts-node: 10.9.2(@swc/core@1.7.26)(@types/node@20.16.6)(typescript@5.6.2)
+      ts-node: 10.9.2(@swc/core@1.7.26)(@types/node@20.16.7)(typescript@5.6.2)
       xcode: 3.0.1
       xml-js: 1.6.11
       xpath: 0.0.32
@@ -6881,7 +6881,7 @@ snapshots:
 
   '@types/fs-extra@8.1.5':
     dependencies:
-      '@types/node': 20.16.6
+      '@types/node': 20.16.7
 
   '@types/geojson@7946.0.14': {}
 
@@ -6910,7 +6910,7 @@ snapshots:
 
   '@types/minimist@1.2.5': {}
 
-  '@types/node@20.16.6':
+  '@types/node@20.16.7':
     dependencies:
       undici-types: 6.19.8
 
@@ -6974,10 +6974,10 @@ snapshots:
     dependencies:
       '@types/yargs-parser': 21.0.3
 
-  '@vitejs/plugin-react-swc@3.7.0(vite@5.4.7(@types/node@20.16.6)(terser@5.32.0))':
+  '@vitejs/plugin-react-swc@3.7.0(vite@5.4.7(@types/node@20.16.7)(terser@5.32.0))':
     dependencies:
       '@swc/core': 1.7.26
-      vite: 5.4.7(@types/node@20.16.6)(terser@5.32.0)
+      vite: 5.4.7(@types/node@20.16.7)(terser@5.32.0)
     transitivePeerDependencies:
       - '@swc/helpers'
 
@@ -8338,7 +8338,7 @@ snapshots:
   jest-util@29.7.0:
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 20.16.6
+      '@types/node': 20.16.7
       chalk: 4.1.2
       ci-info: 3.9.0
       graceful-fs: 4.2.11
@@ -8777,13 +8777,13 @@ snapshots:
       camelcase-css: 2.0.1
       postcss: 8.4.47
 
-  postcss-load-config@4.0.2(postcss@8.4.47)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.6)(typescript@5.6.2)):
+  postcss-load-config@4.0.2(postcss@8.4.47)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.7)(typescript@5.6.2)):
     dependencies:
       lilconfig: 3.1.2
       yaml: 2.5.1
     optionalDependencies:
       postcss: 8.4.47
-      ts-node: 10.9.2(@swc/core@1.7.26)(@types/node@20.16.6)(typescript@5.6.2)
+      ts-node: 10.9.2(@swc/core@1.7.26)(@types/node@20.16.7)(typescript@5.6.2)
 
   postcss-nested@6.2.0(postcss@8.4.47):
     dependencies:
@@ -8863,7 +8863,7 @@ snapshots:
       '@protobufjs/path': 1.1.2
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
-      '@types/node': 20.16.6
+      '@types/node': 20.16.7
       long: 5.2.3
 
   pstree.remy@1.1.8: {}
@@ -9394,7 +9394,7 @@ snapshots:
 
   svg-parser@2.0.4: {}
 
-  tailwindcss@3.4.13(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.6)(typescript@5.6.2)):
+  tailwindcss@3.4.13(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.7)(typescript@5.6.2)):
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
@@ -9413,7 +9413,7 @@ snapshots:
       postcss: 8.4.47
       postcss-import: 15.1.0(postcss@8.4.47)
       postcss-js: 4.0.1(postcss@8.4.47)
-      postcss-load-config: 4.0.2(postcss@8.4.47)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.6)(typescript@5.6.2))
+      postcss-load-config: 4.0.2(postcss@8.4.47)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.7)(typescript@5.6.2))
       postcss-nested: 6.2.0(postcss@8.4.47)
       postcss-selector-parser: 6.1.2
       resolve: 1.22.8
@@ -9539,14 +9539,14 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
-  ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.6)(typescript@5.6.2):
+  ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.7)(typescript@5.6.2):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
-      '@types/node': 20.16.6
+      '@types/node': 20.16.7
       acorn: 8.12.1
       acorn-walk: 8.3.4
       arg: 4.1.3
@@ -9674,46 +9674,46 @@ snapshots:
       spdx-correct: 3.2.0
       spdx-expression-parse: 3.0.1
 
-  vite-plugin-pwa@0.20.5(vite@5.4.7(@types/node@20.16.6)(terser@5.32.0))(workbox-build@7.1.1)(workbox-window@7.1.0):
+  vite-plugin-pwa@0.20.5(vite@5.4.7(@types/node@20.16.7)(terser@5.32.0))(workbox-build@7.1.1)(workbox-window@7.1.0):
     dependencies:
       debug: 4.3.7
       pretty-bytes: 6.1.1
       tinyglobby: 0.2.6
-      vite: 5.4.7(@types/node@20.16.6)(terser@5.32.0)
+      vite: 5.4.7(@types/node@20.16.7)(terser@5.32.0)
       workbox-build: 7.1.1
       workbox-window: 7.1.0
     transitivePeerDependencies:
       - supports-color
 
-  vite-plugin-svgr@4.2.0(rollup@2.79.1)(typescript@5.6.2)(vite@5.4.7(@types/node@20.16.6)(terser@5.32.0)):
+  vite-plugin-svgr@4.2.0(rollup@2.79.1)(typescript@5.6.2)(vite@5.4.7(@types/node@20.16.7)(terser@5.32.0)):
     dependencies:
       '@rollup/pluginutils': 5.1.0(rollup@2.79.1)
       '@svgr/core': 8.1.0(typescript@5.6.2)
       '@svgr/plugin-jsx': 8.1.0(@svgr/core@8.1.0(typescript@5.6.2))
-      vite: 5.4.7(@types/node@20.16.6)(terser@5.32.0)
+      vite: 5.4.7(@types/node@20.16.7)(terser@5.32.0)
     transitivePeerDependencies:
       - rollup
       - supports-color
       - typescript
 
-  vite-tsconfig-paths@5.0.1(typescript@5.6.2)(vite@5.4.7(@types/node@20.16.6)(terser@5.32.0)):
+  vite-tsconfig-paths@5.0.1(typescript@5.6.2)(vite@5.4.7(@types/node@20.16.7)(terser@5.32.0)):
     dependencies:
       debug: 4.3.7
       globrex: 0.1.2
       tsconfck: 3.1.3(typescript@5.6.2)
     optionalDependencies:
-      vite: 5.4.7(@types/node@20.16.6)(terser@5.32.0)
+      vite: 5.4.7(@types/node@20.16.7)(terser@5.32.0)
     transitivePeerDependencies:
       - supports-color
       - typescript
 
-  vite@5.4.7(@types/node@20.16.6)(terser@5.32.0):
+  vite@5.4.7(@types/node@20.16.7)(terser@5.32.0):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.4.47
       rollup: 4.22.2
     optionalDependencies:
-      '@types/node': 20.16.6
+      '@types/node': 20.16.7
       fsevents: 2.3.3
       terser: 5.32.0
 
