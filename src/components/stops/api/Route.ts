@@ -50,7 +50,14 @@ export async function fixRouteShapes(coordinates: Shape[]) {
 
     const result = await fetch(
       `https://routing.openstreetmap.de/routed-car/match/v1/driving/${joined}?overview=full&geometries=geojson`,
-    );
+      {signal: AbortSignal.timeout(3500)},
+    ).catch(() => null);
+
+    if (result == null) {
+      return coordinates.map(i => {
+        return {lat: i.latitude, lng: i.longitude};
+      });
+    }
 
     const parsed: Array<{lat: number; lng: number}> = (
       await result.json()

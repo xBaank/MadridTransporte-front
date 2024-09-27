@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.14.3
+
+- Fixed locations not loading
+
 ## 1.14.2
 
 - Updated to capacitor 6
