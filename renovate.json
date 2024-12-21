@@ -11,6 +11,18 @@
       "matchPackagePatterns": [
         "*"
       ]
+    },
+    {
+      "matchPackagePatterns": [
+        "^com\\.android\\."
+      ],
+      "enabled": false
+    },
+    {
+      "matchPackagePatterns": [
+        "^androidx\\."
+      ],
+      "enabled": false
     }
   ],
   "separateMajorMinor": true
