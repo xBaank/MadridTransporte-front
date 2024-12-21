@@ -3,7 +3,7 @@ import {MapContainer, TileLayer} from "react-leaflet";
 import LocationMarker from "./LocationMarker";
 import {useBackgroundColor} from "../../hooks/hooks";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
-import {type RefObject} from "react";
+import {JSX, type RefObject} from "react";
 import {type LatLngExpression, type Map} from "leaflet";
 import "leaflet/dist/leaflet.css";
 import {useTranslation} from "react-i18next";

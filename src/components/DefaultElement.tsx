@@ -1,6 +1,7 @@
 import {AppBar} from "@mui/material";
 import MobileNavBar from "./MobileNavBar";
 import {Link} from "react-router-dom";
+import {JSX} from "react";
 const isDev = import.meta.env.DEV;
 
 export default function DefaultElement({element}: {element: JSX.Element}) {

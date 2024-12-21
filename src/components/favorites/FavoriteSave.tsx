@@ -5,7 +5,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import {useRef, useState} from "react";
+import {createRef, useState} from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import {IconButton} from "@mui/material";
@@ -24,7 +24,7 @@ export function FavoriteSave({
 }) {
   const {t} = useTranslation();
   const [open, setOpen] = useState<boolean>(false);
-  const name = useRef<TextFieldProps>();
+  const name = createRef<TextFieldProps>();
 
   const handleClickOpen = () => {
     setOpen(true);
