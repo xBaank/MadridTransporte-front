@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.14.4
+
+- Updated dependencies.
+
 ## 1.14.3
 
 - Fixed locations not loading
