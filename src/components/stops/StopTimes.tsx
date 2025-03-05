@@ -56,7 +56,7 @@ export default function BusStopsTimes() {
     useLiveQuery(
       async () => (await db.favorites.where({type, code}).first()) != null,
     ) ?? false;
-  const {t, i18n} = useTranslation();
+  const {t} = useTranslation();
 
   const stop = useLiveQuery(async () => {
     if (type === undefined) return null;

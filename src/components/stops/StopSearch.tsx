@@ -1,5 +1,5 @@
 import {IconButton, InputAdornment, List, TextField} from "@mui/material";
-import {memo, useEffect, useRef, useState} from "react";
+import {useState} from "react";
 import {Clear, Search} from "@mui/icons-material";
 import FilteredStopsComponent, {StopComponent} from "./StopsComponent";
 import StopsFavorites from "./StopsFavorites";
