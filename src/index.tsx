@@ -36,7 +36,6 @@ import {DataLoadContext, MigrationContext} from "./contexts/dataLoadContext";
 import {LineInfo} from "./components/stops/lines/LineInfo";
 import {LineRouteMap} from "./components/stops/lines/LineRouteMap";
 import "./components/i18n";
-import i18n from "./components/i18n";
 import {useTranslation} from "react-i18next";
 
 const updateSW = registerSW({

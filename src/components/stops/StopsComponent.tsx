@@ -147,13 +147,13 @@ export default function FilteredStopsComponent({
       );
     }
 
-    const stopsToShow = showStops ? stops ?? [] : [];
-    const linesToShow = showLines && codMode == null ? lines ?? [] : [];
+    const stopsToShow = showStops ? (stops ?? []) : [];
+    const linesToShow = showLines && codMode == null ? (lines ?? []) : [];
     const allData = [...stopsToShow, ...linesToShow];
 
     return (
       <>
-        <div className="my-auto font-bold space-x-1">
+        <div className="flex my-auto font-bold gap-1">
           <Chip
             color="primary"
             label={t("stops.search.stops")}
