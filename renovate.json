@@ -9,21 +9,15 @@
     {
       "groupName": "all dependencies",
       "groupSlug": "all",
-      "matchPackagePatterns": [
-        "*"
-      ]
+      "matchPackageNames": ["*"]
     },
     {
-      "matchPackagePatterns": [
-        "^com\\.android\\."
-      ],
-      "enabled": false
+      "enabled": false,
+      "matchPackageNames": ["/^com\\.android\\./"]
     },
     {
-      "matchPackagePatterns": [
-        "^androidx\\."
-      ],
-      "enabled": false
+      "enabled": false,
+      "matchPackageNames": ["/^androidx\\./"]
     }
   ],
   "separateMajorMinor": true
