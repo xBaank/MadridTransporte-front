@@ -83,7 +83,6 @@ export default function BusStopsTimes() {
 
   const getTimesPlannedAsync = async () => {
     if (type === undefined || code === undefined) return;
-    if (type !== "bus") return;
     await getStopsTimesPlanned(type, code).then(stops =>
       fold(
         (_error: string) => setStopTimesPlanned(undefined),
@@ -261,7 +260,7 @@ export default function BusStopsTimes() {
                 <RenderTimesOrEmpty times={stopTimes} />
               </ul>
             </>
-          ) : type === "bus" ? (
+          ) : (
             <>
               <ul className="rounded w-full border-b mb-1">
                 <AlertMui severity="warning">
@@ -270,18 +269,17 @@ export default function BusStopsTimes() {
                 <RenderTimesPlannedOrEmpty times={stopTimesPlanned} />
               </ul>
             </>
-          ) : null}
-          {type === "bus" ? (
-            <div className="mt-2 w-full">
-              <Button
-                className="w-full"
-                variant="contained"
-                color="info"
-                onClick={() => setShowLive(!showLive)}>
-                {showLive ? t("times.seePlanned") : t("times.seeLive")}
-              </Button>
-            </div>
-          ) : null}
+          )}
+
+          <div className="mt-2 w-full">
+            <Button
+              className="w-full"
+              variant="contained"
+              color="info"
+              onClick={() => setShowLive(!showLive)}>
+              {showLive ? t("times.seePlanned") : t("times.seeLive")}
+            </Button>
+          </div>
           <RenderAlerts
             alerts={alerts}
             incidents={stopTimes?.incidents ?? []}
