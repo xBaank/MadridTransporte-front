@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.15.0
+
+- Updated dependencies.
+- Added planned times for `metro`, `train`, `tram` and `emt`.
+
 ## 1.14.4
 
 - Updated dependencies.
