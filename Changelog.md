@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.15.1
+
+- Updated dependencies.
+- Updated metro map.
+
 ## 1.15.0
 
 - Updated dependencies.
