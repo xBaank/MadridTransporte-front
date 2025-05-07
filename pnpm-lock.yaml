@@ -174,8 +174,8 @@ importers:
         specifier: ^5.0.1
         version: 5.1.4(typescript@5.8.3)(vite@6.3.4(@types/node@22.15.3)(jiti@2.4.2)(lightningcss@1.29.2)(terser@5.32.0)(yaml@2.6.1))
       web-vitals:
-        specifier: ^4.2.3
-        version: 4.2.4
+        specifier: ^5.0.0
+        version: 5.0.0
     devDependencies:
       '@capacitor/assets':
         specifier: ^3.0.5
@@ -4784,6 +4784,9 @@ packages:
 
   web-vitals@4.2.4:
     resolution: {integrity: sha512-r4DIlprAGwJ7YM11VZp4R884m0Vmgr6EAKe3P+kO0PPj3Unqyvv59rczf6UiGcb9Z8QxZVcqKNwv/g0WNdWwsw==}
+
+  web-vitals@5.0.0:
+    resolution: {integrity: sha512-yuayYLYyO4QdqB7YriMtUZxCIsUbcpZLnoPCJXocLvTRcAh/Jz2rgqsHrh9Oz/NHApB/Somd05NMsuhJV3YcLQ==}
 
   webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
@@ -9993,6 +9996,8 @@ snapshots:
   void-elements@3.1.0: {}
 
   web-vitals@4.2.4: {}
+
+  web-vitals@5.0.0: {}
 
   webidl-conversions@3.0.1: {}
 
