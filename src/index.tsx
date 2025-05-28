@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import BusStopSearch from "./components/stops/StopSearch";
-import BusStopsTimes from "./components/stops/StopTimes";
 import {
   createTheme,
   CssBaseline,
@@ -11,16 +10,8 @@ import {
   ThemeProvider,
 } from "@mui/material";
 import DefaultElement from "./components/DefaultElement";
-import BusStopMap from "./components/stops/StopMap";
-import Info from "./components/info/Info";
-import AbonoNFC from "./components/abono/AbonoNFC";
 import {trainCodMode} from "./components/stops/api/Utils";
 import {uniqueId} from "lodash";
-import TrainStopTimesComponent from "./components/stops/train/TrainStopsTimes";
-import StaticMaps from "./components/maps/StaticMaps";
-import Settings from "./components/settings/Settings";
-import StopNearest from "./components/stops/StopNearest";
-import LinesLocationsMap from "./components/stops/lines/LinesLocationsMap";
 import {setupBackButton} from "./backButtons";
 import {defaultPosition, useSavedTheme} from "./hooks/hooks";
 import {TokenContext, useToken} from "./notifications";
@@ -33,10 +24,22 @@ import {ColorModeContext} from "./contexts/colorModeContext";
 import {MapContext, type MapData} from "./contexts/mapContext";
 import LoadData from "./components/settings/LoadData";
 import {DataLoadContext, MigrationContext} from "./contexts/dataLoadContext";
-import {LineInfo} from "./components/stops/lines/LineInfo";
-import {LineRouteMap} from "./components/stops/lines/LineRouteMap";
 import "./components/i18n";
 import {useTranslation} from "react-i18next";
+import {Suspense, lazy} from "react";
+import LoadingSpinner from "./components/LoadingSpinner";
+
+const BusStopMap = lazy(() => import("./components/stops/StopMap"));
+const StopNearest = lazy(() => import("./components/stops/StopNearest"));
+const BusStopsTimes = lazy(() => import("./components/stops/StopTimes"));
+const LinesLocationsMap = lazy(() => import("./components/stops/lines/LinesLocationsMap"));
+const LineInfo = lazy(() => import("./components/stops/lines/LineInfo"));
+const TrainStopTimesComponent = lazy(() => import("./components/stops/train/TrainStopsTimes"));
+const LineRouteMap = lazy(() => import("./components/stops/lines/LineRouteMap"));
+const StaticMaps = lazy(() => import("./components/maps/StaticMaps"));
+const Info = lazy(() => import("./components/info/Info"));
+const Settings = lazy(() => import("./components/settings/Settings"));
+const AbonoNFC = lazy(() => import("./components/abono/AbonoNFC"));
 
 const updateSW = registerSW({
   onNeedRefresh() {
@@ -111,7 +114,7 @@ export default function App() {
                 <ThemeProvider theme={theme}>
                   <CssBaseline />
                   {dataLoaded && migrated ? (
-                    <RouterProvider router={router} />
+                      <RouterProvider router={router} />
                   ) : (
                     <LoadData />
                   )}
@@ -135,18 +138,25 @@ const NotFound = () => {
   return <div className="text-center">{t("other.pageNotFound")}</div>;
 };
 
+const LazyRoute = (Component: React.LazyExoticComponent<React.FC>) => (
+  <Suspense fallback={<LoadingSpinner/>}>
+    <Component />
+  </Suspense>
+);
+
+
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <DefaultElement element={<BusStopSearchTranslated />} />,
+    element: <DefaultElement element={<BusStopSearchTranslated/>} />,
   },
   {
     path: "/stops/nearest",
-    element: <DefaultElement element={<StopNearest />} />,
+    element: <DefaultElement element={LazyRoute(StopNearest)} />,
   },
   {
     path: "/stops/:type/:code/times",
-    element: <DefaultElement element={<BusStopsTimes />} />,
+    element: <DefaultElement element={LazyRoute(BusStopsTimes)} />,
   },
   {
     path: "/stops/train/:code/destination",
@@ -159,43 +169,43 @@ export const router = createBrowserRouter([
   },
   {
     path: "/stops/train/times",
-    element: <DefaultElement element={<TrainStopTimesComponent />} />,
+    element: <DefaultElement element={LazyRoute(TrainStopTimesComponent)} />,
   },
   {
     path: "/stops/map/:fullStopCode",
-    element: <DefaultElement element={<BusStopMap />} />,
+    element: <DefaultElement element={LazyRoute(BusStopMap)} />,
   },
   {
     path: "/stops/map",
-    element: <DefaultElement element={<BusStopMap />} />,
+    element: <DefaultElement element={LazyRoute(BusStopMap)} />,
   },
   {
     path: "/lines/:type/:fullLineCode/locations/:direction",
-    element: <DefaultElement element={<LinesLocationsMap />} />,
+    element: <DefaultElement element={LazyRoute(LinesLocationsMap)} />,
   },
   {
     path: "/lines/:type/:fullLineCode",
-    element: <DefaultElement element={<LineInfo />} />,
+    element: <DefaultElement element={LazyRoute(LineInfo)} />,
   },
   {
     path: "/lines/:type/:fullLineCode/map",
-    element: <DefaultElement element={<LineRouteMap />} />,
+    element: <DefaultElement element={LazyRoute(LineRouteMap)} />,
   },
   {
     path: "/maps",
-    element: <DefaultElement element={<StaticMaps />} />,
+    element: <DefaultElement element={LazyRoute(StaticMaps)} />,
   },
   {
     path: "/info",
-    element: <DefaultElement element={<Info />} />,
+    element: <DefaultElement element={LazyRoute(Info)} />,
   },
   {
     path: "/settings",
-    element: <DefaultElement element={<Settings />} />,
+    element: <DefaultElement element={LazyRoute(Settings)} />,
   },
   {
     path: "/abonoNFC",
-    element: <DefaultElement element={<AbonoNFC />} />,
+    element: <DefaultElement element={LazyRoute(AbonoNFC)} />,
   },
   {
     path: "*",

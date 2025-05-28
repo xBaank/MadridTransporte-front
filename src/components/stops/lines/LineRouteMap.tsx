@@ -12,7 +12,7 @@ import {Polyline} from "react-leaflet";
 import Line from "../../Line";
 import {useTranslation} from "react-i18next";
 
-export function LineRouteMap() {
+export default function LineRouteMap() {
   const {t} = useTranslation();
   const [searchParam] = useSearchParams();
   const [currentItineraryCode, setCurrentItineraryCode] = useState<string>(

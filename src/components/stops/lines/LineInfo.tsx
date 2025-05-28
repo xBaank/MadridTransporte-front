@@ -8,7 +8,7 @@ import {StopComponent} from "../StopsComponent";
 import {useLine} from "../../../hooks/hooks";
 import {useTranslation} from "react-i18next";
 
-export function LineInfo() {
+export default function LineInfo() {
   const {t} = useTranslation();
   const [currentItineraryCode, setCurrentItineraryCode] = useState<string>("");
   const line = useLine();
