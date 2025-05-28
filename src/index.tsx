@@ -2,7 +2,6 @@ import {useMemo, useState} from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import BusStopSearch from "./components/stops/StopSearch";
 import {
   createTheme,
   CssBaseline,
@@ -10,7 +9,6 @@ import {
   ThemeProvider,
 } from "@mui/material";
 import DefaultElement from "./components/DefaultElement";
-import {trainCodMode} from "./components/stops/api/Utils";
 import {uniqueId} from "lodash";
 import {setupBackButton} from "./backButtons";
 import {defaultPosition, useSavedTheme} from "./hooks/hooks";
@@ -32,14 +30,26 @@ import LoadingSpinner from "./components/LoadingSpinner";
 const BusStopMap = lazy(() => import("./components/stops/StopMap"));
 const StopNearest = lazy(() => import("./components/stops/StopNearest"));
 const BusStopsTimes = lazy(() => import("./components/stops/StopTimes"));
-const LinesLocationsMap = lazy(() => import("./components/stops/lines/LinesLocationsMap"));
+const LinesLocationsMap = lazy(
+  () => import("./components/stops/lines/LinesLocationsMap"),
+);
 const LineInfo = lazy(() => import("./components/stops/lines/LineInfo"));
-const TrainStopTimesComponent = lazy(() => import("./components/stops/train/TrainStopsTimes"));
-const LineRouteMap = lazy(() => import("./components/stops/lines/LineRouteMap"));
+const TrainStopTimesComponent = lazy(
+  () => import("./components/stops/train/TrainStopsTimes"),
+);
+const LineRouteMap = lazy(
+  () => import("./components/stops/lines/LineRouteMap"),
+);
 const StaticMaps = lazy(() => import("./components/maps/StaticMaps"));
 const Info = lazy(() => import("./components/info/Info"));
 const Settings = lazy(() => import("./components/settings/Settings"));
 const AbonoNFC = lazy(() => import("./components/abono/AbonoNFC"));
+const BusStopSearch = lazy(() => import("./components/stops/StopSearch"));
+const BusStopSearchTrain = lazy(() =>
+  import("./components/stops/StopSearch").then(module => ({
+    default: module.BustStopSearchTrain,
+  })),
+);
 
 const updateSW = registerSW({
   onNeedRefresh() {
@@ -114,7 +124,7 @@ export default function App() {
                 <ThemeProvider theme={theme}>
                   <CssBaseline />
                   {dataLoaded && migrated ? (
-                      <RouterProvider router={router} />
+                    <RouterProvider router={router} />
                   ) : (
                     <LoadData />
                   )}
@@ -128,11 +138,6 @@ export default function App() {
   );
 }
 
-const BusStopSearchTranslated = () => {
-  const {t} = useTranslation();
-  return <BusStopSearch title={t("stops.search.title")} codMode={null} />;
-};
-
 const NotFound = () => {
   const {t} = useTranslation();
   return <div className="text-center">{t("other.pageNotFound")}</div>;
@@ -144,11 +149,10 @@ const LazyRoute = (Component: React.LazyExoticComponent<React.FC>) => (
   </Suspense>
 );
 
-
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <DefaultElement element={<BusStopSearchTranslated/>} />,
+    element: <DefaultElement element={LazyRoute(BusStopSearch)} />,
   },
   {
     path: "/stops/nearest",
@@ -163,7 +167,7 @@ export const router = createBrowserRouter([
     element: (
       <DefaultElement
         key={uniqueId()}
-        element={<BusStopSearch codMode={trainCodMode} />}
+        element={LazyRoute(BusStopSearchTrain)}
       />
     ),
   },

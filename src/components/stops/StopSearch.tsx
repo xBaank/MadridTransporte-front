@@ -3,7 +3,7 @@ import {useState} from "react";
 import {Clear, Search} from "@mui/icons-material";
 import FilteredStopsComponent, {StopComponent} from "./StopsComponent";
 import StopsFavorites from "./StopsFavorites";
-import {mapStopToStopLink} from "./api/Utils";
+import {mapStopToStopLink, trainCodMode} from "./api/Utils";
 import {useParams} from "react-router-dom";
 import AllSubscriptions from "./StopsSubscriptions";
 import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
@@ -11,7 +11,27 @@ import {db} from "./api/Db";
 import {useLiveQuery} from "dexie-react-hooks";
 import {useTranslation} from "react-i18next";
 
-export default function BusStopSearch({
+export default function BusStopSearchTranslated({
+  title,
+  codMode,
+}: {
+  title?: string;
+  codMode?: number | null;
+}) {
+  const {t} = useTranslation();
+  return (
+    <BusStopSearchBase
+      title={title ?? t("stops.search.title")}
+      codMode={codMode ?? null}
+    />
+  );
+}
+
+export function BustStopSearchTrain() {
+  return <BusStopSearchBase codMode={trainCodMode} />;
+}
+
+function BusStopSearchBase({
   title,
   codMode,
 }: {
