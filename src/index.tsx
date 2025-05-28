@@ -144,7 +144,7 @@ const NotFound = () => {
 };
 
 const LazyRoute = (Component: React.LazyExoticComponent<React.FC>) => (
-  <Suspense fallback={<LoadingSpinner/>}>
+  <Suspense fallback={<LoadingSpinner />}>
     <Component />
   </Suspense>
 );
