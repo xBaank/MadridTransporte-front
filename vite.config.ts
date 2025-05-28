@@ -22,26 +22,4 @@ export default defineConfig({
       },
     }),
   ],
-   build: {
-    rollupOptions: {
-      output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            // Example: Put React-related packages in a "react-vendor" chunk
-            if (id.includes('react')) {
-              return 'react-vendor';
-            }
-
-            // Everything else from node_modules goes into "vendor"
-            return 'vendor';
-          }
-
-          // Optionally chunk your own files
-          if (id.includes('/src/utils/')) {
-            return 'utils';
-          }
-        },
-      },
-    },
-  }
 });
