@@ -13,8 +13,7 @@ import {db} from "./api/Db";
 import {getLineUrl, mapStopToStopLink, trainCodMode} from "./api/Utils";
 import {useEffect, useState} from "react";
 import Line from "../Line";
-import {FixedSizeList, ListChildComponentProps} from "react-window";
-import AutoSizer from "react-virtualized-auto-sizer";
+import {List, type RowComponentProps} from "react-window";
 import {useTranslation} from "react-i18next";
 
 export default function FilteredStopsComponent({
@@ -167,21 +166,17 @@ export default function FilteredStopsComponent({
             variant={showLines ? "filled" : "outlined"}
           />
         </div>
-        <div className="mt-2 h-72 block">
-          <AutoSizer>
-            {({height, width}) => {
-              return stops?.length !== 0 || lines?.length !== 0 ? (
-                <FixedSizeList
-                  height={height * 2}
-                  itemCount={allData!.length}
-                  itemSize={56}
-                  width={width}
-                  itemData={{data: allData}}>
-                  {ListItem}
-                </FixedSizeList>
-              ) : null;
-            }}
-          </AutoSizer>
+        <div className="mt-2  h-[35rem]">
+          {stops?.length !== 0 || lines?.length !== 0 ? (
+            <List
+              rowCount={allData.length}
+              rowHeight={56}
+              rowProps={{items: allData}}
+              rowComponent={ListItem}
+            />
+          ) : (
+            <></>
+          )}
         </div>
       </>
     );
@@ -189,15 +184,15 @@ export default function FilteredStopsComponent({
 }
 
 type ItemData<T> = {
-  data: T[];
+  items: T[];
 };
 
 const ListItem = <T extends (StopLink | LineType) & {type: string}>({
   index,
-  data,
+  items,
   style,
-}: ListChildComponentProps<ItemData<T>>) => {
-  const item = data.data[index];
+}: RowComponentProps<ItemData<T>>) => {
+  const item = items[index];
   return (
     <div style={style}>
       {item.type === "stops" ? (
