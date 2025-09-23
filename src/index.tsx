@@ -1,7 +1,7 @@
 import {useMemo, useState} from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import {createHashRouter, RouterProvider} from "react-router-dom";
 import BusStopSearch from "./components/stops/StopSearch";
 import BusStopsTimes from "./components/stops/StopTimes";
 import {
@@ -142,7 +142,7 @@ const NotFound = () => {
   return <div className="text-center">{t("other.pageNotFound")}</div>;
 };
 
-export const router = createBrowserRouter([
+export const router = createHashRouter([
   {
     path: "/",
     element: <DefaultElement element={<BusStopSearchTranslated />} />,
