@@ -43,7 +43,7 @@ const updateSW = registerSW({
   onNeedRefresh() {
     //TODO Translate this
     const response = confirm("¿Quieres actualizar a la última versión?");
-    var clearPromise = db.stops.clear().then(() => db.lines.clear())
+    var clearPromise = Promise.all([db.stops.clear(),db.lines.clear()])
      clearPromise.catch(() => {
       alert("Error al actualizar")
      }).then(() => {
