@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.15.2
+
+- Updated dependencies.
+- Fixed data not being updated on app updated.
+- Fixed url sharing causing a 404. 
+
 ## 1.15.1
 
 - Updated dependencies.
