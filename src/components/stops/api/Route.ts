@@ -40,7 +40,7 @@ export async function fixRouteShapes(coordinates: Shape[]) {
       ...sorted.filter((_, index) => index % percentage === 0),
       sorted[sorted.length - 1],
     ],
-    100,
+    10,
   );
 
   const fixedRoutePromise = chunks.map(async coordinates => {

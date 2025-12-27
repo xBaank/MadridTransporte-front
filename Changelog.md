@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.15.3
+
+- Fix bus location not loading.
+
 ## 1.15.2
 
 - Updated dependencies.
