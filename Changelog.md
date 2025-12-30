@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.15.4
+
+- Improve stop searching.
+
 ## 1.15.3
 
 - Fix bus location not loading.

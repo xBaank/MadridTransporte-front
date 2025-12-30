@@ -49,6 +49,8 @@ export default function FilteredStopsComponent({
       const stopsDbPromise = db.stops
         .filter(
           i =>
+            parseInt(i.stopCode.toLocaleLowerCase()) ===
+              parseInt(normalizedQuery) ||
             i.stopCode.toLocaleLowerCase() === normalizedQuery ||
             i.stopName.toLocaleLowerCase().includes(normalizedQuery),
         )

@@ -37,18 +37,20 @@ import {LineInfo} from "./components/stops/lines/LineInfo";
 import {LineRouteMap} from "./components/stops/lines/LineRouteMap";
 import "./components/i18n";
 import {useTranslation} from "react-i18next";
-import { db } from "./components/stops/api/Db";
+import {db} from "./components/stops/api/Db";
 
 const updateSW = registerSW({
   onNeedRefresh() {
     //TODO Translate this
     const response = confirm("¿Quieres actualizar a la última versión?");
-    var clearPromise = Promise.all([db.stops.clear(),db.lines.clear()])
-     clearPromise.catch(() => {
-      alert("Error al actualizar")
-     }).then(() => {
-      if (response) updateSW(true);
-     })
+    var clearPromise = Promise.all([db.stops.clear(), db.lines.clear()]);
+    clearPromise
+      .catch(() => {
+        alert("Error al actualizar");
+      })
+      .then(() => {
+        if (response) updateSW(true);
+      });
   },
   onOfflineReady() {},
 });
