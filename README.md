@@ -7,7 +7,7 @@ This is the frontend for the MadridTransporte app
 Run
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 and then copy the contents of the build folder to the server that will serve the app.
@@ -19,7 +19,7 @@ Edit the package.json file and change the `homepage` property to the url where t
 Then run
 
 ```bash
-npm run deploy
+pnpm run deploy
 ```
 
 [Backend](https://github.com/xBaank/bus-tracker-back)
