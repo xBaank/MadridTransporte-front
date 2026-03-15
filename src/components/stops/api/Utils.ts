@@ -14,6 +14,57 @@ export const urbanCodMode = 9;
 export const metroLigeroCodMode = 10;
 export const currentStop = 999;
 
+const iconByCodMode: Record<number, string> = {
+  [metroCodMode]: "/icons/metro.png",
+  [trainCodMode]: "/icons/train.png",
+  [emtCodMode]: "/icons/emt.png",
+  [busCodMode]: "/icons/interurban.png",
+  [metroLigeroCodMode]: "/icons/metro_ligero.png",
+  [currentStop]: "/icons/current_stop.png",
+};
+
+const iconAnchorByCodMode: Record<number, [number, number]> = {
+  [metroCodMode]: [24, 32],
+};
+
+const mapUrlByCodMode: Record<number, string> = {
+  [metroCodMode]: "/maps/metro.png",
+  [trainCodMode]: "/maps/cercanias.png",
+};
+
+const lineColorByCodMode: Record<number, string> = {
+  [metroCodMode]: "bg-yellow-500",
+  [metroLigeroCodMode]: "bg-yellow-500",
+  [trainCodMode]: "bg-red-500",
+  [emtCodMode]: "bg-blue-500",
+  [busCodMode]: "bg-green-600",
+};
+
+const codModeByType: Record<TransportType, number> = {
+  metro: metroCodMode,
+  tram: metroLigeroCodMode,
+  train: trainCodMode,
+  emt: emtCodMode,
+  bus: busCodMode,
+};
+
+const transportTypeByCodMode: Record<number, TransportType> = {
+  [metroCodMode]: "metro",
+  [metroLigeroCodMode]: "tram",
+  [trainCodMode]: "train",
+  [emtCodMode]: "emt",
+  [busCodMode]: "bus",
+};
+
+const colorByCodMode: Record<number, string> = {
+  [busCodMode]: "#00cc07",
+  [urbanCodMode]: "#e0000b",
+  [emtCodMode]: "#1c73ff",
+  [metroCodMode]: "#f5cb42",
+  [trainCodMode]: "#f54263",
+  [metroLigeroCodMode]: "#f54263",
+};
+
 export function getLocationLink(
   codMode: number,
   lineCode: string,
@@ -36,69 +87,53 @@ export function getLineUrl(fullLineCode: string, codMode: number) {
 }
 
 export function getIconByCodMode(codMode: number): string {
-  if (codMode === metroCodMode) return "/icons/metro.png";
-  if (codMode === trainCodMode) return "/icons/train.png";
-  if (codMode === emtCodMode) return "/icons/emt.png";
-  if (codMode === busCodMode) return "/icons/interurban.png";
-  if (codMode === metroLigeroCodMode) return "/icons/metro_ligero.png";
-  if (codMode === currentStop) return "/icons/current_stop.png";
-  return "/icons/interurban.png";
+  return iconByCodMode[codMode] ?? "/icons/interurban.png";
 }
 
 export function getIconAnchor(codMode: number): [number, number] {
-  if (codMode === metroCodMode) return [24, 32];
-  return [16, 32];
+  return iconAnchorByCodMode[codMode] ?? [16, 32];
 }
 
 export function getUrlByCodMode(codMode: number): string {
-  if (codMode === metroCodMode) return "/maps/metro.png";
-  if (codMode === trainCodMode) return "/maps/cercanias.png";
-  return "#";
+  return mapUrlByCodMode[codMode] ?? "#";
 }
+
+const stopTimesLinkByCodMode: Record<number, string> = {
+  [metroCodMode]: "/stops/metro",
+  [metroLigeroCodMode]: "/stops/tram",
+  [trainCodMode]: "/stops/train",
+  [emtCodMode]: "/stops/emt",
+  [busCodMode]: "/stops/bus",
+};
 
 export function getStopTimesLinkByMode(
   codMode: number,
   stopCode: string,
   originCode: string | null = null,
 ): string {
-  if (codMode === trainCodMode && originCode != null)
-    return originCode === null
-      ? `/stops/train/${stopCode}/destination`
-      : `/stops/train/times/?origin=${originCode}&destination=${stopCode}`;
+  if (codMode === trainCodMode) {
+    if (originCode === null) {
+      return `/stops/train/${stopCode}/destination`;
+    }
+    return `/stops/train/times/?origin=${originCode}&destination=${stopCode}`;
+  }
 
-  if (codMode === metroCodMode) return `/stops/metro/${stopCode}/times`;
-  if (codMode === metroLigeroCodMode) return `/stops/tram/${stopCode}/times`;
-  if (codMode === trainCodMode) return `/stops/train/${stopCode}/times`;
-  if (codMode === emtCodMode) return `/stops/emt/${stopCode}/times`;
-  if (codMode === busCodMode) return `/stops/bus/${stopCode}/times`;
-  return "#";
+  const basePath = stopTimesLinkByCodMode[codMode];
+  if (basePath === undefined) return "#";
+
+  return `${basePath}/${stopCode}/times`;
 }
 
 export function getLineColorByCodMode(codMode: number): string {
-  if (codMode === metroCodMode) return "bg-yellow-500";
-  if (codMode === metroLigeroCodMode) return "bg-yellow-500";
-  if (codMode === trainCodMode) return "bg-red-500";
-  if (codMode === emtCodMode) return "bg-blue-500";
-  if (codMode === busCodMode) return "bg-green-600";
-  return "bg-red-800";
+  return lineColorByCodMode[codMode] ?? "bg-red-800";
 }
 
 export function getCodModeByType(type: TransportType): number {
-  if (type === "metro") return metroCodMode;
-  if (type === "tram") return metroLigeroCodMode;
-  if (type === "train") return trainCodMode;
-  if (type === "emt") return emtCodMode;
-  if (type === "bus") return busCodMode;
-  return 0;
+  return codModeByType[type] ?? 0;
 }
 
 export function getTransportTypeByCodMode(codMode: number): TransportType {
-  if (codMode === metroCodMode) return "metro";
-  if (codMode === metroLigeroCodMode) return "tram";
-  if (codMode === trainCodMode) return "train";
-  if (codMode === emtCodMode) return "emt";
-  if (codMode === busCodMode) return "bus";
-  return "bus";
+  return transportTypeByCodMode[codMode] ?? "bus";
 }
 
 export function getFavorites(): FavoriteStop[] {
@@ -125,13 +160,7 @@ export function isFavoriteStop(
 }
 
 export function getColor(codMode: number) {
-  if (codMode === busCodMode) return "#00cc07";
-  if (codMode === urbanCodMode) return "#e0000b";
-  if (codMode === emtCodMode) return "#1c73ff";
-  if (codMode === metroCodMode) return "#f5cb42";
-  if (codMode === trainCodMode) return "#f54263";
-  if (codMode === metroLigeroCodMode) return "#f54263";
-  return "#00cc07";
+  return colorByCodMode[codMode] ?? "#00cc07";
 }
 
 export const mapStopToStopLink = (stop: Stop, code?: string): StopLink => {

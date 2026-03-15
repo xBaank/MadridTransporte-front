@@ -2,29 +2,60 @@ import {type Nearest, type Coordinates, type Route} from "./RouteTypes";
 import _ from "lodash";
 import {Shape} from "./Types";
 
-export async function routeTimeFoot(from: Coordinates, to: Coordinates) {
-  const result = await fetch(
-    `https://routing.openstreetmap.de/routed-foot/route/v1/driving/${from.longitude},${from.latitude};${to.longitude},${to.latitude}`,
-  );
-  const data = (await result.json()) as Route;
-  return data;
+const ROUTING_TIMEOUT_MS = 5000;
+const ROUTING_MATCH_TIMEOUT_MS = 3500;
+
+export async function routeTimeFoot(
+  from: Coordinates,
+  to: Coordinates,
+): Promise<Route | null> {
+  try {
+    const result = await fetch(
+      `https://routing.openstreetmap.de/routed-foot/route/v1/driving/${from.longitude},${from.latitude};${to.longitude},${to.latitude}`,
+      {signal: AbortSignal.timeout(ROUTING_TIMEOUT_MS)},
+    );
+    if (!result.ok) return null;
+    const data = (await result.json()) as Route;
+    return data;
+  } catch {
+    return null;
+  }
 }
 
-export async function nearestPoint(coordinates: Coordinates) {
-  const result = await fetch(
-    `https://routing.openstreetmap.de/routed-foot/nearest/v1/driving/${coordinates.longitude},${coordinates.latitude}`,
-  );
-  const data = (await result.json()) as Nearest;
-  return data;
+export async function nearestPoint(
+  coordinates: Coordinates,
+): Promise<Nearest | null> {
+  try {
+    const result = await fetch(
+      `https://routing.openstreetmap.de/routed-foot/nearest/v1/driving/${coordinates.longitude},${coordinates.latitude}`,
+      {signal: AbortSignal.timeout(ROUTING_TIMEOUT_MS)},
+    );
+    if (!result.ok) return null;
+    const data = (await result.json()) as Nearest;
+    return data;
+  } catch {
+    return null;
+  }
 }
 
-export async function routeTimeCar(coordinates: Coordinates[]) {
-  const joined = coordinates.map(i => `${i.longitude},${i.latitude}`).join(";");
-  const result = await fetch(
-    `https://routing.openstreetmap.de/routed-car/route/v1/driving/${joined}?overview=full&geometries=geojson`,
-  );
-  const data = (await result.json()) as Route;
-  return data;
+export async function routeTimeCar(
+  coordinates: Coordinates[],
+): Promise<Route | null> {
+  if (coordinates.length === 0) return null;
+  try {
+    const joined = coordinates
+      .map(i => `${i.longitude},${i.latitude}`)
+      .join(";");
+    const result = await fetch(
+      `https://routing.openstreetmap.de/routed-car/route/v1/driving/${joined}?overview=full&geometries=geojson`,
+      {signal: AbortSignal.timeout(ROUTING_TIMEOUT_MS)},
+    );
+    if (!result.ok) return null;
+    const data = (await result.json()) as Route;
+    return data;
+  } catch {
+    return null;
+  }
 }
 
 export async function fixRouteShapes(coordinates: Shape[]) {
@@ -50,7 +81,7 @@ export async function fixRouteShapes(coordinates: Shape[]) {
 
     const result = await fetch(
       `https://routing.openstreetmap.de/routed-car/match/v1/driving/${joined}?overview=full&geometries=geojson`,
-      {signal: AbortSignal.timeout(3500)},
+      {signal: AbortSignal.timeout(ROUTING_MATCH_TIMEOUT_MS)},
     ).catch(() => null);
 
     if (result == null) {
