@@ -8,23 +8,28 @@ import {getTransportTypeByCodMode} from "../components/stops/api/Utils";
 
 export const defaultPosition = {lat: 40.4165, lng: -3.70256};
 
-export function useColor() {
+function useThemeMode(): "dark" | "light" {
   const theme = useTheme();
-  return theme.palette.mode === "dark" ? "text-white" : "text-black";
+  return theme.palette.mode === "dark" ? "dark" : "light";
+}
+
+export function useColor() {
+  const mode = useThemeMode();
+  return mode === "dark" ? "text-white" : "text-black";
 }
 
 export function useAmberColor() {
-  const theme = useTheme();
-  return theme.palette.mode === "dark" ? "text-amber-400" : "text-amber-700";
+  const mode = useThemeMode();
+  return mode === "dark" ? "text-amber-400" : "text-amber-700";
 }
 export function useRoseColor() {
-  const theme = useTheme();
-  return theme.palette.mode === "dark" ? "text-red-400" : "text-red-700";
+  const mode = useThemeMode();
+  return mode === "dark" ? "text-red-400" : "text-red-700";
 }
 
 export function useBackgroundColor() {
-  const theme = useTheme();
-  return theme.palette.mode === "dark" ? "bg-gray-800" : "bg-white";
+  const mode = useThemeMode();
+  return mode === "dark" ? "bg-gray-800" : "bg-white";
 }
 
 export function useSavedTheme(): [PaletteMode, (value: PaletteMode) => void] {
@@ -53,21 +58,12 @@ export function useSavedTheme(): [PaletteMode, (value: PaletteMode) => void] {
 }
 
 export function changeMinutesDisplay() {
-  const showInMinutes = localStorage.getItem("showInMinutes");
-  if (showInMinutes === "true") {
-    localStorage.setItem("showInMinutes", "false");
-  } else {
-    localStorage.setItem("showInMinutes", "true");
-  }
+  const showInMinutes = localStorage.getItem("showInMinutes") !== "false";
+  localStorage.setItem("showInMinutes", String(!showInMinutes));
 }
 
 export function getMinutesDisplay() {
-  const showInMinutes = localStorage.getItem("showInMinutes");
-  if (showInMinutes === "true") {
-    return true;
-  } else {
-    return false;
-  }
+  return localStorage.getItem("showInMinutes") !== "false";
 }
 
 export function useLine() {

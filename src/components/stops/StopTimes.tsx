@@ -10,7 +10,7 @@ import {
   type TransportType,
 } from "./api/Types";
 import {getStopsTimes, getStopsTimesPlanned} from "./api/Times";
-import {fold} from "fp-ts/lib/Either";
+import {fold, type Either} from "fp-ts/lib/Either";
 import {
   getCodModeByType,
   getIconByCodMode,
@@ -71,43 +71,51 @@ export default function BusStopsTimes() {
     );
   }, [type, code]);
 
-  const getTimesAsync = async () => {
-    if (type === undefined || code === undefined) return;
-    await getStopsTimes(type, code).then(stops =>
+  const fetchData = <T,>(
+    fetchFn: () => Promise<Either<string, T>>,
+    onSuccess: (data: T) => void,
+    onError: (error: string) => void = setError,
+  ) => {
+    fetchFn().then(result =>
       fold(
-        (error: string) => setError(error),
-        (stops: StopTimes) => setStopTimes(stops),
-      )(stops),
+        (error: string) => onError(error),
+        (data: T) => onSuccess(data),
+      )(result),
     );
   };
 
-  const getTimesPlannedAsync = async () => {
+  const getTimesAsync = () => {
     if (type === undefined || code === undefined) return;
-    await getStopsTimesPlanned(type, code).then(stops =>
-      fold(
-        (_error: string) => setStopTimesPlanned(undefined),
-        (stops: StopTimePlanned[]) => setStopTimesPlanned(stops),
-      )(stops),
+    fetchData(
+      () => getStopsTimes(type, code),
+      (stops: StopTimes) => setStopTimes(stops),
     );
   };
 
-  const getSubscriptionsAsync = async () => {
+  const getTimesPlannedAsync = () => {
+    if (type === undefined || code === undefined) return;
+    fetchData(
+      () => getStopsTimesPlanned(type, code),
+      (stops: StopTimePlanned[]) => setStopTimesPlanned(stops),
+      () => setStopTimesPlanned(undefined),
+    );
+  };
+
+  const getSubscriptionsAsync = () => {
     if (type === undefined || code === undefined || token === undefined) return;
-    await getSubscription(type, token, code).then(subscriptions =>
-      fold(
-        (error: string) => setError(error),
-        (subscriptions: Subscriptions | null) => setSubscription(subscriptions),
-      )(subscriptions),
+    fetchData(
+      () => getSubscription(type, token, code),
+      (subscriptions: Subscriptions | null) => setSubscription(subscriptions),
+      () => {},
     );
   };
 
-  const getAlertsAsync = async () => {
+  const getAlertsAsync = () => {
     if (type === undefined || code === undefined) return;
-    getAlertsByTransportType(type).then(alerts =>
-      fold(
-        () => setAlerts([]),
-        (alerts: Alert[]) => setAlerts(alerts),
-      )(alerts),
+    fetchData(
+      () => getAlertsByTransportType(type),
+      (alerts: Alert[]) => setAlerts(alerts),
+      () => setAlerts([]),
     );
   };
 

@@ -9,7 +9,7 @@ import {
   type LineLocations,
 } from "../api/Types";
 import {getLineLocations, getItinerary, getShapes} from "../api/Lines";
-import {fold} from "fp-ts/lib/Either";
+import {fold, type Either} from "fp-ts/lib/Either";
 import ErrorMessage from "../../Error";
 import {useInterval} from "usehooks-ts";
 import {routeToCoordinates, fixRouteShapes, routeTimeCar} from "../api/Route";
@@ -40,6 +40,18 @@ export default function LinesLocationsMap() {
   const [isOnInterval, setIsOnInterval] = useState(false);
   const abortControllerRef = useRef<AbortController | null>(null);
 
+  const fetchData = <T,>(
+    fetchFn: () => Promise<Either<string, T>>,
+    onSuccess: (data: T) => void,
+  ) => {
+    fetchFn().then(result =>
+      fold(
+        (error: string) => setError(error),
+        (data: T) => onSuccess(data),
+      )(result),
+    );
+  };
+
   const getLocations = useCallback(() => {
     if (
       type === undefined ||
@@ -52,23 +64,17 @@ export default function LinesLocationsMap() {
     abortControllerRef.current?.abort();
     abortControllerRef.current = new AbortController();
 
-    getLineLocations(
-      type,
-      fullLineCode,
-      Number.parseInt(direction),
-      stopCode,
-      abortControllerRef.current.signal,
-    )
-      .then(result =>
-        fold(
-          (error: string) => setError(error),
-          (locations: LineLocations) => setLineLocations(locations),
-        )(result),
-      )
-      .catch(async ex => {
-        if (ex instanceof DOMException) return;
-        throw ex;
-      });
+    fetchData(
+      () =>
+        getLineLocations(
+          type,
+          fullLineCode,
+          Number.parseInt(direction),
+          stopCode,
+          abortControllerRef.current!.signal,
+        ),
+      (locations: LineLocations) => setLineLocations(locations),
+    );
   }, [type, fullLineCode, direction, stopCode]);
 
   const getStops = useCallback(() => {
@@ -79,12 +85,10 @@ export default function LinesLocationsMap() {
       stopCode === undefined
     )
       return;
-    getItinerary(type, fullLineCode, Number.parseInt(direction), stopCode).then(
-      result =>
-        fold(
-          (error: string) => setError(error),
-          (stops: ItineraryWithStopsOrder) => setItinerary(stops),
-        )(result),
+    fetchData(
+      () =>
+        getItinerary(type, fullLineCode, Number.parseInt(direction), stopCode),
+      (stops: ItineraryWithStopsOrder) => setItinerary(stops),
     );
   }, [type, fullLineCode, direction, stopCode]);
 
@@ -110,24 +114,28 @@ export default function LinesLocationsMap() {
     )
       return;
 
-    getShapes(type, itinerary.codItinerary).then(shapes =>
-      fold(
-        (error: string) => setError(error),
-        (value: Shape[]) => {
-          if (value.length === 0) {
-            const mapped = routeTimeCar(
-              itinerary.stops.map(i => {
-                return {latitude: i.stopLat, longitude: i.stopLon};
-              }) ?? [],
-            );
-            mapped.then(i => setAllRoute(routeToCoordinates(i)));
-            return;
-          }
-          fixRouteShapes(value).then(shape => {
-            setAllRoute(shape);
+    fetchData(
+      () => getShapes(type, itinerary.codItinerary),
+      (value: Shape[]) => {
+        if (value.length === 0) {
+          const mapped = routeTimeCar(
+            itinerary.stops.map(i => {
+              return {latitude: i.stopLat, longitude: i.stopLon};
+            }) ?? [],
+          );
+          mapped.then(i => {
+            if (i != null) {
+              setAllRoute(routeToCoordinates(i));
+            }
           });
-        },
-      )(shapes),
+          return;
+        }
+        fixRouteShapes(value)
+          .then(shape => {
+            setAllRoute(shape);
+          })
+          .catch(() => {});
+      },
     );
   }, [itinerary, type]);
 
