@@ -90,7 +90,7 @@ export async function fixRouteShapes(coordinates: Shape[]) {
       {signal: AbortSignal.timeout(ROUTING_MATCH_TIMEOUT_MS)},
     ).catch(() => null);
 
-    if (result == null) {
+    if (result == null || !result.ok) {
       return coordinates.map(i => {
         return {lat: i.latitude, lng: i.longitude};
       });

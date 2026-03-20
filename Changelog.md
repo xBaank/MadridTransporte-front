@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.15.6
+
+- Bug fix.
+
 ## 1.15.5
 
 - Bug fixes and updated dependencies.
