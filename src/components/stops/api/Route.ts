@@ -75,6 +75,12 @@ export async function fixRouteShapes(coordinates: Shape[]) {
   );
 
   const fixedRoutePromise = chunks.map(async coordinates => {
+    if (coordinates.length < 2) {
+      return coordinates.map(i => {
+        return {lat: i.latitude, lng: i.longitude};
+      });
+    }
+
     const joined = coordinates
       .map(i => `${i.longitude},${i.latitude}`)
       .join(";");
