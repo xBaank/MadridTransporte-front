@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.15.5
+
+- Bug fixes and updated dependencies.
+
 ## 1.15.4
 
 - Improve stop searching.
@@ -12,7 +16,7 @@
 
 - Updated dependencies.
 - Fixed data not being updated on app updated.
-- Fixed url sharing causing a 404. 
+- Fixed url sharing causing a 404.
 
 ## 1.15.1
 
@@ -66,33 +70,42 @@
 - Improved performance by using IndexedDB async api.
 
 ## 1.12.3
+
 - Remove theme meta tag.
 
 ## 1.12.2
+
 - Updated dependencies.
 - Added `leaflet` as a npm dependency (This will improve loading time and caching).
 - Improved map performance.
 
 ## 1.12.1
+
 - Removed not working abono menu. Now only available on apk version.
 
 ## 1.12.0
+
 - Added button to see stop in map.
 
 ## 1.11.0
+
 - Added accessibility data to stops.
 
 ## 1.10.2
+
 - Persist map zoom between pages.
 
 ## 1.10.1
+
 - Persist map position between pages.
 
 ## 1.10.0
+
 - Updated dependencies.
 - Added planned times for bus stops.
 
 ## 1.9.7
+
 - Updated dependencies.
 - Fixed infinite loading on abono error.
 
@@ -174,8 +187,7 @@
 ## 1.7.11
 
 - Updated dependencies.
-- Changed the way bus locations are shown. 
-
+- Changed the way bus locations are shown.
 
 ## 1.7.10
 
@@ -186,7 +198,6 @@
 - Added pull to refresh.
 - Removed time to reach stop.
 - UI improvements.
-
 
 ## 1.7.8
 
@@ -234,7 +245,6 @@
 - Improved searching.
 - Improved stop clicking.
 
-
 ## 1.6.7
 
 - Optimize.
@@ -281,7 +291,6 @@
 ## 1.5.2
 
 - Removed PC version.
-
 
 ## 1.5.1
 
