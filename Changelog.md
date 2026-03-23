@@ -4,6 +4,7 @@
 
 - Fixed lint error in delete favorite handler.
 - Remove notifications.
+- Updated dependencies.
 
 ## 1.15.6
 
