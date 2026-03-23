@@ -39,16 +39,18 @@ export default function StopsFavorites() {
   async function handleDeleteFavorite(
     favorite: FavoriteStop | TrainFavoriteStop,
   ) {
-    isFavoriteStop(favorite)
-      ? await db.favorites
-          .where({type: favorite.type, code: favorite.code})
-          .delete()
-      : await db.trainFavorites
-          .where({
-            originCode: favorite.originCode,
-            destinationCode: favorite.destinationCode,
-          })
-          .delete();
+    if (isFavoriteStop(favorite)) {
+      await db.favorites
+        .where({type: favorite.type, code: favorite.code})
+        .delete();
+    } else {
+      await db.trainFavorites
+        .where({
+          originCode: favorite.originCode,
+          destinationCode: favorite.destinationCode,
+        })
+        .delete();
+    }
   }
 
   function StopsElement() {
