@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.16.0
+
+- Fixed lint error in delete favorite handler.
+- Remove notifications.
+
 ## 1.15.6
 
 - Bug fix.
