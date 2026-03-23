@@ -23,7 +23,6 @@ import StopNearest from "./components/stops/StopNearest";
 import LinesLocationsMap from "./components/stops/lines/LinesLocationsMap";
 import {setupBackButton} from "./backButtons";
 import {defaultPosition, useSavedTheme} from "./hooks/hooks";
-import {TokenContext, useToken} from "./notifications";
 import {registerSW} from "virtual:pwa-register";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -107,7 +106,6 @@ export default function App() {
   }, [migrated]);
 
   const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
-  const token = useToken();
 
   // This is getting out of hands
   return (
@@ -115,18 +113,16 @@ export default function App() {
       <DataLoadContext.Provider value={dataLoadContext}>
         <MigrationContext.Provider value={migratedContext}>
           <MapContext.Provider value={mapDataContext}>
-            <TokenContext.Provider value={token}>
-              <ColorModeContext.Provider value={colorMode}>
-                <ThemeProvider theme={theme}>
-                  <CssBaseline />
-                  {dataLoaded && migrated ? (
-                    <RouterProvider router={router} />
-                  ) : (
-                    <LoadData />
-                  )}
-                </ThemeProvider>
-              </ColorModeContext.Provider>
-            </TokenContext.Provider>
+            <ColorModeContext.Provider value={colorMode}>
+              <ThemeProvider theme={theme}>
+                <CssBaseline />
+                {dataLoaded && migrated ? (
+                  <RouterProvider router={router} />
+                ) : (
+                  <LoadData />
+                )}
+              </ThemeProvider>
+            </ColorModeContext.Provider>
           </MapContext.Provider>
         </MigrationContext.Provider>
       </DataLoadContext.Provider>

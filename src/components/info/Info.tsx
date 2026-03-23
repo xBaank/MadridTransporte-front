@@ -1,4 +1,3 @@
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import ErrorIcon from "@mui/icons-material/Error";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -71,12 +70,6 @@ export default function Info() {
           - {t("moreInfo.icons.title")}
         </div>
         <ul className="mt-3">
-          <li>
-            <NotificationsIcon className="text-green-500" />
-            <span className="text-sm ml-1">
-              {t("moreInfo.icons.notification")}
-            </span>
-          </li>
           <li>
             <MapIcon color="primary" />
             <span className="text-sm ml-1">{t("moreInfo.icons.map")}</span>

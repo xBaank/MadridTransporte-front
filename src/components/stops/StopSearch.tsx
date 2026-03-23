@@ -5,7 +5,6 @@ import FilteredStopsComponent, {StopComponent} from "./StopsComponent";
 import StopsFavorites from "./StopsFavorites";
 import {mapStopToStopLink} from "./api/Utils";
 import {useParams} from "react-router-dom";
-import AllSubscriptions from "./StopsSubscriptions";
 import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
 import {db} from "./api/Db";
 import {useLiveQuery} from "dexie-react-hooks";
@@ -86,7 +85,6 @@ export default function BusStopSearch({
           {codMode !== null ? null : (
             <>
               <StopsFavorites />
-              <AllSubscriptions />
             </>
           )}
         </div>

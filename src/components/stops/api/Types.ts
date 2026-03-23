@@ -103,28 +103,6 @@ export type TrainFavoriteStop = {
   name: string;
 };
 
-export type Subscriptions = {
-  stopCode: string;
-  codMode: number;
-  stopName?: string;
-  simpleStopCode?: string;
-  linesDestinations: LineDestination[];
-};
-
-export type Subscription = {
-  stopCode: string;
-  codMode: number;
-  stopName?: string;
-  simpleStopCode?: string;
-  lineDestination: LineDestination;
-};
-
-export type LineDestination = {
-  line: string;
-  destination: string;
-  codMode: number;
-};
-
 export type LineLocation = {
   lineCode: string;
   simpleLineCode: string;

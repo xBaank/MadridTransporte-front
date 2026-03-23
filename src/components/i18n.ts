@@ -59,7 +59,6 @@ i18n
             },
             icons: {
               title: "Icons",
-              notification: "Notification with the remaining time every minute",
               map: "View stop on the map",
               accessibility: "Accessible stop",
               location: "Bus location on the map",
@@ -131,14 +130,6 @@ i18n
               alerts: "Error getting the alerts",
               alertsNotTranslated:
                 "The CRTM doesn't provide a translation for alerts, sorry for the inconvenience.",
-            },
-          },
-          subscriptions: {
-            title: "Subscriptions",
-            errors: {
-              subscription: "Error getting the subscriptions",
-              unsubscription: "Error unsubscribing",
-              limit: "You cannot subscribe to more stops",
             },
           },
           times: {
@@ -220,7 +211,6 @@ i18n
             },
             icons: {
               title: "Iconos",
-              notification: "Notificacion con el tiempo restante cada minuto",
               map: "Ver parada en el mapa",
               accessibility: "Parada accesible",
               location: "Ubicacion del autobus en el mapa",
@@ -290,14 +280,6 @@ i18n
               allStops: "Error al obtener las paradas",
               allLines: "Error al obtener las lineas",
               alerts: "Error al obtener las alertas",
-            },
-          },
-          subscriptions: {
-            title: "Suscripciones",
-            errors: {
-              subscription: "Error al obtener las suscripciones",
-              unsubscription: "Error al desuscribirse",
-              limit: "No puede suscribirse a más paradas",
             },
           },
           times: {

@@ -1,4 +1,4 @@
-import {JSX, useContext, useEffect, useState} from "react";
+import {JSX, useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
 import {
   type StopTimePlanned,
@@ -6,7 +6,6 @@ import {
   type Arrive,
   type Stop,
   type StopTimes,
-  type Subscriptions,
   type TransportType,
 } from "./api/Types";
 import {getStopsTimes, getStopsTimesPlanned} from "./api/Times";
@@ -25,13 +24,10 @@ import {
   useRoseColor,
   useAmberColor,
 } from "../../hooks/hooks";
-import StopTimesSubscribe from "./StopTimesSubscribe";
-import {getSubscription} from "./api/Subscriptions";
 import ErrorMessage from "../Error";
 import Line from "../Line";
 import LinesLocationsButton from "./lines/LinesLocationsButton";
 import TrainTimesDestIcon from "./train/TrainTimesDestinationIcon";
-import {TokenContext} from "../../notifications";
 import PullToRefresh from "react-simple-pull-to-refresh";
 import {Alert as AlertMui, Button, Chip, IconButton} from "@mui/material";
 import AccessibleIcon from "@mui/icons-material/Accessible";
@@ -47,8 +43,6 @@ export default function BusStopsTimes() {
   const [stopTimes, setStopTimes] = useState<StopTimes>();
   const [stopTimesPlanned, setStopTimesPlanned] = useState<StopTimePlanned[]>();
   const [alerts, setAlerts] = useState<Alert[]>([]);
-  const [subscription, setSubscription] = useState<Subscriptions | null>(null);
-  const token = useContext(TokenContext);
   const [error, setError] = useState<string>();
   const [isPullable, setIsPullable] = useState(true);
   const [showLive, setShowLive] = useState(true);
@@ -101,15 +95,6 @@ export default function BusStopsTimes() {
     );
   };
 
-  const getSubscriptionsAsync = () => {
-    if (type === undefined || code === undefined || token === undefined) return;
-    fetchData(
-      () => getSubscription(type, token, code),
-      (subscriptions: Subscriptions | null) => setSubscription(subscriptions),
-      () => {},
-    );
-  };
-
   const getAlertsAsync = () => {
     if (type === undefined || code === undefined) return;
     fetchData(
@@ -131,10 +116,6 @@ export default function BusStopsTimes() {
     getAlertsAsync();
   }, [type, code]);
 
-  useEffect(() => {
-    getSubscriptionsAsync();
-  }, [type, code, token]);
-
   if (stop === null)
     return <ErrorMessage message={t("times.errors.notFound")} />;
   if (stop === undefined) return <LoadingSpinner />;
@@ -146,7 +127,6 @@ export default function BusStopsTimes() {
         onRefresh={async () => {
           setIsPullable(false);
           setError(undefined);
-          await getSubscriptionsAsync();
           await getTimesAsync();
           await getTimesPlannedAsync();
           setIsPullable(true);
@@ -365,22 +345,6 @@ export default function BusStopsTimes() {
           </div>
 
           <div className="ml-auto flex p-1 mb-auto ">
-            <StopTimesSubscribe
-              stopId={code!}
-              type={type!}
-              subscription={
-                subscription ?? {
-                  stopCode: code!,
-                  codMode: getCodModeByType(type!),
-                  linesDestinations: [],
-                }
-              }
-              line={{
-                line: arrive.line,
-                destination: arrive.destination,
-                codMode: arrive.codMode,
-              }}
-            />
             {arrive.direction != null ? (
               <LinesLocationsButton
                 codMode={getCodModeByType(type!)}
