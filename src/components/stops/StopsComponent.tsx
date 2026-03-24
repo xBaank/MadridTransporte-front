@@ -231,10 +231,9 @@ export default function FilteredStopsComponent({
         linesDbPromise,
       ]);
 
-      const stopsFiltered =
-        code !== undefined
-          ? stopsDb.filter(i => i.codMode === trainCodMode)
-          : stopsDb;
+      const stopsFiltered = code
+        ? stopsDb.filter(i => i.codMode === trainCodMode)
+        : stopsDb;
 
       setStops(
         stopsFiltered.map(i => {

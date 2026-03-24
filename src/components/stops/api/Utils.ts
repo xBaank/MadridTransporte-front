@@ -112,10 +112,10 @@ export function getStopTimesLinkByMode(
   originCode: string | null = null,
 ): string {
   if (codMode === trainCodMode) {
-    if (originCode === null) {
-      return `/stops/train/${stopCode}/destination`;
+    if (originCode !== null) {
+      return `/stops/train/times/?origin=${originCode}&destination=${stopCode}`;
     }
-    return `/stops/train/times/?origin=${originCode}&destination=${stopCode}`;
+   return `/stops/train/${stopCode}/times`;
   }
 
   const basePath = stopTimesLinkByCodMode[codMode];
@@ -169,7 +169,7 @@ export const mapStopToStopLink = (stop: Stop, code?: string): StopLink => {
     url: getStopTimesLinkByMode(
       stop.codMode,
       stop.stopCode.toString(),
-      code ?? null,
+      code || null,
     ),
     iconUrl: getIconByCodMode(stop.codMode),
   };
