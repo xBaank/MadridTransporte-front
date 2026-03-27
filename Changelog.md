@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.16.1
+
+- Fixed train times.
+- Updated dependencies.
+
 ## 1.16.0
 
 - Fixed lint error in delete favorite handler.
