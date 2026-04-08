@@ -33,11 +33,11 @@ const mapUrlByCodMode: Record<number, string> = {
 };
 
 const lineColorByCodMode: Record<number, string> = {
-  [metroCodMode]: "bg-yellow-500",
-  [metroLigeroCodMode]: "bg-yellow-500",
-  [trainCodMode]: "bg-red-500",
-  [emtCodMode]: "bg-blue-500",
-  [busCodMode]: "bg-green-600",
+  [metroCodMode]: "bg-line-metro",
+  [metroLigeroCodMode]: "bg-line-metroLigero",
+  [trainCodMode]: "bg-line-train",
+  [emtCodMode]: "bg-line-emt",
+  [busCodMode]: "bg-line-bus",
 };
 
 const codModeByType: Record<TransportType, number> = {
@@ -125,7 +125,7 @@ export function getStopTimesLinkByMode(
 }
 
 export function getLineColorByCodMode(codMode: number): string {
-  return lineColorByCodMode[codMode] ?? "bg-red-800";
+  return lineColorByCodMode[codMode] ?? "bg-line-fallback";
 }
 
 export function getCodModeByType(type: TransportType): number {

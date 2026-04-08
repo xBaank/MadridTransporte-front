@@ -44,12 +44,18 @@ export default function MobileNavBar() {
   useEffect(() => setValue(getLocation()), [location]);
 
   return (
-    <Paper sx={{position: "fixed", bottom: 0, left: 0, right: 0}} elevation={3}>
-      <BottomNavigation
-        value={value}
-        onChange={handleChange}
-        style={{height: 70}}
-        className="pb-1">
+    <Paper
+      elevation={0}
+      sx={{
+        position: "fixed",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        borderRadius: 0,
+        paddingBottom: "env(safe-area-inset-bottom)",
+        zIndex: theme => theme.zIndex.appBar,
+      }}>
+      <BottomNavigation value={value} onChange={handleChange} showLabels>
         <BottomNavigationAction
           component={Link}
           to={"/"}

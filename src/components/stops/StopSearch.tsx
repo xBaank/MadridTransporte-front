@@ -1,4 +1,4 @@
-import {IconButton, InputAdornment, List, TextField} from "@mui/material";
+import {IconButton, InputAdornment, List, TextField, Typography} from "@mui/material";
 import {useState} from "react";
 import {Clear, Search} from "@mui/icons-material";
 import FilteredStopsComponent, {StopComponent} from "./StopsComponent";
@@ -34,45 +34,55 @@ export default function BusStopSearch({
 
   return (
     <div>
-      <div className="grid grid-cols-1 p-5 max-w-md mx-auto justify-center">
+      <div className="grid grid-cols-1 px-5 pt-4 pb-4 max-w-md mx-auto justify-center">
         {code !== undefined && stop !== undefined ? (
-          <div className="flex mb-3 border-b-2">
-            <div className="my-auto font-bold text-lg">
+          <div className="mb-4 pb-3 border-b border-[color:var(--mui-palette-divider,rgba(0,0,0,0.12))]">
+            <Typography
+              variant="overline"
+              sx={{color: "text.secondary", fontWeight: 700}}>
               {t("stops.search.trains.origin")}
-            </div>
-            <List>
+            </Typography>
+            <List sx={{p: 0}}>
               <StopComponent stop={mapStopToStopLink(stop, code)} />
             </List>
           </div>
         ) : (
           <></>
         )}
-        <div className=" font-bold text-2xl pb-4">{title}</div>
-        <div className="mb-4 grid">
+        {title && (
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 700,
+              letterSpacing: "-0.01em",
+              mb: 1.5,
+              color: "text.secondary",
+            }}>
+            {title}
+          </Typography>
+        )}
+        <div className="mb-3 grid">
           <TextField
             fullWidth
             value={query}
             id="StopCode"
-            label={t("stops.search.label")}
             placeholder={t("stops.search.placeholder")}
             onChange={search}
             key={code}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <DirectionsBusIcon />
+                  <Search sx={{color: "text.secondary"}} />
                 </InputAdornment>
               ),
               endAdornment:
                 query.trim() === "" ? (
                   <InputAdornment position="end">
-                    <IconButton>
-                      <Search />
-                    </IconButton>
+                    <DirectionsBusIcon sx={{color: "text.secondary", mr: 0.5}} />
                   </InputAdornment>
                 ) : (
                   <InputAdornment position="end">
-                    <IconButton onClick={() => setQuery("")}>
+                    <IconButton onClick={() => setQuery("")} size="small">
                       <Clear />
                     </IconButton>
                   </InputAdornment>
