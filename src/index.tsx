@@ -4,12 +4,8 @@ import "./index.css";
 import {createHashRouter, RouterProvider} from "react-router-dom";
 import BusStopSearch from "./components/stops/StopSearch";
 import BusStopsTimes from "./components/stops/StopTimes";
-import {
-  createTheme,
-  CssBaseline,
-  type PaletteMode,
-  ThemeProvider,
-} from "@mui/material";
+import {CssBaseline, ThemeProvider} from "@mui/material";
+import {buildTheme} from "./theme/theme";
 import DefaultElement from "./components/DefaultElement";
 import BusStopMap from "./components/stops/StopMap";
 import Info from "./components/info/Info";
@@ -52,12 +48,6 @@ const updateSW = registerSW({
       });
   },
   onOfflineReady() {},
-});
-
-export const getDesignTokens = (mode: PaletteMode) => ({
-  palette: {
-    mode,
-  },
 });
 
 export default function App() {
@@ -105,7 +95,7 @@ export default function App() {
     };
   }, [migrated]);
 
-  const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+  const theme = useMemo(() => buildTheme(mode), [mode]);
 
   // This is getting out of hands
   return (

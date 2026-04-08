@@ -1,4 +1,4 @@
-import {AppBar} from "@mui/material";
+import {AppBar, Box, Toolbar, Typography} from "@mui/material";
 import MobileNavBar from "./MobileNavBar";
 import {Link} from "react-router-dom";
 import {JSX} from "react";
@@ -6,23 +6,49 @@ const isDev = import.meta.env.DEV;
 
 export default function DefaultElement({element}: {element: JSX.Element}) {
   return (
-    <div className={`flex flex-col h-screen`}>
-      <AppBar position="static">
-        <div className="flex flex-row p-4">
-          <div className="m-auto">
-            <Link
-              replace={true}
-              className="text-2xl whitespace-nowrap text-white font-bold align-middle"
-              to={"#"}>
-              Madrid Transporte {isDev ? " Dev " : ""}
-            </Link>
-          </div>
-        </div>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100vh",
+        bgcolor: "background.default",
+      }}>
+      <AppBar
+        position="static"
+        sx={{paddingTop: "env(safe-area-inset-top)"}}>
+        <Toolbar sx={{minHeight: 60, justifyContent: "center", gap: 1.5}}>
+          <Box
+            component={Link}
+            replace
+            to={"#"}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1.25,
+              textDecoration: "none",
+              color: "text.primary",
+            }}>
+            <Typography
+              variant="h6"
+              sx={{fontWeight: 700, letterSpacing: "-0.01em"}}>
+              Madrid Transporte{isDev ? " Dev" : ""}
+            </Typography>
+          </Box>
+        </Toolbar>
       </AppBar>
-      <div className="overflow-scroll no-scrollbar flex flex-col w-full h-full pb-16">
+      <Box
+        className="no-scrollbar"
+        sx={{
+          overflow: "auto",
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          flex: 1,
+          pb: "calc(68px + env(safe-area-inset-bottom))",
+        }}>
         {element}
-      </div>
+      </Box>
       <MobileNavBar />
-    </div>
+    </Box>
   );
 }

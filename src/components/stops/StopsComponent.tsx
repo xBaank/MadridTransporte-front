@@ -45,9 +45,16 @@ function LineComponent({line}: {line: LineType}) {
     <ListItemButton
       component={Link}
       to={getLineUrl(line.fullLineCode, line.codMode)}
-      className="flex items-center w-full h-14 space-x-4">
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        width: "100%",
+        height: 64,
+        gap: 1.5,
+        px: 1.5,
+      }}>
       <Line info={{line: line.simpleLineCode, codMode: line.codMode}} />
-      <div className="flex-1 items-center min-w-0 overflow-clip text-sm truncate ">
+      <div className="flex-1 min-w-0 text-sm font-medium truncate">
         {line.routeName}
       </div>
     </ListItemButton>
@@ -59,14 +66,27 @@ export function StopComponent({stop}: {stop: StopLink}) {
     <ListItemButton
       component={Link}
       to={stop.url}
-      className="flex items-center w-full h-14 space-x-4">
-      <div className="flex-shrink-0">
-        <img className="w-8" src={stop.iconUrl} alt="Logo" />
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        width: "100%",
+        height: 64,
+        gap: 1.5,
+        px: 1.5,
+      }}>
+      <div className="flex-shrink-0 flex items-center justify-center w-9 h-9">
+        <img className="w-8 h-8 object-contain" src={stop.iconUrl} alt="Logo" />
       </div>
-      <div className="flex-1 items-center min-w-0 overflow-clip text-sm truncate ">
+      <div className="flex-1 min-w-0 text-sm font-medium truncate">
         {stop.stop.stopName}
       </div>
-      <div className="flex font-bold min-w-0 text-sm truncate">
+      <div
+        className="flex-shrink-0 px-2 py-0.5 text-xs font-bold rounded-md tracking-wide"
+        style={{
+          backgroundColor: "rgba(127, 127, 127, 0.12)",
+          fontFamily:
+            'ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace',
+        }}>
         {stop.stop.stopCode}
       </div>
     </ListItemButton>
@@ -111,31 +131,35 @@ function StopsElement({
 
   if (stops === undefined && lines === undefined && codMode === null) {
     return (
-      <>
-        <div className="flex justify-between gap-1">
-          <Button component={Link} fullWidth to="/maps" variant="contained">
+      <div className="flex flex-col gap-2">
+        <div className="flex gap-2">
+          <Button
+            component={Link}
+            fullWidth
+            to="/maps"
+            variant="outlined"
+            size="large">
             {t("stops.buttons.staticMap")}
           </Button>
           <Button
             component={Link}
             fullWidth
             to="/stops/map"
-            variant="contained">
+            variant="outlined"
+            size="large">
             {t("stops.buttons.map")}
           </Button>
         </div>
-        <div className="flex justify-center mt-2">
-          <Button
-            component={Link}
-            fullWidth
-            to="/stops/nearest"
-            className="w-full"
-            variant="contained">
-            <NearMeIcon />
-            {t("stops.buttons.nearest")}
-          </Button>
-        </div>
-      </>
+        <Button
+          component={Link}
+          fullWidth
+          to="/stops/nearest"
+          variant="contained"
+          size="large"
+          startIcon={<NearMeIcon />}>
+          {t("stops.buttons.nearest")}
+        </Button>
+      </div>
     );
   }
 
@@ -145,7 +169,7 @@ function StopsElement({
 
   return (
     <>
-      <div className="flex my-auto font-bold gap-1">
+      <div className="flex gap-2 mb-1">
         <Chip
           color="primary"
           label={t("stops.search.stops")}
@@ -159,11 +183,11 @@ function StopsElement({
           variant={showLines ? "filled" : "outlined"}
         />
       </div>
-      <div className="mt-2  h-[35rem]">
+      <div className="mt-2 h-[35rem]">
         {stops?.length !== 0 || lines?.length !== 0 ? (
           <List
             rowCount={allData.length}
-            rowHeight={56}
+            rowHeight={64}
             rowProps={{items: allData}}
             rowComponent={ListItem}
           />
