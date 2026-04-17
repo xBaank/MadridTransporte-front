@@ -1,16 +1,14 @@
 /* eslint-disable no-mixed-operators */
 import {Line as LineType, type StopLink} from "./api/Types";
-import {
-  Button,
-  Chip,
-  Divider,
-  LinearProgress,
-  ListItemButton,
-} from "@mui/material";
-import NearMeIcon from "@mui/icons-material/NearMe";
+import {Chip, LinearProgress, ListItemButton} from "@mui/material";
 import {Link} from "react-router-dom";
 import {db} from "./api/Db";
-import {getLineUrl, mapStopToStopLink, trainCodMode} from "./api/Utils";
+import {
+  getColor,
+  getLineUrl,
+  mapStopToStopLink,
+  trainCodMode,
+} from "./api/Utils";
 import {useEffect, useState} from "react";
 import Line from "../Line";
 import {List, type RowComponentProps} from "react-window";
@@ -35,19 +33,35 @@ const ListItem = <T extends (StopLink | LineType) & {type: string}>({
       ) : (
         <LineComponent line={item as LineType} />
       )}
-      <Divider />
+      <div className="mx-3 border-b border-black/5 dark:border-white/5" />
     </div>
   );
 };
+
+function ModeIconTile({
+  codMode,
+  iconUrl,
+}: {
+  codMode: number;
+  iconUrl: string;
+}) {
+  return (
+    <span
+      className="tm-icon-tile tm-icon-tile-sm shrink-0"
+      style={{background: getColor(codMode)}}>
+      <img src={iconUrl} alt="" className="w-6 h-6 object-contain" />
+    </span>
+  );
+}
 
 function LineComponent({line}: {line: LineType}) {
   return (
     <ListItemButton
       component={Link}
       to={getLineUrl(line.fullLineCode, line.codMode)}
-      className="flex items-center w-full h-14 space-x-4">
+      className="flex items-center w-full h-14 gap-3 px-3">
       <Line info={{line: line.simpleLineCode, codMode: line.codMode}} />
-      <div className="flex-1 items-center min-w-0 overflow-clip text-sm truncate ">
+      <div className="flex-1 items-center min-w-0 overflow-clip text-sm truncate">
         {line.routeName}
       </div>
     </ListItemButton>
@@ -59,15 +73,20 @@ export function StopComponent({stop}: {stop: StopLink}) {
     <ListItemButton
       component={Link}
       to={stop.url}
-      className="flex items-center w-full h-14 space-x-4">
-      <div className="flex-shrink-0">
-        <img className="w-8" src={stop.iconUrl} alt="Logo" />
-      </div>
-      <div className="flex-1 items-center min-w-0 overflow-clip text-sm truncate ">
-        {stop.stop.stopName}
-      </div>
-      <div className="flex font-bold min-w-0 text-sm truncate">
-        {stop.stop.stopCode}
+      className="flex items-center w-full h-16 gap-3 px-3">
+      <ModeIconTile
+        codMode={stop.stop.codMode}
+        iconUrl={stop.iconUrl}
+      />
+      <div className="flex-1 items-center min-w-0 overflow-clip">
+        <div className="text-sm font-medium truncate">
+          {stop.stop.stopName}
+        </div>
+        <div
+          className="text-xs font-semibold truncate"
+          style={{color: getColor(stop.stop.codMode)}}>
+          {stop.stop.stopCode}
+        </div>
       </div>
     </ListItemButton>
   );
@@ -102,7 +121,7 @@ function StopsElement({
   if (codMode !== null && query.length === 0) return <></>;
   if (stops?.length === 0 && lines?.length === 0) {
     return (
-      <div className="text-center">
+      <div className="text-center text-sm text-gray-500 dark:text-gray-400 py-8">
         {t("stops.search.notFound")}
         <span className="font-bold">{query}</span>
       </div>
@@ -110,33 +129,7 @@ function StopsElement({
   }
 
   if (stops === undefined && lines === undefined && codMode === null) {
-    return (
-      <>
-        <div className="flex justify-between gap-1">
-          <Button component={Link} fullWidth to="/maps" variant="contained">
-            {t("stops.buttons.staticMap")}
-          </Button>
-          <Button
-            component={Link}
-            fullWidth
-            to="/stops/map"
-            variant="contained">
-            {t("stops.buttons.map")}
-          </Button>
-        </div>
-        <div className="flex justify-center mt-2">
-          <Button
-            component={Link}
-            fullWidth
-            to="/stops/nearest"
-            className="w-full"
-            variant="contained">
-            <NearMeIcon />
-            {t("stops.buttons.nearest")}
-          </Button>
-        </div>
-      </>
-    );
+    return null;
   }
 
   const stopsToShow = showStops ? (stops ?? []) : [];
@@ -145,25 +138,27 @@ function StopsElement({
 
   return (
     <>
-      <div className="flex my-auto font-bold gap-1">
+      <div className="flex my-auto font-bold gap-2">
         <Chip
           color="primary"
           label={t("stops.search.stops")}
           onClick={() => setShowStops(!showStops)}
           variant={showStops ? "filled" : "outlined"}
+          sx={{borderRadius: "999px", fontWeight: 600}}
         />
         <Chip
           color="primary"
           label={t("stops.search.lines")}
           onClick={() => setShowLines(!showLines)}
           variant={showLines ? "filled" : "outlined"}
+          sx={{borderRadius: "999px", fontWeight: 600}}
         />
       </div>
-      <div className="mt-2  h-[35rem]">
+      <div className="mt-2 h-[35rem] tm-card overflow-hidden">
         {stops?.length !== 0 || lines?.length !== 0 ? (
           <List
             rowCount={allData.length}
-            rowHeight={56}
+            rowHeight={64}
             rowProps={{items: allData}}
             rowComponent={ListItem}
           />
@@ -233,7 +228,11 @@ export default function FilteredStopsComponent({
 
       const stopsFiltered = code
         ? stopsDb.filter(i => i.codMode === trainCodMode)
-        : stopsDb;
+        : codMode !== null
+          ? stopsDb.filter(i => i.codMode === codMode)
+          : stopsDb;
+      const linesFiltered =
+        codMode !== null ? linesDb.filter(i => i.codMode === codMode) : linesDb;
 
       setStops(
         stopsFiltered.map(i => {
@@ -241,7 +240,7 @@ export default function FilteredStopsComponent({
         }),
       );
       setLines(
-        linesDb.map(i => {
+        linesFiltered.map(i => {
           return {...i, type: "line"};
         }),
       );
@@ -250,7 +249,7 @@ export default function FilteredStopsComponent({
     }, 350);
 
     return () => clearTimeout(getData);
-  }, [query]);
+  }, [query, codMode, code]);
 
   useEffect(() => {
     if (isQueryProcessed && query.trim() === "") {
@@ -275,3 +274,4 @@ export default function FilteredStopsComponent({
     />
   );
 }
+
