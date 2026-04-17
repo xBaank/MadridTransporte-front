@@ -180,8 +180,11 @@ export default function BusStopsTimes() {
     const isAccessible = stop.wheelchair === 1 || stop.wheelchair === 2;
     return (
       <div
-        className="rounded-2xl p-3"
-        style={{background: hexToRgba(modeColor, 0.12)}}>
+        className="rounded-2xl p-3 border"
+        style={{
+          background: hexToRgba(modeColor, 0.06),
+          borderColor: hexToRgba(modeColor, 0.25),
+        }}>
         <div className="flex items-start gap-3">
           <span
             className="tm-icon-tile shrink-0"
@@ -258,7 +261,7 @@ export default function BusStopsTimes() {
         <div className="tm-card overflow-hidden">
           <div
             className="tm-section-header text-white"
-            style={{background: hexToRgba(modeColor, 0.75)}}>
+            style={{background: modeColor}}>
             {showLive ? t("times.realTime") : t("times.planned")}
           </div>
           <div className="divide-y divide-black/5 dark:divide-white/5">
