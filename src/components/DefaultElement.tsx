@@ -11,14 +11,17 @@ export default function DefaultElement({element}: {element: JSX.Element}) {
         position="static"
         elevation={0}
         sx={{
-          background: "linear-gradient(180deg, #d4646e 0%, #c7525c 100%)",
-          borderBottomLeftRadius: 18,
-          borderBottomRightRadius: 18,
+          background: theme => theme.palette.background.paper,
+          color: "text.primary",
+          borderBottomLeftRadius: 20,
+          borderBottomRightRadius: 20,
+          borderBottom: "1px solid",
+          borderColor: "divider",
         }}>
         <Toolbar sx={{minHeight: 64, justifyContent: "center"}}>
           <Link
             replace={true}
-            className="text-xl whitespace-nowrap text-white font-bold tracking-tight"
+            className="text-xl whitespace-nowrap font-bold tracking-tight text-gray-900 dark:text-white"
             to={"#"}>
             Madrid Transporte{isDev ? " Dev" : ""}
           </Link>
