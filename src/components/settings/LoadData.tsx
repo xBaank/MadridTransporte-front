@@ -137,7 +137,7 @@ export default function LoadData() {
   function InfoMessage() {
     if (success) {
       return (
-        <Alert className="mb-2" variant="outlined" severity="success" color="primary">
+        <Alert className="mb-2" variant="outlined" severity="success" color="success">
           {t("settings.loadData.success")}
         </Alert>
       );
