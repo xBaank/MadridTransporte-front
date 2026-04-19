@@ -96,7 +96,7 @@ export default function AbonoNFC() {
     return (
       <div className="flex flex-col items-center text-center px-4 pt-6">
         <div className="relative w-56 h-40 mb-6">
-          <div className="absolute top-6 left-2 w-44 h-28 rounded-2xl bg-[#d4646e] shadow-lg" />
+          <div className="absolute top-6 left-2 w-44 h-28 rounded-2xl bg-[#5b8db8] shadow-lg" />
           <div className="absolute top-0 left-10 w-44 h-28 rounded-2xl bg-gray-900 dark:bg-gray-800 border border-gray-700 shadow-xl flex flex-col justify-between p-3">
             <div className="flex justify-between items-start">
               <div className="w-6 h-4 bg-red-500 rounded-sm" />
@@ -113,8 +113,8 @@ export default function AbonoNFC() {
           </div>
         </div>
 
-        <div className="w-16 h-16 rounded-full bg-[#d4646e]/20 border-2 border-[#d4646e] flex items-center justify-center mb-4">
-          <ContactlessIcon sx={{color: "#d4646e", fontSize: 36}} />
+        <div className="w-16 h-16 rounded-full bg-[#5b8db8]/20 border-2 border-[#5b8db8] flex items-center justify-center mb-4">
+          <ContactlessIcon sx={{color: "#5b8db8", fontSize: 36}} />
         </div>
 
         <h1 className="text-xl font-bold mb-1">{t("abono.title")}</h1>
@@ -131,7 +131,7 @@ export default function AbonoNFC() {
       <div className="px-4 pt-4 pb-6 max-w-md mx-auto">
         <div className="tm-card p-4">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-11 h-11 rounded-xl bg-[#d4646e] flex items-center justify-center">
+            <div className="w-11 h-11 rounded-xl bg-[#5b8db8] flex items-center justify-center">
               <ContactlessIcon className="text-white" />
             </div>
             <div>

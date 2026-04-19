@@ -112,6 +112,13 @@ i18n
               map: "Map",
               nearest: "Nearest stop",
             },
+            tiles: {
+              emt: "EMT",
+              bus: "Intercity",
+              metro: "Metro",
+              train: "Cercanías",
+              tram: "Tramway",
+            },
           },
           lines: {
             rute: "Rute",
@@ -265,6 +272,13 @@ i18n
               staticMap: "Planos",
               map: "Mapa",
               nearest: "Parada mas cercana",
+            },
+            tiles: {
+              emt: "EMT",
+              bus: "Interurbanos",
+              metro: "Metro",
+              train: "Cercanías",
+              tram: "Tranvía",
             },
           },
           lines: {

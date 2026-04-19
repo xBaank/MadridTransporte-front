@@ -213,41 +213,39 @@ export default function BusStopsTimes() {
               <RenderAffectedBanner alerts={alerts} stopId={code!} />
             </div>
           </div>
-          <div className="flex flex-col items-center gap-1 shrink-0">
-            {isAccessible ? (
-              <div className="flex flex-col items-center">
-                <AccessibleIcon style={{color: modeColor}} />
-                <span className="text-[10px] font-semibold text-gray-700 dark:text-gray-200">
-                  {t("times.accessibility")}
-                </span>
-              </div>
-            ) : null}
+          <div className="flex items-center gap-0 shrink-0">
+            {type === "train" ? <TrainTimesDestIcon code={code!} /> : null}
+            <IconButton
+              component={Link}
+              size="small"
+              to={getMapLocationLink(stop.fullStopCode)}>
+              <MapIcon color="primary" />
+            </IconButton>
+            <FavoriteSave
+              isFavorite={isFavorite}
+              saveF={async (name: string) =>
+                await db.favorites.add({
+                  type: type!,
+                  code: code!,
+                  name,
+                  cod_mode: getCodModeByType(type!),
+                })
+              }
+              deleteF={async () => {
+                await db.favorites.where({type: type!, code: code!}).delete();
+              }}
+              defaultName={stop.stopName}
+            />
           </div>
         </div>
-        <div className="flex items-center justify-end gap-1 mt-2">
-          {type === "train" ? <TrainTimesDestIcon code={code!} /> : null}
-          <IconButton
-            component={Link}
-            size="small"
-            to={getMapLocationLink(stop.fullStopCode)}>
-            <MapIcon color="primary" />
-          </IconButton>
-          <FavoriteSave
-            isFavorite={isFavorite}
-            saveF={async (name: string) =>
-              await db.favorites.add({
-                type: type!,
-                code: code!,
-                name,
-                cod_mode: getCodModeByType(type!),
-              })
-            }
-            deleteF={async () => {
-              await db.favorites.where({type: type!, code: code!}).delete();
-            }}
-            defaultName={stop.stopName}
-          />
-        </div>
+        {isAccessible ? (
+          <div className="flex items-center gap-1.5 mt-2" style={{color: modeColor}}>
+            <AccessibleIcon fontSize="small" />
+            <span className="text-xs font-semibold">
+              {t("times.accessibility")}
+            </span>
+          </div>
+        ) : null}
       </div>
     );
   }
@@ -269,7 +267,7 @@ export default function BusStopsTimes() {
               <RenderTimesOrEmpty times={stopTimes} />
             ) : (
               <>
-                <AlertMui severity="warning" className="rounded-none">
+                <AlertMui severity="warning" className="rounded-none m-3">
                   {t("times.plannedAlert")}
                 </AlertMui>
                 <RenderTimesPlannedOrEmpty times={stopTimesPlanned} />
@@ -278,19 +276,20 @@ export default function BusStopsTimes() {
           </div>
         </div>
 
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={() => setShowLive(!showLive)}
-          sx={{borderRadius: "999px", py: 1.2}}>
-          {showLive ? t("times.seePlanned") : t("times.seeLive")}
-        </Button>
-
-        <RenderAlerts
-          alerts={alerts}
-          incidents={stopTimes?.incidents ?? []}
-        />
+        <div className="flex gap-2">
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={() => setShowLive(!showLive)}
+            sx={{borderRadius: "999px", py: 1.2, backgroundColor: modeColor, "&:hover": {backgroundColor: modeColor, filter: "brightness(0.9)"}}}>
+            {showLive ? t("times.seePlanned") : t("times.seeLive")}
+          </Button>
+          <RenderAlerts
+            alerts={alerts}
+            incidents={stopTimes?.incidents ?? []}
+            color={modeColor}
+          />
+        </div>
       </div>
     );
   }

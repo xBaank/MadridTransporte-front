@@ -47,7 +47,7 @@ export default function MobileNavBar() {
 
   useEffect(() => setValue(getLocation()), [location]);
 
-  const activeColor = "#d4646e";
+  const activeColor = "#5b8db8";
 
   return (
     <Paper

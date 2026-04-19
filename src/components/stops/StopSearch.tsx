@@ -20,7 +20,7 @@ import {useTranslation} from "react-i18next";
 
 type QuickTile = {
   key: string;
-  label: string;
+  labelKey: string;
   bg: string;
   icon: string;
   codMode: number | null;
@@ -29,35 +29,35 @@ type QuickTile = {
 const QUICK_TILES: QuickTile[] = [
   {
     key: "emt",
-    label: "EMT",
+    labelKey: "stops.tiles.emt",
     bg: "#4a7fb8",
     icon: "/icons/emt.png",
     codMode: emtCodMode,
   },
   {
     key: "bus",
-    label: "Interurbanos",
+    labelKey: "stops.tiles.bus",
     bg: "#5fa677",
     icon: "/icons/interurban.png",
     codMode: busCodMode,
   },
   {
     key: "metro",
-    label: "Metro",
+    labelKey: "stops.tiles.metro",
     bg: "#5b7a95",
     icon: "/icons/metro.png",
     codMode: metroCodMode,
   },
   {
     key: "train",
-    label: "Cercanías",
+    labelKey: "stops.tiles.train",
     bg: "#8e5fb0",
     icon: "/icons/train.png",
     codMode: trainCodMode,
   },
   {
     key: "tram",
-    label: "Tram",
+    labelKey: "stops.tiles.tram",
     bg: "#c9a94e",
     icon: "/icons/metro_ligero.png",
     codMode: metroLigeroCodMode,
@@ -110,17 +110,17 @@ export default function BusStopSearch({
               className="tm-icon-tile shadow-sm"
               style={{
                 background: tile.bg,
-                outline: selected ? "3px solid #d4646e" : "none",
+                outline: selected ? "3px solid #5b8db8" : "none",
                 outlineOffset: 2,
               }}>
               <img
                 src={tile.icon}
-                alt={tile.label}
+                alt={t(tile.labelKey)}
                 className="w-8 h-8 object-contain"
               />
             </span>
             <span className="text-xs font-medium truncate max-w-full text-gray-700 dark:text-gray-200">
-              {tile.label}
+              {t(tile.labelKey)}
             </span>
           </button>
         );

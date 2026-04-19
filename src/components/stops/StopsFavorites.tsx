@@ -108,7 +108,6 @@ export default function StopsFavorites() {
               </div>
             </div>
           </Link>
-          <FavoriteIcon fontSize="small" className="text-brand" />
           <IconButton size="small" onClick={() => setOpen(true)}>
             <DeleteIcon className="text-red-500" fontSize="small" />
           </IconButton>
@@ -155,7 +154,6 @@ export default function StopsFavorites() {
               </div>
             </div>
           </Link>
-          <FavoriteIcon fontSize="small" className="text-brand" />
           <IconButton size="small" onClick={() => setOpen(true)}>
             <DeleteIcon className="text-red-500" fontSize="small" />
           </IconButton>

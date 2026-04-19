@@ -51,7 +51,7 @@ export default function ThemedMap({
       </MapContainer>
       <div
         style={{zIndex: 500}}
-        className={`${useBackgroundColor()} absolute bottom-24 right-5 rounded-full`}>
+        className={`${useBackgroundColor()} absolute bottom-32 right-5 rounded-full`}>
         <IconButton onClick={onLocateClick} size="large">
           <MyLocationIcon color="primary" fontSize="large"></MyLocationIcon>
         </IconButton>
