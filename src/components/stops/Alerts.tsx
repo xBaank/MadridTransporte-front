@@ -9,9 +9,11 @@ import _ from "lodash";
 export default function RenderAlerts({
   alerts,
   incidents,
+  color,
 }: {
   alerts: AlertType[];
   incidents: Incident[];
+  color?: string;
 }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -40,12 +42,12 @@ export default function RenderAlerts({
   if (alerts.length === 0 && incidents.length === 0) return <></>;
 
   return (
-    <div className="mt-2">
+    <div className="w-full">
       <Button
-        color="error"
+        fullWidth
         variant="contained"
         onClick={handleOpen}
-        className={`w-full`}>
+        sx={{borderRadius: "999px", py: 1.2, backgroundColor: color, "&:hover": {backgroundColor: color, filter: "brightness(0.9)"}}}>
         {t("times.alerts")}
       </Button>
       <Modal

@@ -2,7 +2,7 @@ import L from "leaflet";
 import {useEffect, useState} from "react";
 import {useMap, useMapEvents} from "react-leaflet";
 
-export default function LocationMarker() {
+export default function LocationMarker({onLocationFound}: {onLocationFound?: () => void}) {
   const [circle] = useState<L.Circle>(L.circle({lat: 0, lng: 0}, {radius: 16}));
   const map = useMap();
 
@@ -38,6 +38,7 @@ export default function LocationMarker() {
     locationfound: e => {
       circle.setLatLng(e.latlng);
       map.flyTo(e.latlng, 16, {animate: true, duration: 0.3});
+      onLocationFound?.();
     },
   });
 

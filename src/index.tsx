@@ -1,4 +1,4 @@
-import {useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import {createHashRouter, RouterProvider} from "react-router-dom";
@@ -57,6 +57,71 @@ const updateSW = registerSW({
 export const getDesignTokens = (mode: PaletteMode) => ({
   palette: {
     mode,
+    primary: {
+      main: mode === "dark" ? "#5b8db8" : "#3a6d99",
+      light: "#7badd4",
+      dark: "#2a5070",
+      contrastText: "#ffffff",
+    },
+    secondary: {
+      main: mode === "dark" ? "#5fa677" : "#3f8758",
+      contrastText: "#ffffff",
+    },
+    background: {
+      default: mode === "dark" ? "#0f1114" : "#f5f6f8",
+      paper: mode === "dark" ? "#1a1d22" : "#ffffff",
+    },
+  },
+  shape: {
+    borderRadius: 14,
+  },
+  typography: {
+    fontFamily:
+      "Roboto, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
+    button: {
+      textTransform: "none",
+      fontWeight: 600,
+    },
+  },
+  components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundImage: "none",
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundImage: "none",
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 12,
+          textTransform: "none",
+          fontWeight: 600,
+        },
+      },
+    },
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          borderRadius: 10,
+          fontWeight: 600,
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: 16,
+        },
+      },
+    },
   },
 });
 
@@ -68,6 +133,10 @@ export default function App() {
     pos: defaultPosition,
     zoom: 16,
   });
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", mode);
+  }, [mode]);
 
   const colorMode = useMemo(
     () => ({

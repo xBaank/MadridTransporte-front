@@ -112,6 +112,13 @@ i18n
               map: "Map",
               nearest: "Nearest stop",
             },
+            tiles: {
+              emt: "EMT",
+              bus: "Intercity",
+              metro: "Metro",
+              train: "Cercanías",
+              tram: "Tramway",
+            },
           },
           lines: {
             rute: "Rute",
@@ -138,6 +145,8 @@ i18n
             zone: "Zone",
             alerts: "Alerts",
             platform: "Platform",
+            realTime: "Real Time",
+            planned: "Planned",
             plannedAlert:
               "These times are planned and may not match the actual arrival time.",
             seePlanned: "See planned times",
@@ -264,6 +273,13 @@ i18n
               map: "Mapa",
               nearest: "Parada mas cercana",
             },
+            tiles: {
+              emt: "EMT",
+              bus: "Interurbanos",
+              metro: "Metro",
+              train: "Cercanías",
+              tram: "Tranvía",
+            },
           },
           lines: {
             rute: "Ruta",
@@ -288,6 +304,8 @@ i18n
             zone: "Zona",
             alerts: "Avisos",
             platform: "Anden",
+            realTime: "Tiempo Real",
+            planned: "Planificado",
             plannedAlert:
               "Estos tiempos son planificados y pueden no corresponder con la hora de llegada real.",
             seePlanned: "Ver tiempos planificados",

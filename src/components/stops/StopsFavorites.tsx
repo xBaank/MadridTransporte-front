@@ -1,28 +1,41 @@
 import {useState} from "react";
 import {type FavoriteStop, type TrainFavoriteStop} from "./api/Types";
 import {
+  getColor,
   getIconByCodMode,
   getStopTimesLinkByMode,
   isFavoriteStop,
   trainCodMode,
 } from "./api/Utils";
-import GradeIcon from "@mui/icons-material/Grade";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Dialog,
   DialogTitle,
   DialogActions,
   Button,
-  List,
-  Divider,
-  ListItemButton,
   IconButton,
-  ListItem,
 } from "@mui/material";
 import {Link} from "react-router-dom";
 import {useLiveQuery} from "dexie-react-hooks";
 import {db} from "./api/Db";
 import {useTranslation} from "react-i18next";
+
+function ModeIconTile({
+  codMode,
+  iconUrl,
+}: {
+  codMode: number;
+  iconUrl: string;
+}) {
+  return (
+    <span
+      className="tm-icon-tile tm-icon-tile-sm shrink-0"
+      style={{background: getColor(codMode)}}>
+      <img src={iconUrl} alt="" className="w-6 h-6 object-contain" />
+    </span>
+  );
+}
 
 export default function StopsFavorites() {
   const {t} = useTranslation();
@@ -54,77 +67,60 @@ export default function StopsFavorites() {
   }
 
   function StopsElement() {
+    if (!favorites || favorites.length === 0) return null;
     return (
-      <>
-        <div className="p-3 pl-0 justify-start align-baseline font-bold flex">
-          <div>{t("favorites.title")}</div>
-          <GradeIcon className="p-1 text-yellow-500" />
+      <div className="mt-2">
+        <div className="flex items-center gap-2 pb-2 px-1">
+          <FavoriteIcon fontSize="small" className="text-brand" />
+          <div className="font-semibold text-sm">{t("favorites.title")}</div>
         </div>
-        <List className="max-w-md">
-          {favorites?.map((stop, index) => (
-            <div key={index}>
-              {isFavoriteStop(stop) ? (
-                <FavoriteStop key={index} stop={stop} />
-              ) : (
-                <TrainFavoriteStop key={index} stop={stop} />
-              )}
-              <Divider />
-            </div>
-          ))}
-        </List>
-      </>
+        <div className="tm-card overflow-hidden divide-y divide-black/5 dark:divide-white/5">
+          {favorites?.map((stop, index) =>
+            isFavoriteStop(stop) ? (
+              <FavoriteStopRow key={index} stop={stop} />
+            ) : (
+              <TrainFavoriteStopRow key={index} stop={stop} />
+            ),
+          )}
+        </div>
+      </div>
     );
   }
 
-  function FavoriteStop({stop}: {stop: FavoriteStop}) {
+  function FavoriteStopRow({stop}: {stop: FavoriteStop}) {
     const [open, setOpen] = useState<boolean>(false);
-    const handleClickOpen = () => {
-      setOpen(true);
-    };
-
-    const handleClose = () => {
-      setOpen(false);
-    };
-
     return (
       <>
-        <ListItem
-          className="h-14"
-          secondaryAction={
-            <IconButton edge="end" onClick={handleClickOpen}>
-              <DeleteIcon className=" text-red-500" />
-            </IconButton>
-          }
-          disablePadding>
-          <ListItemButton
-            component={Link}
-            className="pl-2 flex items-center h-full"
+        <div className="flex items-center h-16 px-3 gap-3 transition-colors hover:bg-black/5 dark:hover:bg-white/5">
+          <Link
+            className="flex items-center flex-1 min-w-0 gap-3"
             to={getStopTimesLinkByMode(stop.cod_mode, stop.code.toString())}>
-            <div className="flex-shrink-0">
-              <img
-                className="w-8"
-                src={getIconByCodMode(stop.cod_mode)}
-                alt="Logo"
-              />
+            <ModeIconTile
+              codMode={stop.cod_mode}
+              iconUrl={getIconByCodMode(stop.cod_mode)}
+            />
+            <div className="flex-1 items-center min-w-0 overflow-clip">
+              <div className="text-sm font-medium truncate">{stop.name}</div>
+              <div
+                className="text-xs font-semibold truncate"
+                style={{color: getColor(stop.cod_mode)}}>
+                {stop.code}
+              </div>
             </div>
-            <div className="flex-1 items-center min-w-0 px-2 mr-2 overflow-clip">
-              <div className="text-sm truncate">{stop.name}</div>
-            </div>
-            <div className="flex font-bold min-w-0">
-              <div className="text-sm truncate">{stop.code}</div>
-            </div>
-          </ListItemButton>
-        </ListItem>
-        <Dialog open={open} onClose={handleClose}>
+          </Link>
+          <IconButton size="small" onClick={() => setOpen(true)}>
+            <DeleteIcon className="text-red-500" fontSize="small" />
+          </IconButton>
+        </div>
+        <Dialog open={open} onClose={() => setOpen(false)}>
           <DialogTitle>
             {t("favorites.delete").replace("_name_", stop.name)}
           </DialogTitle>
           <DialogActions>
-            <Button onClick={handleClose}>{t("favorites.cancel")}</Button>
-            <Button
-              onClick={() => {
-                handleDeleteFavorite(stop);
-              }}>
+            <Button onClick={() => setOpen(false)}>
+              {t("favorites.cancel")}
+            </Button>
+            <Button onClick={() => handleDeleteFavorite(stop)}>
               {t("favorites.confirm")}
             </Button>
           </DialogActions>
@@ -133,60 +129,44 @@ export default function StopsFavorites() {
     );
   }
 
-  function TrainFavoriteStop({stop}: {stop: TrainFavoriteStop}) {
+  function TrainFavoriteStopRow({stop}: {stop: TrainFavoriteStop}) {
     const [open, setOpen] = useState<boolean>(false);
-    const handleClickOpen = () => {
-      setOpen(true);
-    };
-
-    const handleClose = () => {
-      setOpen(false);
-    };
     return (
       <>
-        <ListItem
-          className="h-14"
-          secondaryAction={
-            <IconButton edge="end" onClick={handleClickOpen}>
-              <DeleteIcon className=" text-red-500" />
-            </IconButton>
-          }
-          disablePadding>
-          <ListItemButton
-            component={Link}
+        <div className="flex items-center h-16 px-3 gap-3 transition-colors hover:bg-black/5 dark:hover:bg-white/5">
+          <Link
             to={getStopTimesLinkByMode(
               trainCodMode,
               stop.destinationCode,
               stop.originCode,
             )}
-            className="pl-2 flex items-center h-full">
-            <div className="flex-shrink-0">
-              <img
-                className="w-8"
-                src={getIconByCodMode(trainCodMode)}
-                alt="Logo"
-              />
-            </div>
-            <div className="flex-1 items-center min-w-0 px-2 mr-2 overflow-clip">
-              <div className="text-sm truncate ">{stop.name}</div>
-            </div>
-            <div className="flex font-bold min-w-0">
-              <div className="text-sm truncate">
+            className="flex items-center flex-1 min-w-0 gap-3">
+            <ModeIconTile
+              codMode={trainCodMode}
+              iconUrl={getIconByCodMode(trainCodMode)}
+            />
+            <div className="flex-1 items-center min-w-0 overflow-clip">
+              <div className="text-sm font-medium truncate">{stop.name}</div>
+              <div
+                className="text-xs font-semibold truncate"
+                style={{color: getColor(trainCodMode)}}>
                 {stop.originCode} - {stop.destinationCode}
               </div>
             </div>
-          </ListItemButton>
-        </ListItem>
-        <Dialog open={open} onClose={handleClose}>
+          </Link>
+          <IconButton size="small" onClick={() => setOpen(true)}>
+            <DeleteIcon className="text-red-500" fontSize="small" />
+          </IconButton>
+        </div>
+        <Dialog open={open} onClose={() => setOpen(false)}>
           <DialogTitle>
             {t("favorites.delete").replace("_name_", stop.name)}
           </DialogTitle>
           <DialogActions>
-            <Button onClick={handleClose}>{t("favorites.cancel")}</Button>
-            <Button
-              onClick={() => {
-                handleDeleteFavorite(stop);
-              }}>
+            <Button onClick={() => setOpen(false)}>
+              {t("favorites.cancel")}
+            </Button>
+            <Button onClick={() => handleDeleteFavorite(stop)}>
               {t("favorites.confirm")}
             </Button>
           </DialogActions>

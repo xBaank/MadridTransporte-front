@@ -12,6 +12,7 @@ import {getStopsTimes, getStopsTimesPlanned} from "./api/Times";
 import {fold, type Either} from "fp-ts/lib/Either";
 import {
   getCodModeByType,
+  getColor,
   getIconByCodMode,
   getMapLocationLink,
 } from "./api/Utils";
@@ -29,7 +30,7 @@ import Line from "../Line";
 import LinesLocationsButton from "./lines/LinesLocationsButton";
 import TrainTimesDestIcon from "./train/TrainTimesDestinationIcon";
 import PullToRefresh from "react-simple-pull-to-refresh";
-import {Alert as AlertMui, Button, Chip, IconButton} from "@mui/material";
+import {Alert as AlertMui, Button, IconButton} from "@mui/material";
 import AccessibleIcon from "@mui/icons-material/Accessible";
 import ErrorIcon from "@mui/icons-material/Error";
 import MapIcon from "@mui/icons-material/Map";
@@ -37,6 +38,15 @@ import {db} from "./api/Db";
 import {useLiveQuery} from "dexie-react-hooks";
 import {FavoriteSave} from "../favorites/FavoriteSave";
 import {useTranslation} from "react-i18next";
+
+function hexToRgba(hex: string, alpha: number): string {
+  const normalized = hex.replace("#", "");
+  const bigint = parseInt(normalized, 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
 
 export default function BusStopsTimes() {
   const {type, code} = useParams<{type: TransportType; code: string}>();
@@ -137,22 +147,13 @@ export default function BusStopsTimes() {
     </>
   );
 
-  function RenderWheelchairIcon({value}: {value: number}) {
-    if (value === 0) return null;
-    if (value === 1 || value === 2) {
-      return (
-        <div className="my-auto font-bold">
-          <Chip
-            color="primary"
-            icon={<AccessibleIcon />}
-            label={t("times.accessibility")}
-          />
-        </div>
-      );
-    }
-  }
-
-  function RenderAffected({alerts, stopId}: {alerts: Alert[]; stopId: string}) {
+  function RenderAffectedBanner({
+    alerts,
+    stopId,
+  }: {
+    alerts: Alert[];
+    stopId: string;
+  }) {
     const [isAffected, setIsAffected] = useState<boolean | null>(null);
 
     useEffect(() => {
@@ -165,115 +166,140 @@ export default function BusStopsTimes() {
       );
     }, [alerts, stopId]);
 
-    if (isAffected === null) return <></>;
-
-    if (isAffected)
-      return (
-        <div className="my-auto font-bold">
-          <Chip
-            color="error"
-            icon={<ErrorIcon />}
-            label={t("times.affected")}
-          />
-        </div>
-      );
-
-    return null;
-  }
-
-  function RenderZone({value}: {value: string}) {
-    const upperValue = value.toUpperCase();
-    if (upperValue.trim().length === 0) return null;
+    if (!isAffected) return null;
     return (
-      <div className="my-auto font-bold">
-        <Chip color="primary" label={`${t("times.zone")} ${upperValue}`} />
+      <div className="flex items-center gap-2 text-red-500 text-xs font-semibold">
+        <ErrorIcon fontSize="small" />
+        <span>{t("times.affected")}</span>
       </div>
     );
   }
 
-  function RenderAccessibility({stop}: {stop: Stop}) {
+  function RenderHeaderCard({stop}: {stop: Stop}) {
+    const modeColor = getColor(stop.codMode);
+    const isAccessible = stop.wheelchair === 1 || stop.wheelchair === 2;
     return (
-      <div className="py-2 px-1 flex space-x-1">
-        <RenderWheelchairIcon value={stop.wheelchair} />
-        <RenderZone value={stop.zone} />
-        <RenderAffected alerts={alerts} stopId={code!} />
+      <div
+        className="rounded-2xl p-3 border"
+        style={{
+          background: hexToRgba(modeColor, 0.06),
+          borderColor: hexToRgba(modeColor, 0.25),
+        }}>
+        <div className="flex items-start gap-3">
+          <span
+            className="tm-icon-tile shrink-0"
+            style={{background: modeColor}}>
+            <img
+              src={getIconByCodMode(stop.codMode)}
+              alt=""
+              className="w-8 h-8 object-contain"
+            />
+          </span>
+          <div className="flex-1 min-w-0">
+            <div className="font-bold text-base leading-tight">
+              {stop.stopName}
+            </div>
+            <div
+              className="font-semibold text-sm mt-1"
+              style={{color: modeColor}}>
+              {stop.stopCode}
+            </div>
+            {stop.zone.trim().length > 0 ? (
+              <div className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
+                {t("times.zone")} {stop.zone.toUpperCase()}
+              </div>
+            ) : null}
+            <div className="mt-1">
+              <RenderAffectedBanner alerts={alerts} stopId={code!} />
+            </div>
+          </div>
+          <div className="flex items-center gap-0 shrink-0">
+            {type === "train" ? <TrainTimesDestIcon code={code!} /> : null}
+            <IconButton
+              component={Link}
+              size="small"
+              to={getMapLocationLink(stop.fullStopCode)}>
+              <MapIcon color="primary" />
+            </IconButton>
+            <FavoriteSave
+              isFavorite={isFavorite}
+              saveF={async (name: string) =>
+                await db.favorites.add({
+                  type: type!,
+                  code: code!,
+                  name,
+                  cod_mode: getCodModeByType(type!),
+                })
+              }
+              deleteF={async () => {
+                await db.favorites.where({type: type!, code: code!}).delete();
+              }}
+              defaultName={stop.stopName}
+            />
+          </div>
+        </div>
+        {isAccessible ? (
+          <div className="flex items-center gap-1.5 mt-2" style={{color: modeColor}}>
+            <AccessibleIcon fontSize="small" />
+            <span className="text-xs font-semibold">
+              {t("times.accessibility")}
+            </span>
+          </div>
+        ) : null}
       </div>
     );
   }
 
   function RenderTimes({stop, stopTimes}: {stop: Stop; stopTimes?: StopTimes}) {
+    const modeColor = getColor(stop.codMode);
     return (
-      <>
-        <div
-          className={`grid grid-cols-1 p-5 max-w-md mx-auto w-full justify-center`}>
-          <div className={`flex items-end justify-start border-b`}>
-            <img
-              className="w-8 max-md:w-7 mr-2 my-auto"
-              src={getIconByCodMode(stop.codMode)}
-              alt="Logo"
-            />
-            <div
-              className={`flex items-center gap-2 whitespace-nowrap overflow-scroll no-scrollbar my-auto`}>
-              <div className="font-bold mx-1">{stop.stopCode}</div>
-              <div>{stop.stopName}</div>
-            </div>
-            <div className="ml-auto flex pl-3">
-              {type === "train" ? <TrainTimesDestIcon code={code!} /> : null}
-              <IconButton
-                component={Link}
-                to={getMapLocationLink(stop.fullStopCode)}>
-                <MapIcon color="primary" />
-              </IconButton>
-              <FavoriteSave
-                isFavorite={isFavorite}
-                saveF={async (name: string) =>
-                  await db.favorites.add({
-                    type: type!,
-                    code: code!,
-                    name,
-                    cod_mode: getCodModeByType(type!),
-                  })
-                }
-                deleteF={async () => {
-                  await db.favorites.where({type: type!, code: code!}).delete();
-                }}
-                defaultName={stop.stopName}
-              />
-            </div>
-          </div>
-          <RenderAccessibility stop={stop} />
-          {showLive ? (
-            <>
-              <ul className="rounded w-full border-b mb-1">
-                <RenderTimesOrEmpty times={stopTimes} />
-              </ul>
-            </>
-          ) : (
-            <>
-              <ul className="rounded w-full border-b mb-1">
-                <AlertMui severity="warning">
-                  {t("times.plannedAlert")}
-                </AlertMui>
-                <RenderTimesPlannedOrEmpty times={stopTimesPlanned} />
-              </ul>
-            </>
-          )}
+      <div className="grid grid-cols-1 p-4 gap-3 max-w-md mx-auto w-full">
+        <RenderHeaderCard stop={stop} />
 
-          <div className="mt-2 w-full">
+        <div className="tm-card overflow-hidden">
+          <div
+            className="tm-section-header text-white flex items-center justify-between"
+            style={{background: modeColor}}>
+            <span>{showLive ? t("times.realTime") : t("times.planned")}</span>
             <Button
-              className="w-full"
-              variant="contained"
-              color="info"
-              onClick={() => setShowLive(!showLive)}>
+              size="small"
+              variant="outlined"
+              onClick={() => setShowLive(!showLive)}
+              sx={{
+                color: "white",
+                borderColor: "rgba(255,255,255,0.6)",
+                borderRadius: "999px",
+                textTransform: "none",
+                fontSize: "0.75rem",
+                py: 0.25,
+                px: 1.5,
+                "&:hover": {borderColor: "white", backgroundColor: "rgba(255,255,255,0.15)"},
+              }}>
               {showLive ? t("times.seePlanned") : t("times.seeLive")}
             </Button>
           </div>
+          <div className="divide-y divide-black/5 dark:divide-white/5">
+            {showLive ? (
+              <RenderTimesOrEmpty times={stopTimes} />
+            ) : (
+              <>
+                <AlertMui severity="warning" className="rounded-none m-3">
+                  {t("times.plannedAlert")}
+                </AlertMui>
+                <RenderTimesPlannedOrEmpty times={stopTimesPlanned} />
+              </>
+            )}
+          </div>
+        </div>
+
+        <div className="flex gap-2">
           <RenderAlerts
             alerts={alerts}
             incidents={stopTimes?.incidents ?? []}
+            color={modeColor}
           />
         </div>
-      </>
+      </div>
     );
   }
 
@@ -281,14 +307,18 @@ export default function BusStopsTimes() {
     if (error !== undefined) return <ErrorMessage message={error} />;
     if (times === undefined)
       return (
-        <div className="w-full flex justify-center py-4">
+        <div className="w-full flex justify-center py-6">
           <LoadingSpinner />
         </div>
       );
     if (times.arrives === null)
       return <ErrorMessage message={t("times.errors.down")} />;
     if (times.arrives.length === 0)
-      return <div className="text-center">{t("times.noTimes")}</div>;
+      return (
+        <div className="text-center py-6 text-sm text-gray-500 dark:text-gray-400">
+          {t("times.noTimes")}
+        </div>
+      );
     return (
       <>
         {times.arrives.map((arrive, index) => (
@@ -302,12 +332,16 @@ export default function BusStopsTimes() {
     if (error !== undefined) return <ErrorMessage message={error} />;
     if (times === undefined)
       return (
-        <div className="w-full flex justify-center py-4">
+        <div className="w-full flex justify-center py-6">
           <LoadingSpinner />
         </div>
       );
     if (times.length === 0)
-      return <div className="text-center">{t("times.noPlannedTimes")}</div>;
+      return (
+        <div className="text-center py-6 text-sm text-gray-500 dark:text-gray-400">
+          {t("times.noPlannedTimes")}
+        </div>
+      );
     return (
       <>
         {times.map((stopTimePlanned, index) => (
@@ -323,28 +357,24 @@ export default function BusStopsTimes() {
   function RenderArrive({arrive}: {arrive: Arrive}) {
     const arrivesFormatted = arrive.estimatedArrives.map(FormatTime);
     return (
-      <div className="p-2">
-        <div className="flex items-center justify-between w-full">
-          <div className="flex-col flex-wrap  min-w-0 max-w-full">
-            <div className="flex">
-              <Line info={arrive} />
-              <div className={`gap-5 flex grow-0 overflow-scroll no-scrollbar`}>
-                {arrivesFormatted}
+      <div className="px-3 py-3">
+        <div className="flex items-start gap-3 w-full">
+          <Line info={arrive} />
+          <div className="flex-1 min-w-0">
+            <div className="text-sm font-semibold truncate">
+              {arrive.destination}
+            </div>
+            <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1">
+              {arrivesFormatted}
+            </div>
+            {arrive.anden !== null ? (
+              <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                {t("times.platform")} {arrive.anden}
               </div>
-            </div>
-            <div className="flex-col text-xs font-bold min-w-0 overflow-hidden pt-1 w-full items-center mx-auto">
-              <pre className="overflow-scroll no-scrollbar ">
-                {` ${arrive.destination} `}
-              </pre>
-              {arrive.anden !== null ? (
-                <pre className={` text-gray-500`}>
-                  {` ${t("times.platform")} ${arrive.anden}`}
-                </pre>
-              ) : null}
-            </div>
+            ) : null}
           </div>
 
-          <div className="ml-auto flex p-1 mb-auto ">
+          <div className="flex shrink-0 ml-1">
             {arrive.direction != null ? (
               <LinesLocationsButton
                 codMode={getCodModeByType(type!)}
@@ -366,24 +396,20 @@ export default function BusStopsTimes() {
   }) {
     const arrivesFormatted = stopTimePlanned.arrives.map(FormatTime);
     return (
-      <div className="p-2">
-        <div className="flex items-center justify-between w-full">
-          <div className="flex-col flex-wrap  min-w-0 max-w-full">
-            <div className="flex">
-              <Line
-                info={{
-                  line: stopTimePlanned.lineCode,
-                  codMode: stopTimePlanned.codMode,
-                }}
-              />
-              <div className={`gap-5 flex grow-0 overflow-scroll no-scrollbar`}>
-                {arrivesFormatted}
-              </div>
+      <div className="px-3 py-3">
+        <div className="flex items-start gap-3 w-full">
+          <Line
+            info={{
+              line: stopTimePlanned.lineCode,
+              codMode: stopTimePlanned.codMode,
+            }}
+          />
+          <div className="flex-1 min-w-0">
+            <div className="text-sm font-semibold truncate">
+              {stopTimePlanned.destination}
             </div>
-            <div className="flex-col text-xs font-bold min-w-0 overflow-hidden pt-1 w-full items-center mx-auto">
-              <pre className="overflow-scroll no-scrollbar ">
-                {` ${stopTimePlanned.destination} `}
-              </pre>
+            <div className="flex gap-4 mt-1 overflow-x-auto no-scrollbar">
+              {arrivesFormatted}
             </div>
           </div>
         </div>
@@ -405,22 +431,22 @@ export default function BusStopsTimes() {
     });
     if (!getMinutesDisplay())
       return (
-        <pre key={index} className={color}>
+        <span key={index} className={`${color} text-sm tabular-nums whitespace-nowrap`}>
           {timeFormatted}
-        </pre>
+        </span>
       );
 
     if (minutes > 60)
       return (
-        <pre key={index} className={color}>
+        <span key={index} className={`${color} text-sm tabular-nums whitespace-nowrap`}>
           {timeFormatted}
-        </pre>
+        </span>
       );
 
     return (
-      <pre key={index} className={color}>
-        {minutes <= 0 ? "<<" : `${minutes} min`}{" "}
-      </pre>
+      <span key={index} className={`${color} text-sm tabular-nums whitespace-nowrap`}>
+        {minutes <= 0 ? "<<" : `${minutes} min`}
+      </span>
     );
   }
 }
