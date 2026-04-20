@@ -1,14 +1,17 @@
 import {useEffect, useState} from "react";
-import {useSearchParams} from "react-router-dom";
+import {Link, useSearchParams} from "react-router-dom";
 import {fold} from "fp-ts/lib/Either";
 import {getTrainStopsTimes} from "../api/Times";
 import {type TrainStopTimes} from "../api/Types";
 import {
+  getColor,
   getIconByCodMode,
   getLineColorByCodMode,
+  getMapLocationLink,
   trainCodMode,
 } from "../api/Utils";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
+import MapIcon from "@mui/icons-material/Map";
 import {FavoriteSave} from "../../favorites/FavoriteSave";
 import LoadingSpinner from "../../LoadingSpinner";
 import ErrorMessage from "../../Error";
@@ -16,6 +19,16 @@ import StaledMessage from "../../Staled";
 import {db} from "../api/Db";
 import {useLiveQuery} from "dexie-react-hooks";
 import {useTranslation} from "react-i18next";
+import {Button, IconButton} from "@mui/material";
+
+function hexToRgba(hex: string, alpha: number): string {
+  const normalized = hex.replace("#", "");
+  const bigint = parseInt(normalized, 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
 
 export default function TrainStopTimesComponent() {
   const {t} = useTranslation();
@@ -33,6 +46,13 @@ export default function TrainStopTimesComponent() {
           .first()) != null,
     ) ?? false;
 
+  const originStop = useLiveQuery(async () => {
+    if (origin === null) return undefined;
+    return await db.stops
+      .where({codMode: trainCodMode, stopCode: origin})
+      .first();
+  }, [origin]);
+
   useEffect(() => {
     if (origin === null || destination === null) {
       setError("No se ha seleccionado origen o destino");
@@ -49,22 +69,48 @@ export default function TrainStopTimesComponent() {
   if (error !== undefined) return <ErrorMessage message={error} />;
   if (times === undefined) return <LoadingSpinner />;
   if (times === null)
-    return <div className="text-center">{t("times.noTimes")}</div>;
+    return <div className="text-center py-6 text-sm text-gray-500">{t("times.noTimes")}</div>;
+
+  const modeColor = getColor(trainCodMode);
+
   return (
-    <>
+    <div className="grid grid-cols-1 p-4 gap-3 max-w-md mx-auto w-full">
       <div
-        className={`grid grid-cols-1 p-5 max-w-md mx-auto w-full justify-center`}>
-        <div className={`flex items-end justify-start border-b  `}>
-          <img
-            className="w-8 h-8 max-md:w-7 max-md:h-7 my-auto mr-2 rounded-full"
-            src={getIconByCodMode(trainCodMode)}
-            alt="Logo"
-          />
-          <div
-            className={`flex items-center whitespace-nowrap overflow-scroll no-scrollbar  my-auto`}>
-            {times?.peticion?.descEstOrigen} - {times?.peticion?.descEstDestino}
+        className="rounded-2xl p-3 border"
+        style={{
+          background: hexToRgba(modeColor, 0.06),
+          borderColor: hexToRgba(modeColor, 0.25),
+        }}>
+        <div className="flex items-start gap-3">
+          <span
+            className="tm-icon-tile shrink-0"
+            style={{background: modeColor}}>
+            <img
+              src={getIconByCodMode(trainCodMode)}
+              alt=""
+              className="w-8 h-8 object-contain"
+            />
+          </span>
+          <div className="flex-1 min-w-0">
+            <div className="font-bold text-base leading-tight">
+              {times?.peticion?.descEstOrigen}
+            </div>
+            <div className="text-xs text-gray-500 dark:text-gray-400 my-0.5">▼</div>
+            <div
+              className="font-semibold text-sm"
+              style={{color: modeColor}}>
+              {times?.peticion?.descEstDestino}
+            </div>
           </div>
-          <div className="ml-auto flex pl-3">
+          <div className="flex items-center gap-0 shrink-0">
+            {originStop?.fullStopCode ? (
+              <IconButton
+                component={Link}
+                size="small"
+                to={getMapLocationLink(originStop.fullStopCode)}>
+                <MapIcon color="primary" />
+              </IconButton>
+            ) : null}
             <FavoriteSave
               isFavorite={isFavorite}
               saveF={async (name: string) =>
@@ -86,92 +132,93 @@ export default function TrainStopTimesComponent() {
             />
           </div>
         </div>
-        {times.staled === true ? (
-          <StaledMessage message="Los tiempos de espera podrian estar desactualizados ya que el servidor no responde" />
-        ) : (
-          <></>
-        )}
-        <ul>
-          <li className="flex justify-between font-bold">
-            <div className="w-[33%]">{t("times.trainsPlanned.line")}</div>
-            <div className="w-[33%]">{t("times.trainsPlanned.departure")}</div>
-            <div className="w-[33%]">{t("times.trainsPlanned.arrive")}</div>
-          </li>
+      </div>
+
+      {times.staled === true ? (
+        <StaledMessage message="Los tiempos de espera podrian estar desactualizados ya que el servidor no responde" />
+      ) : null}
+
+      <div className="tm-card overflow-hidden">
+        <div
+          className="tm-section-header text-white flex items-center justify-between"
+          style={{background: modeColor}}>
+          <span>{t("times.trainsPlanned.title", "Horarios")}</span>
+        </div>
+        <div className="divide-y divide-black/5 dark:divide-white/5">
+          <div className="px-3 py-2 flex justify-between text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">
+            <div className="w-[30%]">{t("times.trainsPlanned.line")}</div>
+            <div className="w-[30%]">{t("times.trainsPlanned.departure")}</div>
+            <div className="w-[30%]">{t("times.trainsPlanned.arrive")}</div>
+          </div>
           {times?.horario?.map((time, index) =>
             !showAll && index >= 5 ? null : (
-              <div key={index} className=" border-b-2 pb-3">
-                <li className="flex justify-between pt-3">
-                  <div className="w-[33%]">
-                    <div
-                      className={`text-sm font-bold text-center ${getLineColorByCodMode(
-                        trainCodMode,
-                      )} text-white w-16 rounded-lg p-1 mr-3`}>
+              <div key={index} className="px-3 py-3">
+                <div className="flex items-center justify-between">
+                  <div className="w-[30%]">
+                    <span
+                      className={`text-xs font-bold text-center ${getLineColorByCodMode(trainCodMode)} text-white inline-block min-w-[3.5rem] rounded-lg py-1 px-2`}>
                       {time.linea}
-                    </div>
+                    </span>
                   </div>
-                  <pre className="w-[33%]">
+                  <div className="w-[30%] text-sm font-medium tabular-nums">
                     {time.horaSalidaReal ?? time.horaSalida}
-                  </pre>
+                  </div>
                   {time.trans === undefined ? (
-                    <pre className="w-[33%]">
+                    <div className="w-[30%] text-sm font-medium tabular-nums">
                       {time.horaLlegadaReal ?? time.horaLlegada}
-                    </pre>
+                    </div>
                   ) : (
-                    <div className="w-[33%]"></div>
+                    <div className="w-[30%]" />
                   )}
-                </li>
-                {time.trans === undefined ? (
-                  <></>
-                ) : (
-                  <>
-                    {time.trans.map((tran, index) => (
-                      <div key={index}>
-                        <li className="flex justify-between py-2">
-                          <div className="flex justify-center w-16">
-                            <CompareArrowsIcon />
-                          </div>
-                          <pre className="text-center w-full text-sm">
-                            {`${t("times.trainsPlanned.transfer")} ${tran.descEstacion}`}
-                          </pre>
-                        </li>
-                        <li className="flex justify-between pt-1">
-                          <div className="w-[33%]">
-                            <div
-                              className={`text-sm font-bold text-center ${getLineColorByCodMode(
-                                trainCodMode,
-                              )} text-white w-16 rounded-lg p-1 mr-3`}>
+                </div>
+                {time.trans !== undefined ? (
+                  <div className="mt-2 space-y-2">
+                    {time.trans.map((tran, tIndex) => (
+                      <div key={tIndex}>
+                        <div className="flex items-center gap-2 py-1 text-xs text-gray-500 dark:text-gray-400">
+                          <CompareArrowsIcon fontSize="small" />
+                          <span>{t("times.trainsPlanned.transfer")} {tran.descEstacion}</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div className="w-[30%]">
+                            <span
+                              className={`text-xs font-bold text-center ${getLineColorByCodMode(trainCodMode)} text-white inline-block min-w-[3.5rem] rounded-lg py-1 px-2`}>
                               {tran.linea}
-                            </div>
+                            </span>
                           </div>
-                          <pre className="w-[33%]">
+                          <div className="w-[30%] text-sm font-medium tabular-nums">
                             {tran.horaSalidaReal ?? tran.horaSalida}
-                          </pre>
-                          {index === (time.trans?.length ?? 0) - 1 ? (
-                            <pre className="w-[33%]">
+                          </div>
+                          {tIndex === (time.trans?.length ?? 0) - 1 ? (
+                            <div className="w-[30%] text-sm font-medium tabular-nums">
                               {time.horaLlegadaReal ?? time.horaLlegada}
-                            </pre>
+                            </div>
                           ) : (
-                            <div className="w-[33%]"></div>
+                            <div className="w-[30%]" />
                           )}
-                        </li>
+                        </div>
                       </div>
                     ))}
-                  </>
-                )}
+                  </div>
+                ) : null}
               </div>
             ),
           )}
-        </ul>
-        {!showAll ? (
-          <button
-            onClick={() => setShowAll(true)}
-            className={` m-auto bg-transparent w-44 border-2 border-gray-500 hover:bg-gray-500 font-bold py-2 px-4 rounded mt-5`}>
-            {t("times.trainsPlanned.show")}
-          </button>
-        ) : (
-          <></>
-        )}
+        </div>
       </div>
-    </>
+
+      {!showAll ? (
+        <Button
+          variant="outlined"
+          onClick={() => setShowAll(true)}
+          sx={{
+            borderRadius: "999px",
+            textTransform: "none",
+            fontWeight: 600,
+          }}>
+          {t("times.trainsPlanned.show")}
+        </Button>
+      ) : null}
+    </div>
   );
 }

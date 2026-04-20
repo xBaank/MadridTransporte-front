@@ -258,9 +258,25 @@ export default function BusStopsTimes() {
 
         <div className="tm-card overflow-hidden">
           <div
-            className="tm-section-header text-white"
+            className="tm-section-header text-white flex items-center justify-between"
             style={{background: modeColor}}>
-            {showLive ? t("times.realTime") : t("times.planned")}
+            <span>{showLive ? t("times.realTime") : t("times.planned")}</span>
+            <Button
+              size="small"
+              variant="outlined"
+              onClick={() => setShowLive(!showLive)}
+              sx={{
+                color: "white",
+                borderColor: "rgba(255,255,255,0.6)",
+                borderRadius: "999px",
+                textTransform: "none",
+                fontSize: "0.75rem",
+                py: 0.25,
+                px: 1.5,
+                "&:hover": {borderColor: "white", backgroundColor: "rgba(255,255,255,0.15)"},
+              }}>
+              {showLive ? t("times.seePlanned") : t("times.seeLive")}
+            </Button>
           </div>
           <div className="divide-y divide-black/5 dark:divide-white/5">
             {showLive ? (
@@ -277,13 +293,6 @@ export default function BusStopsTimes() {
         </div>
 
         <div className="flex gap-2">
-          <Button
-            fullWidth
-            variant="contained"
-            onClick={() => setShowLive(!showLive)}
-            sx={{borderRadius: "999px", py: 1.2, backgroundColor: modeColor, "&:hover": {backgroundColor: modeColor, filter: "brightness(0.9)"}}}>
-            {showLive ? t("times.seePlanned") : t("times.seeLive")}
-          </Button>
           <RenderAlerts
             alerts={alerts}
             incidents={stopTimes?.incidents ?? []}
@@ -355,7 +364,7 @@ export default function BusStopsTimes() {
             <div className="text-sm font-semibold truncate">
               {arrive.destination}
             </div>
-            <div className="flex gap-4 mt-1 overflow-scroll no-scrollbar">
+            <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1">
               {arrivesFormatted}
             </div>
             {arrive.anden !== null ? (
@@ -399,7 +408,7 @@ export default function BusStopsTimes() {
             <div className="text-sm font-semibold truncate">
               {stopTimePlanned.destination}
             </div>
-            <div className="flex gap-4 mt-1 overflow-scroll no-scrollbar">
+            <div className="flex gap-4 mt-1 overflow-x-auto no-scrollbar">
               {arrivesFormatted}
             </div>
           </div>
@@ -422,20 +431,20 @@ export default function BusStopsTimes() {
     });
     if (!getMinutesDisplay())
       return (
-        <span key={index} className={`${color} text-sm tabular-nums`}>
+        <span key={index} className={`${color} text-sm tabular-nums whitespace-nowrap`}>
           {timeFormatted}
         </span>
       );
 
     if (minutes > 60)
       return (
-        <span key={index} className={`${color} text-sm tabular-nums`}>
+        <span key={index} className={`${color} text-sm tabular-nums whitespace-nowrap`}>
           {timeFormatted}
         </span>
       );
 
     return (
-      <span key={index} className={`${color} text-sm tabular-nums`}>
+      <span key={index} className={`${color} text-sm tabular-nums whitespace-nowrap`}>
         {minutes <= 0 ? "<<" : `${minutes} min`}
       </span>
     );

@@ -91,7 +91,7 @@ export default function StopsFavorites() {
     const [open, setOpen] = useState<boolean>(false);
     return (
       <>
-        <div className="flex items-center h-16 px-3 gap-3">
+        <div className="flex items-center h-16 px-3 gap-3 transition-colors hover:bg-black/5 dark:hover:bg-white/5">
           <Link
             className="flex items-center flex-1 min-w-0 gap-3"
             to={getStopTimesLinkByMode(stop.cod_mode, stop.code.toString())}>
@@ -133,7 +133,7 @@ export default function StopsFavorites() {
     const [open, setOpen] = useState<boolean>(false);
     return (
       <>
-        <div className="flex items-center h-16 px-3 gap-3">
+        <div className="flex items-center h-16 px-3 gap-3 transition-colors hover:bg-black/5 dark:hover:bg-white/5">
           <Link
             to={getStopTimesLinkByMode(
               trainCodMode,

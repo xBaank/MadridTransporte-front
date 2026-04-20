@@ -129,8 +129,8 @@ export default function BusStopSearch({
   );
 
   return (
-    <div className="w-full">
-      <div className="grid grid-cols-1 px-4 pt-4 pb-2 max-w-md mx-auto gap-4">
+    <div className="w-full h-full flex flex-col">
+      <div className={`flex flex-col px-4 pt-4 pb-2 max-w-md mx-auto w-full gap-4 ${query.trim() !== "" ? "min-h-0 flex-1" : "overflow-auto no-scrollbar flex-1"}`}>
         {code !== undefined && stop !== undefined ? (
           <div className="tm-card-soft px-3 py-2 flex items-center gap-2">
             <div className="my-auto font-bold text-sm">
@@ -162,10 +162,10 @@ export default function BusStopSearch({
               paddingLeft: "8px",
             },
             "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: "transparent",
+              borderColor: "divider",
             },
             "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: "divider",
+              borderColor: "text.secondary",
             },
           }}
           InputProps={{

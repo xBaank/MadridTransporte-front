@@ -56,10 +56,9 @@ export default function MobileNavBar() {
         bottom: 0,
         left: 0,
         right: 0,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
         borderTop: "1px solid",
         borderColor: "divider",
+        background: theme => theme.palette.background.paper,
       }}
       elevation={8}>
       <BottomNavigation

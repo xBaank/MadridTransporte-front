@@ -27,14 +27,14 @@ export default function ThemedMap({
   const theme = useTheme();
 
   return (
-    <div className="h-full w-full z-0 pb-2 ">
+    <div className="w-full z-0 relative" style={{height: "calc(100vh - 64px - 70px)"}}>
       <MapContainer
         whenReady={() => {
           if (whenReady !== undefined) whenReady();
         }}
         zoomControl={false}
         ref={setMap as unknown as RefObject<Map>}
-        className={`h-full ${useBackgroundColor()}`}
+        className={`!absolute inset-0 ${useBackgroundColor()}`}
         center={center}
         preferCanvas={false}
         zoom={zoom}
@@ -51,7 +51,7 @@ export default function ThemedMap({
       </MapContainer>
       <div
         style={{zIndex: 500}}
-        className={`${useBackgroundColor()} absolute bottom-32 right-5 rounded-full`}>
+        className={`${useBackgroundColor()} absolute bottom-5 right-5 rounded-full`}>
         <IconButton onClick={onLocateClick} size="large">
           <MyLocationIcon color="primary" fontSize="large"></MyLocationIcon>
         </IconButton>

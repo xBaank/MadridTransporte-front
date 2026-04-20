@@ -26,7 +26,13 @@ export default function AbonoNFC() {
           setLoading(true);
           setError(undefined);
           ttpInfo()
-            .then(i => setData(i))
+            .then(i => {
+              if (i === undefined) {
+                setError(t("abono.errors.read"));
+              } else {
+                setData(i);
+              }
+            })
             .catch(() => setError(t("abono.errors.read")))
             .then(() => setLoading(false));
         },

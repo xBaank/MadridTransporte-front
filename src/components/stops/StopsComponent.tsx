@@ -154,7 +154,7 @@ function StopsElement({
           sx={{borderRadius: "999px", fontWeight: 600}}
         />
       </div>
-      <div className="mt-2 h-[35rem] tm-card overflow-hidden">
+      <div className="mt-2 flex-1 min-h-0 tm-card overflow-hidden">
         {stops?.length !== 0 || lines?.length !== 0 ? (
           <List
             rowCount={allData.length}

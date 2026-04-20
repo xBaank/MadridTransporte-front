@@ -50,6 +50,18 @@ html[data-theme="dark"] body {
   background: #ffffff;
   border-radius: 16px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: background 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+
+a.tm-card:hover,
+button.tm-card:hover {
+  background: #f0f2f5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+a.tm-card:active,
+button.tm-card:active {
+  transform: scale(0.97);
 }
 
 html[data-theme="dark"] .tm-card {
@@ -57,14 +69,31 @@ html[data-theme="dark"] .tm-card {
   box-shadow: none;
 }
 
+html[data-theme="dark"] a.tm-card:hover,
+html[data-theme="dark"] button.tm-card:hover {
+  background: #2b3039;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
 /* Soft card used for stop headers */
 .tm-card-soft {
   background: #eef0f3;
   border-radius: 16px;
+  transition: background 0.15s;
+}
+
+a.tm-card-soft:hover,
+button.tm-card-soft:hover {
+  background: #e4e7eb;
 }
 
 html[data-theme="dark"] .tm-card-soft {
   background: #2b2f37;
+}
+
+html[data-theme="dark"] a.tm-card-soft:hover,
+html[data-theme="dark"] button.tm-card-soft:hover {
+  background: #343940;
 }
 
 /* Colored square icon container (squircle) */
@@ -76,6 +105,15 @@ html[data-theme="dark"] .tm-card-soft {
   height: 56px;
   border-radius: 16px;
   color: #ffffff;
+  transition: filter 0.15s, transform 0.15s;
+}
+
+.tm-icon-tile:hover {
+  filter: brightness(1.15);
+}
+
+.tm-icon-tile:active {
+  transform: scale(0.93);
 }
 
 .tm-icon-tile-sm {
