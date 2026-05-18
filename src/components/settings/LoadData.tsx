@@ -137,7 +137,7 @@ export default function LoadData() {
   function InfoMessage() {
     if (success) {
       return (
-        <Alert className="mb-2" variant="outlined" severity="success">
+        <Alert className="mb-2" variant="outlined" severity="success" color="success">
           {t("settings.loadData.success")}
         </Alert>
       );
@@ -150,7 +150,7 @@ export default function LoadData() {
       );
     }
 
-    return <LinearProgress className="mb-2" color="success" />;
+    return <LinearProgress className="mb-2" color="primary" />;
   }
 
   return (

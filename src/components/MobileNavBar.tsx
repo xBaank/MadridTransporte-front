@@ -1,15 +1,21 @@
 import React, {useEffect, useState} from "react";
-import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
+import HomeIcon from "@mui/icons-material/Home";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import {BottomNavigation, BottomNavigationAction, Paper} from "@mui/material";
 import MapIcon from "@mui/icons-material/Map";
+import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import SettingsIcon from "@mui/icons-material/Settings";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import {Link, useLocation} from "react-router-dom";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
+import CreditCardOutlinedIcon from "@mui/icons-material/CreditCardOutlined";
 import {Capacitor} from "@capacitor/core";
 import {useTranslation} from "react-i18next";
 
+type NavValue = "Mapa" | "Abono" | "Ajustes" | "Buscar";
+
 export default function MobileNavBar() {
-  const getLocation = () => {
+  const getLocation = (): NavValue => {
     const path = location.pathname;
     if (path.startsWith("/stops/map")) {
       return "Mapa";
@@ -26,11 +32,9 @@ export default function MobileNavBar() {
 
   const {t} = useTranslation();
   const location = useLocation();
-  const [value, setValue] = useState<"Mapa" | "Abono" | "Ajustes" | "Buscar">(
-    getLocation(),
-  );
+  const [value, setValue] = useState<NavValue>(getLocation());
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+  const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
     if (
       newValue !== "Mapa" &&
       newValue !== "Abono" &&
@@ -43,26 +47,56 @@ export default function MobileNavBar() {
 
   useEffect(() => setValue(getLocation()), [location]);
 
+  const activeColor = "#5b8db8";
+
   return (
-    <Paper sx={{position: "fixed", bottom: 0, left: 0, right: 0}} elevation={3}>
+    <Paper
+      sx={{
+        position: "fixed",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        borderTop: "1px solid",
+        borderColor: "divider",
+        background: theme => theme.palette.background.paper,
+      }}
+      elevation={8}>
       <BottomNavigation
         value={value}
         onChange={handleChange}
-        style={{height: 70}}
+        sx={{
+          height: 70,
+          background: "transparent",
+          "& .MuiBottomNavigationAction-root.Mui-selected": {
+            color: activeColor,
+          },
+          "& .MuiBottomNavigationAction-root": {
+            minWidth: 0,
+            padding: "6px 0",
+          },
+          "& .MuiBottomNavigationAction-label": {
+            fontSize: "0.72rem",
+            fontWeight: 500,
+          },
+          "& .MuiBottomNavigationAction-label.Mui-selected": {
+            fontSize: "0.78rem",
+            fontWeight: 700,
+          },
+        }}
         className="pb-1">
         <BottomNavigationAction
           component={Link}
           to={"/"}
           label={t("navbar.search")}
           value="Buscar"
-          icon={<DirectionsBusIcon />}
+          icon={value === "Buscar" ? <HomeIcon /> : <HomeOutlinedIcon />}
         />
         <BottomNavigationAction
           component={Link}
           to={"/stops/map"}
           label={t("navbar.map")}
           value="Mapa"
-          icon={<MapIcon />}
+          icon={value === "Mapa" ? <MapIcon /> : <MapOutlinedIcon />}
         />
         {Capacitor.getPlatform() === "android" ? (
           <BottomNavigationAction
@@ -70,7 +104,13 @@ export default function MobileNavBar() {
             to={"/abonoNFC"}
             label={t("navbar.travelPass")}
             value="Abono"
-            icon={<CreditCardIcon />}
+            icon={
+              value === "Abono" ? (
+                <CreditCardIcon />
+              ) : (
+                <CreditCardOutlinedIcon />
+              )
+            }
           />
         ) : null}
 
@@ -79,7 +119,9 @@ export default function MobileNavBar() {
           to={"/settings"}
           label={t("navbar.settings")}
           value="Ajustes"
-          icon={<SettingsIcon />}
+          icon={
+            value === "Ajustes" ? <SettingsIcon /> : <SettingsOutlinedIcon />
+          }
         />
       </BottomNavigation>
     </Paper>

@@ -33,11 +33,12 @@ const mapUrlByCodMode: Record<number, string> = {
 };
 
 const lineColorByCodMode: Record<number, string> = {
-  [metroCodMode]: "bg-yellow-500",
-  [metroLigeroCodMode]: "bg-yellow-500",
-  [trainCodMode]: "bg-red-500",
-  [emtCodMode]: "bg-blue-500",
-  [busCodMode]: "bg-green-600",
+  [metroCodMode]: "bg-[#5b7a95]",
+  [metroLigeroCodMode]: "bg-[#c9a94e]",
+  [trainCodMode]: "bg-[#8e5fb0]",
+  [emtCodMode]: "bg-[#4a7fb8]",
+  [busCodMode]: "bg-[#5fa677]",
+  [urbanCodMode]: "bg-[#b85555]",
 };
 
 const codModeByType: Record<TransportType, number> = {
@@ -57,12 +58,12 @@ const transportTypeByCodMode: Record<number, TransportType> = {
 };
 
 const colorByCodMode: Record<number, string> = {
-  [busCodMode]: "#00cc07",
-  [urbanCodMode]: "#e0000b",
-  [emtCodMode]: "#1c73ff",
-  [metroCodMode]: "#f5cb42",
-  [trainCodMode]: "#f54263",
-  [metroLigeroCodMode]: "#f54263",
+  [busCodMode]: "#5fa677",
+  [urbanCodMode]: "#b85555",
+  [emtCodMode]: "#4a7fb8",
+  [metroCodMode]: "#5b7a95",
+  [trainCodMode]: "#8e5fb0",
+  [metroLigeroCodMode]: "#c9a94e",
 };
 
 export function getLocationLink(
@@ -125,7 +126,7 @@ export function getStopTimesLinkByMode(
 }
 
 export function getLineColorByCodMode(codMode: number): string {
-  return lineColorByCodMode[codMode] ?? "bg-red-800";
+  return lineColorByCodMode[codMode] ?? "bg-[#5fa677]";
 }
 
 export function getCodModeByType(type: TransportType): number {
@@ -160,7 +161,7 @@ export function isFavoriteStop(
 }
 
 export function getColor(codMode: number) {
-  return colorByCodMode[codMode] ?? "#00cc07";
+  return colorByCodMode[codMode] ?? "#5fa677";
 }
 
 export const mapStopToStopLink = (stop: Stop, code?: string): StopLink => {

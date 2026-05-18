@@ -183,7 +183,7 @@ export default function LinesLocationsMap() {
       <StopsMarkersMemo />
       <div
         style={{zIndex: 500}}
-        className={`absolute top-4 w-20 h-5 right-0 left-0 mx-auto rounded-sm`}>
+        className="absolute top-4 left-0 right-0 flex justify-center">
         <Line
           info={{
             line: lineLocations.lineCode,

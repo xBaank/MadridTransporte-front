@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Only the necessary CSS shown */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 :root {
   --map-tiles-filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg)
@@ -9,7 +9,7 @@
 
 @media (prefers-color-scheme: dark) {
   .map-tiles {
-    -webkit-filter: var(--map-tiles-filter, none); /* WebKit filter */
+    -webkit-filter: var(--map-tiles-filter, none);
     filter: var(--map-tiles-filter, none);
   }
 }
@@ -21,27 +21,125 @@
 
 @media (prefers-color-scheme: dark) {
   .leaflet-popup-content-wrapper-dark {
-    -webkit-filter: var(
-      --leaflet-popup-content-wrapper-filter,
-      none
-    ); /* WebKit filter */
+    -webkit-filter: var(--leaflet-popup-content-wrapper-filter, none);
     filter: var(--leaflet-popup-content-wrapper-filter, none);
   }
 }
 
-/** The non-dark mode map will be untouched since it's not styled. **/
-/**
-    Source: https://github.com/pkrasicki/issviewer
-    Discovered via: https://github.com/openstreetmap/openstreetmap-website/issues/2332
-**/
+html,
+body {
+  background: #f5f6f8;
+}
 
-/* Hide scrollbar for Chrome, Safari and Opera */
+html[data-theme="dark"],
+html[data-theme="dark"] body {
+  background: #0f1114;
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
-/* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Card elevations */
+.tm-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: background 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+
+a.tm-card:hover,
+button.tm-card:hover {
+  background: #f0f2f5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+a.tm-card:active,
+button.tm-card:active {
+  transform: scale(0.97);
+}
+
+html[data-theme="dark"] .tm-card {
+  background: #22262d;
+  box-shadow: none;
+}
+
+html[data-theme="dark"] a.tm-card:hover,
+html[data-theme="dark"] button.tm-card:hover {
+  background: #2b3039;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Soft card used for stop headers */
+.tm-card-soft {
+  background: #eef0f3;
+  border-radius: 16px;
+  transition: background 0.15s;
+}
+
+a.tm-card-soft:hover,
+button.tm-card-soft:hover {
+  background: #e4e7eb;
+}
+
+html[data-theme="dark"] .tm-card-soft {
+  background: #2b2f37;
+}
+
+html[data-theme="dark"] a.tm-card-soft:hover,
+html[data-theme="dark"] button.tm-card-soft:hover {
+  background: #343940;
+}
+
+/* Colored square icon container (squircle) */
+.tm-icon-tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  color: #ffffff;
+  transition: filter 0.15s, transform 0.15s;
+}
+
+.tm-icon-tile:hover {
+  filter: brightness(1.15);
+}
+
+.tm-icon-tile:active {
+  transform: scale(0.93);
+}
+
+.tm-icon-tile-sm {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+}
+
+/* Line badge — small rounded chip */
+.tm-line-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: #ffffff;
+}
+
+/* Section header bar used by "Tiempo Real" cards */
+.tm-section-header {
+  padding: 10px 16px;
+  font-weight: 600;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
 }

@@ -1,9 +1,9 @@
-import {IconButton, useTheme} from "@mui/material";
+import {CircularProgress, IconButton, useTheme} from "@mui/material";
 import {MapContainer, TileLayer} from "react-leaflet";
 import LocationMarker from "./LocationMarker";
 import {useBackgroundColor} from "../../hooks/hooks";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
-import {JSX, type RefObject} from "react";
+import {JSX, type RefObject, useState} from "react";
 import {type LatLngExpression, type Map} from "leaflet";
 import "leaflet/dist/leaflet.css";
 import {useTranslation} from "react-i18next";
@@ -25,22 +25,23 @@ export default function ThemedMap({
 }) {
   const {i18n} = useTranslation();
   const theme = useTheme();
+  const [locating, setLocating] = useState(false);
 
   return (
-    <div className="h-full w-full z-0 pb-2 ">
+    <div className="w-full z-0 relative" style={{height: "calc(100vh - 64px - 70px)"}}>
       <MapContainer
         whenReady={() => {
           if (whenReady !== undefined) whenReady();
         }}
         zoomControl={false}
         ref={setMap as unknown as RefObject<Map>}
-        className={`h-full ${useBackgroundColor()}`}
+        className={`!absolute inset-0 ${useBackgroundColor()}`}
         center={center}
         preferCanvas={false}
         zoom={zoom}
         maxZoom={18}
         scrollWheelZoom={true}>
-        <LocationMarker />
+        <LocationMarker onLocationFound={() => setLocating(false)} />
         <TileLayer
           className={theme.palette.mode === "dark" ? "map-tiles" : ""}
           attribution='<a href="https://www.google.com/maps">Google Maps</a>'
@@ -51,9 +52,19 @@ export default function ThemedMap({
       </MapContainer>
       <div
         style={{zIndex: 500}}
-        className={`${useBackgroundColor()} absolute bottom-24 right-5 rounded-full`}>
-        <IconButton onClick={onLocateClick} size="large">
-          <MyLocationIcon color="primary" fontSize="large"></MyLocationIcon>
+        className={`${useBackgroundColor()} absolute bottom-20 right-5 rounded-full`}>
+        <IconButton
+          onClick={() => {
+            setLocating(true);
+            onLocateClick();
+          }}
+          size="large"
+          disabled={locating}>
+          {locating ? (
+            <CircularProgress size={28} />
+          ) : (
+            <MyLocationIcon color="primary" fontSize="large" />
+          )}
         </IconButton>
       </div>
     </div>
