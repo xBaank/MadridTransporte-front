@@ -4,7 +4,7 @@ import {Capacitor} from "@capacitor/core";
 // native app (which has no browser-enforced Origin). On native platforms
 // CapacitorHttp patches window.fetch to go through native HTTP, which lets
 // us set arbitrary headers — so we spoof the web Origin to bypass CORS.
-const webOrigin = "https://www.madridtransporte.com";
+const webOrigin = "https://app.madridtransporte.com";
 
 export function setupOriginInterceptor() {
   // On web the Origin header is forbidden and silently dropped, so only
