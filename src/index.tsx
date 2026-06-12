@@ -22,6 +22,7 @@ import Settings from "./components/settings/Settings";
 import StopNearest from "./components/stops/StopNearest";
 import LinesLocationsMap from "./components/stops/lines/LinesLocationsMap";
 import {setupBackButton} from "./backButtons";
+import {setupOriginInterceptor} from "./originInterceptor";
 import {defaultPosition, useSavedTheme} from "./hooks/hooks";
 import {registerSW} from "virtual:pwa-register";
 import "@fontsource/roboto/300.css";
@@ -208,6 +209,7 @@ export const router = createHashRouter([
   },
 ]);
 
+setupOriginInterceptor();
 setupBackButton();
 
 let container: HTMLElement | null = null;
