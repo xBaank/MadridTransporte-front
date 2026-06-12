@@ -12,7 +12,7 @@ import {getLineLocations, getItinerary, getShapes} from "../api/Lines";
 import {fold, type Either} from "fp-ts/lib/Either";
 import ErrorMessage from "../../Error";
 import {useInterval} from "usehooks-ts";
-import {routeToCoordinates, fixRouteShapes, routeTimeCar} from "../api/Route";
+import {shapesToCoordinates} from "../api/Route";
 import LoadingSpinner from "../../LoadingSpinner";
 import {StopsMarkers} from "../StopsMarkers";
 import {LineLocationsMarkers} from "./LineLocationsMarkers";
@@ -118,23 +118,14 @@ export default function LinesLocationsMap() {
       () => getShapes(type, itinerary.codItinerary),
       (value: Shape[]) => {
         if (value.length === 0) {
-          const mapped = routeTimeCar(
+          setAllRoute(
             itinerary.stops.map(i => {
-              return {latitude: i.stopLat, longitude: i.stopLon};
-            }) ?? [],
+              return {lat: i.stopLat, lng: i.stopLon};
+            }),
           );
-          mapped.then(i => {
-            if (i != null) {
-              setAllRoute(routeToCoordinates(i));
-            }
-          });
           return;
         }
-        fixRouteShapes(value)
-          .then(shape => {
-            setAllRoute(shape);
-          })
-          .catch(() => {});
+        setAllRoute(shapesToCoordinates(value));
       },
     );
   }, [itinerary, type]);
