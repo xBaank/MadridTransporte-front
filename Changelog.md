@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.16.2
+
+- Removed OpenStreetMap routing requests; line routes now use shape and API data only.
+- Backend calls now go through the Capacitor HTTP interceptor to set the Origin header on native.
+
 ## 1.16.1
 
 - Fixed train times.
