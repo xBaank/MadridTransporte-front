@@ -96,11 +96,11 @@
     "workbox-window": "^7.1.0"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.61.1"
+    "@rollup/rollup-linux-x64-gnu": "4.63.1"
   },
   "pnpm": {
     "overrides": {
-      "sharp": "0.35.1"
+      "sharp": "0.35.4"
     }
   }
 }
