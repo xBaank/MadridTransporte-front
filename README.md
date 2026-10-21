@@ -1,5 +1,9 @@
 # MadridTransporte-front [![Build & Publish Release APK](https://github.com/xBaank/bus-tracker-front/actions/workflows/apk.yml/badge.svg)](https://github.com/xBaank/bus-tracker-front/actions/workflows/apk.yml) [![Github tag](https://badgen.net/github/tag/xBaank/bus-tracker-front)](https://github.com/xBaank/bus-tracker-front/tags)
 
+
+> [!NOTE]\
+This app is no longer maintained.
+
 This is the frontend for the MadridTransporte app
 
 ## How to deploy
