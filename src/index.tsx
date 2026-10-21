@@ -1,7 +1,7 @@
-import {useMemo, useState} from "react";
+import { useMemo, useState } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import {createHashRouter, RouterProvider} from "react-router-dom";
+import { createHashRouter, RouterProvider } from "react-router-dom";
 import BusStopSearch from "./components/stops/StopSearch";
 import BusStopsTimes from "./components/stops/StopTimes";
 import {
@@ -14,30 +14,33 @@ import DefaultElement from "./components/DefaultElement";
 import BusStopMap from "./components/stops/StopMap";
 import Info from "./components/info/Info";
 import AbonoNFC from "./components/abono/AbonoNFC";
-import {trainCodMode} from "./components/stops/api/Utils";
-import {uniqueId} from "lodash";
+import { trainCodMode } from "./components/stops/api/Utils";
+import { uniqueId } from "lodash";
 import TrainStopTimesComponent from "./components/stops/train/TrainStopsTimes";
 import StaticMaps from "./components/maps/StaticMaps";
 import Settings from "./components/settings/Settings";
 import StopNearest from "./components/stops/StopNearest";
 import LinesLocationsMap from "./components/stops/lines/LinesLocationsMap";
-import {setupBackButton} from "./backButtons";
-import {setupOriginInterceptor} from "./originInterceptor";
-import {defaultPosition, useSavedTheme} from "./hooks/hooks";
-import {registerSW} from "virtual:pwa-register";
+import { setupBackButton } from "./backButtons";
+import { setupOriginInterceptor } from "./originInterceptor";
+import { defaultPosition, useSavedTheme } from "./hooks/hooks";
+import { registerSW } from "virtual:pwa-register";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import {ColorModeContext} from "./contexts/colorModeContext";
-import {MapContext, type MapData} from "./contexts/mapContext";
+import { ColorModeContext } from "./contexts/colorModeContext";
+import { MapContext, type MapData } from "./contexts/mapContext";
 import LoadData from "./components/settings/LoadData";
-import {DataLoadContext, MigrationContext} from "./contexts/dataLoadContext";
-import {LineInfo} from "./components/stops/lines/LineInfo";
-import {LineRouteMap} from "./components/stops/lines/LineRouteMap";
+import { DataLoadContext, MigrationContext } from "./contexts/dataLoadContext";
+import { LineInfo } from "./components/stops/lines/LineInfo";
+import { LineRouteMap } from "./components/stops/lines/LineRouteMap";
 import "./components/i18n";
-import {useTranslation} from "react-i18next";
-import {db} from "./components/stops/api/Db";
+import { useTranslation } from "react-i18next";
+import { db } from "./components/stops/api/Db";
+
+alert("Esta aplicación ya no recibe soporte. Puedes usar Google Maps como alternativa, ya que el CRTM le cede sus datos en tiempo real. Para otros medios de transporte, consulta sus aplicaciones oficiales.")
+
 
 const updateSW = registerSW({
   onNeedRefresh() {
@@ -52,7 +55,9 @@ const updateSW = registerSW({
         if (response) updateSW(true);
       });
   },
-  onOfflineReady() {},
+  onOfflineReady() {
+
+  },
 });
 
 export const getDesignTokens = (mode: PaletteMode) => ({
@@ -108,6 +113,8 @@ export default function App() {
 
   const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
 
+
+
   // This is getting out of hands
   return (
     <>
@@ -132,12 +139,12 @@ export default function App() {
 }
 
 const BusStopSearchTranslated = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   return <BusStopSearch title={t("stops.search.title")} codMode={null} />;
 };
 
 const NotFound = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   return <div className="text-center">{t("other.pageNotFound")}</div>;
 };
 

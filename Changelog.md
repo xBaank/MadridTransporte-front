@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.16.3
+
+- Added end-of-support notice pointing users to Google Maps and official transport apps
+
 ## 1.16.2
 
 - Removed OpenStreetMap routing requests; line routes now use shape and API data only.
